@@ -18,6 +18,7 @@ const fileFilter = (req, file, cb) => {
     "image/jpeg",
     "image/png",
     "image/jpg",
+    "image/svg",
     "application/pdf",
   ];
 

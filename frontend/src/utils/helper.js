@@ -19,7 +19,13 @@ export const validatePassword = (password) => {
 
 export const validateAvatar = (file) => {
   if (!file) return "Avatar (Profile Picture) is required"; // Avatar is not optional
-  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
+  const allowedTypes = [
+    "image/jpeg",
+    "image/jpg",
+    "image/png",
+    "image/webp",
+    "image/svg",
+  ];
   if (!allowedTypes.includes(file.type)) {
     return "Avatar must be a JPG, webp or PNG file";
   }
