@@ -55,7 +55,7 @@ async function cleanupUploads() {
 }
 
 // Schedule to run every 30 minutes
-cron.schedule("*/1 * * * *", () => {
+cron.schedule("*/30 * * * *", () => {
   cleanupUploads();
 });
 
