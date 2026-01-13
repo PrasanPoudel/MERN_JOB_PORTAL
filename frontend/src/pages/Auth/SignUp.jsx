@@ -324,7 +324,7 @@ const SignUp = () => {
                       <img
                         src={formState.avatarPreview}
                         alt="Profile Picture"
-                        className="w-full h-full object-cover"
+                        className="w-full h-full object-fill"
                       />
                     ) : (
                       <User className="w-8 h-8 text-gray-400" />

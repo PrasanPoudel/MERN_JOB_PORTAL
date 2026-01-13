@@ -1,4 +1,4 @@
-import react, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import { AlertCircle, MapPin, Briefcase, Users, Eye, Send } from "lucide-react";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -10,8 +10,10 @@ import InputField from "../../components/Input/InputField";
 import SelectField from "../../components/Input/SelectField";
 import TextareaField from "../../components/Input/TextareaField";
 import JobPostingPreview from "../../components/Cards/JobPostingPreview";
+import { useAuth } from "../../context/AuthContext";
 
 const JobPostingForm = () => {
+  const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const jobId = location.state?.jobId || null;
@@ -53,11 +55,24 @@ const JobPostingForm = () => {
     }
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const validationErrors = validateForm(formData);
     if (Object.keys(validationErrors).length > 0) {
       setErrors(validationErrors);
+      return;
+    }
+
+    if (!user || user?.role !== "employer") {
+      toast.error("Only employer can post job");
+      return;
+    }
+
+    if (
+      !user.companyName?.trim() ||
+      !user.companyLogo?.trim() ||
+      !user.companyDescription?.trim()
+    ) {
+      toast.error("Complete your company profile before posting a job");
       return;
     }
 
@@ -70,8 +85,8 @@ const JobPostingForm = () => {
       type: formData.jobType,
       description: formData.description,
       requirements: formData.requirements,
-      salaryMin: formData.salaryMin,
-      salaryMax: formData.salaryMax,
+      salaryMin: Number(formData.salaryMin),
+      salaryMax: Number(formData.salaryMax),
     };
 
     try {
@@ -114,22 +129,22 @@ const JobPostingForm = () => {
   const validateForm = (formData) => {
     const errors = {};
 
-    if (!formData.jobTitle.trim()) {
+    if (!formData.jobTitle?.trim()) {
       errors.jobTitle = "Job Title is required";
     }
-    if (!formData.category.trim()) {
+    if (!formData.category?.trim()) {
       errors.category = "Please select a category";
     }
-    if (!formData.location.trim()) {
+    if (!formData.location?.trim()) {
       errors.location = "Location is required";
     }
-    if (!formData.jobType.trim()) {
+    if (!formData.jobType?.trim()) {
       errors.jobType = "Please select a job type";
     }
-    if (!formData.description.trim()) {
+    if (!formData.description?.trim()) {
       errors.description = "Job description is required";
     }
-    if (!formData.requirements.trim()) {
+    if (!formData.requirements?.trim()) {
       errors.requirements = "Job requirements are required";
     }
     if (!formData.salaryMin || !formData.salaryMax) {
@@ -168,8 +183,15 @@ const JobPostingForm = () => {
               </div>
               <div className="flex items-center">
                 <button
-                  onClick={() => setIsPreview(true)}
-                  disabled={!isFormValid()}
+                  onClick={() => {
+                    if (!isFormValid()) {
+                      toast.error(
+                        "Please complete all required fields before previewing the job post."
+                      );
+                    } else {
+                      setIsPreview(true);
+                    }
+                  }}
                   className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
                 >
                   <Eye className="h-4 w-4" />

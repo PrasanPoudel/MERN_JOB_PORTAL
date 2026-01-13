@@ -12,14 +12,7 @@ import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
 import { StatusBadge } from "../StatusBadge";
 
-const JobCard = ({
-  job,
-  onClick,
-  onToggleSave,
-  onApply,
-  saved,
-  hideApply,
-}) => {
+const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply }) => {
   const { user } = useAuth();
 
   const formatSalary = (num) => {
@@ -40,7 +33,7 @@ const JobCard = ({
             <img
               src={job?.company?.companyLogo}
               alt="Company Logo"
-              className="w-14 h-14 object-cover rounded-2xl border border-gray-200"
+              className="w-14 h-14 object-fill rounded-2xl border border-gray-200"
             />
           ) : (
             <div className="w-14 h-14 bg-gray-50 border border-gray-200 rounded-2xl flex items-center justify-center">
@@ -97,8 +90,9 @@ const JobCard = ({
 
       <div className="flex items-center justify-between p-0">
         <p className="flex items-center gap-1 text-sky-600 font-semibold text-lg">
-          <DollarSign className="w-5 h-5"/>
-          NPR {formatSalary(job.salaryMin)}</p>
+          <DollarSign className="w-5 h-5" />
+          NPR {formatSalary(job.salaryMin)}
+        </p>
         <div className="flex items-center justify-end gap-2">
           {user && (
             <button

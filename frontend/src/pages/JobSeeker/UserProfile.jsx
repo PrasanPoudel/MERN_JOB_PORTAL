@@ -132,7 +132,7 @@ const UserProfile = () => {
                     <img
                       src={formData.avatar}
                       alt="Avatar"
-                      className="w-20 h-20 rounded-full border-2 border-gray-100 object-cover"
+                      className="w-20 h-20 rounded-full border-2 border-gray-100 object-fill"
                     />
                     {uploading.avatar && (
                       <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">

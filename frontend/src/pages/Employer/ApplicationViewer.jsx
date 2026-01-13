@@ -118,7 +118,7 @@ const ApplicationViewer = () => {
                 </p>
               </div>
             ) : (
-              <div className="flex flex-col p-1 gap-4 sm:p-4 pb-25 overflow-hidden rounded-2xl shadow-md">
+              <div className="flex flex-col p-1 gap-4 sm:p-4 pb-24 overflow-hidden rounded-2xl shadow-md">
                 {/* Job details */}
                 <div className="bg-sky-500 px-2 sm:px-4 py-4 rounded-2xl text-white">
                   <div className="flex items-center justify-between">
@@ -159,7 +159,7 @@ const ApplicationViewer = () => {
                               <img
                                 src={application.applicant.avatar}
                                 alt={application.applicant.name}
-                                className="object-cover h-12 w-12 rounded-full"
+                                className="object-fill h-12 w-12 rounded-full"
                                 style={{ imageRendering: "auto" }}
                               />
                             ) : (

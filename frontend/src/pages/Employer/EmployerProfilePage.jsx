@@ -152,7 +152,7 @@ const EmployerProfilePage = () => {
                     <img
                       src={profileData.avatar}
                       alt="Avatar"
-                      className="w-20 h-20 rounded-full object-cover border-2 border-gray-100"
+                      className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
                     />
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">
@@ -175,7 +175,7 @@ const EmployerProfilePage = () => {
                     <img
                       src={profileData.companyLogo}
                       alt="Company Logo"
-                      className="w-20 h-20 rounded-lg object-cover border-2 border-gray-100"
+                      className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
                     />
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900">

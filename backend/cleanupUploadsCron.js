@@ -39,13 +39,14 @@ async function getAllReferencedFiles() {
 
 async function cleanupUploads() {
   try {
+    console.log("Clean Job Running");
     const referencedFiles = await getAllReferencedFiles();
     const files = fs.readdirSync(UPLOADS_DIR);
     for (const file of files) {
       if (!referencedFiles.has(file)) {
         // File is not referenced, delete it
         fs.unlinkSync(path.join(UPLOADS_DIR, file));
-        // console.log(`[CLEANUP] Deleted unused file: ${file}`);
+        console.log(`[CLEANUP] Deleted unused file: ${file}`);
       }
     }
   } catch (err) {
@@ -54,7 +55,7 @@ async function cleanupUploads() {
 }
 
 // Schedule to run every 30 minutes
-cron.schedule("*/30 * * * *", () => {
+cron.schedule("*/1 * * * *", () => {
   cleanupUploads();
 });
 

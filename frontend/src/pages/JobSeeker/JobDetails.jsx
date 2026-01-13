@@ -105,14 +105,14 @@ const JobDetails = () => {
         )}
 
         {/* Main Content */}
-        <div className="p-2 pb-25 mt-8 border border-gray-100 rounded-2xl">
+        <div className="p-2 pb-24 mt-8 border border-gray-100 rounded-2xl">
           <div className="z-10 bg-white p-2 rounded-2xl ">
             <div className="flex items-start gap-4 mb-0">
               {job?.company?.companyLogo && (
                 <img
                   src={job.company?.companyLogo}
                   alt="Company Logo"
-                  className="h-16 md:h-20 w-16 md:w-20 object-cover rounded-2xl border-4 border-white/20 shadow-sm"
+                  className="h-16 md:h-20 w-16 md:w-20 object-fill rounded-2xl border-4 border-white/20 shadow-sm"
                 />
               )}
               <div className="">
@@ -149,7 +149,7 @@ const JobDetails = () => {
             <div className="">
               <p className="font-semibold">Compensation</p>
               <p className="font-bold text-xl mt-2">
-                NPR {formatSalary(job.salaryMin)}{" "} to{" "}
+                NPR {formatSalary(job.salaryMin)} to{" "}
                 {formatSalary(job.salaryMax)}
                 <span className="text-sm font-medium ml-2">per Month</span>
               </p>
@@ -190,7 +190,7 @@ const JobDetails = () => {
                       <img
                         src={job.company.avatar}
                         alt="Avatar"
-                        className="w-20 h-20 rounded-full object-cover border-2 border-gray-100"
+                        className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
@@ -213,7 +213,7 @@ const JobDetails = () => {
                       <img
                         src={job.company.companyLogo}
                         alt="Company Logo"
-                        className="w-20 h-20 rounded-lg object-cover border-2 border-gray-100"
+                        className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">

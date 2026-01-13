@@ -28,7 +28,7 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
           <Link className="flex items-center" to="/find-jobs">
-            <img src={logo} className="h-14 w-20 object-cover" />
+            <img src={logo} className="h-14 w-20 object-fill" />
           </Link>
 
           <div className="flex items-center space-x-4 md:space-x-10">

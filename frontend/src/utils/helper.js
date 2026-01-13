@@ -24,7 +24,6 @@ export const validateAvatar = (file) => {
     "image/jpg",
     "image/png",
     "image/webp",
-    "image/svg",
   ];
   if (!allowedTypes.includes(file.type)) {
     return "Avatar must be a JPG, webp or PNG file";

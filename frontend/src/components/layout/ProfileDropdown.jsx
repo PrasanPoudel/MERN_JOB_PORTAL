@@ -37,7 +37,7 @@ const ProfileDropdown = ({
           <img
             src={avatar}
             alt="avatar"
-            className="h-10 w-10 rounded-full object-cover"
+            className="h-10 w-10 rounded-full object-fill"
           />
         ) : (
           <div className="h-10 w-10 rounded-full bg-sky-600 flex items-center justify-center">

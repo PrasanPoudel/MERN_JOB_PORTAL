@@ -64,7 +64,7 @@ const ApplicantProfilePreview = ({
               <img
                 src={selectedApplicant.applicant.avatar}
                 alt={selectedApplicant.applicant.name}
-                className="object-cover h-20 w-20 rounded-full mx-auto"
+                className="object-fill h-20 w-20 rounded-full mx-auto"
                 style={{ imageRendering: "auto" }}
               />
             ) : (

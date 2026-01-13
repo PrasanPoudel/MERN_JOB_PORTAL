@@ -40,7 +40,7 @@ const EditProfileDetails = ({
                         <img
                           src={formData.avatar}
                           alt="Avatar"
-                          className="w-20 h-20 rounded-full object-cover border-2 border-gray-100"
+                          className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
                         />
                         {uploading?.avatar && (
                           <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
@@ -103,7 +103,7 @@ const EditProfileDetails = ({
                         <img
                           src={formData.companyLogo}
                           alt="Company Logo"
-                          className="w-20 h-20 rounded-lg object-cover border-2 border-gray-100"
+                          className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
                         />
                         {uploading?.companyLogo && (
                           <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">

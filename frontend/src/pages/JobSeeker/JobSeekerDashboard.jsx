@@ -154,6 +154,34 @@ const JobSeekerDashboard = () => {
     setSearch(!search);
   };
 
+  const getPaginationPages = (currentPage, totalPages) => {
+    const pages = [];
+    const delta = 2; // pages before & after current
+
+    const left = Math.max(2, currentPage - delta);
+    const right = Math.min(totalPages - 1, currentPage + delta);
+
+    pages.push(1);
+
+    if (left > 2) {
+      pages.push("...");
+    }
+
+    for (let i = left; i <= right; i++) {
+      pages.push(i);
+    }
+
+    if (right < totalPages - 1) {
+      pages.push("...");
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
+  };
+
   if (jobs.length == 0 && loading) {
     return <LoadingSpinner />;
   }
@@ -263,7 +291,7 @@ const JobSeekerDashboard = () => {
                 {/* Pagination */}
                 {jobs.length > itemsPerPage && (
                   <div className="mt-8 flex items-center justify-between">
-                    <div className="flex flex-1 justify-between sm:hidden">
+                    <div className="flex flex-1 justify-between md:hidden">
                       <button
                         onClick={() => {
                           setCurrentPage(Math.max(1, currentPage - 1));
@@ -283,7 +311,7 @@ const JobSeekerDashboard = () => {
                         Next
                       </button>
                     </div>
-                    <div className="hidden sm:flex sm:flex-1 items-center justify-between">
+                    <div className="hidden md:flex sm:flex-1 items-center justify-between">
                       <div>
                         <p className="text-sm text-gray-700">
                           Showing{" "}
@@ -306,24 +334,30 @@ const JobSeekerDashboard = () => {
                           >
                             Previous
                           </button>
-                          {Array.from(
-                            { length: totalPages },
-                            (_, i) => i + 1
-                          ).map((page) => (
-                            <button
-                              key={page}
-                              onClick={() => {
-                                setCurrentPage(page);
-                              }}
-                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                                currentPage === page
-                                  ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                  : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
-                              }`}
-                            >
-                              {page}
-                            </button>
-                          ))}
+                          {getPaginationPages(currentPage, totalPages).map(
+                            (page, index) =>
+                              page === "..." ? (
+                                <span
+                                  key={`dots-${index}`}
+                                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
+                                >
+                                  ...
+                                </span>
+                              ) : (
+                                <button
+                                  key={page}
+                                  onClick={() => setCurrentPage(page)}
+                                  className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                    currentPage === page
+                                      ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
+                                      : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                                  }`}
+                                >
+                                  {page}
+                                </button>
+                              )
+                          )}
+
                           <button
                             onClick={() => {
                               setCurrentPage(

@@ -270,7 +270,7 @@ const ManageJobs = () => {
                     <thead className="bg-linear-to-r from-gray-50 to-gray-400">
                       <tr>
                         <th
-                          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-all duration-200 min-w-50 sm:min-w-0"
+                          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-all duration-200 min-w-52 sm:min-w-0"
                           onClick={() => {
                             handleSort("title");
                           }}
@@ -318,7 +318,7 @@ const ManageJobs = () => {
                               key={job.id}
                               className="hover:bg-sky-50/30 transition-all duration-200 border-b border-gray-100"
                             >
-                              <td className="px-6 py-5 whitespace-nowrap min-w-50 sm:min-w-0">
+                              <td className="px-6 py-5 whitespace-nowrap min-w-52 sm:min-w-0">
                                 <div>
                                   <div className="text-sm font-semibold text-gray-900">
                                     {job.title}

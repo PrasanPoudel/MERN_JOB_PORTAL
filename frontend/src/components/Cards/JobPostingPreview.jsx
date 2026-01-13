@@ -42,7 +42,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
         </div>
 
         {/* Main Content */}
-        <div className="p-4 pb-25 mt-8 border border-gray-100 rounded-2xl">
+        <div className="p-4 pb-24 mt-8 border border-gray-100 rounded-2xl">
           <div className="z-10">
             <div className="flex items-start justify-between mb-0">
               <div className="">
@@ -62,7 +62,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 <img
                   src={user.companyLogo}
                   alt="Company Logo"
-                  className="h-16 md:h-20 w-16 md:w-20 object-cover rounded-2xl border-4 border-white/20 shadow-lg"
+                  className="h-16 md:h-20 w-16 md:w-20 object-fill rounded-2xl border-4 border-white/20 shadow-lg"
                 />
               ) : (
                 <div className="h-20 w-20 bg-gray-50 border-2 border-gray-200 rounded-2xl flex items-center justify-center">
@@ -137,7 +137,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                       <img
                         src={user?.avatar}
                         alt="Avatar"
-                        className="w-20 h-20 rounded-full object-cover border-2 border-gray-100"
+                        className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
@@ -160,7 +160,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                       <img
                         src={user?.companyLogo}
                         alt="Company Logo"
-                        className="w-20 h-20 rounded-lg object-cover border-2 border-gray-100"
+                        className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">

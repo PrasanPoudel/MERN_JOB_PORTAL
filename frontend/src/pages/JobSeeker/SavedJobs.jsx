@@ -125,7 +125,7 @@ const SavedJobs = () => {
                 ) : (
                   <>
                     <div
-                      className={`w-full pb-25 ${
+                      className={`w-full pb-24 ${
                         viewMode === "grid"
                           ? "grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-4 lg:gap-6"
                           : "space-y-4 lg:space-y-6"

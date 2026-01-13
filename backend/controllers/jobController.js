@@ -16,18 +16,41 @@ exports.createJob = async (req, res) => {
   }
 };
 
-//get all jobs
-exports.getJobs = async (req, res) => {
-  const { keyword, location, category, type, userId } = req.query;
+// get all jobs
 
-  const query = {
-    isClosed: false,
-    ...(keyword && { title: { $regex: keyword, $options: "i" } }),
-    ...(location && { title: { $regex: location, $options: "i" } }),
-    ...(category && { category }),
-    ...(type && { type }),
-  };
+exports.getJobs = async (req, res) => {
   try {
+    let { keyword, location, category, type, userId } = req.query;
+
+    keyword = keyword?.toLowerCase();
+    location = location?.toLowerCase();
+
+    let companyIds = [];
+
+    if (keyword) {
+      const companies = await User.find({
+        companyName: { $regex: keyword, $options: "i" },
+        role: "employer",
+      }).select("_id");
+
+      companyIds = companies.map((c) => c._id);
+    }
+
+    const query = {
+      isClosed: false,
+      ...(category && { category }),
+      ...(type && { type }),
+      ...(location && {
+        location: { $regex: location, $options: "i" },
+      }),
+      ...(keyword && {
+        $or: [
+          { title: { $regex: keyword, $options: "i" } },
+          { company: { $in: companyIds } },
+        ],
+      }),
+    };
+
     const jobs = await Job.find(query).populate(
       "company",
       "name companyName companyLogo"
@@ -37,32 +60,32 @@ exports.getJobs = async (req, res) => {
     let savedJobIds = [];
 
     if (userId) {
-      //saved jobs
-      const SavedJobs = await SavedJob.find({ jobSeeker: userId }).select(
+      const savedJobs = await SavedJob.find({ jobSeeker: userId }).select(
         "job"
       );
-      savedJobIds = SavedJobs.map((s) => String(s.job));
-      //Applications
+      savedJobIds = savedJobs.map((s) => String(s.job));
+
       const applications = await Application.find({ applicant: userId }).select(
         "job status"
       );
+
       applications.forEach((app) => {
         appliedJobStatusMap[String(app.job)] = app.status;
       });
     }
 
-    //add application status and saved jobs to each job
     const jobsWithExtras = jobs.map((job) => {
       const jobIdStr = String(job._id);
       return {
         ...job.toObject(),
         isSaved: savedJobIds.includes(jobIdStr),
-        applicationStatus: appliedJobStatusMap[jobIdStr],
+        applicationStatus: appliedJobStatusMap[jobIdStr] || null,
       };
     });
+
     res.json(jobsWithExtras);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 
