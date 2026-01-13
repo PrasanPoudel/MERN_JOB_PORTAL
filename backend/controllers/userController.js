@@ -4,7 +4,6 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
-const Analytics = require("../models/Analytics");
 
 // Update user profile (name, avatar, company details)
 exports.updateProfile = async (req, res) => {
@@ -126,9 +125,6 @@ exports.deleteUser = async (req, res) => {
 
       // Delete all jobs posted by this employer
       await Job.deleteMany({ company: user._id });
-
-      // Delete analytics record for this employer
-      await Analytics.deleteOne({ employer: user._id });
     }
 
     // If user is a job seeker

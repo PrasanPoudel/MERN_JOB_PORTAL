@@ -180,7 +180,7 @@ const SignUp = () => {
             Account Created!
           </h2>
           <p className="text-gray-600 mb-4">
-            Welcome to Kaamsetu! Your account has been successfully created
+            Welcome to KARYASETU! Your account has been successfully created
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
           <p className="text-sm text-gray-500 mt-2">
@@ -200,7 +200,7 @@ const SignUp = () => {
         className="bg-white p-4 lg:p-8 rounded-xl shadow-lg max-w-lg w-full"
       >
         <div className="flex items-center justify-center">
-          <img src={logo} className="w-30 h-30" />
+          <img src={logo} className="w-40 h-30" />
         </div>
         <div className="text-center mb-4">
           <h2 className="text-2xl font-bold text-gray-900 mb-2">
