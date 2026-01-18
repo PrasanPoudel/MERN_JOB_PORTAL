@@ -4,7 +4,7 @@ import { X, Save } from "lucide-react";
 
 const EditProfileDetails = ({
   formData,
-  handleImageChange,
+  handleFileChange,
   handleInputChange,
   handleSave,
   handleCancel,
@@ -57,7 +57,7 @@ const EditProfileDetails = ({
                             type="file"
                             accept="image/*"
                             onChange={(e) => {
-                              handleImageChange(e, "avatar");
+                              handleFileChange(e, "avatar");
                             }}
                             className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors"
                           />
@@ -118,7 +118,7 @@ const EditProfileDetails = ({
                             type="file"
                             accept="image/*"
                             onChange={(e) => {
-                              handleImageChange(e, "companyLogo");
+                              handleFileChange(e, "companyLogo");
                             }}
                             className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-green-50 file:text-green-600 hover:file:bg-green-100 transition-colors"
                           />

@@ -4,7 +4,7 @@ import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
-import uploadImage from "../../utils/uploadImage";
+import uploadFile from "../../utils/uploadFile";
 import Navbar from "../../components/layout/Navbar";
 import { Link } from "react-router-dom";
 
@@ -29,14 +29,14 @@ const UserProfile = () => {
     }));
   };
 
-  const handleImageUpload = async (file, type) => {
+  const handleFileUpload = async (file, type) => {
     setUploading((prev) => ({ ...prev, [type]: true }));
     try {
-      const imgUploadRes = await uploadImage(file);
-      const imgUrl = imgUploadRes.imageUrl || "";
+      const fileUploadRes = await uploadFile(file);
+      const fileUrl = fileUploadRes.fileUrl || "";
 
-      // Update form data with new image URL
-      handleInputChange(type, imgUrl);
+      // Update form data with new File URL
+      handleInputChange(type, fileUrl);
     } catch (err) {
       console.error("upload failed:", err);
     } finally {
@@ -44,15 +44,15 @@ const UserProfile = () => {
     }
   };
 
-  const handleImageChange = (e, type) => {
+  const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
       // Create preview URL
       const previewUrl = URL.createObjectURL(file);
       handleInputChange(type, previewUrl);
 
-      // Upload image
-      handleImageUpload(file, type);
+      // Upload File
+      handleFileUpload(file, type);
     }
   };
 
@@ -118,14 +118,14 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 py-8 px-4 mt-16 lg:m-20">
-        <div className="max-w-5xl mx-auto">
+      <div className="min-h-screen bg-gray-50 p-4 my-16 lg:my-20">
+        <div className="max-w-full mx-auto">
           <div className="bg-white pb-10 rounded-xl shadow-lg overflow-hidden">
             <div className="bg-sky-600 flex justify-between items-center p-4">
               <h1 className="text-xl font-medium text-white">Profile</h1>
             </div>
 
-            <div className="p-2 md:p-8">
+            <div className="grid grid-cols-1 md:grid-cols-2 p-2 md:p-8">
               <div className="space-y-6">
                 <div className="flex flex-col space-y-4 items-start md:items-center md:flex-row md:space-x-4">
                   <div className="relative">
@@ -148,7 +148,7 @@ const UserProfile = () => {
                         type="file"
                         accept="image/*"
                         onChange={(e) => {
-                          handleImageChange(e, "avatar");
+                          handleFileChange(e, "avatar");
                         }}
                         className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
                       />
@@ -214,7 +214,7 @@ const UserProfile = () => {
                       <input
                         type="file"
                         onChange={(e) => {
-                          handleImageChange(e, "resume");
+                          handleFileChange(e, "resume");
                         }}
                         accept=".pdf,.doc,.docx"
                         className="mt-5 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
@@ -223,9 +223,12 @@ const UserProfile = () => {
                   </div>
                 )}
               </div>
-
+<div className="space-y-6">
+//Will continue later
+</div>
+</div>
               {/* Action Buttons */}
-              <div className="flex justify-end space-x-2 mt-4 pt-4 border-t">
+              <div className="flex justify-end space-x-2 my-4 p-4 border-t">
                 <Link
                   to={"/find-jobs"}
                   onClick={handleCancel}
@@ -251,7 +254,6 @@ const UserProfile = () => {
             </div>
           </div>
         </div>
-      </div>
     </>
   );
 };

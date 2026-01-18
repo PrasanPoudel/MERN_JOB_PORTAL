@@ -8,8 +8,8 @@ router.post("/register", register);
 router.post("/login", login);
 router.post("/getMe", protect, getMe);
 
-router.post("/upload-image", (req, res) => {
-  upload.single("image")(req, res, function (err) {
+router.post("/upload-file", (req, res) => {
+  upload.single("file")(req, res, function (err) {
     if (err) {
       return res.status(400).json({ message: err.message });
     }
@@ -18,8 +18,8 @@ router.post("/upload-image", (req, res) => {
       return res.status(400).json({ message: "No file uploaded" });
     }
 
-    const imageUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
-    res.status(200).json({ imageUrl });
+    const fileUrl = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    res.status(200).json({ fileUrl });
   });
 });
 

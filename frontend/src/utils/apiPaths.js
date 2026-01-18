@@ -28,7 +28,7 @@ export const API_PATHS = {
     GET_ALL_APPLICATIONS: (id) => `/api/applications/job/${id}`,
     UPDATE_STATUS: (id) => `/api/applications/${id}/status`,
   },
-  IMAGE: {
-    UPLOAD_IMAGE: "/api/auth/upload-image", //upload profile picture
+  FILE: {
+    UPLOAD_FILE: "/api/auth/upload-file", //upload profile picture
   },
 };

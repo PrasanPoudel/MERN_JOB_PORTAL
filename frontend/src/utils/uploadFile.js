@@ -1,13 +1,13 @@
 import { API_PATHS } from "./apiPaths";
 import axiosInstance from "./axiosInstance";
 
-const uploadImage = async (imageFile) => {
+const uploadFile = async (file) => {
   const formData = new FormData();
-  formData.append("image", imageFile);
+  formData.append("file", file);
 
   try {
     const response = await axiosInstance.post(
-      API_PATHS.IMAGE.UPLOAD_IMAGE,
+      API_PATHS.FILE.UPLOAD_FILE,
       formData,
       {
         headers: {
@@ -17,9 +17,9 @@ const uploadImage = async (imageFile) => {
     );
     return response.data;
   } catch (err) {
-    console.log("Error uploading image", err);
+    console.log("Error uploading file", err);
     throw err; //rethrow error for handling (axios Instance)
   }
 };
 
-export default uploadImage;
+export default uploadFile;

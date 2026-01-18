@@ -4,7 +4,7 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { Building2, Mail, Edit3 } from "lucide-react";
 import toast from "react-hot-toast";
-import uploadImage from "../../utils/uploadImage";
+import uploadFile from "../../utils/uploadFile";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import EditProfileDetails from "./EditProfileDetails";
 
@@ -53,30 +53,30 @@ const EmployerProfilePage = () => {
     setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
-  const handleImageUpload = async (file, type) => {
+  const handleFileUpload = async (file, type) => {
     setUploading((prev) => ({ ...prev, [type]: true }));
 
     try {
-      const imgUploadRes = await uploadImage(file);
-      const imgUrl = imgUploadRes.imageUrl || "";
+      const fileUploadRes = await uploadFile(file);
+      const fileUrl = fileUploadRes.fileUrl || "";
       const field = type === "avatar" ? "avatar" : "companyLogo";
-      handleInputChange(field, imgUrl);
+      handleInputChange(field, fileUrl);
     } catch (err) {
-      toast.error("Image upload failed. Please try again.");
-      console.error("Image Upload failed: ", err);
+      toast.error("File upload failed. Please try again.");
+      console.error("File Upload failed: ", err);
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
   };
 
-  const handleImageChange = (e, type) => {
+  const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       const field = type === "avatar" ? "avatar" : "companyLogo";
       handleInputChange(field, previewUrl);
       //upload image
-      handleImageUpload(file, type);
+      handleFileUpload(file, type);
     }
   };
 
@@ -110,7 +110,7 @@ const EmployerProfilePage = () => {
     return (
       <EditProfileDetails
         formData={formData}
-        handleImageChange={handleImageChange}
+        handleFileChange={handleFileChange}
         handleInputChange={handleInputChange}
         handleSave={handleSave}
         handleCancel={handleCancel}

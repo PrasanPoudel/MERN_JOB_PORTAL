@@ -20,7 +20,7 @@ import {
   validateAvatar,
   validatePassword,
 } from "../../utils/helper";
-import uploadImage from "../../utils/uploadImage";
+import uploadFile from "../../utils/uploadFile";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
@@ -125,8 +125,8 @@ const SignUp = () => {
       let avatarUrl = "";
       //upload avatar (profile picture) if given
       if (formData.avatar) {
-        const imageUploadRes = await uploadImage(formData.avatar);
-        avatarUrl = imageUploadRes.imageUrl;
+        const fileUploadRes = await uploadFile(formData.avatar);
+        avatarUrl = fileUploadRes.fileUrl;
       }
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         name: formData.fullName,
