@@ -1,0 +1,26 @@
+# Environment variables
+.env
+backend/.env
+frontend/.env
+
+# Dependencies
+backend/node_modules/
+frontend/node_modules/
+
+# Build outputs
+frontend/dist/
+
+# Uploads
+backend/uploads/
+uploads/
+
+# Logs
+*.log
+
+# OS
+.DS_Store
+
+# Local scripts
+*.bat
+import-to-atlas.bat
+start-app.bat
