@@ -51,7 +51,6 @@ exports.updateProfile = async (req, res) => {
     }
 
     if (user.role === "employer") {
-      user.employerProfile = employerProfile ?? user.employerProfile;
       user.companyName = companyName ?? user.companyName;
       user.companyDescription = companyDescription ?? user.companyDescription;
       user.companyLogo = companyLogo ?? user.companyLogo;
@@ -81,7 +80,6 @@ exports.updateProfile = async (req, res) => {
       certifications: user.certifications || [],
       isPremium: user.isPremium || false,
       premiumIssueDate: user.premiumIssueDate || null,
-      employerProfile: user.employerProfile,
       companyName: user.companyName || "",
       companyDescription: user.companyDescription || "",
       companyLogo: user.companyLogo || "",

@@ -3,13 +3,11 @@ import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import {
-  Building2,
   Mail,
   Edit3,
   Globe,
   MapPin,
   ShieldCheck,
-  BriefcaseBusiness,
   User,
 } from "lucide-react";
 import toast from "react-hot-toast";
@@ -50,7 +48,6 @@ const EmployerProfilePage = () => {
         name: user.name || "",
         email: user.email || "",
         avatar: user.avatar || null,
-        employerProfile: user.employerProfile,
         companyName: user.companyName || "",
         companyLogo: user.companyLogo || null,
         companyDescription: user.companyDescription || "",
@@ -178,14 +175,6 @@ const EmployerProfilePage = () => {
                     <h3 className="text-base sm:text-lg font-semibold truncate">
                       {profileData.name}
                     </h3>
-                    {profileData?.employerProfile && (
-                    <p className="flex items-center gap-2 text-sm text-gray-500 mt-1">
-                      <BriefcaseBusiness className="w-4 h-4"/>
-                      <span>
-                      {profileData.employerProfile}, {profileData.companyName}
-                      </span>
-                    </p>
-                    )}
                     <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                       <Mail className="w-4 h-4 shrink-0" />
                       <span className="truncate">{profileData.email}</span>

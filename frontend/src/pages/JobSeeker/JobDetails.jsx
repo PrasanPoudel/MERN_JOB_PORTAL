@@ -195,13 +195,6 @@ const JobDetails = () => {
                         <h3 className="text-lg font-semibold text-gray-900">
                           {job.company.name}
                         </h3>
-                        {job.company?.employerProfile && (
-                          <p className="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                            <BriefcaseBusiness className="w-4 h-4" />
-                            <span>{job.company.employerProfile}</span>
-                          </p>
-                        )}
-
                         <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <Mail className="w-4 h-4" />
                           <span>{job.company.email}</span>

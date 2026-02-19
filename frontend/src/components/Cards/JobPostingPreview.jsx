@@ -143,15 +143,6 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                         <h3 className="text-lg font-semibold text-gray-900">
                           {user?.name}
                         </h3>
-                        {user?.employerProfile && (
-                          <p className="flex items-center gap-2 text-sm text-gray-600 mt-1">
-                            <BriefcaseBusiness className="w-4 h-4"/>
-                            <span>
-                            {user?.employerProfile} ,
-                            {user?.companyName}
-                            </span>
-                          </p>
-                        )}
                         <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <Mail className="w-4 h-4" />
                           <span>{user?.email}</span>

@@ -26,7 +26,6 @@ const EditProfileDetails = ({
         <div className="min-h-screen py-4 px-3 sm:py-6 sm:px-4 md:py-8">
           <div className="max-w-5xl mx-auto">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-
               <div className="bg-sky-600 px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center">
                 <h1 className="text-lg sm:text-xl font-semibold text-white">
                   Edit Profile
@@ -42,7 +41,6 @@ const EditProfileDetails = ({
 
               {/* Content */}
               <div className="p-4 sm:p-6 md:p-8 space-y-8 md:space-y-10">
-
                 {/* ── Personal Information ── */}
                 <section>
                   <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
@@ -106,28 +104,9 @@ const EditProfileDetails = ({
                             className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed outline-none"
                           />
                         </div>
-
-                        {/* Employer Role — full width */}
-                        <div className="sm:col-span-2">
-                          <label className="block text-sm font-medium text-gray-700 mb-1">
-                            What is your job ?
-                          </label>
-                            <select
-                              value={formData.employerProfile}
-                              onChange={(e) =>
-                                handleInputChange("employerProfile", e.target.value)
-                              }
-                              className="w-full pl-2 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none appearance-none bg-white"
-                            >
-                              <option value="Human Resource">Human Resource</option>
-                              <option value="Owner">Owner</option>
-                              <option value="Social Media Manager">Social Media Manager</option>
-                              <option value="Other/Employee">Other / Employee</option>
-                            </select>
-                          </div>
-                        </div>
                       </div>
                     </div>
+                  </div>
                 </section>
 
                 {/* ── Company Overview ── */}
@@ -198,8 +177,12 @@ const EditProfileDetails = ({
                               <option value="1-10">1 – 10 employees</option>
                               <option value="11-50">11 – 50 employees</option>
                               <option value="51-200">51 – 200 employees</option>
-                              <option value="201-500">201 – 500 employees</option>
-                              <option value="501-1000">501 – 1,000 employees</option>
+                              <option value="201-500">
+                                201 – 500 employees
+                              </option>
+                              <option value="501-1000">
+                                501 – 1,000 employees
+                              </option>
                               <option value="1001+">1,001+ employees</option>
                             </select>
                           </div>
@@ -215,7 +198,10 @@ const EditProfileDetails = ({
                               type="text"
                               value={formData.companyLocation}
                               onChange={(e) =>
-                                handleInputChange("companyLocation", e.target.value)
+                                handleInputChange(
+                                  "companyLocation",
+                                  e.target.value,
+                                )
                               }
                               placeholder="e.g. Buddhabhumi-9, Imiliya"
                               className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none"
@@ -233,7 +219,10 @@ const EditProfileDetails = ({
                               type="url"
                               value={formData.companyWebsiteLink}
                               onChange={(e) =>
-                                handleInputChange("companyWebsiteLink", e.target.value)
+                                handleInputChange(
+                                  "companyWebsiteLink",
+                                  e.target.value,
+                                )
                               }
                               placeholder="https://www.example.com"
                               className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none"
@@ -263,7 +252,10 @@ const EditProfileDetails = ({
                           type="text"
                           value={formData.companyRegistrationNumber}
                           onChange={(e) =>
-                            handleInputChange("companyRegistrationNumber", e.target.value)
+                            handleInputChange(
+                              "companyRegistrationNumber",
+                              e.target.value,
+                            )
                           }
                           placeholder="e.g. 123456/077/078"
                           className="w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none bg-white"
@@ -342,7 +334,9 @@ const EditProfileDetails = ({
                   <button
                     type="button"
                     onClick={handleSave}
-                    disabled={saving || uploading?.avatar || uploading?.companyLogo}
+                    disabled={
+                      saving || uploading?.avatar || uploading?.companyLogo
+                    }
                     className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium bg-sky-600 text-white rounded-lg hover:bg-sky-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
                   >
                     {saving ? (
@@ -353,7 +347,6 @@ const EditProfileDetails = ({
                     {saving ? "Saving…" : "Save Changes"}
                   </button>
                 </div>
-
               </div>
             </div>
           </div>

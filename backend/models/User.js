@@ -50,16 +50,6 @@ const userSchema = new mongoose.Schema(
     ],
 
     // For employer
-    employerProfile: {
-      type: String,
-      enum: [
-        "Human Resource",
-        "Owner",
-        "Social Media Manager",
-        "Other/Employee",
-      ],
-      default: "Human Resource",
-    },
     companyName: String,
     companyDescription: String,
     companyLogo: String,
