@@ -1,13 +1,13 @@
-import React from 'react'
+import React from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import Chat from "./Chat";
 
 const EmployerChatBox = () => {
   return (
     <DashboardLayout activeMenu={"EmployerChatBox"}>
-      <Chat/>
+      <Chat />
     </DashboardLayout>
-  )
-}
+  );
+};
 
-export default EmployerChatBox
+export default EmployerChatBox;

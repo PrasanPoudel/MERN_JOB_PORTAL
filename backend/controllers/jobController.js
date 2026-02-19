@@ -1,8 +1,13 @@
+const axios = require("axios");
 const Job = require("../models/Job");
 const User = require("../models/User");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
+
+// FastAPI server URL
+const FRAUD_PREDICTOR_API_URL =
+  process.env.FRAUD_PREDICTOR_API_URL || "http://localhost:5000";
 
 //create job (employer only)
 exports.createJob = async (req, res) => {
@@ -10,10 +15,57 @@ exports.createJob = async (req, res) => {
     if (req.user.role !== "employer") {
       return res.status(403).json({ message: "Only employer can post jobs" });
     }
-    const job = await Job.create({ ...req.body, company: req.user._id });
+
+    const employer = await User.findById(req.user._id);
+
+    const hasCompanyLogo = employer.companyLogo ? 1 : 0;
+
+    const salaryMin = req.body.salaryMin || 0;
+    const salaryMax = req.body.salaryMax || 0;
+    const salaryRange = salaryMax - salaryMin;
+
+    const jobDataForML = {
+      title: req.body.title || "",
+      description: req.body.description || "",
+      requirements: req.body.requirements || "",
+      offer: req.body.offer || "",
+      salaryRange,
+      hasCompanyLogo,
+    };
+
+    // Call FastAPI server for fraud prediction
+    let fraudScore = 0.100;
+    try {
+      const response = await axios.post(
+        `${FRAUD_PREDICTOR_API_URL}/predict`,
+        jobDataForML,
+        {
+          timeout: 8000,
+        },
+      );
+
+      fraudScore = response.data.fraudScore;
+    } catch (error) {
+      console.error("Fraud predictor API error:", error.message);
+      if (error.response) {
+        console.error("Response status:", error.response.status);
+        console.error("Response data:", error.response.data);
+      } else if (error.request) {
+        console.error("No response received. Request was:", error.request);
+      } else {
+        console.error("Error details:", error);
+      }
+    }
+
+    const job = await Job.create({
+      ...req.body,
+      company: req.user._id,
+      fraudScore,
+    });
+
     res.status(201).json(job);
   } catch (err) {
-    return res.status(500).json({ message: err.message });
+    res.status(500).json({ message: err.message });
   }
 };
 

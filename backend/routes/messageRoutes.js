@@ -3,6 +3,7 @@ const {
   sendMessage,
   getConversation,
   getConversationsV2,
+  getTotalUnreadCount,
 } = require("../controllers/messageController");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -16,5 +17,8 @@ router.get("/conversation/:applicationId", protect, getConversation);
 
 // Get all conversations for current user
 router.get("/conversations", protect, getConversationsV2);
+
+// Get total unread count
+router.get("/unread-count", protect, getTotalUnreadCount);
 
 module.exports = router;

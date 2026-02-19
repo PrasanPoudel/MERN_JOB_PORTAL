@@ -34,6 +34,7 @@ export const API_PATHS = {
     SEND_MESSAGE: "/api/messages/send",
     GET_CONVERSATION: (id) => `/api/messages/conversation/${id}`,
     GET_CONVERSATIONS: "/api/messages/conversations",
+    GET_UNREAD_COUNT: "/api/messages/unread-count",
   },
   FILE: {
     UPLOAD_FILE: "/api/auth/upload-file", //upload profile picture

@@ -63,7 +63,7 @@ const JobSeekerDashboard = () => {
         (Array.isArray(response?.data) ? response.data : []);
 
       setJobs(jobsData);
-      console.log(jobsData);
+      // console.log(jobsData);
       setCurrentPage(1);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
