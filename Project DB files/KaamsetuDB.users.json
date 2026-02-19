@@ -3,7 +3,7 @@
     "$oid": "6965f254a24a14e44ba7b901"
   },
   "name": "Prasan Poudel",
-  "email": "employer@karyasetu.com",
+  "email": "employer@kaamsetu.com",
   "password": "$2b$10$vmVhxLL21phPRv1ywlJ.3uEHxIc2GhCgLtyQ/tCSmhzHv9b6Wq6dC",
   "role": "employer",
   "avatar": "http://localhost:8000/uploads/91dc99d0-0f4b-4fb3-9933-bce2d28fe5d6-unknown.png",
@@ -11,7 +11,7 @@
     "$date": "2026-01-13T07:20:52.460Z"
   },
   "updatedAt": {
-    "$date": "2026-02-17T16:08:02.958Z"
+    "$date": "2026-02-19T05:45:06.276Z"
   },
   "__v": 1,
   "companyDescription": "Khalti is a fintech startup that offers a digital wallet and payment ecosystem aimed at increasing cashless transactions in Nepal. The platform enables users to pay utility bills, recharge mobile phones, purchase tickets, and make online payments securely. Khalti also partners with merchants, banks, and service providers to expand digital payment adoption. The company plays a significant role in improving financial inclusion, especially among young users and small merchants.",
@@ -19,14 +19,14 @@
   "companyName": "Khalti Nepal",
   "certifications": [],
   "companyLocation": "Buddhabhumi-9, Imiliya",
-  "companyRegistrationNumber": "123456/077/078",
+  "companyRegistrationNumber": "1294324/78",
   "companySize": "11-50",
   "companyWebsiteLink": "https://www.khaltinepal.com",
   "education": [],
   "employerProfile": "Human Resource",
   "experience": [],
   "isCompanyVerified": false,
-  "panNumber": "604123456",
+  "panNumber": "60412345hy",
   "skills": []
 },
 {
@@ -214,7 +214,7 @@
     "$oid": "696c6eb3c80f9c65206f1c79"
   },
   "name": "Prasan Poudel",
-  "email": "jobseeker@karyasetu.com",
+  "email": "jobseeker@kaamsetu.com",
   "password": "$2b$10$zj7gckpr4zKug6vmIsMUBexqjB9EnBYHgsMSm1FZm8qtcaKfNXoKa",
   "role": "jobSeeker",
   "avatar": "http://localhost:8000/uploads/1d000116-6841-4a3e-bfd6-bcb1d204895f-imgfile.png",
@@ -222,20 +222,16 @@
     "$date": "2026-01-18T05:25:07.278Z"
   },
   "updatedAt": {
-    "$date": "2026-02-18T13:44:00.101Z"
+    "$date": "2026-02-19T06:40:43.472Z"
   },
-  "__v": 8,
+  "__v": 11,
   "resume": "http://localhost:8000/uploads/273655a7-7407-49bf-b7b2-ca6605c841ec-resume.pdf",
   "certifications": [],
   "education": [],
   "experience": [],
   "location": "",
   "skills": [
-    "node js",
-    "mongo db",
-    "cooking",
-    "english language",
-    "cashier"
+    "english language"
   ],
   "facebookLink": "",
   "instagramLink": "",

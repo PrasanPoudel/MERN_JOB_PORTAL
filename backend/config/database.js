@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const connectDB = () => {
   mongoose
     .connect(process.env.MONGO_URI, {
-      dbName: "karyasetuDB",
+      dbName: "KaamsetuDB",
     })
     .then(() => {
       console.log("Connected to database.");
