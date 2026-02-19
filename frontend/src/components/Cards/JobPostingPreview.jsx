@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import {
   MapPin,
   ArrowLeft,
-  Building2,
   BriefcaseBusiness,
   Calendar,
   Info,
@@ -10,6 +9,7 @@ import {
   ChevronDown,
   ChevronUp,
   DollarSign,
+  BookOpenText,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
@@ -43,48 +43,38 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
 
         {/* Main Content */}
         <div className="p-4 pb-24 mt-8 border border-gray-100 rounded-2xl">
-          <div className="z-10">
-            <div className="flex items-start justify-between mb-0">
+          <div className="z-10 bg-white p-2 rounded-2xl">
+            <div className="flex items-start gap-4 mb-0">
+              {user?.companyLogo && (
+                <img
+                  src={user?.companyLogo}
+                  alt="Company Logo"
+                  className="h-16 md:h-20 w-16 md:w-20 object-contain rounded-2xl border-4 border-white/20 shadow-sm"
+                />
+              )}
               <div className="">
-                <h1 className="text-xl font-medium mb-2 leading-tight text-gray-900">
-                  {formData.jobTitle}
+                <h1 className="font-semibold text-gray-900 text-base sm:text-xl md:text-2xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
+                  {formData?.jobTitle}
                 </h1>
-                <div className="flex items-center space-x-4 text-gray-600">
-                  <div className="flex items-center space-x-2">
-                    <MapPin className="w-4 h-4" />
-                    <span className="text-sm font-medium">
-                      {formData.isRemote ? "Remote" : formData.location}
-                    </span>
-                  </div>
+                <div className="flex gap-2 items-center text-sm text-gray-600">
+                  <MapPin className="w-4 h-4" />
+                  <span className="font-semibold">{formData?.location}</span>
                 </div>
               </div>
-              {user?.companyLogo ? (
-                <img
-                  src={user.companyLogo}
-                  alt="Company Logo"
-                  className="h-16 md:h-20 w-16 md:w-20 object-fill rounded-2xl border-4 border-white/20 shadow-lg"
-                />
-              ) : (
-                <div className="h-20 w-20 bg-gray-50 border-2 border-gray-200 rounded-2xl flex items-center justify-center">
-                  <Building2 className="w-8 h-8 text-gray-700" />
-                </div>
-              )}
             </div>
 
             {/* Tags */}
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <span className="px-4 py-2 bg-green-100 text-sm text-green-800 font-semibold rounded-full border border-purple-200">
-                {formData.jobType}
+                {formData?.jobType}
               </span>
               <span className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-sm text-purple-800 font-semibold rounded-full border border-sky-200">
                 <BriefcaseBusiness className="w-4 h-4" />
-                {formData.category}
+                {formData?.category}
               </span>
               <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
                 <Calendar className="w-4 h-4" />
-                <span>
-                  {moment(formData.createdAt).format("MMMM Do, YYYY")}
-                </span>
+                {moment(formData.createdAt).format("MMMM Do, YYYY")}
               </div>
             </div>
           </div>
@@ -111,7 +101,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
               onClick={() => setExpanded(!expanded)}
             >
               <div className="flex items-center gap-4">
-                <Info className="text-sky-600" size={22} />
+                <Info className="text-sky-600 w-4 h-4" />
                 <h2 className="sm:text-xl text-lg font-semibold text-gray-900">
                   Employer Information
                 </h2>
@@ -157,7 +147,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
 
                     <div className="flex items-center gap-4">
                       <img
-                        src={user?.companyLogo || "/default-company.png"}
+                        src={user?.companyLogo || "/default.png"}
                         alt="Company Logo"
                         className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                       />
@@ -232,8 +222,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                   </h2>
 
                   <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
-                    {user?.companyDescription ||
-                      "No description provided."}
+                    {user?.companyDescription || "No description provided."}
                   </p>
                 </div>
               </div>
@@ -271,6 +260,28 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
               </ul>
             </div>
           </div>
+
+          {formData?.offer && (
+            <div className="mt-10 space-y-5">
+              <div className="flex items-center gap-4">
+                <BookOpenText className="w-4 h-4" />
+                <h2 className="text-xl font-semibold text-gray-900">
+                  What We're offering
+                </h2>
+              </div>
+              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
+                <ul className="list-disc space-y-3 px-4">
+                  {formData?.offer
+                    .toString()
+                    .split(".")
+                    .filter(Boolean)
+                    .map((offer, index) => (
+                      <li key={index}>{offer.trim()}</li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </div>

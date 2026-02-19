@@ -3,11 +3,35 @@ import { Home, LayoutDashboard, MessageSquare, Search } from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
 import { NavLink, Link } from "react-router-dom";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    if (!user || !isAuthenticated) return;
+
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await axiosInstance.get(
+          API_PATHS.MESSAGES.GET_UNREAD_COUNT,
+        );
+        setUnreadCount(response.data.totalUnreadCount || 0);
+      } catch (err) {
+        console.error("Failed to fetch unread count:", err);
+      }
+    };
+    fetchUnreadCount();
+
+    // Poll every 5 seconds
+    const interval = setInterval(fetchUnreadCount, 5000);
+
+    return () => clearInterval(interval);
+  }, [user, isAuthenticated]);
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -36,10 +60,10 @@ const Navbar = () => {
           </Link>
 
           <div className="flex items-center space-x-2 md:space-x-6">
-             <NavLink to="/" className={navLinkClasses}>
-                <Home className="h-5 w-5" />
-                <span className="hidden md:flex">Home</span>
-              </NavLink>
+            <NavLink to="/" className={navLinkClasses}>
+              <Home className="h-5 w-5" />
+              <span className="hidden md:flex">Home</span>
+            </NavLink>
             {user && user?.role === "employer" && (
               <NavLink to="/employer-dashboard" className={navLinkClasses}>
                 <LayoutDashboard className="h-5 w-5" />
@@ -54,7 +78,14 @@ const Navbar = () => {
                 </NavLink>
 
                 <NavLink to="/JobSeekerChatBox" className={navLinkClasses}>
-                  <MessageSquare className="h-5 w-5" />
+                  <div className="relative">
+                    <MessageSquare className="h-5 w-5" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </div>
                   <span className="hidden md:flex">Messages</span>
                 </NavLink>
               </>

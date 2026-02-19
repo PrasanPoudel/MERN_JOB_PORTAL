@@ -17,6 +17,7 @@ import {
   Info,
   Mail,
   DollarSign,
+  BookOpenText,
 } from "lucide-react";
 import { StatusBadge } from "../../components/StatusBadge";
 
@@ -82,7 +83,7 @@ const JobDetails = () => {
           onClick={() => {
             navigate(-1);
           }}
-          className="group mt-16 ml-5 flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+          className="group mt-20 ml-5 flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
@@ -106,23 +107,23 @@ const JobDetails = () => {
         )}
 
         {/* Main Content */}
-        <div className="p-2 pb-24 mt-8 border border-gray-100 rounded-2xl">
-          <div className="z-10 bg-white p-2 rounded-2xl ">
+        <div className="p-2 pb-24 mt-2 border border-gray-100 rounded-2xl">
+          <div className="z-10 bg-white p-2 rounded-2xl">
             <div className="flex items-start gap-4 mb-0">
               {job?.company?.companyLogo && (
                 <img
-                  src={job.company?.companyLogo}
+                  src={job?.company?.companyLogo}
                   alt="Company Logo"
-                  className="h-16 md:h-20 w-16 md:w-20 object-fill rounded-2xl border-4 border-white/20 shadow-sm"
+                  className="h-16 md:h-20 w-16 md:w-20 object-contain rounded-2xl border-4 border-white/20 shadow-sm"
                 />
               )}
               <div className="">
                 <h1 className="font-semibold text-gray-900 text-base sm:text-xl md:text-2xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
-                  {job.title}
+                  {job?.title}
                 </h1>
                 <div className="flex gap-2 items-center text-sm text-gray-600">
                   <MapPin className="w-4 h-4" />
-                  <span className="font-semibold">{job.location}</span>
+                  <span className="font-semibold">{job?.location}</span>
                 </div>
               </div>
             </div>
@@ -130,19 +131,18 @@ const JobDetails = () => {
             {/* Tags */}
             <div className="flex flex-col sm:flex-row gap-3 mt-6">
               <span className="px-4 py-2 bg-green-100 text-sm text-green-800 font-semibold rounded-full border border-purple-200">
-                {job.type}
+                {job?.type}
               </span>
               <span className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-sm text-purple-800 font-semibold rounded-full border border-sky-200">
                 <BriefcaseBusiness className="w-4 h-4" />
-                {job.category}
+                {job?.category}
               </span>
               <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
                 <Calendar className="w-4 h-4" />
-                <span>{moment(job.createdAt).format("MMMM Do, YYYY")}</span>
+                <span>{moment(job?.createdAt).format("MMMM Do, YYYY")}</span>
               </div>
             </div>
           </div>
-
           <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-gray-700 flex gap-4 items-center">
             <div className="bg-green-400 text-2xl rounded-2xl w-20 h-20 flex items-center justify-center text-white">
               <DollarSign className="w-6 h-6" />
@@ -150,8 +150,8 @@ const JobDetails = () => {
             <div className="">
               <p className="font-semibold">Compensation</p>
               <p className="font-bold text-xl mt-2">
-                NPR {formatSalary(job.salaryMin)} to{" "}
-                {formatSalary(job.salaryMax)}
+                NPR {formatSalary(job?.salaryMin)} to{" "}
+                {formatSalary(job?.salaryMax)}
                 <span className="text-sm font-medium ml-2">per Month</span>
               </p>
             </div>
@@ -165,7 +165,7 @@ const JobDetails = () => {
               onClick={() => setExpanded(!expanded)}
             >
               <div className="flex items-center gap-4">
-                <Info className="text-sky-600" size={22} />
+                <Info className="text-sky-600 w-4 h-4" />
                 <h2 className="sm:text-xl text-lg font-semibold text-gray-900">
                   Employer Information
                 </h2>
@@ -189,17 +189,17 @@ const JobDetails = () => {
 
                     <div className="flex items-center gap-4">
                       <img
-                        src={job.company.avatar || "/default.png"}
+                        src={job?.company?.avatar || "/default.png"}
                         alt="Avatar"
                         className="w-20 h-20 rounded-full object-cover border border-gray-200"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
-                          {job.company.name}
+                          {job?.company?.name}
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <Mail className="w-4 h-4" />
-                          <span>{job.company.email}</span>
+                          <span>{job?.company?.email}</span>
                         </div>
                       </div>
                     </div>
@@ -211,13 +211,13 @@ const JobDetails = () => {
 
                     <div className="flex items-center gap-4">
                       <img
-                        src={job.company.companyLogo || "/default-company.png"}
+                        src={job?.company?.companyLogo || "/default.png"}
                         alt="Company Logo"
                         className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
-                          {job.company.companyName}
+                          {job?.company?.companyName}
                         </h3>
 
                         <p className="text-sm text-gray-600 mt-1">
@@ -225,17 +225,17 @@ const JobDetails = () => {
                         </p>
 
                         <p className="text-sm text-gray-600 mt-1">
-                          Location: {job.company.companyLocation || "N/A"}
+                          Location: {job?.company?.companyLocation || "N/A"}
                         </p>
 
-                        {job.company.companyWebsiteLink && (
+                        {job?.company?.companyWebsiteLink && (
                           <a
-                            href={job.company.companyWebsiteLink}
+                            href={job?.company?.companyWebsiteLink}
                             target="_blank"
                             rel="noopener noreferrer"
                             className="text-sm text-sky-600 hover:underline mt-1 block"
                           >
-                            {job.company.companyWebsiteLink}
+                            {job?.company?.companyWebsiteLink}
                           </a>
                         )}
                       </div>
@@ -253,14 +253,14 @@ const JobDetails = () => {
                         Company Registration Number
                       </p>
                       <p className="font-medium mt-1 break-all">
-                        {job.company.companyRegistrationNumber || "—"}
+                        {job?.company?.companyRegistrationNumber || "—"}
                       </p>
                     </div>
 
                     <div className="bg-gray-50 p-4 rounded-lg">
                       <p className="text-gray-500">PAN Number</p>
                       <p className="font-medium mt-1 uppercase tracking-widest">
-                        {job.company.panNumber || "—"}
+                        {job?.company?.panNumber || "—"}
                       </p>
                     </div>
 
@@ -268,12 +268,12 @@ const JobDetails = () => {
                       <p className="text-gray-500">Verification Status</p>
                       <span
                         className={`inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-medium ${
-                          job.company.isCompanyVerified
+                          job?.company?.isCompanyVerified
                             ? "bg-green-100 text-green-700"
                             : "bg-yellow-100 text-yellow-700"
                         }`}
                       >
-                        {job.company.isCompanyVerified
+                        {job?.company?.isCompanyVerified
                           ? "Verified Company"
                           : "Pending Verification"}
                       </span>
@@ -286,7 +286,7 @@ const JobDetails = () => {
                   </h2>
 
                   <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
-                    {job.company.companyDescription ||
+                    {job?.company?.companyDescription ||
                       "No description provided."}
                   </p>
                 </div>
@@ -302,7 +302,7 @@ const JobDetails = () => {
               </h2>
             </div>
             <p className="sm:text-base text-sm text-justify p-4 bg-sky-50 rounded-xl text-gray-700">
-              {job.description}
+              {job?.description}
             </p>
           </div>
 
@@ -315,7 +315,7 @@ const JobDetails = () => {
             </div>
             <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
               <ul className="list-disc space-y-3 px-4">
-                {job.requirements
+                {job?.requirements
                   .toString()
                   .split(".")
                   .filter(Boolean)
@@ -325,6 +325,27 @@ const JobDetails = () => {
               </ul>
             </div>
           </div>
+          {job?.offer && (
+            <div className="mt-10 space-y-5">
+              <div className="flex items-center gap-4">
+                <BookOpenText className="w-4 h-4" />
+                <h2 className="text-xl font-semibold text-gray-900">
+                  What We're offering
+                </h2>
+              </div>
+              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
+                <ul className="list-disc space-y-3 px-4">
+                  {job?.offer
+                    .toString()
+                    .split(".")
+                    .filter(Boolean)
+                    .map((offer, index) => (
+                      <li key={index}>{offer.trim()}</li>
+                    ))}
+                </ul>
+              </div>
+            </div>
+          )}
         </div>
       </div>
     </>

@@ -25,6 +25,7 @@ const JobPostingForm = () => {
     jobType: "",
     description: "",
     requirements: "",
+    offer: "",
     salaryMin: "",
     salaryMax: "",
   });
@@ -85,6 +86,7 @@ const JobPostingForm = () => {
       type: formData.jobType,
       description: formData.description,
       requirements: formData.requirements,
+      offer: formData.offer,
       salaryMin: Number(formData.salaryMin),
       salaryMax: Number(formData.salaryMax),
     };
@@ -105,6 +107,7 @@ const JobPostingForm = () => {
           jobType: "",
           description: "",
           requirements: "",
+          offer: "",
           salaryMin: "",
           salaryMax: "",
         });
@@ -282,16 +285,28 @@ const JobPostingForm = () => {
                 onChange={(e) => {
                   handleInputChange("requirements", e.target.value);
                 }}
-                error={errors.description}
+                error={errors.requirements}
                 helperText="Include key requirements and preferred skills in candidates. Seperate them by dot ( . )"
                 required
               />
+              {/* Requirements */}
+              <TextareaField
+                label="Company Offers (optional)"
+                id="offer"
+                placeholder="List down the offers provided by company to candidate after hiring..."
+                value={formData.offer}
+                onChange={(e) => {
+                  handleInputChange("offer", e.target.value);
+                }}
+                error={errors.offer}
+                helperText="Include key offers and facilities that will be provided by company to this hold holder. Seperate them by dot ( . )"
+              />
               {/* Salary Range */}
               <div className="space-y-2">
-                <label className="block text-sm font-medium text-gray-700">
+                <p className="block text-sm font-medium text-gray-700">
                   Salary Range (monthly)
                   <span className="text-red-500 ml-1">*</span>
-                </label>
+                </p>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">

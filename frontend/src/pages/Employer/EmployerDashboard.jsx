@@ -125,7 +125,7 @@ const EmployerDashboard = () => {
               subtitle="Latest candidate applications"
               headerAction={
                 <button
-                  className="font-medium text-sky-500 hover:text-sky-600 cursor-pointer hover:underline"
+                  className="font-medium text-sky-500 hover:text-sky-600 cursor-pointer hover:underline shrink-0"
                   onClick={() => navigate("/manage-jobs")}
                 >
                   View All

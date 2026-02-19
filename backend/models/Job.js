@@ -12,6 +12,8 @@ const jobSchema = new mongoose.Schema(
       enum: ["Full-Time", "Part-Time", "Internship", "Contract"],
       required: true,
     },
+    offer: { type: String },
+    fraudScore: { type: Number, min: 0, max: 1 },
     company: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
@@ -21,7 +23,7 @@ const jobSchema = new mongoose.Schema(
     salaryMax: { type: Number },
     isClosed: { type: Boolean, default: false },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Job", jobSchema);

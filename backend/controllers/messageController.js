@@ -20,11 +20,9 @@ exports.sendMessage = async (req, res) => {
 
     // Check if application is in "In Interview" status
     if (application.status !== "In Interview") {
-      return res
-        .status(403)
-        .json({
-          message: "Chat only available for applications in interview stage",
-        });
+      return res.status(403).json({
+        message: "Chat only available for applications in interview stage",
+      });
     }
 
     // Verify sender is either applicant or employer
@@ -152,7 +150,7 @@ exports.getConversations = async (req, res) => {
   }
 };
 
-// Get conversations with better logic
+// Get all conversations
 exports.getConversationsV2 = async (req, res) => {
   try {
     const userId = req.user._id;
@@ -218,6 +216,23 @@ exports.getConversationsV2 = async (req, res) => {
         return new Date(bTime) - new Date(aTime);
       }),
     );
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get total unread message count for the current user
+exports.getTotalUnreadCount = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Count all unread messages where the current user is the recipient
+    const totalUnreadCount = await Message.countDocuments({
+      recipient: userId,
+      read: false,
+    });
+
+    res.json({ totalUnreadCount });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

@@ -3,6 +3,8 @@ import { Building2, LogOut, Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import { NAVIGATION_MENU } from "../../utils/data";
 import { useAuth } from "../../context/AuthContext";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 import NavigationItem from "./NavigationItem";
 import logo from "../../assets/logo.png";
 
@@ -14,8 +16,26 @@ const DashboardLayout = ({ activeMenu, children }) => {
   const [activeNavItem, setActiveNavItem] = useState(
     activeMenu || "employer-dashboard",
   );
-  const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [unreadCount, setUnreadCount] = useState(0);
+
+  useEffect(() => {
+    const fetchUnreadCount = async () => {
+      try {
+        const response = await axiosInstance.get(
+          API_PATHS.MESSAGES.GET_UNREAD_COUNT,
+        );
+        setUnreadCount(response.data.totalUnreadCount || 0);
+      } catch (err) {
+        console.error("Failed to fetch unread count:", err);
+      }
+    };
+
+    fetchUnreadCount();
+    const interval = setInterval(fetchUnreadCount, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {
@@ -32,18 +52,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
     };
   }, []);
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (profileDropdownOpen) {
-        setProfileDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [profileDropdownOpen]);
-
   const handleNavigation = (itemId) => {
     setActiveNavItem(itemId);
     navigate(`/${itemId}`);
@@ -55,7 +63,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-  const sidebarCollapsed = !isMobile && false;
+  const sidebarCollapsed = false;
 
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
 
@@ -66,7 +74,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
   return (
     <div className="flex h-screen bg-white min-w-full">
       {showLogoutConfirm && (
-        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-50">
+        <div className="fixed inset-0 min-h-screen min-w-full bg-black/60 flex items-center justify-center z-50">
           <div className="bg-white rounded-xl w-80 p-5 shadow-2xl mx-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-900">
@@ -102,7 +110,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
 
       <div
         id="sidebar"
-        className={`fixed inset-0 min-h-screen left-0 transition-transform duration-200 transform z-100 ${
+        className={`fixed inset-0 min-h-screen left-0 transition-transform duration-200 transform z-50 ${
           isMobile
             ? sidebarOpen
               ? "translate-x-0"
@@ -135,6 +143,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
               isActive={activeNavItem === item.id}
               onClick={handleNavigation}
               isCollapsed={sidebarCollapsed}
+              unreadCount={item.id === "EmployerChatBox" ? unreadCount : 0}
             />
           ))}
         </nav>
@@ -151,7 +160,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
 
       {isMobile && sidebarOpen && (
         <div
-          className="fixed bg-black backdrop-blur-sm"
+          className="fixed inset-0 bg-black/50 backdrop-blur-sm z-40"
           onClick={() => {
             setSidebarOpen(false);
           }}
@@ -183,7 +192,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 Welcome back !
               </h1>
               <p className="text-sm text-gray-600 hidden sm:block">
-                Get to know what's happening with your {user?.role === "admin" ? "platform" : "jobs" }.
+                Get to know what's happening with your{" "}
+                {user?.role === "admin" ? "platform" : "jobs"}.
               </p>
             </div>
           </div>

@@ -13,7 +13,7 @@ export const Card = ({
       className={`bg-white h-fit rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 ${className}`}
     >
       {(title || headerAction) && (
-        <div className="flex items-center justify-between p-6 pb-4">
+        <div className="flex items-center justify-between p-4">
           <div>
             {title && (
               <h3 className="text-lg text-gray-900 font-semibold">{title}</h3>

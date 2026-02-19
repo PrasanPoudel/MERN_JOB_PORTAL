@@ -16,10 +16,10 @@ const SelectField = ({
 }) => {
   return (
     <div className="space-y-2">
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
+      <p className="block text-sm font-medium text-gray-700">
         {label}
         {required && <span className="text-red-500 ml-1">*</span>}
-      </label>
+      </p>
       <div className="relative">
         <div className="flex items-center">
           {Icon && (
