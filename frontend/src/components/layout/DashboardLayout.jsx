@@ -183,7 +183,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 Welcome back !
               </h1>
               <p className="text-sm text-gray-600 hidden sm:block">
-                Get to know what's happening with your jobs today.
+                Get to know what's happening with your {user?.role === "admin" ? "platform" : "jobs" }.
               </p>
             </div>
           </div>

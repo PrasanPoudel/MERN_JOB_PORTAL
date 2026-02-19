@@ -2,6 +2,7 @@ const Job = require("../models/Job");
 const User = require("../models/User");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
+const TFIDFSimilarity = require("../utils/tfidfSimilarity");
 
 //create job (employer only)
 exports.createJob = async (req, res) => {
@@ -40,9 +41,7 @@ exports.getJobs = async (req, res) => {
       isClosed: false,
       ...(category && { category }),
       ...(type && { type }),
-      ...(location && {
-        location: { $regex: location, $options: "i" },
-      }),
+      ...(location && { location: { $regex: location, $options: "i" } }),
       ...(keyword && {
         $or: [
           { title: { $regex: keyword, $options: "i" } },
@@ -53,20 +52,23 @@ exports.getJobs = async (req, res) => {
 
     const jobs = await Job.find(query).populate(
       "company",
-      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified"
+      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
     );
 
     let appliedJobStatusMap = {};
     let savedJobIds = [];
+    let user = null;
 
     if (userId) {
+      user = await User.findById(userId);
+
       const savedJobs = await SavedJob.find({ jobSeeker: userId }).select(
-        "job"
+        "job",
       );
       savedJobIds = savedJobs.map((s) => String(s.job));
 
       const applications = await Application.find({ applicant: userId }).select(
-        "job status"
+        "job status",
       );
 
       applications.forEach((app) => {
@@ -76,15 +78,30 @@ exports.getJobs = async (req, res) => {
 
     const jobsWithExtras = jobs.map((job) => {
       const jobIdStr = String(job._id);
+      const cosineSimilarityScore = user
+        ? TFIDFSimilarity.calculateSimilarity(user, job)
+        : 0;
+
       return {
         ...job.toObject(),
         isSaved: savedJobIds.includes(jobIdStr),
         applicationStatus: appliedJobStatusMap[jobIdStr] || null,
+        cosineSimilarityScore,
       };
+    });
+
+    jobsWithExtras.sort((a, b) => {
+      // sorting with cosine similarity (descending order)
+      if (b.cosineSimilarityScore !== a.cosineSimilarityScore) {
+        return b.cosineSimilarityScore - a.cosineSimilarityScore;
+      }
+      // Show older jobs first when the similarity score is same
+      return new Date(b.createdAt) - new Date(a.createdAt);
     });
 
     res.json(jobsWithExtras);
   } catch (err) {
+    console.error(err);
     res.status(500).json({ message: err.message });
   }
 };
@@ -99,7 +116,10 @@ exports.getJobsEmployer = async (req, res) => {
     }
 
     const jobs = await Job.find({ company: userId })
-      .populate("company", "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified")
+      .populate(
+        "company",
+        "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
+      )
       .lean(); // lean() to makes it a js object
 
     //count applications for each job
@@ -112,7 +132,7 @@ exports.getJobsEmployer = async (req, res) => {
           ...job,
           applicationCount,
         };
-      })
+      }),
     );
     res.json(jobsWithApplicationCounts);
   } catch (err) {
@@ -126,7 +146,7 @@ exports.getJobById = async (req, res) => {
     const { userId } = req.query;
     const job = await Job.findById(req.params.id).populate(
       "company",
-      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified"
+      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
     );
     if (!job) {
       return res.status(404).json({ message: "Job not found" });

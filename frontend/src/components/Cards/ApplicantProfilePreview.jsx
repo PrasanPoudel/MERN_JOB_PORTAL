@@ -25,7 +25,7 @@ const ApplicantProfilePreview = ({
     try {
       const response = await axiosInstance.put(
         API_PATHS.APPLICATIONS.UPDATE_STATUS(selectedApplicant._id),
-        { status: newStatus }
+        { status: newStatus },
       );
       // console.log(response);
       if (response.status === 200) {
@@ -33,7 +33,7 @@ const ApplicantProfilePreview = ({
         setSelectedApplicant({ ...selectedApplicant, status: newStatus });
       }
     } catch (err) {
-      toast.error(err);
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
       console.error("Failed to change application status", err);
       setCurrentStatus(selectedApplicant.status);
     } finally {
@@ -128,7 +128,7 @@ const ApplicantProfilePreview = ({
                   <span className="text-gray-900 flex items-center gap-1">
                     <Calendar className="h-4 w-4" />
                     {moment(selectedApplicant.createdAt)?.format(
-                      "MMMM Do, YYYY"
+                      "MMMM Do, YYYY",
                     )}
                   </span>
                 </div>

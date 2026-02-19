@@ -27,6 +27,7 @@ const ApplicationViewer = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
+  const [sortType, setSortType] = useState("Relevence (Descending Order)");
 
   const fetchApplications = async () => {
     try {
@@ -48,7 +49,7 @@ const ApplicationViewer = () => {
     } else {
       navigate("/manage-jobs");
     }
-  }, []);
+  }, [jobId]);
 
   const handleDownloadResume = (resumeUrl) => {
     window.open(resumeUrl, "_blank");
@@ -68,12 +69,44 @@ const ApplicationViewer = () => {
         fetchApplications();
       }
     } catch (err) {
-      toast.error(err);
+      toast.error(
+        err?.response?.data?.message || "Something went wrong. Try again",
+      );
+
       console.error("Failed to change application status", err);
     } finally {
       setLoading(false);
     }
   };
+
+  const sortedApplications = useMemo(() => {
+    const sorted = [...applications];
+
+    switch (sortType) {
+      case "Applied Date (Ascending Order)":
+        return sorted.sort(
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+        );
+      case "Applied Date (Descending Order)":
+        return sorted.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+        );
+
+      case "Relevence (Ascending Order)":
+        return sorted.sort(
+          (a, b) => a.cosineSimilarityScore - b.cosineSimilarityScore,
+        );
+
+      case "Relevence (Descending Order)":
+        return sorted.sort(
+          (a, b) => b.cosineSimilarityScore - a.cosineSimilarityScore,
+        );
+
+      default:
+        return sorted;
+    }
+  }, [applications, sortType]);
+
   return (
     <DashboardLayout activeMenu="manage-jobs">
       {loading ? (
@@ -146,8 +179,42 @@ const ApplicationViewer = () => {
                 </div>
                 {/* Applications List */}
                 <div>
+                  <div className="flex items-center justify-end gap-2 pb-2">
+                    <p className="text-xs">Sorted by: </p>
+                    <select
+                      value={sortType}
+                      onChange={(e) => setSortType(e.target.value)}
+                      className="border outline-sky-200 rounded-lg transition-colors duration-200 disabled:bg-gray-50 p-2 text-xs"
+                    >
+                      <option
+                        value="Applied Date (Ascending Order)"
+                        className="text-xs"
+                      >
+                        Applied Date (Ascending Order)
+                      </option>
+                      <option
+                        value="Applied Date (Descending Order)"
+                        className="text-xs"
+                      >
+                        Applied Date (Descending Order)
+                      </option>
+                      <option
+                        value="Relevence (Ascending Order)"
+                        className="text-xs"
+                      >
+                        {" "}
+                        Relevence (Ascending Order)
+                      </option>
+                      <option
+                        value="Relevence (Descending Order)"
+                        className="text-xs"
+                      >
+                        Relevence (Descending Order)
+                      </option>
+                    </select>
+                  </div>
                   <div className="space-y-4">
-                    {applications.map((application, index) => (
+                    {sortedApplications.map((application, index) => (
                       <div
                         key={application._id}
                         className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:items-center justify-between p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"

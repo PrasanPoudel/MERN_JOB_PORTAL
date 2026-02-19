@@ -39,7 +39,9 @@ const SavedJobs = () => {
         toast.success("Job removed from saved list successfully");
       }
     } catch (err) {
-      toast.error("Couldn't remove a saved job. Please try again later");
+      toast.error(
+        err?.response?.data?.message || "Something went wrong. Try again",
+      );
       console.error(err);
     }
   };

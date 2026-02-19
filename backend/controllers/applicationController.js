@@ -41,7 +41,7 @@ exports.applyToJob = async (req, res) => {
       job: req.params.jobId,
       applicant: req.user._id,
       resume: req.user.resume,
-      cosineSimilarity: cosineSimilarityScore,
+      cosineSimilarityScore: cosineSimilarityScore,
     });
 
     res.status(201).json(application);

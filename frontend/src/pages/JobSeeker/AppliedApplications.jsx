@@ -48,7 +48,7 @@ const AppliedApplications = () => {
       fetchJobs();
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong! Please try again later");
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
     }
   };
 

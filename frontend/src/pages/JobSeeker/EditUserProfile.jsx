@@ -84,7 +84,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
       }));
     } catch (err) {
       console.error("upload failed:", err);
-      toast.error("File upload failed. Please try again.");
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -121,7 +121,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to Delete Resume. Please Try Again");
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
     } finally {
       setIsSaving(false);
     }

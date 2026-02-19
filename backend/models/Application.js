@@ -14,7 +14,7 @@ const applicationSchema = new mongoose.Schema(
       enum: ["Applied", "In Interview", "Rejected", "Hired"],
       default: "Applied",
     },
-    cosineSimilarity: {
+    cosineSimilarityScore: {
       type: Number,
       required: true,
       default: 0,

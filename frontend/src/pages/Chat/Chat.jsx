@@ -72,7 +72,7 @@ const Chat = () => {
       }
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load conversations");
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
     } finally {
       setLoading(false);
     }
@@ -87,7 +87,7 @@ const Chat = () => {
       setMessages(response.data || []);
     } catch (err) {
       console.error(err);
-      toast.error("Failed to load messages");
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
     }
   };
 
@@ -115,7 +115,7 @@ const Chat = () => {
     } catch (err) {
       console.error(err);
       if (err.response?.status === 403) {
-        toast.error("Chat not available for this application");
+        toast.error(err?.response?.data?.message || "Something went wrong. Try again");
       } else {
         toast.error("Failed to send message");
       }

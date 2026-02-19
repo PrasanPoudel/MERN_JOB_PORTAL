@@ -63,7 +63,7 @@ const JobSeekerDashboard = () => {
         (Array.isArray(response?.data) ? response.data : []);
 
       setJobs(jobsData);
-      // console.log(jobsData);
+      console.log(jobsData);
       setCurrentPage(1);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
@@ -124,7 +124,7 @@ const JobSeekerDashboard = () => {
       fetchJobs();
     } catch (err) {
       console.error(err);
-      toast.error("Something went wrong! Please try again later");
+      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
     }
   };
 

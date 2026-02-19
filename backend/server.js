@@ -47,7 +47,8 @@ app.listen(PORT, () => {
 });
 
 // Start uploads cleanup cron job
-require("./cleanupUploadsCron");
+
+// require("./cleanupUploadsCron");
 
 app.get("/", (req, res) => {
   res.send("Hello world!");

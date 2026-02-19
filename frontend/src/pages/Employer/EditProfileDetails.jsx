@@ -19,6 +19,7 @@ const EditProfileDetails = ({
   handleCancel,
   saving,
   uploading,
+  errors = {},
 }) => {
   return (
     <DashboardLayout activeMenu="employer-profile">
@@ -89,8 +90,17 @@ const EditProfileDetails = ({
                               handleInputChange("name", e.target.value)
                             }
                             placeholder="Enter your full name"
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none"
+                            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none ${
+                              errors.name
+                                ? "border-red-500 bg-red-50"
+                                : "border-gray-300"
+                            }`}
                           />
+                          {errors.name && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.name}
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -156,8 +166,17 @@ const EditProfileDetails = ({
                               handleInputChange("companyName", e.target.value)
                             }
                             placeholder="e.g. Acme Corporation"
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none"
+                            className={`w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none ${
+                              errors.companyName
+                                ? "border-red-500 bg-red-50"
+                                : "border-gray-300"
+                            }`}
                           />
+                          {errors.companyName && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.companyName}
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -171,7 +190,11 @@ const EditProfileDetails = ({
                               onChange={(e) =>
                                 handleInputChange("companySize", e.target.value)
                               }
-                              className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none appearance-none bg-white"
+                              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none appearance-none bg-white ${
+                                errors.companySize
+                                  ? "border-red-500 bg-red-50"
+                                  : "border-gray-300"
+                              }`}
                             >
                               <option value="">Select company size</option>
                               <option value="1-10">1 – 10 employees</option>
@@ -186,6 +209,11 @@ const EditProfileDetails = ({
                               <option value="1001+">1,001+ employees</option>
                             </select>
                           </div>
+                          {errors.companySize && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.companySize}
+                            </p>
+                          )}
                         </div>
 
                         <div>
@@ -204,14 +232,24 @@ const EditProfileDetails = ({
                                 )
                               }
                               placeholder="e.g. Buddhabhumi-9, Imiliya"
-                              className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none"
+                              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none ${
+                                errors.companyLocation
+                                  ? "border-red-500 bg-red-50"
+                                  : "border-gray-300"
+                              }`}
                             />
                           </div>
+                          {errors.companyLocation && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.companyLocation}
+                            </p>
+                          )}
                         </div>
 
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
-                            Website
+                            Website{" "}
+                            <span className="text-gray-500">(Optional)</span>
                           </label>
                           <div className="relative">
                             <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
@@ -225,9 +263,18 @@ const EditProfileDetails = ({
                                 )
                               }
                               placeholder="https://www.example.com"
-                              className="w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none"
+                              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none ${
+                                errors.companyWebsiteLink
+                                  ? "border-red-500 bg-red-50"
+                                  : "border-gray-300"
+                              }`}
                             />
                           </div>
+                          {errors.companyWebsiteLink && (
+                            <p className="text-red-500 text-xs mt-1">
+                              {errors.companyWebsiteLink}
+                            </p>
+                          )}
                         </div>
                       </div>
                     </div>
@@ -258,9 +305,18 @@ const EditProfileDetails = ({
                             )
                           }
                           placeholder="e.g. 123456/077/078"
-                          className="w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none bg-white"
+                          className={`w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none bg-white ${
+                            errors.companyRegistrationNumber
+                              ? "border-red-500 bg-red-50"
+                              : "border-gray-300"
+                          }`}
                         />
                       </div>
+                      {errors.companyRegistrationNumber && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.companyRegistrationNumber}
+                        </p>
+                      )}
                     </div>
 
                     {/* PAN Number */}
@@ -276,9 +332,18 @@ const EditProfileDetails = ({
                           }
                           placeholder="e.g. 604123456"
                           maxLength={10}
-                          className="w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none bg-white  tracking-widest"
+                          className={`w-full pl-9 sm:pl-10 pr-3 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none bg-white tracking-widest ${
+                            errors.panNumber
+                              ? "border-red-500 bg-red-50"
+                              : "border-gray-300"
+                          }`}
                         />
                       </div>
+                      {errors.panNumber && (
+                        <p className="text-red-500 text-xs mt-1">
+                          {errors.panNumber}
+                        </p>
+                      )}
                     </div>
 
                     {/* Verification Status — read-only */}
@@ -310,19 +375,30 @@ const EditProfileDetails = ({
                   <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                     About Company
                   </h2>
-                  <textarea
-                    value={formData.companyDescription}
-                    onChange={(e) =>
-                      handleInputChange("companyDescription", e.target.value)
-                    }
-                    rows={6}
-                    placeholder="Describe your company, its culture, mission, and what makes it a great place to work..."
-                    className="w-full px-4 py-3 sm:px-6 sm:py-4 text-sm text-gray-700 leading-relaxed bg-gray-50 p-6 rounded-lg border border-gray-200 focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none resize-none"
-                  />
+                  <div>
+                    <textarea
+                      value={formData.companyDescription}
+                      onChange={(e) =>
+                        handleInputChange("companyDescription", e.target.value)
+                      }
+                      rows={6}
+                      placeholder="Describe your company, its culture, mission, and what makes it a great place to work..."
+                      className={`w-full px-4 py-3 sm:px-6 sm:py-4 text-sm text-gray-700 leading-relaxed bg-gray-50 p-6 rounded-lg border focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none resize-none ${
+                        errors.companyDescription
+                          ? "border-red-500 bg-red-50"
+                          : "border-gray-200"
+                      }`}
+                    />
+                    {errors.companyDescription && (
+                      <p className="text-red-500 text-xs mt-1">
+                        {errors.companyDescription}
+                      </p>
+                    )}
+                  </div>
                 </section>
 
                 {/* ── Action Buttons ── */}
-                <div className="flex flex-col-reverse xs:flex-row justify-end items-stretch xs:items-center gap-3 pt-2 border-t border-gray-100">
+                <div className="flex justify-end items-stretch xs:items-center gap-3 pt-2 border-t border-gray-100">
                   <button
                     type="button"
                     onClick={handleCancel}
@@ -335,7 +411,15 @@ const EditProfileDetails = ({
                     type="button"
                     onClick={handleSave}
                     disabled={
-                      saving || uploading?.avatar || uploading?.companyLogo
+                      saving ||
+                      uploading?.avatar ||
+                      uploading?.companyLogo ||
+                      Object.keys(errors).length > 0
+                    }
+                    title={
+                      Object.keys(errors).length > 0
+                        ? "Please fill all required fields correctly"
+                        : ""
                     }
                     className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium bg-sky-600 text-white rounded-lg hover:bg-sky-700 disabled:opacity-60 disabled:cursor-not-allowed transition-colors cursor-pointer"
                   >
@@ -344,7 +428,7 @@ const EditProfileDetails = ({
                     ) : (
                       <Save className="w-4 h-4" />
                     )}
-                    {saving ? "Saving…" : "Save Changes"}
+                    {saving ? "Saving…" : "Save"}
                   </button>
                 </div>
               </div>
