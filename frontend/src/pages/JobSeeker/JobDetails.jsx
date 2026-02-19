@@ -12,7 +12,6 @@ import {
   MapPin,
   BriefcaseBusiness,
   Calendar,
-  Building2,
   ChevronDown,
   ChevronUp,
   Info,
@@ -39,7 +38,7 @@ const JobDetails = () => {
         getJobById(jobId);
       }
     } catch (err) {
-      console.log("Error:", err);
+      console.error(err);
       toast.error(err);
     }
   };
@@ -50,12 +49,12 @@ const JobDetails = () => {
         API_PATHS.JOBS.GET_JOB_BY_ID(jobId),
         {
           params: { userId: user?._id || null },
-        }
+        },
       );
-      console.log(response.data);
+      // console.log(response.data);
       setJob(response.data);
     } catch (err) {
-      console.log("Couldn't fetch job details", err);
+      console.error("Couldn't fetch job details", err);
     } finally {
       setLoading(false);
     }
@@ -81,7 +80,7 @@ const JobDetails = () => {
           onClick={() => {
             navigate(-1);
           }}
-          className="group mt-20 ml-5 flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+          className="group mt-16 ml-5 flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>
@@ -179,62 +178,121 @@ const JobDetails = () => {
 
             {/* Expanded Content */}
             {expanded && (
-              <div className="px-4 py-4 md:p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* personal info */}
-                  <div id="1" className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 ">
+              <div className="px-4 py-4 md:p-8 space-y-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                       Personal Information
                     </h2>
-                    <div className="flex items-center space-x-4">
+
+                    <div className="flex items-center gap-4">
                       <img
-                        src={job.company.avatar}
+                        src={job.company.avatar || "/default.png"}
                         alt="Avatar"
-                        className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
+                        className="w-20 h-20 rounded-full object-cover border border-gray-200"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
                           {job.company.name}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
+                        {job.company?.employerProfile && (
+                          <p className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                            <BriefcaseBusiness className="w-4 h-4" />
+                            <span>{job.company.employerProfile}</span>
+                          </p>
+                        )}
+
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <Mail className="w-4 h-4" />
                           <span>{job.company.email}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  {/* company info */}
-                  <div id="2" className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 ">
-                      Company Information
+                  <div className="space-y-6">
+                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                      Company Overview
                     </h2>
-                    {/* company logo and name */}
-                    <div className="flex items-center space-x-4">
+
+                    <div className="flex items-center gap-4">
                       <img
-                        src={job.company.companyLogo}
+                        src={job.company.companyLogo || "/default-company.png"}
                         alt="Company Logo"
-                        className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
+                        className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
                           {job.company.companyName}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
-                          <Building2 className="w-4 h-4" />
-                          <span>Company</span>
-                        </div>
+
+                        <p className="text-sm text-gray-600 mt-1">
+                          Company Size: {job?.company?.companySize || "N/A"}
+                        </p>
+
+                        <p className="text-sm text-gray-600 mt-1">
+                          Location: {job.company.companyLocation || "N/A"}
+                        </p>
+
+                        {job.company.companyWebsiteLink && (
+                          <a
+                            href={job.company.companyWebsiteLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-sky-600 hover:underline mt-1 block"
+                          >
+                            {job.company.companyWebsiteLink}
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
+                    Legal & Verification
+                  </h2>
 
-                {/* company description */}
-                <div className="mt-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-500">
+                        Company Registration Number
+                      </p>
+                      <p className="font-medium mt-1 break-all">
+                        {job.company.companyRegistrationNumber || "—"}
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-500">PAN Number</p>
+                      <p className="font-medium mt-1 uppercase tracking-widest">
+                        {job.company.panNumber || "—"}
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-500">Verification Status</p>
+                      <span
+                        className={`inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-medium ${
+                          job.company.isCompanyVerified
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {job.company.isCompanyVerified
+                          ? "Verified Company"
+                          : "Pending Verification"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
                   <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
                     About Company
                   </h2>
-                  <p className="text-sm text-gray-700 text-justify leading-relaxed bg-gray-50 p-3 md:p-6 rounded-lg">
-                    {job.company.companyDescription}
+
+                  <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
+                    {job.company.companyDescription ||
+                      "No description provided."}
                   </p>
                 </div>
               </div>

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { Plus, Briefcase, Users, Building2, CheckCircle2 } from "lucide-react";
+import { Plus, BriefcaseBusiness, Users, Building2, CheckCircle2 } from "lucide-react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -46,7 +46,7 @@ const EmployerDashboard = () => {
         setDashboardData(response.data);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -67,7 +67,7 @@ const EmployerDashboard = () => {
             <StatCard
               title="Active Jobs"
               value={dashboardData?.counts?.totalActiveJobs || 0}
-              icon={Briefcase}
+              icon={BriefcaseBusiness}
               trend={true}
               trendValue={`${dashboardData?.counts?.trends?.activeJobs || 0} %`}
               color="emerald"

@@ -14,6 +14,7 @@ import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
 import JobDetails from "./pages/JobSeeker/JobDetails";
 import SavedJobs from "./pages/JobSeeker/SavedJobs";
 import UserProfile from "./pages/JobSeeker/UserProfile";
+import AppliedApplications from "./pages/JobSeeker/AppliedApplications";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
 import EmployerDashboard from "./pages/Employer/EmployerDashboard";
@@ -21,6 +22,10 @@ import JobPostingForm from "./pages/Employer/JobPostingForm";
 import ManageJobs from "./pages/Employer/ManageJobs";
 import ApplicationViewer from "./pages/Employer/ApplicationViewer";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
+
+import EmployerChatBox from "./pages/Chat/EmployerChatBox";
+import JobSeekerChatBox from "./pages/Chat/JobSeekerChatBox";
+
 import { useAuth } from "./context/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 
@@ -39,8 +44,18 @@ const App = () => {
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
 
+          {/* Chat routes - accessible to both jobSeeker and employer */}
+          <Route element={<ProtectedRoute />}>
+            <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
+            <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
+          </Route>
+
           <Route element={<ProtectedRoute requiredRole="jobSeeker" />}>
             <Route path="/saved-jobs" element={<SavedJobs />} />
+            <Route
+              path="/applied-applications"
+              element={<AppliedApplications />}
+            />
             <Route path="/profile" element={<UserProfile />} />
           </Route>
           {/* Protected Routes */}
@@ -52,7 +67,7 @@ const App = () => {
             <Route path="/employer-profile" element={<EmployerProfilePage />} />
           </Route>
 
-            <Route path="/find-jobs" element={<JobSeekerDashboard />} />
+          <Route path="/find-jobs" element={<JobSeekerDashboard />} />
           <Route path="/job/:jobId" element={<JobDetails />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>

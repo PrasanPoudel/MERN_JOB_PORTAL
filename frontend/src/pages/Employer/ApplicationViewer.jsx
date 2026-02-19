@@ -15,7 +15,7 @@ import { API_PATHS } from "../../utils/apiPaths";
 import moment from "moment";
 import { getInitials } from "../../utils/helper";
 import ApplicantProfilePreview from "../../components/Cards/ApplicantProfilePreview";
-const statusOptions = ["Applied", "In Review", "Rejected", "Hired"];
+const statusOptions = ["Applied", "In Interview", "Rejected", "Hired"];
 import toast from "react-hot-toast";
 import { statusColor } from "../../components/StatusBadge";
 
@@ -31,12 +31,12 @@ const ApplicationViewer = () => {
   const fetchApplications = async () => {
     try {
       const response = await axiosInstance.get(
-        API_PATHS.APPLICATIONS.GET_ALL_APPLICATIONS(jobId)
+        API_PATHS.APPLICATIONS.GET_ALL_APPLICATIONS(jobId),
       );
       setApplications(response?.data);
       // console.log(response?.data);
     } catch (err) {
-      console.error("Failed to fetch applications", err);
+      console.error(err);
     } finally {
       setLoading(false);
     }
@@ -60,7 +60,7 @@ const ApplicationViewer = () => {
     try {
       const response = await axiosInstance.put(
         API_PATHS.APPLICATIONS.UPDATE_STATUS(id),
-        { status: newStatus }
+        { status: newStatus },
       );
       // console.log(response);
       if (response.status === 200) {
@@ -184,7 +184,7 @@ const ApplicationViewer = () => {
                               <span>
                                 Applied on{" "}
                                 {moment(application.createdAt).format(
-                                  "MMMM Do, YYYY"
+                                  "MMMM Do, YYYY",
                                 )}
                               </span>
                             </div>
@@ -196,7 +196,7 @@ const ApplicationViewer = () => {
                           <button
                             onClick={() => {
                               handleDownloadResume(
-                                application.applicant.resume
+                                application.applicant.resume,
                               );
                             }}
                             className="col-span-2 sm:col-span-1 inline-flex items-center gap-2 px-3 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition-colors cursor-pointer"

@@ -4,6 +4,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import ProfileDropdown from "../../../components/layout/ProfileDropdown";
 import logo from "../../../assets/logo.png";
+import { LayoutDashboard, Search } from "lucide-react";
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
@@ -38,6 +39,24 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center space-x-3">
+            {user && user?.role === "jobSeeker" && (
+            <Link
+              to="/find-jobs"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+            >
+              <Search className="h-4 w-4 " />
+              Search for jobs
+            </Link>
+            )}
+            {user && user?.role === "employer" && (
+            <Link
+              to="/find-jobs"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+            >
+              <LayoutDashboard className="h-4 w-4 " />
+              Dashboard
+            </Link>
+            )}
             {isAuthenticated ? (
               <div id="profileDropdown" className="flex items-center space-x-3">
                 <ProfileDropdown

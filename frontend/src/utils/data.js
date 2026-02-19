@@ -7,7 +7,7 @@ import {
   Shield,
   Clock,
   Award,
-  Briefcase,
+  BriefcaseBusiness,
   Building2,
   LayoutDashboard,
   Plus,
@@ -71,8 +71,9 @@ export const employerFeatures = [
 export const NAVIGATION_MENU = [
   { id: "employer-dashboard", name: "Dashboard", icon: LayoutDashboard },
   { id: "employer-profile", name: "Company Profile", icon: Building2 },
-  { id: "manage-jobs", name: "Manage Jobs", icon: Briefcase },
+  { id: "manage-jobs", name: "Manage Jobs", icon: BriefcaseBusiness },
   { id: "post-job", name: "Post Job", icon: Plus },
+  { id: "EmployerChatBox", name: "Messages", icon: MessageSquare },
 ];
 // Categories and job types
 export const CATEGORIES = [

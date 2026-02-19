@@ -12,7 +12,7 @@ import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
 import { StatusBadge } from "../StatusBadge";
 
-const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply }) => {
+const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply, hideSaveButton }) => {
   const { user } = useAuth();
 
   const formatSalary = (num) => {
@@ -33,7 +33,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply }) => {
             <img
               src={job?.company?.companyLogo}
               alt="Company Logo"
-              className="w-14 h-14 object-fill rounded-2xl border border-gray-200"
+              className="w-14 h-14 object-contain rounded-2xl border border-gray-200"
             />
           ) : (
             <div className="w-14 h-14 bg-gray-50 border border-gray-200 rounded-2xl flex items-center justify-center">
@@ -94,7 +94,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply }) => {
           NPR {formatSalary(job.salaryMin)}
         </p>
         <div className="flex items-center justify-end gap-2">
-          {user && (
+          {(user && user?.role ==="jobSeeker" && !hideSaveButton) && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -110,7 +110,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply }) => {
             </button>
           )}
 
-          {!saved &&
+          {(!saved && user?.role ==="jobSeeker" ) &&
             (job?.applicationStatus ? (
               <StatusBadge status={job?.applicationStatus} />
             ) : (

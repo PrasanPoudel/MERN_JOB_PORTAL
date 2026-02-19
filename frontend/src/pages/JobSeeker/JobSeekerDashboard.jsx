@@ -16,7 +16,6 @@ const JobSeekerDashboard = () => {
   const [jobs, setJobs] = useState([]);
   const [loading, setLoading] = useState(true);
   const [viewMode, setViewMode] = useState("grid");
-  const [search, setSearch] = useState(false);
   const navigate = useNavigate();
 
   //Pagination
@@ -57,16 +56,15 @@ const JobSeekerDashboard = () => {
         params.append("userId", user?._id);
       }
       const response = await axiosInstance.get(
-        `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`
+        `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`,
       );
-
-      const jobsData = Array.isArray(response.data)
-        ? response.data
-        : response.data.jobs || [];
+      const jobsData =
+        response?.data?.jobs ||
+        (Array.isArray(response?.data) ? response.data : []);
 
       setJobs(jobsData);
-      setCurrentPage(1);
       // console.log(jobsData);
+      setCurrentPage(1);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
       setJobs([]);
@@ -89,7 +87,7 @@ const JobSeekerDashboard = () => {
           value !== "" &&
           value !== false &&
           value !== null &&
-          value !== undefined
+          value !== undefined,
       );
 
       if (hasFilters) {
@@ -97,9 +95,9 @@ const JobSeekerDashboard = () => {
       } else {
         fetchJobs();
       }
-    }, 500);
+    }, 1000);
     return () => clearTimeout(timeoutId);
-  }, [search, user]);
+  }, [filters, user]);
 
   const handleFilterChange = (field, value) => {
     setFilters((prev) => ({ ...prev, [field]: value }));
@@ -112,7 +110,6 @@ const JobSeekerDashboard = () => {
       category: "",
       type: "",
     });
-    handleSearch();
   };
 
   const toggleSavedJobs = async (jobId, isSaved) => {
@@ -126,7 +123,7 @@ const JobSeekerDashboard = () => {
       }
       fetchJobs();
     } catch (err) {
-      console.log("Error:", err);
+      console.error(err);
       toast.error("Something went wrong! Please try again later");
     }
   };
@@ -146,12 +143,8 @@ const JobSeekerDashboard = () => {
       }
       fetchJobs();
     } catch (err) {
-      console.log("Error:", err);
+      console.error(err);
     }
-  };
-
-  const handleSearch = () => {
-    setSearch(!search);
   };
 
   const getPaginationPages = (currentPage, totalPages) => {
@@ -190,12 +183,11 @@ const JobSeekerDashboard = () => {
     <div>
       <Navbar />
       <div className="min-h-screen mt-16">
-        <div className="max-w-full mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-8">
+        <div className="max-w-full mx-auto px-4 sm:px-6 py-2">
           <SearchHeader
             filters={filters}
             handleFilterChange={handleFilterChange}
             clearAllFilters={clearAllFilters}
-            handleSearch={handleSearch}
           />
           {/* Jobs */}
           <div className="flex-1 min-w-0">
@@ -290,7 +282,7 @@ const JobSeekerDashboard = () => {
 
                 {/* Pagination */}
                 {jobs.length > itemsPerPage && (
-                  <div className="mt-8 flex items-center justify-between">
+                  <div className="mt-8 flex items-center justify-between pb-16">
                     <div className="flex flex-1 justify-between md:hidden">
                       <button
                         onClick={() => {
@@ -355,13 +347,13 @@ const JobSeekerDashboard = () => {
                                 >
                                   {page}
                                 </button>
-                              )
+                              ),
                           )}
 
                           <button
                             onClick={() => {
                               setCurrentPage(
-                                Math.min(totalPages, currentPage + 1)
+                                Math.min(totalPages, currentPage + 1),
                               );
                             }}
                             disabled={currentPage === totalPages}

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState } from "react";
 import {
   BriefcaseBusiness,
   Clock,
@@ -17,19 +17,17 @@ import AutocompleteInput from "../../../components/Input/AutocompleteInput";
 
 const SearchHeader = ({
   handleFilterChange,
-  handleSearch,
   filters,
   clearAllFilters,
 }) => {
   const [showFilters, setShowFilters] = useState(false);
 
   const applyFilters = () => {
-    handleSearch();
     setShowFilters(false);
   };
 
   const activeFilterCount = Object.entries(filters).filter(
-    ([key, value]) => key !== "keyword" && value !== ""
+    ([key, value]) => key !== "keyword" && value !== "",
   ).length;
 
   const hasActiveFilters = Object.values(filters).some((value) => value !== "");
@@ -81,7 +79,6 @@ const SearchHeader = ({
 
               {/* Search Button */}
               <button
-                onClick={handleSearch}
                 className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 hover:to-purple-700 text-white px-5 transition-all duration-200 font-semibold active:brightness-90"
               >
                 <Search className="w-5 h-5" />
@@ -112,7 +109,7 @@ const SearchHeader = ({
                             {value}
                           </span>
                         </span>
-                      )
+                      ),
                   )}
                 </div>
               )}
@@ -181,7 +178,6 @@ const SearchHeader = ({
 
               {/* Search Button */}
               <button
-                onClick={handleSearch}
                 className="flex items-center justify-center gap-2 text-white bg-sky-600 hover:sky-700 px-6 transition-all duration-200 text-base font-semibold group active:brightness-90 cursor-pointer"
               >
                 <Search className="w-5 h-5 group-hover:rotate-12 transition-transform" />
@@ -218,7 +214,7 @@ const SearchHeader = ({
                             <X className="w-3.5 h-3.5" />
                           </button>
                         </span>
-                      )
+                      ),
                   )}
                 </>
               )}

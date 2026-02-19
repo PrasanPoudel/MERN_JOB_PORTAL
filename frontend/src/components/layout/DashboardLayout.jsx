@@ -12,7 +12,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
   const [activeNavItem, setActiveNavItem] = useState(
-    activeMenu || "employer-dashboard"
+    activeMenu || "employer-dashboard",
   );
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
@@ -102,7 +102,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
 
       <div
         id="sidebar"
-        className={`fixed inset-0 min-h-screen left-0 transition-transform duration-200 transform z-10 ${
+        className={`fixed inset-0 min-h-screen left-0 transition-transform duration-200 transform z-100 ${
           isMobile
             ? sidebarOpen
               ? "translate-x-0"
@@ -112,10 +112,17 @@ const DashboardLayout = ({ activeMenu, children }) => {
           sidebarCollapsed ? "w-16" : "w-64"
         } bg-white border-r-2 border-gray-200`}
       >
-        <Link
-          className={`${sidebarOpen && "mt-16"} flex items-center p-0`}
-          to="/find-jobs"
-        >
+        {sidebarOpen && (
+          <div className="w-full flex justify-end p-2">
+            <button
+              onClick={toggleSidebar}
+              className="p-2 rounded-xl hover:bg-gray-100 transition-colors delay-300"
+            >
+              <X className="h-5 w-5 text-gray-600" />
+            </button>
+          </div>
+        )}
+        <Link className={`flex items-center mt-2 w-32`} to="/find-jobs">
           <img src={logo} className="w-30 h-full" />
         </Link>
 
@@ -194,8 +201,10 @@ const DashboardLayout = ({ activeMenu, children }) => {
               />
             )}
             <div className="hidden lg:block">
-              <p className="text-gray-900 font-medium">{user?.name}</p>
-              <p className="text-sm text-gray-700 font-medium flex items-center gap-2">
+              <p className="text-gray-900 font-semibold text-sm">
+                {user?.name}
+              </p>
+              <p className="text-xs text-gray-700 font-medium flex items-center gap-2">
                 <Building2 className="w-4 h-4" />
                 {user?.companyName}
               </p>

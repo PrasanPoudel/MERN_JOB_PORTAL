@@ -25,12 +25,28 @@ exports.register = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
-      avatar: user.avatar || "",
       token: generateToken(user._id),
+      avatar: user.avatar || "",
+      location: user.location || "",
+      facebookLink: user.facebookLink || "",
+      instagramLink: user.instagramLink || "",
+      resume: user.resume || "",
+      skills: user.skills || [],
+      education: user.education || [],
+      experience: user.experience || [],
+      certifications: user.certifications || [],
+      isPremium: user.isPremium || false,
+      premiumIssueDate: user.premiumIssueDate || null,
+      employerProfile: user.employerProfile || "",
       companyName: user.companyName || "",
       companyDescription: user.companyDescription || "",
       companyLogo: user.companyLogo || "",
-      resume: user.resume || "",
+      companyLocation: user.companyLocation || "",
+      companyWebsiteLink: user.companyWebsiteLink || "",
+      companySize: user.companySize || "",
+      isCompanyVerified: user.isCompanyVerified || false,
+      companyRegistrationNumber: user.companyRegistrationNumber || "",
+      panNumber: user.panNumber || "",
     });
   } catch (err) {
     res.status(500).json({
@@ -43,23 +59,39 @@ exports.login = async (req, res, next) => {
   try {
     const { email, password } = req.body;
 
-    const user = await User.findOne({email});
+    const user = await User.findOne({ email });
 
     if (!user || !(await user.matchPassword(password))) {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
-    res.json({
+    res.status(200).json({
       _id: user._id,
       name: user.name,
       email: user.email,
       role: user.role,
       token: generateToken(user._id),
       avatar: user.avatar || "",
+      location: user.location || "",
+      facebookLink: user.facebookLink || "",
+      instagramLink: user.instagramLink || "",
+      resume: user.resume || "",
+      skills: user.skills || [],
+      education: user.education || [],
+      experience: user.experience || [],
+      certifications: user.certifications || [],
+      isPremium: user.isPremium || false,
+      premiumIssueDate: user.premiumIssueDate || null,
+      employerProfile: user.employerProfile || "",
       companyName: user.companyName || "",
       companyDescription: user.companyDescription || "",
       companyLogo: user.companyLogo || "",
-      resume: user.resume || "",
+      companyLocation: user.companyLocation || "",
+      companyWebsiteLink: user.companyWebsiteLink || "",
+      companySize: user.companySize || "",
+      isCompanyVerified: user.isCompanyVerified || false,
+      companyRegistrationNumber: user.companyRegistrationNumber || "",
+      panNumber: user.panNumber || "",
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

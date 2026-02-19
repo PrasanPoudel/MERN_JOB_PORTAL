@@ -17,7 +17,7 @@ const uploadFile = async (file) => {
     );
     return response.data;
   } catch (err) {
-    console.log("Error uploading file", err);
+    // console.log("Error uploading file", err);
     throw err; //rethrow error for handling (axios Instance)
   }
 };

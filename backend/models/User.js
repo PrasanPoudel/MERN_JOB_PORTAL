@@ -13,13 +13,71 @@ const userSchema = new mongoose.Schema(
     },
     avatar: String,
     resume: String,
+    location: String,
+    facebookLink: String,
+    instagramLink: String,
+    isPremium: Boolean,
+    premiumIssueDate: { type: Date, default: null },
+    skills: [String],
+    education: [
+      {
+        study: String,
+        institution: String,
+        location: String,
+        startDate: Date,
+        endDate: Date,
+      },
+    ],
+
+    experience: [
+      {
+        jobTitle: String,
+        company: String,
+        location: String,
+        startDate: Date,
+        endDate: { type: Date, default: null },
+        isCurrent: Boolean,
+        description: [String],
+      },
+    ],
+    certifications: [
+      {
+        name: String,
+        issuer: String,
+        date: Date,
+        link: String,
+      },
+    ],
 
     // For employer
+    employerProfile: {
+      type: String,
+      enum: [
+        "Human Resource",
+        "Owner",
+        "Social Media Manager",
+        "Other/Employee",
+      ],
+      default: "Human Resource",
+    },
     companyName: String,
     companyDescription: String,
     companyLogo: String,
+    companyLocation: String,
+    companyWebsiteLink: String,
+    companySize: String,
+    isCompanyVerified: {
+      type: Boolean,
+      default: false,
+    },
+    companyRegistrationNumber: {
+      type: String,
+    },
+    panNumber: {
+      type: String,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 //Encrypt password before save

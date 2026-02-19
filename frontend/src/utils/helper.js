@@ -43,3 +43,17 @@ export const getInitials = (name) => {
     .toUpperCase()
     .slice(0, 2);
 };
+
+// Helper to format date for input type="date"
+export const formatDate = (date) => {
+  if (!date) return "";
+  if (
+    typeof date === "string" &&
+    date.length === 10 &&
+    date.match(/^\d{4}-\d{2}-\d{2}$/)
+  )
+    return date;
+  const d = new Date(date);
+  if (isNaN(d)) return "";
+  return d.toISOString().slice(0, 10);
+};

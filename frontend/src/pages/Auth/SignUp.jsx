@@ -152,14 +152,14 @@ const SignUp = () => {
             formData.role === "employer" ? "/employer-dashboard" : "find-jobs";
         }, 2000);
       }
-    } catch (error) {
-      console.log("Error:", error);
+    } catch (err) {
+      console.log(err);
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
           submit:
-            error.response?.data?.message ||
+            err.response?.data?.message ||
             "Registration failed. Please try again",
         },
       }));

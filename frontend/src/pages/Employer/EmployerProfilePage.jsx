@@ -2,7 +2,16 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import { Building2, Mail, Edit3 } from "lucide-react";
+import {
+  Building2,
+  Mail,
+  Edit3,
+  Globe,
+  MapPin,
+  ShieldCheck,
+  BriefcaseBusiness,
+  User,
+} from "lucide-react";
 import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";
 import DashboardLayout from "../../components/layout/DashboardLayout";
@@ -12,42 +21,50 @@ const EmployerProfilePage = () => {
   const { user, updateUser } = useAuth();
 
   const [profileData, setProfileData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    avatar: user?.avatar || null,
-    companyName: user?.companyName || "",
-    companyLogo: user?.companyLogo || null,
-    companyDescription: user?.companyDescription || "",
+    name: "",
+    email: "",
+    avatar: null,
+    employerProfile: "",
+    companyName: "",
+    companyLogo: null,
+    companyDescription: "",
+    companyLocation: "",
+    companyWebsiteLink: "",
+    companySize: "",
+    companyRegistrationNumber: "",
+    panNumber: "",
+    isCompanyVerified: false,
   });
 
-  useEffect(() => {
-    if (user) {
-      setProfileData({
-        name: user.name || "",
-        email: user.email || "",
-        avatar: user.avatar || null,
-        companyName: user.companyName || "",
-        companyLogo: user.companyLogo || null,
-        companyDescription: user.companyDescription || "",
-      });
-      setFormData({
-        name: user.name || "",
-        email: user.email || "",
-        avatar: user.avatar || null,
-        companyName: user.companyName || "",
-        companyLogo: user.companyLogo || null,
-        companyDescription: user.companyDescription || "",
-      });
-    }
-  }, [user]);
-
+  const [formData, setFormData] = useState(profileData);
   const [editMode, setEditMode] = useState(false);
-  const [formData, setFormData] = useState({ ...profileData });
   const [uploading, setUploading] = useState({
     avatar: false,
     companyLogo: false,
   });
   const [saving, setSaving] = useState(false);
+
+  useEffect(() => {
+    if (user) {
+      const updatedData = {
+        name: user.name || "",
+        email: user.email || "",
+        avatar: user.avatar || null,
+        employerProfile: user.employerProfile,
+        companyName: user.companyName || "",
+        companyLogo: user.companyLogo || null,
+        companyDescription: user.companyDescription || "",
+        companyLocation: user.companyLocation || "",
+        companyWebsiteLink: user.companyWebsiteLink || "",
+        companySize: user.companySize || "",
+        companyRegistrationNumber: user.companyRegistrationNumber || "",
+        panNumber: user.panNumber || "",
+        isCompanyVerified: user.isCompanyVerified || false,
+      };
+      setProfileData(updatedData);
+      setFormData(updatedData);
+    }
+  }, [user]);
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -55,15 +72,17 @@ const EmployerProfilePage = () => {
 
   const handleFileUpload = async (file, type) => {
     setUploading((prev) => ({ ...prev, [type]: true }));
-
+    const prevValue = formData[type === "avatar" ? "avatar" : "companyLogo"];
     try {
       const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes.fileUrl || "";
-      const field = type === "avatar" ? "avatar" : "companyLogo";
-      handleInputChange(field, fileUrl);
+      const fileUrl = fileUploadRes.fileUrl || prevValue;
+      handleInputChange(type === "avatar" ? "avatar" : "companyLogo", fileUrl);
     } catch (err) {
       toast.error("File upload failed. Please try again.");
-      console.error("File Upload failed: ", err);
+      handleInputChange(
+        type === "avatar" ? "avatar" : "companyLogo",
+        prevValue
+      );
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -75,7 +94,6 @@ const EmployerProfilePage = () => {
       const previewUrl = URL.createObjectURL(file);
       const field = type === "avatar" ? "avatar" : "companyLogo";
       handleInputChange(field, previewUrl);
-      //upload image
       handleFileUpload(file, type);
     }
   };
@@ -88,21 +106,21 @@ const EmployerProfilePage = () => {
         formData
       );
       if (response.status === 200) {
-        toast.success("Profile Details Updated Successfully!");
-        //Update profile details then exit editMode
-        setProfileData({ ...formData });
-        updateUser({ ...formData });
+        toast.success("Profile updated successfully!");
+        setProfileData(formData);
+        updateUser(formData);
         setEditMode(false);
       }
     } catch (err) {
-      console.error("Profile Update Failed:", err);
+      console.log(err.response?.data);
+      toast.error(err.response?.data?.message || "Profile update failed.");
     } finally {
       setSaving(false);
     }
   };
 
   const handleCancel = () => {
-    setFormData({ ...profileData });
+    setFormData(profileData);
     setEditMode(false);
   };
 
@@ -122,83 +140,141 @@ const EmployerProfilePage = () => {
 
   return (
     <DashboardLayout activeMenu="employer-profile">
-      <div className="min-h-screen py-8 px-4">
+      <div className="min-h-screen py-4 px-3 sm:py-6 sm:px-4 md:py-8">
         <div className="max-w-5xl mx-auto">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-sky-500 px-2 md:px-8 py-6 flex items-center justify-between">
-              <h1 className="text-xl font-medium text-white">
+
+            {/* Header */}
+            <div className="bg-sky-600 px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center">
+              <h1 className="text-lg sm:text-xl font-semibold text-white">
                 Employer Profile
               </h1>
               <button
-                onClick={() => {
-                  setEditMode(true);
-                }}
-                className="text-white flex items-center gap-2 bg-white/10 p-2 rounded-lg text-sm backdrop-blur-sm hover:bg-black/10 cursor-pointer hover:scale-105"
+                onClick={() => setEditMode(true)}
+                className="text-white flex items-center gap-2 bg-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-white/30 transition text-sm"
               >
                 <Edit3 className="w-4 h-4" />
-                <span>Edit Profile</span>
+                <span className="hidden xs:inline">Edit Profile</span>
+                <span className="xs:hidden">Edit</span>
               </button>
             </div>
 
-            {/* information container */}
-            <div className="p-2 md:p-8">
-              <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                {/* personal info */}
-                <div id="1" className="space-y-6">
-                  <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 ">
-                    Personal Information
-                  </h2>
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={profileData.avatar}
-                      alt="Avatar"
-                      className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
-                    />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {profileData.name}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
-                        <Mail className="w-4 h-4" />
-                        <span>{profileData.email}</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                {/* company info */}
-                <div id="2" className="space-y-6">
-                  <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 ">
-                    Company Information
-                  </h2>
-                  {/* company logo and name */}
-                  <div className="flex items-center space-x-4">
-                    <img
-                      src={profileData.companyLogo}
-                      alt="Company Logo"
-                      className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
-                    />
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900">
-                        {profileData.companyName}
-                      </h3>
-                      <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
-                        <Building2 className="w-4 h-4" />
-                        <span>Company</span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+            {/* Content */}
+            <div className="p-4 sm:p-6 md:p-8 space-y-8 md:space-y-10">
 
-              {/* company description */}
-              <div className="mt-8">
-                <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
+              {/* Personal Information */}
+              <section>
+                <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
+                  Personal Information
+                </h2>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                  <img
+                    src={profileData.avatar || "/default.png"}
+                    alt="Avatar"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold truncate">
+                      {profileData.name}
+                    </h3>
+                    {profileData?.employerProfile && (
+                    <p className="flex items-center gap-2 text-sm text-gray-500 mt-1">
+                      <BriefcaseBusiness className="w-4 h-4"/>
+                      <span>
+                      {profileData.employerProfile}, {profileData.companyName}
+                      </span>
+                    </p>
+                    )}
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                      <Mail className="w-4 h-4 shrink-0" />
+                      <span className="truncate">{profileData.email}</span>
+                    </div>
+                  </div>
+                </div>
+              </section>
+
+              {/* Company Overview */}
+              <section>
+                <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
+                  Company Overview
+                </h2>
+
+                <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
+                  <img
+                    src={profileData.companyLogo || "/default-company.png"}
+                    alt="Company Logo"
+                    className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-contain shrink-0"
+                  />
+                  <div className="min-w-0">
+                    <h3 className="text-base sm:text-lg font-semibold truncate">
+                      {profileData.companyName}
+                    </h3>
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                      <MapPin className="w-4 h-4 shrink-0" />
+                      <span className="truncate">{profileData.companyLocation}</span>
+                    </div>
+                    <a href={profileData.companyWebsiteLink} target="_blank" className="flex items-center gap-2 text-sm text-blue-500 mt-1">
+                      <Globe className="w-4 h-4 shrink-0" />
+                      <span className="truncate">{profileData.companyWebsiteLink}</span>
+                    </a>
+                    <p className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                      <User className="w-4 h-4 shrink-0"/>
+                      Company Size: {profileData.companySize}
+                    </p>
+                  </div>
+                </div>
+              </section>
+
+              {/* Legal & Verification */}
+              <section>
+                <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
+                  Legal & Verification
+                </h2>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-sm">
+                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <p className="text-gray-500">Company Registration Number</p>
+                    <p className="font-medium mt-0.5 break-all">
+                      {profileData.companyRegistrationNumber || "—"}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <p className="text-gray-500">PAN Number</p>
+                    <p className="font-medium mt-0.5 uppercase tracking-widest">
+                      {profileData.panNumber || "—"}
+                    </p>
+                  </div>
+
+                  <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                    <p className="text-gray-500">Verification Status</p>
+                    <span
+                      className={`inline-flex items-center gap-1 mt-1 px-3 py-1 rounded-full text-xs font-medium ${
+                        profileData.isCompanyVerified
+                          ? "bg-green-100 text-green-700"
+                          : "bg-yellow-100 text-yellow-700"
+                      }`}
+                    >
+                      <ShieldCheck className="w-3.5 h-3.5" />
+                      {profileData.isCompanyVerified
+                        ? "Verified Company"
+                        : "Pending Verification"}
+                    </span>
+                  </div>
+                </div>
+              </section>
+
+              {/* About Company */}
+              <section>
+                <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                   About Company
                 </h2>
-                <p className="text-sm text-gray-700 text-justify leading-relaxed bg-gray-50 p-3 md:p-6 rounded-lg">
-                  {profileData.companyDescription}
+                <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 sm:p-6 rounded-lg">
+                  {profileData.companyDescription || "No description provided."}
                 </p>
-              </div>
+              </section>
+
             </div>
           </div>
         </div>

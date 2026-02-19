@@ -3,9 +3,11 @@ import {
   ChevronDown,
   LogOut,
   User,
-  LayoutDashboard,
-  Search,
   X,
+  BriefcaseBusiness,
+  BookmarkCheck,
+  MessageSquare,
+  Plus,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -69,23 +71,7 @@ const ProfileDropdown = ({
             <div
               onClick={() =>
                 navigate(
-                  role === "jobSeeker" ? "/find-jobs" : "/employer-dashboard"
-                )
-              }
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              {role === "jobSeeker" ? (
-                <Search className="h-4 w-4" />
-              ) : (
-                <LayoutDashboard className="h-4 w-4" />
-              )}
-              {role === "jobSeeker" ? "Search for Jobs" : "Dashboard"}
-            </div>
-
-            <div
-              onClick={() =>
-                navigate(
-                  role === "jobSeeker" ? "/profile" : "/employer-profile"
+                  role === "jobSeeker" ? "/profile" : "/employer-profile",
                 )
               }
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
@@ -93,6 +79,64 @@ const ProfileDropdown = ({
               <User className="h-4 w-4 " />
               View Profile
             </div>
+
+            {role === "jobSeeker" && (
+              <>
+              <div
+                onClick={() =>
+                  navigate("/applied-applications")
+                }
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <BriefcaseBusiness className="h-4 w-4 " />
+                My Applications
+              </div>
+  
+              <div
+                onClick={() =>
+                  navigate("/saved-jobs")
+                }
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <BookmarkCheck className="h-4 w-4 " />
+                Saved Jobs
+              </div>
+              </>
+            )}
+
+            {role === "employer" && (
+              <>
+              <div
+                onClick={() =>
+                  navigate("/manage-jobs")
+                }
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <BriefcaseBusiness className="h-4 w-4 " />
+                Manage Jobs
+              </div>
+  
+              <div
+                onClick={() =>
+                  navigate("/post-job")
+                }
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <Plus className="h-4 w-4 " />
+                Post Job
+              </div>
+
+              <div
+                onClick={() =>
+                  navigate("/EmployerChatBox")
+                }
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <MessageSquare className="h-4 w-4 " />
+                Messages
+              </div>
+              </>
+            )}
 
             <div
               onClick={() => setShowLogoutConfirm(true)}

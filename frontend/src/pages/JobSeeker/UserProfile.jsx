@@ -1,259 +1,430 @@
-import React, { useEffect, useState } from "react";
-import { Save, X, Trash2 } from "lucide-react";
-import { useAuth } from "../../context/AuthContext";
-import axiosInstance from "../../utils/axiosInstance";
-import { API_PATHS } from "../../utils/apiPaths";
-import toast from "react-hot-toast";
-import uploadFile from "../../utils/uploadFile";
+import React, { useState } from "react";
+import {
+  MapPin,
+  Facebook,
+  Instagram,
+  Calendar,
+  ExternalLink,
+  BriefcaseBusiness,
+  GraduationCap,
+  Award,
+  Code,
+  Crown,
+  Edit3,
+  User,
+  FileText,
+  Mail,
+} from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
-import { Link } from "react-router-dom";
+import { useAuth } from "../../context/AuthContext";
+import EditUserProfile from "./EditUserProfile";
 
 const UserProfile = () => {
   const { user, updateUser } = useAuth();
+  const [activeTab, setActiveTab] = useState("about");
+  const [editMode, setEditMode] = useState(false);
 
-  const [profileData, setProfileData] = useState({
-    name: user?.name || "",
-    email: user?.email || "",
-    avatar: user?.avatar || "",
-    resume: user?.resume || "",
-  });
-
-  const [formData, setFormData] = useState({ ...profileData });
-  const [uploading, setUploading] = useState({ avatar: false, resume: false });
-  const [saving, setSaving] = useState(false);
-
-  const handleInputChange = (field, value) => {
-    setFormData((prev) => ({
-      ...prev,
-      [field]: value,
-    }));
+  const formatDate = (date) => {
+    if (!date) return "Present";
+    return new Date(date).toLocaleDateString("en-US", {
+      month: "short",
+      year: "numeric",
+    });
   };
 
-  const handleFileUpload = async (file, type) => {
-    setUploading((prev) => ({ ...prev, [type]: true }));
-    try {
-      const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes.fileUrl || "";
+  const tabs = [
+    { id: "about", label: "About", icon: User },
+    {
+      id: "skills_and_education",
+      label: "Skills & Education",
+      icon: GraduationCap,
+    },
+    { id: "experience", label: "Experience", icon: BriefcaseBusiness },
+    { id: "certifications", label: "Certifications", icon: Award },
+  ];
 
-      // Update form data with new File URL
-      handleInputChange(type, fileUrl);
-    } catch (err) {
-      console.error("upload failed:", err);
-    } finally {
-      setUploading((prev) => ({ ...prev, [type]: false }));
-    }
-  };
-
-  const handleFileChange = (e, type) => {
-    const file = e.target.files[0];
-    if (file) {
-      // Create preview URL
-      const previewUrl = URL.createObjectURL(file);
-      handleInputChange(type, previewUrl);
-
-      // Upload File
-      handleFileUpload(file, type);
-    }
-  };
-
-  const handleSave = async () => {
-    setSaving(true);
-    try {
-      const response = await axiosInstance.put(
-        API_PATHS.AUTH.UPDATE_PROFILE,
-        formData
-      );
-
-      if (response.status === 200) {
-        toast.success("Profile Updated Successfully!");
-        setProfileData({ ...formData });
-        updateUser({ ...formData });
-      }
-    } catch (err) {
-      console.log("Failed to Update Profile. Please Try Again", err);
-      toast.error("Failed to Update Profile. Please Try Again");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  const handleCancel = () => {
-    setFormData({ ...profileData });
-  };
-
-  const DeleteResume = async () => {
-    setSaving(true);
-    try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.DELETE_RESUME, {
-        resumeUrl: user.resume || "",
-      });
-
-      if (response.status === 200) {
-        toast.success("Resume Deleted Successfully!");
-        setProfileData({ ...formData, resume: "" });
-        updateUser({ ...formData, resume: "" });
-      }
-    } catch (err) {
-      console.log("Failed to Delete Resume. Please Try Again", err);
-      toast.error("Failed to Delete Resume. Please Try Again");
-    } finally {
-      setSaving(false);
-    }
-  };
-
-  useEffect(() => {
-    const userData = {
-      name: user?.name || "",
-      email: user?.email || "",
-      avatar: user?.avatar || "",
-      resume: user?.resume || "",
-    };
-
-    console.log(userData);
-    setProfileData({ ...userData });
-    setFormData({ ...userData });
-    return () => {};
-  }, [user]);
+  if (editMode) {
+    return (
+      <EditUserProfile
+        user={user}
+        updateUser={updateUser}
+        setEditMode={setEditMode}
+      />
+    );
+  }
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 p-4 my-16 lg:my-20">
-        <div className="max-w-full mx-auto">
-          <div className="bg-white pb-10 rounded-xl shadow-lg overflow-hidden">
-            <div className="bg-sky-600 flex justify-between items-center p-4">
-              <h1 className="text-xl font-medium text-white">Profile</h1>
+      <div className="min-h-screen bg-gray-50 pt-20 pb-8">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          {/* Profile Header */}
+          <div className="bg-white rounded-lg shadow mb-6">
+            {/* Header with Edit Button */}
+            <div className="flex justify-between items-center p-4">
+              <h1 className="text-xl font-semibold text-gray-900">Profile</h1>
+              <button
+                onClick={() => setEditMode(true)}
+                className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+              >
+                <Edit3 className="w-4 h-4" />
+                Edit Profile
+              </button>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 p-2 md:p-8">
-              <div className="space-y-6">
-                <div className="flex flex-col space-y-4 items-start md:items-center md:flex-row md:space-x-4">
-                  <div className="relative">
-                    <img
-                      src={formData.avatar}
-                      alt="Avatar"
-                      className="w-20 h-20 rounded-full border-2 border-gray-100 object-fill"
-                    />
-                    {uploading.avatar && (
-                      <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
-                        <div className="animate-spin w-6 h-6 rounded-full border-2 border-white border-t-transparent"></div>
+            {/* Profile Content */}
+            <div className="p-6">
+              {/* Avatar and Basic Info */}
+              <div className="flex flex-col gap-2 items-center">
+                <img
+                  src={user?.avatar || "/default.png"}
+                  alt={user?.name}
+                  className="w-32 h-32 rounded-lg object-cover border-2 border-gray-200"
+                />
+                {/* User Details */}
+                <div className="flex flex-col items-center">
+                  <h2 className="text-2xl font-bold text-gray-900">
+                    {user?.name || ""}
+                  </h2>
+                  {user?.isPremium ? (
+                    <span className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-400 text-white text-xs shadow-sm">
+                      <Crown className="w-4 h-4" />
+                      Premium User
+                    </span>
+                  ) : (
+                    <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-xs font-medium border border-gray-200">
+                      <User className="w-4 h-4" />
+                      Free User
+                    </span>
+                  )}
+                  <div className="flex items-center mt-1 text-gray-600">
+                    <p className="text-sm">{user?.email}</p>
+                  </div>
+
+                  <div className="flex flex-wrap gap-3 mt-1">
+                    {user?.location && (
+                      <div className="flex items-center gap-1.5 text-gray-700 text-sm">
+                        <MapPin className="w-4 h-4 text-sky-600" />
+                        <span>{user.location}</span>
                       </div>
                     )}
+                    {user?.facebookLink && (
+                      <a
+                        href={user.facebookLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-blue-600 hover:text-blue-700 text-sm"
+                      >
+                        <Facebook className="w-4 h-4" />
+                        <span>Facebook</span>
+                      </a>
+                    )}
+                    {user?.instagramLink && (
+                      <a
+                        href={user.instagramLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="flex items-center gap-1.5 text-pink-600 hover:text-pink-700 text-sm"
+                      >
+                        <Instagram className="w-4 h-4" />
+                        <span>Instagram</span>
+                      </a>
+                    )}
                   </div>
+                </div>
+              </div>
+            </div>
+          </div>
 
+          {/* Tabs */}
+          <div className="bg-white rounded-lg shadow mb-6">
+            <div className="overflow-x-auto">
+              <div className="flex min-w-max pb-2">
+                {tabs.map((tab) => {
+                  const Icon = tab.icon;
+                  const isActive = activeTab === tab.id;
+                  return (
+                    <button
+                      key={tab.id}
+                      onClick={() => setActiveTab(tab.id)}
+                      className={`flex items-center gap-2 px-6 py-4 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
+                        isActive
+                          ? "border-sky-500 text-sky-600"
+                          : "border-transparent text-gray-600 hover:text-gray-900 hover:border-gray-300"
+                      }`}
+                    >
+                      <Icon className="w-4 h-4" />
+                      {tab.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          </div>
+
+          {/* Tab Content */}
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            {/* Main Content */}
+            <div className="lg:col-span-2">
+              <div className="bg-white rounded-lg shadow p-2">
+                {/* About Tab */}
+                {activeTab === "about" && (
                   <div>
-                    <label className="block cursor-pointer">
-                      <span className="sr-only">Choose avatar</span>
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={(e) => {
-                          handleFileChange(e, "avatar");
-                        }}
-                        className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
-                      />
-                    </label>
-                  </div>
-                </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      About
+                    </h3>
+                    <div className="space-y-4">
+                      <div className="bg-white p-4 rounded-lg shadow-md">
+                        <label className="text-sm font-semibold text-gray-600">
+                          Email
+                        </label>
+                        <p className="mt-1 text-sm text-gray-800">
+                          {user?.email || "Not provided"}
+                        </p>
+                      </div>
 
-                {/* Name */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Full Name
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.name}
-                    onChange={(e) => {
-                      handleInputChange("name", e.target.value);
-                    }}
-                    placeholder="Enter your full name"
-                    className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
-                  />
-                </div>
-                {/* Email */}
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Email Address
-                  </label>
-                  <input
-                    type="text"
-                    value={formData.email}
-                    className="w-full px-4 py-3 border bg-sky-50 border-gray-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all cursor-not-allowed"
-                    disabled
-                  />
-                </div>
-                {user?.resume ? (
-                  <div className="px-2">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
-                      Resume
-                    </label>
-                    <div className="flex items-center gap-2">
-                      <p className="md:text-base text-sm text-gray-600">
-                        Link:{" "}
-                        <a
-                          href={user?.resume}
-                          target="_blank"
-                          className="pl-2 text-sky-500 underline cursor-pointer break-all"
-                        >
-                          {user?.resume}
-                        </a>
-                      </p>
-                      <button onClick={DeleteResume} className="cursor-pointer">
-                        <Trash2 className="w-6 h-6 text-red-600" />
-                      </button>
+                      <div className="bg-white p-4 rounded-lg shadow-md">
+                        <label className="text-sm font-semibold text-gray-600">
+                          Location
+                        </label>
+                        <p className="mt-1 text-sm text-gray-800">
+                          {user?.location || "Not provided"}
+                        </p>
+                      </div>
+
+                      <div className="bg-white p-4 rounded-lg shadow-md">
+                        <label className="text-sm font-semibold text-gray-600">
+                          Account Type
+                        </label>
+                        <p className="mt-1 text-sm text-gray-800">
+                          {user?.isPremium ? "Premium User" : "Free User"}
+                        </p>
+                      </div>
                     </div>
                   </div>
-                ) : (
+                )}
+
+                {/* Skills & Education Tab */}
+                {activeTab === "skills_and_education" && (
+                  <>
+                    <div>
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        Skills
+                      </h3>
+                      {user?.skills?.length > 0 ? (
+                        <div className="flex flex-wrap gap-2">
+                          {user.skills.map((skill, index) => (
+                            <span
+                              key={index}
+                              className="px-3 py-1.5 bg-sky-50 text-sky-700 rounded-md text-sm border border-sky-200"
+                            >
+                              {skill}
+                            </span>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-gray-500">No skills added yet.</p>
+                      )}
+                    </div>
+                    <div className="mt-2">
+                      <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                        Education
+                      </h3>
+                      {user?.education?.length > 0 ? (
+                        <div className="space-y-4">
+                          {user.education.map((edu, index) => (
+                            <div
+                              key={index}
+                              className="border border-gray-200 rounded-lg p-4"
+                            >
+                              <h4 className="font-semibold text-gray-900">
+                                {edu.study}
+                              </h4>
+                              <p className="text-sky-600 text-sm mt-1">
+                                {edu.institution}
+                              </p>
+                              <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-600">
+                                <div className="flex items-center gap-1">
+                                  <MapPin className="w-3.5 h-3.5" />
+                                  {edu.location}
+                                </div>
+                                <div className="flex items-center gap-1">
+                                  <Calendar className="w-3.5 h-3.5" />
+                                  {formatDate(edu.startDate)} -{" "}
+                                  {formatDate(edu.endDate)}
+                                </div>
+                              </div>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <p className="text-gray-500">No education added yet.</p>
+                      )}
+                    </div>
+                  </>
+                )}
+
+                {/* Experience Tab */}
+                {activeTab === "experience" && (
                   <div>
-                    <label className="block text-sm font-medium text-gray-700 mb-5">
-                      Resume
-                      <span className="cursor-pointer sr-only">
-                        Choose File
-                      </span>
-                      <input
-                        type="file"
-                        onChange={(e) => {
-                          handleFileChange(e, "resume");
-                        }}
-                        accept=".pdf,.doc,.docx"
-                        className="mt-5 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
-                      />
-                    </label>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Work Experience
+                    </h3>
+                    {user?.experience?.length > 0 ? (
+                      <div className="space-y-4">
+                        {user.experience.map((exp, index) => (
+                          <div
+                            key={index}
+                            className="border border-gray-200 rounded-lg p-4"
+                          >
+                            <div className="flex justify-between items-start">
+                              <div>
+                                <h4 className="font-semibold text-gray-900">
+                                  {exp.jobTitle}
+                                </h4>
+                                <p className="text-sky-600 text-sm mt-1">
+                                  {exp.company}
+                                </p>
+                              </div>
+                              {exp.isCurrent && (
+                                <span className="px-2 py-1 bg-green-50 text-green-700 text-xs rounded border border-green-200">
+                                  Current
+                                </span>
+                              )}
+                            </div>
+                            <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-600">
+                              <div className="flex items-center gap-1">
+                                <MapPin className="w-3.5 h-3.5" />
+                                {exp.location}
+                              </div>
+                              <div className="flex items-center gap-1">
+                                <Calendar className="w-3.5 h-3.5" />
+                                {formatDate(exp.startDate)} -{" "}
+                                {exp.isCurrent
+                                  ? "Present"
+                                  : formatDate(exp.endDate)}
+                              </div>
+                            </div>
+                            {exp.description && exp.description.length > 0 && (
+                              <ul className="mt-3 space-y-1 text-sm text-gray-700">
+                                {exp.description.map((desc, i) => (
+                                  <li key={i} className="flex gap-2">
+                                    <span className="text-sky-600">•</span>
+                                    <span>{desc}</span>
+                                  </li>
+                                ))}
+                              </ul>
+                            )}
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500">
+                        No work experience added yet.
+                      </p>
+                    )}
+                  </div>
+                )}
+
+                {/* Certifications Tab */}
+                {activeTab === "certifications" && (
+                  <div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                      Certifications
+                    </h3>
+                    {user?.certifications?.length > 0 ? (
+                      <div className="space-y-4">
+                        {user.certifications.map((cert, index) => (
+                          <div
+                            key={index}
+                            className="border border-gray-200 rounded-lg p-4"
+                          >
+                            <div className="flex gap-3">
+                              <div className="p-2 bg-sky-50 rounded-lg h-fit">
+                                <Award className="w-5 h-5 text-sky-600" />
+                              </div>
+                              <div className="flex-1">
+                                <h4 className="font-semibold text-gray-900">
+                                  {cert.name}
+                                </h4>
+                                <p className="text-sky-600 text-sm mt-1">
+                                  {cert.issuer}
+                                </p>
+                                <div className="flex items-center gap-1 mt-2 text-xs text-gray-600">
+                                  <Calendar className="w-3.5 h-3.5" />
+                                  {formatDate(cert.date)}
+                                </div>
+                                {cert.link && (
+                                  <a
+                                    href={cert.link}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="inline-flex items-center gap-1 mt-3 text-sky-600 hover:text-sky-700 text-sm font-medium"
+                                  >
+                                    View Certificate
+                                    <ExternalLink className="w-3.5 h-3.5" />
+                                  </a>
+                                )}
+                              </div>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    ) : (
+                      <p className="text-gray-500">
+                        No certifications added yet.
+                      </p>
+                    )}
                   </div>
                 )}
               </div>
-<div className="space-y-6">
-//Will continue later
-</div>
-</div>
-              {/* Action Buttons */}
-              <div className="flex justify-end space-x-2 my-4 p-4 border-t">
-                <Link
-                  to={"/find-jobs"}
-                  onClick={handleCancel}
-                  className="p-3 flex items-center gap-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                  <span>Cancel</span>
-                </Link>
+            </div>
 
-                <button
-                  onClick={handleSave}
-                  disabled={saving || uploading.avatar || uploading.resume}
-                  className="p-3 flex items-center gap-2 border border-gray-300 text-white rounded-lg bg-sky-600 hover:bg-sky-70 transition-colors cursor-pointer hover:bg-sky-700"
-                >
-                  {saving ? (
-                    <div className="animate-spin border-2 border-b-sky-600 w-4 h-4 rounded-full"></div>
-                  ) : (
-                    <Save className="w-4 h-4" />
+            {/* Resume Sidebar */}
+            <div className="lg:col-span-1">
+              <div className="bg-white rounded-lg shadow p-6 sticky top-24">
+                <div className="flex items-center justify-between mb-2">
+                  <h3 className="text-lg font-semibold text-gray-900 flex items-center gap-2">
+                    <FileText className="w-5 h-5 text-sky-600" />
+                    Resume
+                  </h3>
+                  {user?.resume && user.resume !== "" && (
+                    <a
+                      href={user.resume}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="text-sky-600 hover:text-sky-700 text-sm font-medium"
+                    >
+                      <ExternalLink className="w-4 h-4" />
+                    </a>
                   )}
-                  <span>{saving ? "Saving..." : "Save Changes"}</span>
-                </button>
+                </div>
+                {user?.resume && user.resume !== "" ? (
+                  <div className="border border-gray-200 rounded-lg overflow-hidden h-full w-full">
+                    <iframe
+                      src={user.resume}
+                      className="w-full h-full object-contain min-h-120"
+                      title="Resume"
+                      style={{ border: "none" }}
+                    />
+                  </div>
+                ) : (
+                  <div className="border-2 border-dashed border-gray-300 rounded-lg p-8 text-center">
+                    <FileText className="w-12 h-12 text-gray-400 mx-auto mb-3" />
+                    <p className="text-sm text-gray-500">No resume uploaded</p>
+                    <button
+                      onClick={() => setEditMode(true)}
+                      className="mt-3 text-sky-600 hover:text-sky-700 text-sm font-medium"
+                    >
+                      Upload Resume
+                    </button>
+                  </div>
+                )}
               </div>
             </div>
           </div>
         </div>
+      </div>
     </>
   );
 };

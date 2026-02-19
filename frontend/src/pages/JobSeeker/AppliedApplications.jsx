@@ -1,27 +1,28 @@
 import React, { useState, useEffect } from "react";
-import { ArrowLeft, Bookmark, Grid, List } from "lucide-react";
+import { ArrowLeft, BriefcaseBusiness, Grid, List } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../context/AuthContext";
-import toast from "react-hot-toast";
 import JobCard from "../../components/Cards/JobCard";
 import Navbar from "../../components/layout/Navbar";
+import LoadingSpinner from "../../components/LoadingSpinner";
+import toast from "react-hot-toast";
 
-const SavedJobs = () => {
+const AppliedApplications = () => {
   const { user } = useAuth();
-
   const navigate = useNavigate();
 
-  const [savedJobList, setSavedJobList] = useState([]);
+  const [applications, setApplications] = useState([]);
   const [viewMode, setViewMode] = useState("grid");
   const [loading, setLoading] = useState(true);
 
-  const getSavedJobs = async () => {
+  const getMyApplications = async () => {
     try {
-      const response = await axiosInstance.get(API_PATHS.JOBS.GET_SAVED_JOBS);
-      setSavedJobList(response.data);
-      // console.log(response.data);
+      const response = await axiosInstance.get(
+        API_PATHS.APPLICATIONS.GET_MY_APPLICATIONS,
+      );
+      setApplications(response.data || []);
     } catch (err) {
       console.error(err);
     } finally {
@@ -29,32 +30,37 @@ const SavedJobs = () => {
     }
   };
 
-  const handleUnsaveJob = async (jobId) => {
+  useEffect(() => {
+    if (user) {
+      getMyApplications();
+    }
+  }, [user]);
+
+  const toggleSavedJobs = async (jobId, isSaved) => {
     try {
-      const response = await axiosInstance.delete(
-        API_PATHS.JOBS.UNSAVE_JOB(jobId),
-      );
-      getSavedJobs();
-      if (response.status === 200) {
-        toast.success("Job removed from saved list successfully");
+      if (isSaved) {
+        await axiosInstance.delete(API_PATHS.JOBS.UNSAVE_JOB(jobId));
+        toast.success("Job removed from saved list successfully!");
+      } else {
+        await axiosInstance.post(API_PATHS.JOBS.SAVE_JOB(jobId));
+        toast.success("Job saved successfully!");
       }
+      fetchJobs();
     } catch (err) {
-      toast.error("Couldn't remove a saved job. Please try again later");
       console.error(err);
+      toast.error("Something went wrong! Please try again later");
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      getSavedJobs();
-    }
-  }, [user]);
+  if (!user || loading) {
+    return <LoadingSpinner />;
+  }
 
   return (
     <>
       <Navbar />
       <div className="mt-16 bg-white">
-        {savedJobList && (
+        {applications !== null && (
           <div className="min-h-screen">
             <div className="mx-auto p-4 lg:p-12">
               <div className="flex items-center gap-4 pb-4">
@@ -68,7 +74,7 @@ const SavedJobs = () => {
                   Back
                 </button>
                 <h1 className="text-xl font-semibold text-gray-900">
-                  Saved Jobs
+                  My Applications
                 </h1>
               </div>
 
@@ -102,16 +108,17 @@ const SavedJobs = () => {
               </div>
 
               <div className="space-y-6">
-                {savedJobList.length === 0 ? (
+                {applications.length === 0 ? (
                   <div className="text-center py-16 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20">
                     <div className="text-gray-400 mb-6">
-                      <Bookmark className="w-16 h-16 mx-auto" />
+                      <BriefcaseBusiness className="w-16 h-16 mx-auto" />
                     </div>
                     <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
-                      You haven't saved any job yet
+                      You haven't applied to any job yet
                     </h3>
                     <p className="text-gray-600 mb-6">
-                      Start saving jobs that interest you to view them later
+                      Start applying to jobs that match your skills and
+                      interests
                     </p>
                     <button
                       onClick={() => {
@@ -131,17 +138,21 @@ const SavedJobs = () => {
                           : "space-y-4 lg:space-y-6"
                       }`}
                     >
-                      {savedJobList.map((savedJOb) => (
+                      {applications.map((application) => (
                         <JobCard
-                          key={savedJOb.job._id}
-                          job={savedJOb.job}
+                          key={application?._id}
+                          job={application?.job}
                           onClick={() => {
-                            navigate(`/job/${savedJOb?.job._id}`);
+                            navigate(`/job/${application?.job._id}`);
                           }}
+                          hideApply={true}
+                          hideSaveButton
                           onToggleSave={() => {
-                            handleUnsaveJob(savedJOb?.job._id);
+                            toggleSavedJobs(
+                              application?.job._id,
+                              application?.job.isSaved,
+                            );
                           }}
-                          saved
                         />
                       ))}
                     </div>
@@ -155,4 +166,4 @@ const SavedJobs = () => {
     </>
   );
 };
-export default SavedJobs;
+export default AppliedApplications;

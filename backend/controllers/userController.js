@@ -5,30 +5,62 @@ const Job = require("../models/Job");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 
-// Update user profile (name, avatar, company details)
 exports.updateProfile = async (req, res) => {
   try {
     const {
       name,
       avatar,
+      resume,
+      skills,
+      experience,
+      certifications,
+      education,
+      location,
+      facebookLink,
+      instagramLink,
+
+      employerProfile,
       companyName,
       companyDescription,
       companyLogo,
-      resume,
+      companyLocation,
+      companyWebsiteLink,
+      companySize,
+      companyRegistrationNumber,
+      panNumber,
     } = req.body;
 
     const user = await User.findById(req.user._id);
 
-    if (!user) return res.status(404).json({ message: "User not found" });
-    user.name = name || user.name;
-    user.avatar = avatar || user.avatar;
-    user.resume = resume || user.resume;
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
 
-    // If employer, allow updating company info
+    user.name = name ?? user.name;
+    user.avatar = avatar ?? user.avatar;
+    user.resume = resume ?? user.resume;
+    user.location = location ?? user.location;
+    user.facebookLink = facebookLink ?? user.facebookLink;
+    user.instagramLink = instagramLink ?? user.instagramLink;
+
+    if (user.role === "jobSeeker") {
+      user.skills = skills ?? user.skills;
+      user.experience = experience ?? user.experience;
+      user.certifications = certifications ?? user.certifications;
+      user.education = education ?? user.education;
+    }
+
     if (user.role === "employer") {
-      user.companyName = companyName || user.companyName;
-      user.companyDescription = companyDescription || user.companyDescription;
-      user.companyLogo = companyLogo || user.companyLogo;
+      user.employerProfile = employerProfile ?? user.employerProfile;
+      user.companyName = companyName ?? user.companyName;
+      user.companyDescription = companyDescription ?? user.companyDescription;
+      user.companyLogo = companyLogo ?? user.companyLogo;
+      user.companyLocation = companyLocation ?? user.companyLocation;
+      user.companyWebsiteLink = companyWebsiteLink ?? user.companyWebsiteLink;
+      user.companySize = companySize ?? user.companySize;
+      user.companyRegistrationNumber =
+        companyRegistrationNumber ?? user.companyRegistrationNumber;
+      user.panNumber = panNumber ?? user.panNumber;
     }
 
     await user.save();
@@ -36,12 +68,29 @@ exports.updateProfile = async (req, res) => {
     res.json({
       _id: user._id,
       name: user.name,
-      avatar: user.avatar,
+      email: user.email,
       role: user.role,
-      companyName: user.companyName,
-      companyDescription: user.companyDescription,
-      companyLogo: user.companyLogo,
+      avatar: user.avatar || "",
+      location: user.location || "",
+      facebookLink: user.facebookLink || "",
+      instagramLink: user.instagramLink || "",
       resume: user.resume || "",
+      skills: user.skills || [],
+      education: user.education || [],
+      experience: user.experience || [],
+      certifications: user.certifications || [],
+      isPremium: user.isPremium || false,
+      premiumIssueDate: user.premiumIssueDate || null,
+      employerProfile: user.employerProfile,
+      companyName: user.companyName || "",
+      companyDescription: user.companyDescription || "",
+      companyLogo: user.companyLogo || "",
+      companyLocation: user.companyLocation || "",
+      companyWebsiteLink: user.companyWebsiteLink || "",
+      companySize: user.companySize || "",
+      isCompanyVerified: user.isCompanyVerified || false,
+      companyRegistrationNumber: user.companyRegistrationNumber || "",
+      panNumber: user.panNumber || "",
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

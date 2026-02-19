@@ -1,5 +1,6 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
+const TFIDFSimilarity = require("../utils/tfidfSimilarity");
 
 // apply to a job
 exports.applyToJob = async (req, res) => {
@@ -16,13 +17,31 @@ exports.applyToJob = async (req, res) => {
     if (existing) {
       return res.status(400).json({ message: "Already applied to this job" });
     }
-    if(req.user.resume== "" || req.user.resume === null){
-      return res.status(403).json({message: "Resume is required to apply for job"})
+
+    if (req.user.resume === "" || req.user.resume === null) {
+      return res
+        .status(403)
+        .json({ message: "Resume is required to apply for job" });
     }
+
+    // Fetch the job details to calculate similarity
+    const job = await Job.findById(req.params.jobId);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Calculate cosine similarity score using TF-IDF algorithm
+    const cosineSimilarityScore = TFIDFSimilarity.calculateSimilarity(
+      req.user,
+      job,
+    );
+
     const application = await Application.create({
       job: req.params.jobId,
       applicant: req.user._id,
-      resume: req.user.resume, // assuming resume is stored in user profile
+      resume: req.user.resume,
+      cosineSimilarity: cosineSimilarityScore,
     });
 
     res.status(201).json(application);
@@ -35,8 +54,14 @@ exports.applyToJob = async (req, res) => {
 exports.getMyApplications = async (req, res) => {
   try {
     const apps = await Application.find({ applicant: req.user._id })
-      .populate("job", "title company location type")
-      .sort({ createdAt: -1 });
+     .populate(
+      {
+        path: "job",
+        populate: {
+          path: "company",
+          select: "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
+        },
+      }).sort({ createdAt: -1 });
 
     res.json(apps);
   } catch (err) {

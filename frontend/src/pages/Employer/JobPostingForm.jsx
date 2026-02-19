@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { AlertCircle, MapPin, Briefcase, Users, Eye, Send } from "lucide-react";
+import { AlertCircle, MapPin, BriefcaseBusiness, Users, Eye, Send } from "lucide-react";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -111,7 +111,7 @@ const JobPostingForm = () => {
         navigate("/employer-dashboard");
         return;
       } else {
-        console.log("Unexpected response", response);
+        console.log("Unexpected response :", response);
         toast.error("Something went wrong. Please try again");
       }
     } catch (err) {
@@ -209,7 +209,7 @@ const JobPostingForm = () => {
                 onChange={(e) => {
                   handleInputChange("jobTitle", e.target.value);
                 }}
-                icon={Briefcase}
+                icon={BriefcaseBusiness}
                 errors={errors.jobTitle}
               />
               {/* Location */}
@@ -256,7 +256,7 @@ const JobPostingForm = () => {
                   options={JOB_TYPES}
                   placeholder="Select a job type"
                   error={errors.jobType}
-                  icon={Briefcase}
+                  icon={BriefcaseBusiness}
                   required
                 />
               </div>

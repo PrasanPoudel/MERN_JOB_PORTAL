@@ -4,7 +4,7 @@ export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Signup
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
-    GET_PROFILE: "/api/auth/profile", // Get logged-in user details
+    GET_PROFILE: "/api/auth/getMe", // Get logged-in user details
     UPDATE_PROFILE: "/api/user/profile", // Update profile details
     DELETE_RESUME: "/api/user/resume", // Delete Resume details
   },
@@ -25,8 +25,15 @@ export const API_PATHS = {
   },
   APPLICATIONS: {
     APPLY_TO_JOB: (id) => `/api/applications/${id}`,
+    GET_MY_APPLICATIONS: "/api/applications/my",
     GET_ALL_APPLICATIONS: (id) => `/api/applications/job/${id}`,
+    GET_APPLICATION_BY_ID: (id) => `/api/applications/${id}`,
     UPDATE_STATUS: (id) => `/api/applications/${id}/status`,
+  },
+  MESSAGES: {
+    SEND_MESSAGE: "/api/messages/send",
+    GET_CONVERSATION: (id) => `/api/messages/conversation/${id}`,
+    GET_CONVERSATIONS: "/api/messages/conversations",
   },
   FILE: {
     UPLOAD_FILE: "/api/auth/upload-file", //upload profile picture

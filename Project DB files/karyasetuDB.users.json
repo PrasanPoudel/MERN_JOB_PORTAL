@@ -11,12 +11,23 @@
     "$date": "2026-01-13T07:20:52.460Z"
   },
   "updatedAt": {
-    "$date": "2026-01-13T09:56:49.775Z"
+    "$date": "2026-02-17T16:08:02.958Z"
   },
-  "__v": 0,
+  "__v": 1,
   "companyDescription": "Khalti is a fintech startup that offers a digital wallet and payment ecosystem aimed at increasing cashless transactions in Nepal. The platform enables users to pay utility bills, recharge mobile phones, purchase tickets, and make online payments securely. Khalti also partners with merchants, banks, and service providers to expand digital payment adoption. The company plays a significant role in improving financial inclusion, especially among young users and small merchants.",
   "companyLogo": "http://localhost:8000/uploads/5053d471-bacd-40fb-a324-4a7fb91b571f-khalti.png",
-  "companyName": "Khalti Nepal"
+  "companyName": "Khalti Nepal",
+  "certifications": [],
+  "companyLocation": "Buddhabhumi-9, Imiliya",
+  "companyRegistrationNumber": "123456/077/078",
+  "companySize": "11-50",
+  "companyWebsiteLink": "https://www.khaltinepal.com",
+  "education": [],
+  "employerProfile": "Human Resource",
+  "experience": [],
+  "isCompanyVerified": false,
+  "panNumber": "604123456",
+  "skills": []
 },
 {
   "_id": {
@@ -197,4 +208,37 @@
   "companyDescription": "Ekbana Solutions is a small software company specializing in digital commerce, enterprise platforms, and cloud-based applications. It works with startups and established businesses to build scalable systems. Ekbana focuses on practical problem-solving, modern architecture, and user-centered design. The company supports Nepal’s growing digital business ecosystem.",
   "companyLogo": "http://localhost:8000/uploads/f1fa75a4-a12b-4283-a4e9-f1d5422eaf82-ekbana-logo.png",
   "companyName": "Ekbana Solutions Pvt. Ltd."
+},
+{
+  "_id": {
+    "$oid": "696c6eb3c80f9c65206f1c79"
+  },
+  "name": "Prasan Poudel",
+  "email": "jobseeker@karyasetu.com",
+  "password": "$2b$10$zj7gckpr4zKug6vmIsMUBexqjB9EnBYHgsMSm1FZm8qtcaKfNXoKa",
+  "role": "jobSeeker",
+  "avatar": "http://localhost:8000/uploads/1d000116-6841-4a3e-bfd6-bcb1d204895f-imgfile.png",
+  "createdAt": {
+    "$date": "2026-01-18T05:25:07.278Z"
+  },
+  "updatedAt": {
+    "$date": "2026-02-18T13:44:00.101Z"
+  },
+  "__v": 8,
+  "resume": "http://localhost:8000/uploads/273655a7-7407-49bf-b7b2-ca6605c841ec-resume.pdf",
+  "certifications": [],
+  "education": [],
+  "experience": [],
+  "location": "",
+  "skills": [
+    "node js",
+    "mongo db",
+    "cooking",
+    "english language",
+    "cashier"
+  ],
+  "facebookLink": "",
+  "instagramLink": "",
+  "employerProfile": "Human Resource",
+  "isCompanyVerified": false
 }]

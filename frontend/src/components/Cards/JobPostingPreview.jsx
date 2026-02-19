@@ -126,62 +126,123 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
 
             {/* Expanded Content */}
             {expanded && (
-              <div className="px-4 py-4 md:p-8">
-                <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-                  {/* personal info */}
-                  <div id="1" className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 ">
+              <div className="px-4 py-4 md:p-8 space-y-10">
+                <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                  <div className="space-y-6">
+                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                       Personal Information
                     </h2>
-                    <div className="flex items-center space-x-4">
+
+                    <div className="flex items-center gap-4">
                       <img
-                        src={user?.avatar}
+                        src={user?.avatar || "/default.png"}
                         alt="Avatar"
-                        className="w-20 h-20 rounded-full object-fill border-2 border-gray-100"
+                        className="w-20 h-20 rounded-full object-cover border border-gray-200"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
                           {user?.name}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
+                        {user?.employerProfile && (
+                          <p className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                            <BriefcaseBusiness className="w-4 h-4"/>
+                            <span>
+                            {user?.employerProfile} ,
+                            {user?.companyName}
+                            </span>
+                          </p>
+                        )}
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <Mail className="w-4 h-4" />
                           <span>{user?.email}</span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  {/* company info */}
-                  <div id="2" className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 ">
-                      Company Information
+                  <div className="space-y-6">
+                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                      Company Overview
                     </h2>
-                    {/* company logo and name */}
-                    <div className="flex items-center space-x-4">
+
+                    <div className="flex items-center gap-4">
                       <img
-                        src={user?.companyLogo}
+                        src={user?.companyLogo || "/default-company.png"}
                         alt="Company Logo"
-                        className="w-20 h-20 rounded-lg object-fill border-2 border-gray-100"
+                        className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                       />
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
                           {user?.companyName}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm mt-1 text-gray-600">
-                          <Building2 className="w-4 h-4" />
-                          <span>Company</span>
-                        </div>
+
+                        <p className="text-sm text-gray-600 mt-1">
+                          Company Size: {user?.companySize || "N/A"}
+                        </p>
+
+                        <p className="text-sm text-gray-600 mt-1">
+                          Location: {user?.companyLocation || "N/A"}
+                        </p>
+
+                        {user?.companyWebsiteLink && (
+                          <a
+                            href={user?.companyWebsiteLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-sm text-sky-600 hover:underline mt-1 block"
+                          >
+                            {user?.companyWebsiteLink}
+                          </a>
+                        )}
                       </div>
                     </div>
                   </div>
                 </div>
+                <div>
+                  <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
+                    Legal & Verification
+                  </h2>
 
-                {/* company description */}
-                <div className="mt-8">
+                  <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-500">
+                        Company Registration Number
+                      </p>
+                      <p className="font-medium mt-1 break-all">
+                        {user?.companyRegistrationNumber || "—"}
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-500">PAN Number</p>
+                      <p className="font-medium mt-1 uppercase tracking-widest">
+                        {user?.panNumber || "—"}
+                      </p>
+                    </div>
+
+                    <div className="bg-gray-50 p-4 rounded-lg">
+                      <p className="text-gray-500">Verification Status</p>
+                      <span
+                        className={`inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-medium ${
+                          user?.isCompanyVerified
+                            ? "bg-green-100 text-green-700"
+                            : "bg-yellow-100 text-yellow-700"
+                        }`}
+                      >
+                        {user?.isCompanyVerified
+                          ? "Verified Company"
+                          : "Pending Verification"}
+                      </span>
+                    </div>
+                  </div>
+                </div>
+                <div>
                   <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
                     About Company
                   </h2>
-                  <p className="text-sm text-gray-700 text-justify leading-relaxed bg-gray-50 p-3 md:p-6 rounded-lg">
-                    {user.companyDescription}
+
+                  <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
+                    {user?.companyDescription ||
+                      "No description provided."}
                   </p>
                 </div>
               </div>

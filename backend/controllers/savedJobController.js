@@ -41,7 +41,7 @@ exports.getMySavedJobs = async (req, res) => {
         path: "job",
         populate: {
           path: "company",
-          select: "name companyName companyLogo",
+          select: "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
         },
       }
     );

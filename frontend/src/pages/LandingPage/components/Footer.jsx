@@ -1,12 +1,12 @@
 import React from "react";
-import { Briefcase } from "lucide-react";
+import { BriefcaseBusiness } from "lucide-react";
 
 const Footer = () => {
   return (
     <footer className="container px-5 py-8 mx-auto flex items-center sm:flex-row flex-col">
       <div className="flex items-center space-x-3">
         <div className="flex w-8 h-8 bg-linear-to-r from-sky-600 to-purple-600 rounded-lg items-center justify-center">
-          <Briefcase className="w-5 h-5 text-white" />
+          <BriefcaseBusiness className="w-5 h-5 text-white" />
         </div>
         <span className="text-xl font-bold text-gray-900">KARYASETU</span>
       </div>

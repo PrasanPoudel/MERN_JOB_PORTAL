@@ -1,5 +1,5 @@
 import React from "react";
-import { Briefcase, MapPin, Clock } from "lucide-react";
+import { BriefcaseBusiness, MapPin, Clock } from "lucide-react";
 import moment from "moment";
 
 const JobDashboardCard = ({ job }) => {
@@ -7,7 +7,7 @@ const JobDashboardCard = ({ job }) => {
     <div className="flex items-center justify-between p-2 rounded-xl border-2 border-gray-100 hover:border-gray-200 transition-colors">
       <div className="flex items-center space-x-4">
         <div className="h-12 w-12 bg-sky-100 rounded-xl flex items-center justify-center">
-          <Briefcase className="w-5 h-5 text-sky-600" />
+          <BriefcaseBusiness className="w-5 h-5 text-sky-600" />
         </div>
         <div className="flex gap-2 flex-col">
           <h4 className="font-medium text-xl text-gray-900">{job.title}</h4>

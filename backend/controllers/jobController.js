@@ -53,7 +53,7 @@ exports.getJobs = async (req, res) => {
 
     const jobs = await Job.find(query).populate(
       "company",
-      "name companyName companyLogo"
+      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified"
     );
 
     let appliedJobStatusMap = {};
@@ -99,7 +99,7 @@ exports.getJobsEmployer = async (req, res) => {
     }
 
     const jobs = await Job.find({ company: userId })
-      .populate("company", "name companyName companyLogo")
+      .populate("company", "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified")
       .lean(); // lean() to makes it a js object
 
     //count applications for each job
@@ -126,7 +126,7 @@ exports.getJobById = async (req, res) => {
     const { userId } = req.query;
     const job = await Job.findById(req.params.id).populate(
       "company",
-      "name companyName companyLogo avatar email companyDescription"
+      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified"
     );
     if (!job) {
       return res.status(404).json({ message: "Job not found" });

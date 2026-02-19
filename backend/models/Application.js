@@ -8,14 +8,19 @@ const applicationSchema = new mongoose.Schema(
       ref: "User",
       required: true,
     },
-    resume: { type: String }, // can store uploaded version or link
+    resume: { type: String },
     status: {
       type: String,
-      enum: ["Applied", "In Review", "Rejected", "Hired"],
+      enum: ["Applied", "In Interview", "Rejected", "Hired"],
       default: "Applied",
     },
+    cosineSimilarity: {
+      type: Number,
+      required: true,
+      default: 0,
+    },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
 module.exports = mongoose.model("Application", applicationSchema);
