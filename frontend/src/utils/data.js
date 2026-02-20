@@ -68,12 +68,18 @@ export const employerFeatures = [
 ];
 
 // Navigation items configuration
-export const NAVIGATION_MENU = [
+export const NAVIGATION_MENU_EMPLOYER = [
   { id: "employer-dashboard", name: "Dashboard", icon: LayoutDashboard },
   { id: "employer-profile", name: "Company Profile", icon: Building2 },
   { id: "manage-jobs", name: "Manage Jobs", icon: BriefcaseBusiness },
   { id: "post-job", name: "Post Job", icon: Plus },
   { id: "EmployerChatBox", name: "Messages", icon: MessageSquare },
+];
+export const NAVIGATION_MENU_ADMIN = [
+  { id: "admin-dashboard", name: "Dashboard", icon: LayoutDashboard },
+  { id: "admin-users", name: "Manage Users", icon: Users },
+  { id: "admin-jobs", name: "Manage Jobs", icon: BriefcaseBusiness },
+  { id: "admin-chat", name: "Messages", icon: MessageSquare },
 ];
 // Categories and job types
 export const CATEGORIES = [

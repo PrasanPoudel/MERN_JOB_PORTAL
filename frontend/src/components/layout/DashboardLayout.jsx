@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { Building2, LogOut, Menu, X } from "lucide-react";
+import { Building2, Home, LogOut, Menu, X } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
-import { NAVIGATION_MENU } from "../../utils/data";
+import {
+  NAVIGATION_MENU_EMPLOYER,
+  NAVIGATION_MENU_ADMIN,
+} from "../../utils/data";
 import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -135,18 +138,37 @@ const DashboardLayout = ({ activeMenu, children }) => {
         </Link>
 
         {/* Navigation */}
-        <nav className="p-4 space-y-2" id="navigation">
-          {NAVIGATION_MENU.map((item) => (
-            <NavigationItem
-              key={item.id}
-              item={item}
-              isActive={activeNavItem === item.id}
-              onClick={handleNavigation}
-              isCollapsed={sidebarCollapsed}
-              unreadCount={item.id === "EmployerChatBox" ? unreadCount : 0}
-            />
-          ))}
-        </nav>
+
+        {user?.role === "employer" && (
+          <nav className="p-4 space-y-2" id="navigation">
+            {NAVIGATION_MENU_EMPLOYER.map((item) => (
+              <NavigationItem
+                key={item.id}
+                item={item}
+                isActive={activeNavItem === item.id}
+                onClick={handleNavigation}
+                isCollapsed={sidebarCollapsed}
+                unreadCount={item.id === "EmployerChatBox" ? unreadCount : 0}
+              />
+            ))}
+          </nav>
+        )}
+
+        {user?.role === "admin" && (
+          <nav className="p-4 space-y-2" id="navigation">
+            {NAVIGATION_MENU_ADMIN.map((item) => (
+              <NavigationItem
+                key={item.id}
+                item={item}
+                isActive={activeNavItem === item.id}
+                onClick={handleNavigation}
+                isCollapsed={sidebarCollapsed}
+                unreadCount={item.id === "admin-chat" ? unreadCount : 0}
+              />
+            ))}
+          </nav>
+        )}
+
         <div className="absolute bottom-4 left-4 right-4">
           <button
             className="w-full flex items-center px-3 py-2.5 font-medium rounded-lg text-gray-600 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200  cursor-pointer"
@@ -197,28 +219,42 @@ const DashboardLayout = ({ activeMenu, children }) => {
               </p>
             </div>
           </div>
-
-          <div
-            onClick={() => {
-              navigate("/employer-profile");
-            }}
-            className="flex items-center gap-2 lg:p-2 rounded-full lg:rounded-lg h-[80%] overflow-hidden cursor-pointer hover:bg-gray-100 shadow-sm shadow-black/20"
-          >
-            {user?.avatar && (
-              <img
-                src={user?.avatar}
-                className="w-12 h-full object-fill rounded-2xl"
-              />
-            )}
-            <div className="hidden lg:block">
-              <p className="text-gray-900 font-semibold text-sm">
-                {user?.name}
-              </p>
-              <p className="text-xs text-gray-700 font-medium flex items-center gap-2">
-                <Building2 className="w-4 h-4" />
-                {user?.companyName}
-              </p>
-              <p className="text-xs text-gray-600">{user?.email}</p>
+          <div className="flex gap-4 items-center">
+            <Link
+              to="/"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+            >
+              <Home className="w-4 h-4" />
+              <span className="hidden sm:block">Home</span>
+            </Link>
+            <div
+              onClick={() => {
+                navigate(
+                  user?.role === "admin"
+                    ? "/admin-dashboard"
+                    : "/employer-profile",
+                );
+              }}
+              className="flex items-center gap-2 lg:p-2 rounded-full lg:rounded-lg h-[80%] overflow-hidden cursor-pointer hover:bg-gray-100 shadow-sm shadow-black/20"
+            >
+              {user?.avatar && (
+                <img
+                  src={user?.avatar}
+                  className="w-12 h-full object-fill rounded-2xl"
+                />
+              )}
+              <div className="hidden lg:block">
+                <p className="text-gray-900 font-semibold text-sm">
+                  {user?.name}
+                </p>
+                {user?.role === "employer" && (
+                  <p className="text-xs text-gray-700 font-medium flex items-center gap-2">
+                    <Building2 className="w-4 h-4" />
+                    {user?.companyName}
+                  </p>
+                )}
+                <p className="text-xs text-gray-600">{user?.email}</p>
+              </div>
             </div>
           </div>
         </header>

@@ -40,22 +40,31 @@ const Header = () => {
 
           <div className="flex items-center space-x-3">
             {user && user?.role === "jobSeeker" && (
-            <Link
-              to="/find-jobs"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <Search className="h-4 w-4 " />
-              Search for jobs
-            </Link>
+              <Link
+                to="/find-jobs"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <Search className="h-4 w-4 " />
+                <span className="hidden sm:block">Search for jobs</span>
+              </Link>
             )}
             {user && user?.role === "employer" && (
-            <Link
-              to="/find-jobs"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <LayoutDashboard className="h-4 w-4 " />
-              Dashboard
-            </Link>
+              <Link
+                to="/find-jobs"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <LayoutDashboard className="h-4 w-4 " />
+                <span className="hidden sm:block">Dashboard</span>
+              </Link>
+            )}
+            {user && user?.role === "admin" && (
+              <Link
+                to="/admin-dashboard"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <LayoutDashboard className="h-4 w-4 " />
+                Dashboard
+              </Link>
             )}
             {isAuthenticated ? (
               <div id="profileDropdown" className="flex items-center space-x-3">
@@ -69,7 +78,7 @@ const Header = () => {
                   avatar={user?.avatar || null}
                   companyName={user?.companyName || ""}
                   email={user?.email || ""}
-                  role={user?.role || "jobSeeker"}
+                  role={user?.role || ""}
                   companyLogo={user?.companyLogo || null}
                   onLogout={logout}
                 />

@@ -10,6 +10,10 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
 
+import AdminDashboard from "./pages/Admin/AdminDashboard";
+import AdminJobManagement from "./pages/Admin/AdminJobManagement";
+import AdminUserManagement from "./pages/Admin/AdminUserManagement";
+
 import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
 import JobDetails from "./pages/JobSeeker/JobDetails";
 import SavedJobs from "./pages/JobSeeker/SavedJobs";
@@ -23,6 +27,7 @@ import ManageJobs from "./pages/Employer/ManageJobs";
 import ApplicationViewer from "./pages/Employer/ApplicationViewer";
 import EmployerProfilePage from "./pages/Employer/EmployerProfilePage";
 
+import AdminChatBox from "./pages/Chat/AdminChatBox";
 import EmployerChatBox from "./pages/Chat/EmployerChatBox";
 import JobSeekerChatBox from "./pages/Chat/JobSeekerChatBox";
 
@@ -65,6 +70,13 @@ const App = () => {
             <Route path="/manage-jobs" element={<ManageJobs />} />
             <Route path="/applicants" element={<ApplicationViewer />} />
             <Route path="/employer-profile" element={<EmployerProfilePage />} />
+          </Route>
+
+          <Route element={<ProtectedRoute requiredRole="admin" />}>
+            <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/admin-users" element={<AdminUserManagement />} />
+            <Route path="/admin-jobs" element={<AdminJobManagement />} />
+            <Route path="/admin-chat" element={<AdminChatBox />} />
           </Route>
 
           <Route path="/find-jobs" element={<JobSeekerDashboard />} />

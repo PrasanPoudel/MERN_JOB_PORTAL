@@ -4,6 +4,8 @@ const {
   getConversation,
   getConversationsV2,
   getTotalUnreadCount,
+  getUserAdminMessages,
+  sendMessageToAdmin,
 } = require("../controllers/messageController");
 const { protect } = require("../middlewares/authMiddleware");
 
@@ -20,5 +22,11 @@ router.get("/conversations", protect, getConversationsV2);
 
 // Get total unread count
 router.get("/unread-count", protect, getTotalUnreadCount);
+
+// Get admin messages for current user
+router.get("/admin-messages", protect, getUserAdminMessages);
+
+// Send message to admin
+router.post("/send-to-admin", protect, sendMessageToAdmin);
 
 module.exports = router;

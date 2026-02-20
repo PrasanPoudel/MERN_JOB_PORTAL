@@ -237,3 +237,63 @@ exports.getTotalUnreadCount = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Get user's admin messages
+exports.getUserAdminMessages = async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    // Get all messages between user and admin
+    const messages = await Message.find({
+      $or: [
+        { sender: userId, isAdminMessage: true },
+        { recipient: userId, senderRole: "admin", isAdminMessage: true },
+      ],
+      application: null,
+    })
+      .populate("sender", "name avatar email role")
+      .populate("recipient", "name avatar email role")
+      .sort({ createdAt: 1 });
+
+    // Mark messages as read for the current user
+    await Message.updateMany(
+      { recipient: userId, senderRole: "admin", isAdminMessage: true },
+      { read: true },
+    );
+
+    res.json(messages);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Send message to admin (for users)
+exports.sendMessageToAdmin = async (req, res) => {
+  try {
+    const { content } = req.body;
+
+    // Get admin
+    const admin = await User.findOne({ role: "admin" });
+    if (!admin) {
+      return res.status(404).json({ message: "Admin not found" });
+    }
+
+    // Create message
+    const message = await Message.create({
+      application: null,
+      sender: req.user._id,
+      senderRole: req.user.role,
+      recipient: admin._id,
+      content,
+      isAdminMessage: true,
+    });
+
+    // Populate message before sending
+    await message.populate("sender", "name avatar");
+    await message.populate("recipient", "name avatar");
+
+    res.status(201).json(message);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
