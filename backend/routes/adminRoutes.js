@@ -1,0 +1,27 @@
+const express = require("express");
+const router = express.Router();
+const { protect } = require("../middlewares/authMiddleware");
+const adminController = require("../controllers/adminController");
+
+// Existing routes (implemented by teammate)
+router.get("/stats", protect, adminController.getAdminStats);
+router.get("/users", protect, adminController.getAllUsers);
+router.get("/users/:id", protect, adminController.getUserById);
+router.delete("/users/:id", protect, adminController.deleteUser);
+router.get("/jobs", protect, adminController.getAllJobs);
+router.delete("/jobs/:id", protect, adminController.deleteJobByAdmin);
+
+// Admin messaging
+router.post("/messages/send", protect, adminController.sendAdminMessage);
+router.get("/messages/conversations", protect, adminController.getAdminConversations);
+router.get("/messages/conversation/:userId", protect, adminController.getAdminConversation);
+
+// TODO: New routes to be implemented
+// router.put("/users/:id/ban", protect, adminController.banUser);
+// router.put("/users/:id/unban", protect, adminController.unbanUser);
+// router.put("/jobs/:id/flag", protect, adminController.flagJob);
+// router.get("/companies/pending", protect, adminController.getPendingCompanies);
+// router.put("/companies/:id/verify", protect, adminController.verifyCompany);
+// router.get("/risk-metrics", protect, adminController.getRiskMetrics);
+
+module.exports = router;

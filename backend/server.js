@@ -13,6 +13,8 @@ const applicationRoutes = require("./routes/applicationRoutes");
 const savedJobRoutes = require("./routes/savedJobRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const messageRoutes = require("./routes/messageRoutes");
+const adminRoutes = require("./routes/adminRoutes");
+const notificationRoutes = require("./routes/notificationRoutes");
 
 const app = express();
 app.use(
@@ -42,13 +44,10 @@ app.use("/api/save-jobs", savedJobRoutes);
 app.use("/api/analytics", analyticsRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/admin", adminRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 //Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
-
-
-app.use("/api/admin",adminRoutes);
-app.use("/api/notifications",notificationRoutes)
 //Start Server
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {

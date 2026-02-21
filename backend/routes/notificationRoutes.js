@@ -1,9 +1,10 @@
-import express from "express";
-import * as notificationController from "../controllers/notificationController.js";
-
+const express = require("express");
 const router = express.Router();
 
-router.post("/send-email", notificationController.sendEmail);
-router.get("/logs", notificationController.getLogs);
+// TODO: Implement notification controller
+// const notificationController = require("../controllers/notificationController");
 
-export default router;
+// router.post("/send-email", notificationController.sendEmail);
+// router.get("/logs", notificationController.getLogs);
+
+module.exports = router;
