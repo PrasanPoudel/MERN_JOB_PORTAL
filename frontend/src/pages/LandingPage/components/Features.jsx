@@ -1,80 +1,54 @@
-import React from "react";
-import { employerFeatures, jobSeekerFeatures } from "../../../utils/data";
+import { Target, TrendingUp, Shield, Sparkles } from "lucide-react";
 
 const Features = () => {
+  const features = [
+    {
+      icon: <Target className="w-6 h-6" />,
+      title: "Smart Matching",
+      description: "AI-powered job recommendations tailored to your skills and preferences"
+    },
+    {
+      icon: <Shield className="w-6 h-6" />,
+      title: "Fraud Protection",
+      description: "Every job listing is verified and fraud-scored for your safety"
+    },
+    {
+      icon: <TrendingUp className="w-6 h-6" />,
+      title: "Career Growth",
+      description: "Track applications and get insights to improve your job search"
+    },
+    {
+      icon: <Sparkles className="w-6 h-6" />,
+      title: "Premium Features",
+      description: "Unlock unlimited applications and priority recommendations"
+    }
+  ];
+
   return (
-    <section className="py-20 bg-white relative overflow-hidden">
-      <div className="container mx-auto px-4 max-w-6xl relative z-10">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-            Everything You Need to
-            <span className="block bg-linear-to-r from-sky-600 to-purple-600 bg-clip-text text-transparent">
-              Succeed
-            </span>
+    <section className="py-16 px-4 bg-white">
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-12">
+          <p className="text-sky-600 text-xs font-bold tracking-widest uppercase mb-3">
+            Why Choose Us
+          </p>
+          <h2 className="font-extrabold text-3xl sm:text-4xl text-gray-900 mb-4">
+            Built for Nepal's Job Market
           </h2>
-          <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Whether you're looking for your next opportunity or some talented
-            candidate, we have the tools and features to make it happen.
+          <p className="text-gray-500 text-sm max-w-2xl mx-auto">
+            Everything you need to find your dream job or hire the perfect candidate
           </p>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-16 lg:gap-24">
-          <div>
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                For Job Seeker
-              </h3>
-              <div className="w-24 h-1 bg-sky-600 mx-auto rounded-full "></div>
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {features.map((feature, idx) => (
+            <div key={idx} className="p-6 rounded-xl border border-gray-200 hover:border-sky-300 hover:shadow-lg transition-all">
+              <div className="w-12 h-12 bg-sky-100 rounded-lg flex items-center justify-center text-sky-600 mb-4">
+                {feature.icon}
+              </div>
+              <h3 className="font-bold text-lg text-gray-900 mb-2">{feature.title}</h3>
+              <p className="text-gray-600 text-sm">{feature.description}</p>
             </div>
-            <div className="space-y-8">
-              {jobSeekerFeatures.map((feature, index) => (
-                <div
-                  key={index}
-                  className="flex flex-col space-x-4 p-6 rounded-2xl hover:bg-sky-50 transition-all duration-200 cursor-pointer"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                    <div className="shrink-0 w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center group-hover:bg-sky-200 transition-colors">
-                      <feature.icon className="w-6 h-6 text-sky-600" />
-                    </div>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-2">
-                      {feature.title}
-                    </h4>
-                  </div>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
-          <div>
-            <div className="text-center mb-12">
-              <h3 className="text-3xl font-bold text-gray-900 mb-4">
-                For Job Seeker
-              </h3>
-              <div className="w-24 h-1 bg-purple-600 hover:bg-purple mx-auto rounded-full "></div>
-            </div>
-            <div className="space-y-8">
-              {employerFeatures.map((feature, index) => (
-                <div
-                  key={index}
-                  className="items-start space-x-4 p-6 rounded-2xl hover:bg-purple-50 transition-all duration-200 cursor-pointer"
-                >
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-4">
-                    <div className="shrink-0 w-12 h-12 bg-purple-100 rounded-xl flex items-center justify-center group-hover:bg-purple-200 transition-colors">
-                      <feature.icon className="w-6 h-6 text-purple-600" />
-                    </div>
-                    <h4 className="text-xl font-semibold text-gray-900 mb-2">
-                      {feature.title}
-                    </h4>
-                  </div>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </div>
-              ))}
-            </div>
-          </div>
+          ))}
         </div>
       </div>
     </section>

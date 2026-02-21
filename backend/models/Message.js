@@ -5,7 +5,7 @@ const messageSchema = new mongoose.Schema(
     application: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "Application",
-      required: true,
+      default: null,
     },
     sender: {
       type: mongoose.Schema.Types.ObjectId,
@@ -14,7 +14,7 @@ const messageSchema = new mongoose.Schema(
     },
     senderRole: {
       type: String,
-      enum: ["jobSeeker", "employer"],
+      enum: ["jobSeeker", "employer", "admin"],
       required: true,
     },
     recipient: {
@@ -27,6 +27,10 @@ const messageSchema = new mongoose.Schema(
       required: true,
     },
     read: {
+      type: Boolean,
+      default: false,
+    },
+    isAdminMessage: {
       type: Boolean,
       default: false,
     },

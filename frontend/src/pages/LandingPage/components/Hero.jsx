@@ -1,66 +1,177 @@
-import React from "react";
-import { motion } from "framer-motion";
-import { Search, ArrowRight, Users, Building2, TrendingUp } from "lucide-react";
-import { useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import {
+  Zap,
+  ShieldCheck,
+  UserCheck,
+  Briefcase,
+  MessageCircle,
+  LayoutDashboard,
+  Search,
+  ArrowRight,
+  Check,
+} from "lucide-react";
+import { Link } from "react-router-dom";
+import HeroBanner from "/recruitment-agency-searching-job-candidates.avif";
 import { useAuth } from "../../../context/AuthContext";
+import axiosInstance from "../../../utils/axiosInstance";
+import { API_PATHS } from "../../../utils/apiPaths";
+
+const features = [
+  {
+    icon: <Check className="text-sky-600 w-5 h-5" />,
+    title: "Job Notification",
+    description:
+      "Premium user can get instant job notification whenever a job from preferred job choice category is posted",
+  },
+  {
+    icon: <MessageCircle className="text-sky-600 w-5 h-5" />,
+    title: "Secured Communication",
+    description:
+      "Properly secured communication channel between job seekers and employer",
+  },
+  {
+    icon: <Zap className="text-sky-600 w-5 h-5" />,
+    title: "One-Click Apply",
+    description: "Apply to jobs instantly",
+  },
+  {
+    icon: <ShieldCheck className="text-sky-600 w-5 h-5" />,
+    title: "Verified Employers",
+    description: "All companies are properly verified thoroughly",
+  },
+];
+
+const jobCategories = [
+  "Web Developer",
+  "Data Analyst",
+  "Product Manager",
+  "UI/UX Designer",
+  "Software Engineer",
+];
 
 const Hero = () => {
-  const { user, isAuthenticated } = useAuth();
-  const navigate = useNavigate();
+  const { user } = useAuth();
+  const [dashboardData, setDashboardData] = useState(null);
+
+  const getAdminStats = async () => {
+    try {
+      const response = await axiosInstance.get(API_PATHS.ADMIN.GET_STATS);
+      if (response.status === 200) {
+        setDashboardData(response.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  useEffect(() => {
+    getAdminStats();
+  }, []);
+
   return (
-    <section className="flex pt-24 pb-16 bg-white min-h-screen items-center">
-      <div className="container mx-auto px-4">
-        <div className="max-w-4xl mx-auto text-center">
-          <motion.h1
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8 }}
-            className="text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 mb-6 leading-tight pt-10"
-          >
-            Find Your Dream Job
-          </motion.h1>
-          <motion.p
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="text-xl text-gray-600 mb-12 max-w-2xl mx-auto leading-relaxed"
-          >
-            Connect talanted professionals with companies. Your next career move
-            or perfect candidate is just few clicks away.
-          </motion.p>
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-16"
-          >
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => navigate("/find-jobs")}
-              className="group flex bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl font-semibold text-lg transition-all duration-200 shadow-lg hover:shadow-xl items-center space-x-2"
-            >
-              <Search className="w-5 h-5" />
-              <span>Find Jobs</span>
-              <ArrowRight className="w-5 h-5 group hover:translate-x-1 transition-transform" />
-            </motion.button>
-            {user?.role === "employer" && (
-              <motion.button
-                whileHover={{ scale: 1.02 }}
-                whileTap={{ scale: 0.98 }}
-                className="bg-white border-2 border-gray-200 text-gray-700 px-8 py-4 rounded-xl font-semibold text-lg hover:border-gray-300 hover:bg-gray-50 transition-all duration-200 shadow-sm hover:shadow-md"
-                onClick={() => {
-                  navigate(
-                    isAuthenticated && user?.role === "employer"
-                      ? "/employer-dashboard"
-                      : "/login"
-                  );
-                }}
+    <section className="relative mt-16 py-20 overflow-hidden bg-gradient-to-br from-sky-50 via-white to-blue-50">
+      <div className="absolute inset-0 overflow-hidden">
+        <div className="absolute top-20 right-0 w-96 h-96 bg-sky-200 rounded-full opacity-20 blur-3xl"></div>
+        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200 rounded-full opacity-20 blur-3xl"></div>
+      </div>
+
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        <div className="grid lg:grid-cols-2 gap-12 items-center">
+          <div className="text-center lg:text-left">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-100 text-sky-700 rounded-full text-sm font-semibold mb-6">
+              #KAAMSETU
+            </div>
+
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+              Where Careers Meet
+              <span className="text-sky-600"> Opportunities</span>
+            </h1>
+
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+              Connecting people with opportunities through Nepal's own job portal
+            </p>
+
+            <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
+              <Link
+                to="/find-jobs"
+                className="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
               >
-                <span>Post Jobs</span>
-              </motion.button>
-            )}
-          </motion.div>
+                <Search className="w-5 h-5" />
+                Explore Jobs
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              {user && user?.role === "employer" && (
+                <Link
+                  to="/employer-dashboard"
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-sky-300 transition-all shadow-lg"
+                >
+                  <LayoutDashboard className="w-5 h-5" />
+                  Go to Dashboard
+                </Link>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0">
+              {features.map((feature, index) => (
+                <div key={index} className="flex items-start gap-2">
+                  <div className="bg-sky-100 p-1.5 rounded-lg shrink-0">
+                    {feature.icon}
+                  </div>
+                  <div>
+                    <h3 className="font-semibold text-sm text-gray-900">{feature.title}</h3>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
+
+          <div className="relative">
+            <div className="relative">
+              <img
+                src={HeroBanner}
+                alt="Job search illustration"
+                className="w-full h-auto rounded-2xl shadow-2xl"
+              />
+              
+              <div className="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-xl">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
+                    <UserCheck className="w-6 h-6 text-green-600" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">Total Active Users</div>
+                    <div className="text-lg font-bold text-gray-900">{dashboardData?.counts?.totalUsers || "10+"}</div>
+                  </div>
+                </div>
+              </div>
+
+              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl">
+                <div className="flex items-center gap-3">
+                  <div className="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
+                    <Briefcase className="w-6 h-6 text-sky-600" />
+                  </div>
+                  <div>
+                    <div className="text-xs text-gray-500">Jobs Available</div>
+                    <div className="text-lg font-bold text-gray-900">{dashboardData?.counts?.totalActiveJobs || "100+"}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div className="mt-20 text-center">
+          <p className="text-gray-500 text-sm mb-5">Popular searches:</p>
+          <div className="flex flex-wrap justify-center gap-2">
+            {jobCategories.map((category, index) => (
+              <span
+                key={index}
+                className="inline-block bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium hover:bg-sky-50 hover:border-sky-200 transition-colors shadow-sm cursor-pointer"
+              >
+                {category}
+              </span>
+            ))}
+          </div>
         </div>
       </div>
     </section>

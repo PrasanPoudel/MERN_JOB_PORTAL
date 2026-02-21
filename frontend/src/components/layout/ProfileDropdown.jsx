@@ -52,7 +52,7 @@ const ProfileDropdown = ({
         <div className="hidden md:block text-left">
           <p className="text-sm font-medium text-gray-900">{name}</p>
           <p className="text-xs text-gray-600">
-            {role === "employer" ? "Employer" : "Job Seeker"}
+            {role === "employer" ? "Employer" : role === "admin" ? "Admin" : "Job Seeker"}
           </p>
         </div>
 

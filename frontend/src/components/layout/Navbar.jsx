@@ -70,6 +70,12 @@ const Navbar = () => {
                 <span className="hidden md:flex">Dashboard</span>
               </NavLink>
             )}
+            {user && user?.role === "admin" && (
+              <NavLink to="/admin-dashboard" className={navLinkClasses}>
+                <LayoutDashboard className="h-5 w-5" />
+                <span className="hidden md:flex">Dashboard</span>
+              </NavLink>
+            )}
             {user && user?.role === "jobSeeker" && (
               <>
                 <NavLink to="/find-jobs" className={navLinkClasses}>
@@ -89,6 +95,20 @@ const Navbar = () => {
                   <span className="hidden md:flex">Messages</span>
                 </NavLink>
               </>
+            )}
+
+            {user && user?.role === "admin" && (
+              <NavLink to="/admin-chat" className={navLinkClasses}>
+                <div className="relative">
+                  <MessageSquare className="h-5 w-5" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </div>
+                <span className="hidden md:flex">Messages</span>
+              </NavLink>
             )}
 
             {isAuthenticated ? (

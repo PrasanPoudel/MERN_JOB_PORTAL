@@ -35,6 +35,21 @@ export const API_PATHS = {
     GET_CONVERSATION: (id) => `/api/messages/conversation/${id}`,
     GET_CONVERSATIONS: "/api/messages/conversations",
     GET_UNREAD_COUNT: "/api/messages/unread-count",
+    GET_ADMIN_MESSAGES: "/api/messages/admin-messages",
+    SEND_TO_ADMIN: "/api/messages/send-to-admin",
+  },
+  ADMIN: {
+    GET_STATS: "/api/admin/stats",
+    GET_ALL_USERS: "/api/admin/users",
+    GET_USER_BY_ID: (id) => `/api/admin/users/${id}`,
+    DELETE_USER: (id) => `/api/admin/users/${id}`,
+    GET_ALL_JOBS: "/api/admin/jobs",
+    DELETE_JOB: (id) => `/api/admin/jobs/${id}`,
+    SEND_ADMIN_MESSAGE: "/api/admin/messages/send",
+    GET_ADMIN_CONVERSATIONS: "/api/admin/messages/conversations",
+    GET_ADMIN_CONVERSATION: (userId) =>
+      `/api/admin/messages/conversation/${userId}`,
+    SEND_USER_REPLY: "/api/admin/messages/reply",
   },
   FILE: {
     UPLOAD_FILE: "/api/auth/upload-file", //upload profile picture

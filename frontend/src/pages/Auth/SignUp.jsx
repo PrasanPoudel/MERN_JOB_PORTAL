@@ -180,7 +180,7 @@ const SignUp = () => {
             Account Created!
           </h2>
           <p className="text-gray-600 mb-4">
-            Welcome to KARYASETU! Your account has been successfully created
+            Welcome to KAAMSETU! Your account has been successfully created
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
           <p className="text-sm text-gray-500 mt-2">

@@ -33,29 +33,38 @@ const Header = () => {
       className="fixed top-0 left-0 z-40 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50"
     >
       <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+        <div className="flex items-center justify-between h-20">
           <Link className="flex items-center p-0" to="/find-jobs">
-            <img src={logo} className="w-20 h-full" />
+            <img src={logo} className="w-20 h-18" />
           </Link>
 
           <div className="flex items-center space-x-3">
             {user && user?.role === "jobSeeker" && (
-            <Link
-              to="/find-jobs"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <Search className="h-4 w-4 " />
-              Search for jobs
-            </Link>
+              <Link
+                to="/find-jobs"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <Search className="h-4 w-4 " />
+                <span className="hidden sm:block">Search for jobs</span>
+              </Link>
             )}
             {user && user?.role === "employer" && (
-            <Link
-              to="/find-jobs"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <LayoutDashboard className="h-4 w-4 " />
-              Dashboard
-            </Link>
+              <Link
+                to="/find-jobs"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <LayoutDashboard className="h-4 w-4 " />
+                <span className="hidden sm:block">Dashboard</span>
+              </Link>
+            )}
+            {user && user?.role === "admin" && (
+              <Link
+                to="/admin-dashboard"
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <LayoutDashboard className="h-4 w-4 " />
+                Dashboard
+              </Link>
             )}
             {isAuthenticated ? (
               <div id="profileDropdown" className="flex items-center space-x-3">
@@ -69,7 +78,7 @@ const Header = () => {
                   avatar={user?.avatar || null}
                   companyName={user?.companyName || ""}
                   email={user?.email || ""}
-                  role={user?.role || "jobSeeker"}
+                  role={user?.role || ""}
                   companyLogo={user?.companyLogo || null}
                   onLogout={logout}
                 />
