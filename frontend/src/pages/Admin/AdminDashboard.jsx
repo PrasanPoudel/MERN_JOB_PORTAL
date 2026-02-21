@@ -35,19 +35,19 @@ const AdminDashboard = () => {
       title: "Manage Users",
       icon: Users,
       color: "bg-sky-50 text-sky-700",
-      path: "/admin-users",
+      path: "/admin-users-management",
     },
     {
       title: "Manage Jobs",
       icon: BriefcaseBusiness,
       color: "bg-green-50 text-green-700",
-      path: "/admin-jobs",
+      path: "/admin-jobs-management",
     },
     {
       title: "Admin Messages",
       icon: MessageSquare,
       color: "bg-purple-50 text-purple-700",
-      path: "/admin-chat",
+      path: "/admin-chat-box",
     },
   ];
 

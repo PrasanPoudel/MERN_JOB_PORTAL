@@ -12,7 +12,16 @@ import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
 import { StatusBadge } from "../StatusBadge";
 
-const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply, hideSaveButton }) => {
+const JobCard = ({
+  hideShadow = false,
+  job,
+  onClick,
+  onToggleSave,
+  onApply,
+  saved,
+  hideApply,
+  hideSaveButton,
+}) => {
   const { user } = useAuth();
 
   const formatSalary = (num) => {
@@ -24,7 +33,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply, hideSa
   return (
     <div
       onClick={onClick}
-      className="bg-white mx-auto min-w-full min-h-60 rounded-2xl border border-gray-200 p-5 hover:shadow-md hover:shadow-gray-200 transition-all duration-200 cursor-pointer group flex flex-col justify-between"
+      className={`bg-white mx-auto min-w-full min-h-60 rounded-2xl border border-gray-200 p-5 ${!hideShadow && "hover:shadow-md "}hover:shadow-gray-200 transition-all duration-200 cursor-pointer group flex flex-col justify-between`}
     >
       {/* Top section */}
       <div>
@@ -64,10 +73,10 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply, hideSa
               job?.type === "Full-Time"
                 ? "bg-green-100 text-green-800"
                 : job?.type === "Part-Time"
-                ? "bg-yellow-100 text-yellow-800"
-                : job?.type === "Contract"
-                ? "bg-purple-100 text-purple-800"
-                : "bg-sky-100 text-sky-800"
+                  ? "bg-yellow-100 text-yellow-800"
+                  : job?.type === "Contract"
+                    ? "bg-purple-100 text-purple-800"
+                    : "bg-sky-100 text-sky-800"
             }`}
           >
             {job?.type}
@@ -94,7 +103,7 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply, hideSa
           NPR {formatSalary(job.salaryMin)}
         </p>
         <div className="flex items-center justify-end gap-2">
-          {(user && user?.role ==="jobSeeker" && !hideSaveButton) && (
+          {user && user?.role === "jobSeeker" && !hideSaveButton && (
             <button
               onClick={(e) => {
                 e.stopPropagation();
@@ -110,7 +119,8 @@ const JobCard = ({ job, onClick, onToggleSave, onApply, saved, hideApply, hideSa
             </button>
           )}
 
-          {(!saved && user?.role ==="jobSeeker" ) &&
+          {!saved &&
+            user?.role === "jobSeeker" &&
             (job?.applicationStatus ? (
               <StatusBadge status={job?.applicationStatus} />
             ) : (

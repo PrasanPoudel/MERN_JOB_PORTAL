@@ -217,7 +217,7 @@ exports.getAllJobs = async (req, res) => {
     }
 
     const jobs = await Job.find(query)
-      .populate("company", "name companyName email")
+      .populate("company", "name companyName email companyLogo")
       .sort({ createdAt: -1 });
 
     res.json(jobs);

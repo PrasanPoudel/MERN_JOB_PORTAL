@@ -1,21 +1,42 @@
 import { useEffect, useState } from "react";
-import { Trash2, Mail, Eye, Crown, Loader } from "lucide-react";
+import {
+  Trash2,
+  Crown,
+  Loader,
+  Users,
+  Search,
+  X,
+  MapPin,
+  Building2,
+  Calendar,
+  FileText,
+  Bookmark,
+  BriefcaseBusiness,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import LoadingSpinner from "../../components/LoadingSpinner";
 import toast from "react-hot-toast";
 
 const AdminUserManagement = () => {
   const navigate = useNavigate();
+
   const [users, setUsers] = useState([]);
   const [filteredUsers, setFilteredUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
+  const [confirmDeleteUser, setConfirmDeleteUser] = useState(null);
   const [deleting, setDeleting] = useState(false);
+
+  // Pagination
+  const itemsPerPage = 9;
+  const [currentPage, setCurrentPage] = useState(1);
+  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
+  const startIndex = (currentPage - 1) * itemsPerPage;
+  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
 
   const getAllUsers = async () => {
     try {
@@ -25,8 +46,7 @@ const AdminUserManagement = () => {
         setUsers(response.data);
         setFilteredUsers(response.data);
       }
-    } catch (err) {
-      console.error(err);
+    } catch {
       toast.error("Failed to fetch users");
     } finally {
       setIsLoading(false);
@@ -41,167 +61,319 @@ const AdminUserManagement = () => {
     let filtered = users;
 
     if (roleFilter !== "all") {
-      filtered = filtered.filter((user) => user.role === roleFilter);
+      filtered = filtered.filter((u) => u.role === roleFilter);
     }
 
     if (searchTerm) {
       filtered = filtered.filter(
-        (user) =>
-          user.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          user.email.toLowerCase().includes(searchTerm.toLowerCase()),
+        (u) =>
+          u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+          u.email?.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
     setFilteredUsers(filtered);
+    setCurrentPage(1); // Reset to first page on filter change
   }, [searchTerm, roleFilter, users]);
 
   const handleDeleteUser = async (userId) => {
-    if (!window.confirm("Are you sure you want to delete this user?")) return;
-
     try {
       setDeleting(true);
       await axiosInstance.delete(API_PATHS.ADMIN.DELETE_USER(userId));
       toast.success("User deleted successfully");
-      setUsers(users.filter((u) => u._id !== userId));
+      setUsers((prev) => prev.filter((u) => u._id !== userId));
       setSelectedUser(null);
+      setConfirmDeleteUser(null);
     } catch (err) {
-      console.error(err);
       toast.error(err.response?.data?.message || "Failed to delete user");
     } finally {
       setDeleting(false);
     }
   };
 
-  const handleViewProfile = (userId) => {
-    setSelectedUser(userId);
+  const handleMessageUser = (userId) => {
+    navigate(`/admin-chat-box?userId=${userId}`);
   };
 
-  const handleMessageUser = (userId) => {
-    navigate(`/admin-chat?userId=${userId}`);
+  const getPaginationPages = (currentPage, totalPages) => {
+    const pages = [];
+    const delta = 2;
+
+    const left = Math.max(2, currentPage - delta);
+    const right = Math.min(totalPages - 1, currentPage + delta);
+
+    pages.push(1);
+
+    if (left > 2) {
+      pages.push("...");
+    }
+
+    for (let i = left; i <= right; i++) {
+      pages.push(i);
+    }
+
+    if (right < totalPages - 1) {
+      pages.push("...");
+    }
+
+    if (totalPages > 1) {
+      pages.push(totalPages);
+    }
+
+    return pages;
   };
 
   return (
-    <DashboardLayout activeMenu="admin-users">
-      {isLoading ? (
-        <LoadingSpinner />
-      ) : (
-        <div className="max-w-7xl mx-auto p-4">
-          <div className="mb-6">
-            <h1 className="text-3xl font-bold text-gray-900 mb-4">
+    <DashboardLayout activeMenu="admin-users-management">
+      {selectedUser && (
+        <UserModal
+          userId={selectedUser}
+          onClose={() => setSelectedUser(null)}
+          onDelete={(id) => setConfirmDeleteUser(users.find((u) => u._id === id))}
+          onMessage={handleMessageUser}
+        />
+      )}
+
+      {confirmDeleteUser && (
+        <DeleteConfirmationModal
+          user={confirmDeleteUser}
+          deleting={deleting}
+          onCancel={() => setConfirmDeleteUser(null)}
+          onConfirm={handleDeleteUser}
+        />
+      )}
+
+      <div className="max-w-7xl mx-auto p-4">
+        {/* Header */}
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
+          <div>
+            <h1 className="text-xl font-semibold text-gray-900">
               User Management
             </h1>
-
-            {/* Filters */}
-            <div className="flex flex-col sm:flex-row gap-4 mb-6">
-              <input
-                type="text"
-                placeholder="Search by name or email..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="flex-1 px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm"
-              />
-              <select
-                value={roleFilter}
-                onChange={(e) => setRoleFilter(e.target.value)}
-                className="px-4 py-2 border border-gray-200 rounded-lg focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 text-sm"
-              >
-                <option value="all">All Users</option>
-                <option value="jobSeeker">Job Seekers</option>
-                <option value="employer">Employers</option>
-              </select>
-            </div>
+            <p className="text-gray-500 text-sm mt-1">
+              Manage platform users and activity
+            </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-            {/* Users List */}
-            <div className="lg:col-span-2">
-              <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm overflow-hidden">
-                {filteredUsers.length === 0 ? (
-                  <div className="p-12 text-center">
-                    <p className="text-gray-500">No users found</p>
-                  </div>
-                ) : (
-                  <div className="divide-y divide-gray-100">
-                    {filteredUsers.map((user) => (
-                      <div
-                        key={user._id}
-                        onClick={() => handleViewProfile(user._id)}
-                        className={`p-4 hover:bg-gray-50 cursor-pointer transition-colors ${
-                          selectedUser === user._id ? "bg-sky-50" : ""
-                        }`}
-                      >
-                        <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center shrink-0 overflow-hidden">
-                            {user.avatar ? (
-                              <img
-                                src={user.avatar}
-                                alt={user.name}
-                                className="w-full h-full object-cover"
-                              />
-                            ) : (
-                              <span className="text-sky-600 font-semibold text-sm">
-                                {user.name?.charAt(0)}
-                              </span>
-                            )}
-                          </div>
-                          <div className="flex-1 min-w-0">
-                            <div className="flex items-center gap-2">
-                              <p className="font-semibold text-gray-900">
-                                {user.name}
-                              </p>
-                              {user.isPremium && (
-                                <Crown className="w-4 h-4 text-yellow-500" />
-                              )}
-                            </div>
-                            <p className="text-sm text-gray-600">
-                              {user.email}
-                            </p>
-                            <div className="flex gap-2 mt-2">
-                              <span
-                                className={`text-xs font-semibold px-3 py-1 rounded-full ${
-                                  user.role === "employer"
-                                    ? "bg-orange-100 text-orange-700"
-                                    : "bg-blue-100 text-blue-700"
-                                }`}
-                              >
-                                {user.role === "employer"
-                                  ? "Employer"
-                                  : "Job Seeker"}
-                              </span>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                )}
+          <div className="bg-sky-50 text-sky-700 px-4 py-2 rounded-xl text-sm font-semibold">
+            {filteredUsers.length} Users
+          </div>
+        </div>
+
+        {/* Filters */}
+        <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
+          <div className="relative flex-1">
+            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+            <input
+              type="text"
+              placeholder="Search users..."
+              className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent text-sm"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
+          <select
+            className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"
+            value={roleFilter}
+            onChange={(e) => setRoleFilter(e.target.value)}
+          >
+            <option value="all">All Roles</option>
+            <option value="jobSeeker">Job Seekers</option>
+            <option value="employer">Employers</option>
+          </select>
+        </div>
+
+        {/* User Cards */}
+        {isLoading ? (
+          <div className="text-center py-20">
+            <Loader className="animate-spin mx-auto text-sky-600" />
+          </div>
+        ) : filteredUsers.length === 0 ? (
+          <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
+            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+            <p className="text-gray-600 font-medium">No users found</p>
+          </div>
+        ) : (
+          <>
+            {/* Result Summary */}
+            <div className="flex justify-between mb-3">
+              <div className="flex items-center">
+                <p className="text-gray-600 text-sm lg:text-base">
+                  Showing{" "}
+                  <span className="mr-1 font-bold text-gray-900">
+                    {paginatedUsers.length}
+                  </span>
+                  of{" "}
+                  <span className="mr-1 font-bold text-gray-900">
+                    {filteredUsers.length}
+                  </span>
+                  users
+                </p>
               </div>
             </div>
 
-            {/* User Details and Actions */}
-            {selectedUser && (
-              <UserDetailPanel
-                userId={selectedUser}
-                onMessage={handleMessageUser}
-                onDelete={handleDeleteUser}
-                onClose={() => setSelectedUser(null)}
-                deleting={deleting}
-              />
+            <div className="grid gap-6">
+              {paginatedUsers.map((user) => (
+                <div
+                  key={user._id}
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6"
+                >
+                  <div className="flex items-start gap-4">
+                    <div className="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
+                      {user.avatar ? (
+                        <img
+                          src={user.avatar}
+                          alt={user.name}
+                          className="w-full h-full object-cover"
+                        />
+                      ) : (
+                        <span className="text-sky-600 font-bold text-lg">
+                          {user.name?.charAt(0)}
+                        </span>
+                      )}
+                    </div>
+
+                    <div>
+                      <div className="flex items-center gap-2 flex-wrap">
+                        <p className="font-semibold text-gray-900 text-lg">
+                          {user.name}
+                        </p>
+
+                        {user.isPremium && (
+                          <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full flex items-center gap-1">
+                            <Crown className="w-3 h-3" /> Premium
+                          </span>
+                        )}
+
+                        <span
+                          className={`text-xs px-2 py-1 rounded-full font-medium ${
+                            user.role === "employer"
+                              ? "bg-orange-100 text-orange-700"
+                              : "bg-blue-100 text-blue-700"
+                          }`}
+                        >
+                          {user.role === "employer" ? "Employer" : "Job Seeker"}
+                        </span>
+                      </div>
+
+                      <p className="text-sm text-gray-500 mt-1">{user.email}</p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-3 gap-2 py-2 justify-center sm:justify-end">
+                    <button
+                      onClick={() => setSelectedUser(user._id)}
+                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
+                    >
+                      View Details
+                    </button>
+
+                    <button
+                      onClick={() => handleMessageUser(user._id)}
+                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
+                    >
+                      Message
+                    </button>
+
+                    <button
+                      onClick={() => setConfirmDeleteUser(user)}
+                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {/* Pagination */}
+            {filteredUsers.length > itemsPerPage && (
+              <div className="mt-8 flex items-center justify-between pb-16">
+                {/* Mobile pagination */}
+                <div className="flex flex-1 justify-between md:hidden">
+                  <button
+                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    disabled={currentPage === 1}
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Previous
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    disabled={currentPage === totalPages}
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  >
+                    Next
+                  </button>
+                </div>
+
+                {/* Desktop pagination */}
+                <div className="hidden md:flex sm:flex-1 items-center justify-between">
+                  <div>
+                    <p className="text-sm text-gray-700">
+                      Showing{" "}
+                      <span className="font-bold">{startIndex + 1}</span> to{" "}
+                      <span className="font-bold">
+                        {Math.min(startIndex + itemsPerPage, filteredUsers.length)}
+                      </span>{" "}
+                      of <span className="font-bold">{filteredUsers.length}</span>{" "}
+                      results
+                    </p>
+                  </div>
+                  <div>
+                    <nav className="relative z-0 inline-flex shadow-sm -space-x-px rounded-md">
+                      <button
+                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                        disabled={currentPage === 1}
+                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Previous
+                      </button>
+                      {getPaginationPages(currentPage, totalPages).map(
+                        (page, index) =>
+                          page === "..." ? (
+                            <span
+                              key={`dots-${index}`}
+                              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
+                            >
+                              ...
+                            </span>
+                          ) : (
+                            <button
+                              key={page}
+                              onClick={() => setCurrentPage(page)}
+                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                currentPage === page
+                                  ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
+                                  : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                              }`}
+                            >
+                              {page}
+                            </button>
+                          ),
+                      )}
+                      <button
+                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                        disabled={currentPage === totalPages}
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      >
+                        Next
+                      </button>
+                    </nav>
+                  </div>
+                </div>
+              </div>
             )}
-          </div>
-        </div>
-      )}
+          </>
+        )}
+      </div>
     </DashboardLayout>
   );
 };
 
-const UserDetailPanel = ({
-  userId,
-  onMessage,
-  onDelete,
-  onClose,
-  deleting,
-}) => {
+
+const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -210,11 +382,10 @@ const UserDetailPanel = ({
       try {
         setLoading(true);
         const response = await axiosInstance.get(
-          API_PATHS.ADMIN.GET_USER_BY_ID(userId),
+          API_PATHS.ADMIN.GET_USER_BY_ID(userId)
         );
         setUser(response.data);
-      } catch (err) {
-        console.error(err);
+      } catch {
         toast.error("Failed to fetch user details");
       } finally {
         setLoading(false);
@@ -223,161 +394,159 @@ const UserDetailPanel = ({
     fetchUser();
   }, [userId]);
 
-  if (loading) {
-    return (
-      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6 flex items-center justify-center h-96">
-        <Loader className="w-6 h-6 animate-spin text-sky-600" />
-      </div>
-    );
-  }
-
-  if (!user) {
-    return null;
-  }
+  if (!user) return null;
 
   return (
-    <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6 sticky top-20">
-      <div className="flex items-center justify-between mb-4">
-        <h3 className="text-lg font-semibold text-gray-900">User Details</h3>
-        <button onClick={onClose} className="text-gray-400 hover:text-gray-600">
-          ✕
+    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl p-8 relative">
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
+        >
+          <X />
         </button>
-      </div>
 
-      <div className="space-y-4">
-        <div className="flex flex-col items-center text-center mb-6">
-          <div className="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center mb-3 overflow-hidden">
-            {user.avatar ? (
-              <img
-                src={user.avatar}
-                alt={user.name}
-                className="w-full h-full object-cover"
-              />
-            ) : (
-              <span className="text-sky-600 font-semibold text-lg">
-                {user.name?.charAt(0)}
-              </span>
-            )}
-          </div>
-          <p className="font-semibold text-gray-900">{user.name}</p>
-          <p className="text-sm text-gray-600">{user.email}</p>
-        </div>
-
-        <div className="border-t border-gray-200 pt-4">
-          <div className="space-y-3">
-            <div>
-              <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                Role
-              </p>
-              <p className="text-sm text-gray-900 capitalize">
-                {user.role === "employer" ? "Employer" : "Job Seeker"}
-              </p>
-            </div>
-            <div>
-              <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                Status
-              </p>
-              <p className="text-sm">
-                {user.isPremium ? (
-                  <span className="flex items-center gap-2 text-yellow-600">
-                    <Crown className="w-4 h-4" /> Premium User
-                  </span>
+        {loading ? (
+          <Loader className="animate-spin mx-auto text-sky-600" />
+        ) : (
+          <>
+            <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
+              <div className="w-24 h-24 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
+                {user.avatar ? (
+                  <img
+                    src={user.avatar}
+                    alt={user.name}
+                    className="w-full h-full object-cover"
+                  />
                 ) : (
-                  <span className="text-gray-900">Free User</span>
+                  <span className="text-2xl font-bold text-sky-600">
+                    {user.name?.charAt(0)}
+                  </span>
                 )}
-              </p>
+              </div>
+
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+                <p className="text-gray-500">{user.email}</p>
+              </div>
+            </div>
+
+            <div className="grid sm:grid-cols-2 gap-6 mb-8 text-sm">
+              <InfoItem
+                icon={<Users />}
+                label="Role"
+                value={
+                  user.role === "employer"
+                    ? "Employer"
+                    : user.role === "jobSeeker"
+                    ? "Job Seeker"
+                    : "Admin"
+                }
+              />
+              <InfoItem
+                icon={<Calendar />}
+                label="Joined"
+                value={new Date(user.createdAt).toLocaleDateString()}
+              />
+              {user.location && (
+                <InfoItem icon={<MapPin />} label="Location" value={user.location} />
+              )}
+              {user.companyName && (
+                <InfoItem icon={<Building2 />} label="Company" value={user.companyName} />
+              )}
             </div>
 
             {user.stats && (
-              <>
+              <div className="grid sm:grid-cols-2 gap-6 mb-8">
                 {user.role === "jobSeeker" && (
                   <>
-                    <div>
-                      <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                        Applications
-                      </p>
-                      <p className="text-sm text-gray-900">
-                        {user.stats.appliedJobs}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                        Saved Jobs
-                      </p>
-                      <p className="text-sm text-gray-900">
-                        {user.stats.savedJobs}
-                      </p>
-                    </div>
+                    <StatCard icon={<FileText />} label="Applications" value={user.stats.appliedJobs} />
+                    <StatCard icon={<Bookmark />} label="Saved Jobs" value={user.stats.savedJobs} />
                   </>
                 )}
-
                 {user.role === "employer" && (
                   <>
-                    <div>
-                      <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                        Posted Jobs
-                      </p>
-                      <p className="text-sm text-gray-900">
-                        {user.stats.postedJobs}
-                      </p>
-                    </div>
-                    <div>
-                      <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                        Total Applications
-                      </p>
-                      <p className="text-sm text-gray-900">
-                        {user.stats.totalApplications}
-                      </p>
-                    </div>
+                    <StatCard icon={<BriefcaseBusiness />} label="Posted Jobs" value={user.stats.postedJobs} />
+                    <StatCard icon={<Users />} label="Total Applications" value={user.stats.totalApplications} />
                   </>
                 )}
-              </>
-            )}
-
-            {user.location && (
-              <div>
-                <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                  Location
-                </p>
-                <p className="text-sm text-gray-900">{user.location}</p>
               </div>
             )}
 
-            {user.companyName && (
-              <div>
-                <p className="text-xs text-gray-600 uppercase font-semibold mb-1">
-                  Company
-                </p>
-                <p className="text-sm text-gray-900">{user.companyName}</p>
-              </div>
-            )}
-          </div>
-        </div>
+            <div className="flex flex-col sm:flex-row gap-4">
+              <button
+                onClick={() => onMessage(user._id)}
+                className="flex-1 bg-sky-600 text-white py-3 rounded-xl font-semibold hover:bg-sky-700 transition"
+              >
+                Send Message
+              </button>
 
-        <div className="flex flex-col gap-2 pt-4 border-t border-gray-200">
-          <button
-            onClick={() => onMessage(user._id)}
-            className="w-full bg-sky-600 text-white px-4 py-2 rounded-lg hover:bg-sky-700 transition-colors flex items-center justify-center gap-2 text-sm font-medium"
-          >
-            <Mail className="w-4 h-4" />
-            Send Message
-          </button>
-          <button
-            onClick={() => onDelete(user._id)}
-            disabled={deleting}
-            className="w-full bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700 transition-colors flex items-center justify-center gap-2 text-sm font-medium disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            {deleting ? (
-              <Loader className="w-4 h-4 animate-spin" />
-            ) : (
-              <Trash2 className="w-4 h-4" />
-            )}
-            Delete User
-          </button>
-        </div>
+              <button
+                onClick={() => onDelete(user._id)}
+                className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
+              >
+                Delete User
+              </button>
+            </div>
+          </>
+        )}
       </div>
     </div>
   );
 };
+
+const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
+  <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
+      <div className="text-center">
+        <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-red-100 mb-4">
+          <Trash2 className="text-red-600 w-6 h-6" />
+        </div>
+
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Delete User?</h3>
+
+        <p className="text-gray-500 text-sm mb-6">
+          Permanently delete <strong>{user.name}</strong>? This action cannot be undone.
+        </p>
+
+        <div className="flex gap-3">
+          <button
+            onClick={onCancel}
+            disabled={deleting}
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={() => onConfirm(user._id)}
+            disabled={deleting}
+            className="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition disabled:opacity-50"
+          >
+            {deleting ? "Deleting..." : "Yes, Delete"}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const InfoItem = ({ icon, label, value }) => (
+  <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl">
+    <div className="text-sky-600">{icon}</div>
+    <div>
+      <p className="text-gray-500 text-xs uppercase">{label}</p>
+      <p className="font-medium text-gray-900">{value}</p>
+    </div>
+  </div>
+);
+
+const StatCard = ({ icon, label, value }) => (
+  <div className="bg-white border border-gray-100 rounded-xl p-6 text-center shadow-sm">
+    <div className="text-sky-600 mb-2 flex justify-center">{icon}</div>
+    <p className="text-2xl font-bold text-gray-900">{value}</p>
+    <p className="text-gray-500 text-sm mt-1">{label}</p>
+  </div>
+);
 
 export default AdminUserManagement;

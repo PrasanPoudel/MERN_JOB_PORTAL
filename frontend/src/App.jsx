@@ -74,9 +74,15 @@ const App = () => {
 
           <Route element={<ProtectedRoute requiredRole="admin" />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/admin-users" element={<AdminUserManagement />} />
-            <Route path="/admin-jobs" element={<AdminJobManagement />} />
-            <Route path="/admin-chat" element={<AdminChatBox />} />
+            <Route
+              path="/admin-users-management"
+              element={<AdminUserManagement />}
+            />
+            <Route
+              path="/admin-jobs-management"
+              element={<AdminJobManagement />}
+            />
+            <Route path="/admin-chat-box" element={<AdminChatBox />} />
           </Route>
 
           <Route path="/find-jobs" element={<JobSeekerDashboard />} />

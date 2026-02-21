@@ -163,7 +163,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 isActive={activeNavItem === item.id}
                 onClick={handleNavigation}
                 isCollapsed={sidebarCollapsed}
-                unreadCount={item.id === "admin-chat" ? unreadCount : 0}
+                unreadCount={item.id === "admin-chat-box" ? unreadCount : 0}
               />
             ))}
           </nav>
@@ -235,7 +235,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                     : "/employer-profile",
                 );
               }}
-              className="flex items-center gap-2 lg:p-2 rounded-full lg:rounded-lg h-[80%] overflow-hidden cursor-pointer hover:bg-gray-100 shadow-sm shadow-black/20"
+              className="flex items-center gap-2 lg:p-2 rounded-full lg:rounded-lg h-[80%] overflow-hidden cursor-pointer hover:bg-gray-100 shadow-xs"
             >
               {user?.avatar && (
                 <img

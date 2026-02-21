@@ -254,7 +254,7 @@ const Chat = ({ isAdmin = false }) => {
                 management panel
               </p>
               <button
-                onClick={() => navigate("/admin-users")}
+                onClick={() => navigate("/admin-users-management")}
                 className="bg-sky-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-sky-700 transition-colors"
               >
                 Manage Users

@@ -23,9 +23,9 @@ export const NAVIGATION_MENU_EMPLOYER = [
 ];
 export const NAVIGATION_MENU_ADMIN = [
   { id: "admin-dashboard", name: "Dashboard", icon: LayoutDashboard },
-  { id: "admin-users", name: "Manage Users", icon: Users },
-  { id: "admin-jobs", name: "Manage Jobs", icon: BriefcaseBusiness },
-  { id: "admin-chat", name: "Messages", icon: MessageSquare },
+  { id: "admin-users-management", name: "Manage Users", icon: Users },
+  { id: "admin-jobs-management", name: "Manage Jobs", icon: BriefcaseBusiness },
+  { id: "admin-chat-box", name: "Messages", icon: MessageSquare },
 ];
 // Categories and job types
 export const CATEGORIES = [

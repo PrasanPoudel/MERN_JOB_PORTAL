@@ -4,7 +4,7 @@ import Chat from "../Chat/Chat";
 
 const AdminChatBox = () => {
   return (
-    <DashboardLayout activeMenu={"admin-chat"}>
+    <DashboardLayout activeMenu={"admin-chat-box"}>
       <Chat isAdmin={true} />
     </DashboardLayout>
   );
