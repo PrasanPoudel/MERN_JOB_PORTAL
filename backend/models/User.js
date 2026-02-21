@@ -17,6 +17,9 @@ const userSchema = new mongoose.Schema(
     facebookLink: String,
     instagramLink: String,
     isPremium: Boolean,
+    isBanned: { type: Boolean, default: false },
+    banReason: { type: String, default: "" },
+    banDate: { type: Date },
     premiumIssueDate: { type: Date, default: null },
     skills: [String],
     education: [
