@@ -8,7 +8,8 @@ import {
   LayoutDashboard,
   Search,
   ArrowRight,
-  Check,
+  Mail,
+  BriefcaseBusiness,
 } from "lucide-react";
 import { Link } from "react-router-dom";
 import HeroBanner from "/recruitment-agency-searching-job-candidates.avif";
@@ -18,26 +19,20 @@ import { API_PATHS } from "../../../utils/apiPaths";
 
 const features = [
   {
-    icon: <Check className="text-sky-600 w-5 h-5" />,
+    icon: <Mail className="text-sky-600 w-5 h-5" />,
     title: "Job Notification",
-    description:
-      "Premium user can get instant job notification whenever a job from preferred job choice category is posted",
   },
   {
     icon: <MessageCircle className="text-sky-600 w-5 h-5" />,
     title: "Secured Communication",
-    description:
-      "Properly secured communication channel between job seekers and employer",
   },
   {
     icon: <Zap className="text-sky-600 w-5 h-5" />,
     title: "One-Click Apply",
-    description: "Apply to jobs instantly",
   },
   {
-    icon: <ShieldCheck className="text-sky-600 w-5 h-5" />,
-    title: "Verified Employers",
-    description: "All companies are properly verified thoroughly",
+    icon: <BriefcaseBusiness className="text-sky-600 w-5 h-5" />,
+    title: "Personalized Jobs Listing",
   },
 ];
 

@@ -65,7 +65,7 @@ const Pricing = () => {
                 (feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-2.5 text-gray-300 text-sm"
+                    className="flex items-center gap-2.5 text-gray-400 text-sm"
                   >
                     <Minus className="w-4 h-4 text-gray-300 shrink-0" />
                     {feature}

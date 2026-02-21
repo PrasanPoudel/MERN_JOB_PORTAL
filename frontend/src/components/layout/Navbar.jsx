@@ -98,7 +98,7 @@ const Navbar = () => {
             )}
 
             {user && user?.role === "admin" && (
-              <NavLink to="/admin-chat" className={navLinkClasses}>
+              <NavLink to="/admin-chat-box" className={navLinkClasses}>
                 <div className="relative">
                   <MessageSquare className="h-5 w-5" />
                   {unreadCount > 0 && (
