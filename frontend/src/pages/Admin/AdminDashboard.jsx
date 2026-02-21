@@ -124,7 +124,7 @@ const AdminDashboard = () => {
                       key={user._id}
                       className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
                     >
-                      <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                      <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center shrink-0 overflow-hidden">
                         {user.avatar ? (
                           <img
                             src={user.avatar}
@@ -145,7 +145,7 @@ const AdminDashboard = () => {
                           {user.email}
                         </p>
                       </div>
-                      <div className="flex items-center gap-2 flex-shrink-0">
+                      <div className="flex items-center gap-2 shrink-0">
                         <span
                           className={`text-xs font-semibold px-3 py-1 rounded-full ${user.role === "employer" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}
                         >

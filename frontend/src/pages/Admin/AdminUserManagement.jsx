@@ -131,7 +131,7 @@ const AdminUserManagement = () => {
                         }`}
                       >
                         <div className="flex items-start gap-4">
-                          <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center flex-shrink-0 overflow-hidden">
+                          <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center shrink-0 overflow-hidden">
                             {user.avatar ? (
                               <img
                                 src={user.avatar}

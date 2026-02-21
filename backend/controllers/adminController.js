@@ -6,9 +6,6 @@ const Message = require("../models/Message");
 // Get admin dashboard stats
 exports.getAdminStats = async (req, res) => {
   try {
-    if (req.user.role !== "admin") {
-      return res.status(403).json({ message: "Access denied" });
-    }
 
     // Get total users
     const totalUsers = await User.countDocuments({
