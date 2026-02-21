@@ -10,9 +10,9 @@ frontend/node_modules/
 # Build outputs
 frontend/dist/
 
-# Uploads
-backend/uploads/
-uploads/
+# # Uploads
+# backend/uploads/
+# uploads/
 
 # Logs
 *.log
