@@ -2,6 +2,8 @@ import React from "react";
 import { Clock } from "lucide-react";
 
 const ApplicantDashboardCard = ({ applicant, position, time }) => {
+  if (!applicant) return null;
+  
   return (
     <div className="flex items-center p-2 justify-between rounded-xl border border-gray-100 hover:border-gray-200 transition-colors">
       <div className="flex flex-col gap-1 items-start">
