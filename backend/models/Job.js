@@ -24,7 +24,6 @@ const jobSchema = new mongoose.Schema(
     isClosed: { type: Boolean, default: false },
     isFlagged: { type: Boolean, default: false },
     flagReason: { type: String, default: "" },
-    fraudScore: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
