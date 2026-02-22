@@ -65,29 +65,36 @@ const Chat = ({ isAdmin = false }) => {
         const response = await axiosInstance.get(
           API_PATHS.ADMIN.GET_ADMIN_CONVERSATIONS,
         );
-        let adminConversations = (response.data || []).map((conv) => ({
-          application: { _id: conv.user._id },
-          user: conv.user,
-          lastMessage: conv.lastMessage,
-          unreadCount: conv.unreadCount,
-        }));
+        let adminConversations = (response.data || [])
+          .filter((conv) => conv.user)
+          .map((conv) => ({
+            application: { _id: conv.user._id },
+            user: conv.user,
+            lastMessage: conv.lastMessage,
+            unreadCount: conv.unreadCount,
+          }));
 
         if (
           userIdParam &&
           !adminConversations.find((c) => c.user._id === userIdParam)
         ) {
-          const userResponse = await axiosInstance.get(
-            API_PATHS.ADMIN.GET_USER_BY_ID(userIdParam),
-          );
-          const newConv = {
-            application: { _id: userIdParam },
-            user: userResponse.data,
-            lastMessage: null,
-            unreadCount: 0,
-          };
-          adminConversations = [newConv, ...adminConversations];
-          setSelectedConversation(newConv);
-          fetchMessages(userIdParam);
+          try {
+            const userResponse = await axiosInstance.get(
+              API_PATHS.ADMIN.GET_USER_BY_ID(userIdParam),
+            );
+            const newConv = {
+              application: { _id: userIdParam },
+              user: userResponse.data,
+              lastMessage: null,
+              unreadCount: 0,
+            };
+            adminConversations = [newConv, ...adminConversations];
+            setSelectedConversation(newConv);
+            fetchMessages(userIdParam);
+          } catch (userErr) {
+            console.error("User not found:", userIdParam);
+            toast.error("User not found or has been deleted");
+          }
         } else if (userIdParam) {
           const selected = adminConversations.find(
             (c) => c.user._id === userIdParam,
