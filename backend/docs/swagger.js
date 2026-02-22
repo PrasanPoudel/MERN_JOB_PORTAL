@@ -653,3 +653,174 @@
  *       200:
  *         description: Job unsaved
  */
+
+/**
+ * @swagger
+ * tags:
+ *   - name: Admin
+ *     description: Admin management endpoints
+ * 
+ * /api/admin/stats:
+ *   get:
+ *     tags: [Admin]
+ *     summary: Get admin dashboard statistics
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Dashboard stats
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/users:
+ *   get:
+ *     tags: [Admin]
+ *     summary: Get all users
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: role
+ *         schema:
+ *           type: string
+ *           enum: [jobSeeker, employer]
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of users
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/users/{id}:
+ *   get:
+ *     tags: [Admin]
+ *     summary: Get user by ID with stats
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User details with stats
+ *       403:
+ *         description: Admin only
+ *   delete:
+ *     tags: [Admin]
+ *     summary: Delete user (cascade delete)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: User deleted
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/jobs:
+ *   get:
+ *     tags: [Admin]
+ *     summary: Get all jobs
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: query
+ *         name: status
+ *         schema:
+ *           type: string
+ *           enum: [active, closed]
+ *       - in: query
+ *         name: search
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: List of jobs
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/jobs/{id}:
+ *   delete:
+ *     tags: [Admin]
+ *     summary: Delete job (cascade delete)
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Job deleted
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/messages/send:
+ *   post:
+ *     tags: [Admin]
+ *     summary: Send message to user
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - recipientId
+ *               - content
+ *             properties:
+ *               recipientId:
+ *                 type: string
+ *               content:
+ *                 type: string
+ *     responses:
+ *       201:
+ *         description: Message sent
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/messages/conversations:
+ *   get:
+ *     tags: [Admin]
+ *     summary: Get all admin conversations
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: List of conversations
+ *       403:
+ *         description: Admin only
+ * 
+ * /api/admin/messages/conversation/{userId}:
+ *   get:
+ *     tags: [Admin]
+ *     summary: Get conversation with specific user
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: userId
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       200:
+ *         description: Conversation messages
+ *       403:
+ *         description: Admin only
+ */
