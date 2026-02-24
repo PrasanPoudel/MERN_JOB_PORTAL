@@ -9,18 +9,12 @@ import {
   Loader,
   AlertCircle,
   Building2,
-  Upload,
   UserCheck,
   CheckCircle,
-  CircleChevronRight,
-  CircleChevronLeft,
+  ArrowLeft,
+  ArrowRight,
 } from "lucide-react";
-import {
-  validateEmail,
-  validateAvatar,
-  validatePassword,
-} from "../../utils/helper";
-import uploadFile from "../../utils/uploadFile";
+import { validateEmail, validatePassword } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
@@ -33,14 +27,12 @@ const SignUp = () => {
     email: "",
     password: "",
     role: "",
-    avatar: null,
   });
 
   const [formState, setFormState] = useState({
     loading: false,
     errors: {},
     showPassword: false,
-    avatarPreview: null,
     success: false,
   });
   const [step, setStep] = useState(1);
@@ -67,41 +59,12 @@ const SignUp = () => {
       }));
     }
   };
-  const handleAvatarChange = (e) => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const error = validateAvatar(file);
-      if (error) {
-        setFormState((prev) => ({
-          ...prev,
-          errors: { ...prev.errors, avatar: error },
-        }));
-        return;
-      }
-    }
-    setFormData((prev) => ({ ...prev, avatar: file }));
-
-    const reader = new FileReader();
-    reader.onload = (e) => {
-      setFormState((prev) => ({
-        ...prev,
-        avatarPreview: e.target.result,
-        errors: {
-          ...prev.errors,
-          avatar: "",
-        },
-      }));
-    };
-    reader.readAsDataURL(file);
-  };
-
   const validateForm = () => {
     const errors = {
       fullName: !formData.fullName.trim() ? "Enter full name" : "",
       email: validateEmail(formData.email),
       password: validatePassword(formData.password),
       role: !formData.role ? "Please select a role" : "",
-      avatar: validateAvatar(formData.avatar),
     };
 
     Object.keys(errors).forEach((key) => {
@@ -109,7 +72,7 @@ const SignUp = () => {
     });
 
     setFormState((prev) => ({ ...prev, errors }));
-    if (errors.fullName || errors.email || errors.password) {
+    if (errors.fullName || errors.role) {
       setStep(1);
     }
     return Object.keys(errors).length === 0;
@@ -122,18 +85,11 @@ const SignUp = () => {
     }
     setFormState((prev) => ({ ...prev, loading: true }));
     try {
-      let avatarUrl = "";
-      //upload avatar (profile picture) if given
-      if (formData.avatar) {
-        const fileUploadRes = await uploadFile(formData.avatar);
-        avatarUrl = fileUploadRes.fileUrl;
-      }
       const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
         name: formData.fullName,
         email: formData.email,
         password: formData.password,
         role: formData.role,
-        avatar: avatarUrl,
       });
 
       setFormState((prev) => ({
@@ -156,14 +112,13 @@ const SignUp = () => {
       console.error("[SignUp Error]", {
         email: formData.email,
         role: formData.role,
-        error: err?.message || err
+        error: err?.message || err,
       });
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
-          submit:
-            err?.message || "Registration failed. Please try again.",
+          submit: err?.message || "Registration failed. Please try again.",
         },
       }));
     }
@@ -243,7 +198,52 @@ const SignUp = () => {
                   </p>
                 )}
               </div>
+              <div>
+                <label htmlFor="role" className="flex mb-4">
+                  I am a *
+                </label>
+                <div className="grid grid-cols-2 gap-4">
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleRoleChange("jobSeeker");
+                    }}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      formData.role === "jobSeeker"
+                        ? "border-sky-500 bg-sky-50 text-sky-700"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <UserCheck className="w-8 h-8 mx-auto mb-2" />
+                    <div className="font-medium">Job Seeker</div>
+                    <div className="text-xs text-gray-500">
+                      Looking for opportunities
+                    </div>
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      handleRoleChange("employer");
+                    }}
+                    className={`p-4 rounded-lg border-2 transition-all ${
+                      formData.role === "employer"
+                        ? "border-sky-500 bg-sky-50 text-sky-700"
+                        : "border-gray-200 hover:border-gray-300"
+                    }`}
+                  >
+                    <Building2 className="w-8 h-8 mx-auto mb-2" />
+                    <div className="font-medium">Employer</div>
+                    <div className="text-xs text-gray-500">
+                      Want to hire talents
+                    </div>
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
 
+          {step == 2 && (
+            <>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Email Address *
@@ -315,95 +315,6 @@ const SignUp = () => {
                   </p>
                 )}
               </div>
-            </>
-          )}
-
-          {step == 2 && (
-            <>
-              <div className="mb-6">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Profile Picture *
-                </label>
-                <div className="flex items-center space-x-4">
-                  <div className="w-16 h-16 rounded-full bg-gray-100 flex items-center justify-center overflow-hidden">
-                    {formState.avatarPreview ? (
-                      <img
-                        src={formState.avatarPreview}
-                        alt="Profile Picture"
-                        className="w-full h-full object-fill"
-                      />
-                    ) : (
-                      <User className="w-8 h-8 text-gray-400" />
-                    )}
-                  </div>
-                  <div className="flex-1">
-                    <input
-                      type="file"
-                      name="avatar"
-                      id="avatar"
-                      accept=".jpeg,.jpg,.png,.webp"
-                      onChange={handleAvatarChange}
-                      className="hidden"
-                    />
-                    <label
-                      htmlFor="avatar"
-                      className="cursor-pointer bg-gray-50 border border-gray-300 rounded-lg px-4 py-2 flex text-sm font-medium text-gray-700 hover:bg-gray-100 transition-colors items-center space-x-2"
-                    >
-                      <Upload className="w-4 h-4" />
-                      <span>Upload Photo</span>
-                    </label>
-                    <p className="text-xs text-gray-500 mt-1">
-                      JPG, PNG or WEBP upto 5MB
-                    </p>
-                  </div>
-                </div>
-                {formState.errors.avatar && (
-                  <p className="flex text-red-500 text-sm mt-1 items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
-                    {formState.errors.avatar}
-                  </p>
-                )}
-              </div>
-
-              <label htmlFor="role" className="flex mb-4">
-                I am a *
-              </label>
-              <div className="grid grid-cols-2 gap-4">
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleRoleChange("jobSeeker");
-                  }}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    formData.role === "jobSeeker"
-                      ? "border-sky-500 bg-sky-50 text-sky-700"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
-                >
-                  <UserCheck className="w-8 h-8 mx-auto mb-2" />
-                  <div className="font-medium">Job Seeker</div>
-                  <div className="text-xs text-gray-500">
-                    Looking for opportunities
-                  </div>
-                </button>
-                <button
-                  type="button"
-                  onClick={() => {
-                    handleRoleChange("employer");
-                  }}
-                  className={`p-4 rounded-lg border-2 transition-all ${
-                    formData.role === "employer"
-                      ? "border-sky-500 bg-sky-50 text-sky-700"
-                      : "border-gray-200 hover:border-gray-300"
-                  }`}
-                >
-                  <Building2 className="w-8 h-8 mx-auto mb-2" />
-                  <div className="font-medium">Employer</div>
-                  <div className="text-xs text-gray-500">
-                    Want to hire talents
-                  </div>
-                </button>
-              </div>
               {formState.errors.role && (
                 <p className="flex text-red-500 text-sm mt-1 items-center">
                   <AlertCircle className="w-4 h-4 mr-1" />
@@ -427,7 +338,7 @@ const SignUp = () => {
                   : "bg-gray-300 text-gray-700 cursor-not-allowed"
               } ${step <= 1 && "opacity-0"} `}
             >
-              <CircleChevronLeft className="w-4 h-4" />
+              <ArrowLeft className="w-4 h-4" />
               Prev
             </p>
             <p
@@ -442,7 +353,7 @@ const SignUp = () => {
                   : "bg-gray-300 text-gray-700 cursor-not-allowed"
               } ${step == 2 && "opacity-0"}`}
             >
-              Next <CircleChevronRight className="w-4 h-4" />
+              Next <ArrowRight className="w-4 h-4" />
             </p>
           </div>
 
