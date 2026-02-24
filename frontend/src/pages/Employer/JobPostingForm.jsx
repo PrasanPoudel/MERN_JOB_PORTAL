@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 import DashboardLayout from "../../components/layout/DashboardLayout";
-import { AlertCircle, MapPin, BriefcaseBusiness, Users, Eye, Send } from "lucide-react";
+import {
+  AlertCircle,
+  MapPin,
+  BriefcaseBusiness,
+  Users,
+  Eye,
+  Send,
+} from "lucide-react";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -38,7 +45,7 @@ const JobPostingForm = () => {
     const formatValue = (value) => {
       if (typeof value !== "string" || value.length === 0) return value;
       return value.replace(/(^\s*\w|[.!?]\s*\w)/g, (char) =>
-        char.toUpperCase()
+        char.toUpperCase(),
       );
     };
 
@@ -69,9 +76,13 @@ const JobPostingForm = () => {
     }
 
     if (
+      user.isBanned ||
       !user.companyName?.trim() ||
-      !user.companyLogo?.trim() ||
-      !user.companyDescription?.trim()
+      !user.companyDescription?.trim() ||
+      !user.companyLocation?.trim() ||
+      !user.companySize ||
+      !user.companyRegistrationNumber ||
+      !user.panNumber
     ) {
       toast.error("Please complete your company profile before posting a job");
       return;
@@ -98,7 +109,7 @@ const JobPostingForm = () => {
 
       if (response.status === 200 || response.status === 201) {
         toast.success(
-          jobId ? "Job updated successfully!" : "Job posted successfully!"
+          jobId ? "Job updated successfully!" : "Job posted successfully!",
         );
         setFormData({
           jobTitle: "",
@@ -120,7 +131,7 @@ const JobPostingForm = () => {
     } catch (err) {
       console.error("[Job Post Error]", {
         jobTitle: formData.jobTitle,
-        error: err?.message || err
+        error: err?.message || err,
       });
       if (err?.message) {
         toast.error(err.message);
@@ -193,7 +204,7 @@ const JobPostingForm = () => {
                   onClick={() => {
                     if (!isFormValid()) {
                       toast.error(
-                        "Please complete all required fields before previewing."
+                        "Please complete all required fields before previewing.",
                       );
                     } else {
                       setIsPreview(true);

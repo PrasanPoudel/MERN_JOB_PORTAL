@@ -240,12 +240,12 @@ const DashboardLayout = ({ activeMenu, children }) => {
               {user?.avatar ? (
                 <img
                   src={user?.avatar}
-                  className="w-12 h-12 object-fill rounded-full"
+                  className="w-14 h-12 object-fill rounded-full"
                 />
               ) : (
                 <img
                   src="/default.png"
-                  className="w-12 h-12 object-fill rounded-full"
+                  className="w-14 h-12 object-fill rounded-full"
                 />
               )}
               <div className="hidden lg:block">

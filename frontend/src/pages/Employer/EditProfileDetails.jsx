@@ -40,15 +40,12 @@ const EditProfileDetails = ({
                 </button>
               </div>
 
-              {/* Content */}
               <div className="p-4 sm:p-6 md:p-8 space-y-8 md:space-y-10">
-                {/* ── Personal Information ── */}
                 <section>
                   <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                     Personal Information
                   </h2>
 
-                  {/* Avatar row — stacks on mobile */}
                   <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                     <div className="relative self-start shrink-0">
                       <img
@@ -122,7 +119,6 @@ const EditProfileDetails = ({
                   </div>
                 </section>
 
-                {/* ── Company Overview ── */}
                 <section>
                   <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                     Company Overview
@@ -131,7 +127,7 @@ const EditProfileDetails = ({
                   <div className="flex flex-col sm:flex-row sm:items-start gap-4">
                     <div className="relative self-start shrink-0">
                       <img
-                        src={formData.companyLogo || "/default-company.png"}
+                        src={formData.companyLogo || "/default.png"}
                         alt="Company Logo"
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-contain"
                       />
@@ -157,7 +153,6 @@ const EditProfileDetails = ({
                         />
                       </div>
 
-                      {/* Company fields grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
                           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -289,14 +284,12 @@ const EditProfileDetails = ({
                   </div>
                 </section>
 
-                {/* ── Legal & Verification ── */}
                 <section>
                   <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                     Legal & Verification
                   </h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-sm">
-                    {/* Company Registration Number */}
                     <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                       <p className="text-gray-500 mb-2">
                         Company Registration Number
@@ -328,7 +321,6 @@ const EditProfileDetails = ({
                       )}
                     </div>
 
-                    {/* PAN Number */}
                     <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                       <p className="text-gray-500 mb-2">PAN Number</p>
                       <div className="relative">
@@ -356,7 +348,6 @@ const EditProfileDetails = ({
                       )}
                     </div>
 
-                    {/* Verification Status — read-only */}
                     <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                       <p className="text-gray-500 mb-2">Verification Status</p>
                       <div className="flex flex-wrap items-center gap-2">
@@ -380,7 +371,6 @@ const EditProfileDetails = ({
                   </div>
                 </section>
 
-                {/* ── About Company ── */}
                 <section>
                   <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                     About Company
@@ -408,7 +398,6 @@ const EditProfileDetails = ({
                   </div>
                 </section>
 
-                {/* ── Action Buttons ── */}
                 <div className="flex justify-end items-stretch xs:items-center gap-3 pt-2 border-t border-gray-100">
                   <button
                     type="button"

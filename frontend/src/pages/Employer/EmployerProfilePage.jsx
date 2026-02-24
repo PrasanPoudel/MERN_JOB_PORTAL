@@ -272,7 +272,7 @@ const EmployerProfilePage = () => {
 
                     <div className="flex flex-col sm:flex-row sm:items-center gap-3 sm:gap-4">
                       <img
-                        src={profileData.companyLogo || "/default-company.png"}
+                        src={profileData.companyLogo || "/default.png"}
                         alt="Company Logo"
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-contain shrink-0"
                       />
