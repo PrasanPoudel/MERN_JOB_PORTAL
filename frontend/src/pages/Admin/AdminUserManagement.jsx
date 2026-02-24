@@ -221,17 +221,11 @@ const AdminUserManagement = () => {
                 >
                   <div className="flex items-start gap-4">
                     <div className="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
-                      {user.avatar ? (
-                        <img
-                          src={user.avatar}
-                          alt={user.name}
-                          className="w-full h-full object-cover"
-                        />
-                      ) : (
-                        <span className="text-sky-600 font-bold text-lg">
-                          {user.name?.charAt(0)}
-                        </span>
-                      )}
+                      <img
+                        src={user.avatar || "/default.png"}
+                        alt={user.name}
+                        className="w-full h-full object-cover"
+                      />
                     </div>
 
                     <div>
@@ -412,17 +406,11 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
           <>
             <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
               <div className="w-24 h-24 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
-                {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-2xl font-bold text-sky-600">
-                    {user.name?.charAt(0)}
-                  </span>
-                )}
+                <img
+                  src={user.avatar || "/default.png"}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                />
               </div>
 
               <div>

@@ -72,19 +72,25 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   };
 
   const handleFileUpload = async (file, type) => {
+    if (!file) return;
+    
     setUploading((prev) => ({ ...prev, [type]: true }));
     try {
       const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes.fileUrl || "";
+      const fileUrl = fileUploadRes?.fileUrl || "";
 
-      // Update form data with new File URL
       setFormData((prev) => ({
         ...prev,
         [type]: fileUrl,
       }));
+      toast.success(`${type === 'avatar' ? 'Profile picture' : 'Resume'} uploaded successfully!`);
     } catch (err) {
-      console.error("upload failed:", err);
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
+      console.error("[File Upload Error]", {
+        type,
+        fileName: file?.name,
+        error: err?.message || err
+      });
+      toast.error(err?.message || `${type === 'avatar' ? 'Profile picture' : 'Resume'} upload failed. Please try again.`);
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -108,20 +114,25 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   };
 
   const deleteResume = async () => {
+    if (!formData.resume) return;
+    
     setIsSaving(true);
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.DELETE_RESUME, {
-        resumeUrl: formData.resume || "",
+        resumeUrl: formData.resume,
       });
 
       if (response.status === 200) {
-        toast.success("Resume Deleted Successfully!");
+        toast.success("Resume deleted successfully!");
         setFormData((prev) => ({ ...prev, resume: "" }));
         updateUser({ ...user, resume: "" });
       }
     } catch (err) {
-      console.error(err);
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
+      console.error("[Delete Resume Error]", {
+        resumeUrl: formData.resume,
+        error: err?.message || err
+      });
+      toast.error(err?.message || "Failed to delete resume. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -301,7 +312,6 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      // Prepare data for API - properly formatted
       const dataToSend = {
         ...formData,
         education: formData.education.map((edu) => ({
@@ -319,12 +329,14 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
           date: cert.date || undefined,
         })),
       };
+      
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
         dataToSend,
       );
+      
       if (response.status === 200 && response.data) {
-        toast.success("Profile Updated Successfully!");
+        toast.success("Profile updated successfully!");
         setFormData({
           name: response.data.name || "",
           email: response.data.email || "",
@@ -351,8 +363,10 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
         setEditMode(false);
       }
     } catch (err) {
-      console.error("Error updating profile:", err);
-      toast.error(err.response?.data?.message || "Failed to update profile");
+      console.error("[Profile Update Error]", {
+        error: err?.message || err
+      });
+      toast.error(err?.message || "Failed to update profile. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -412,7 +426,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               <div className="flex flex-col space-y-4 items-start md:items-center md:flex-row md:space-x-4">
                 <div className="relative">
                   <img
-                    src={formData.avatar || "/default-avatar.png"}
+                    src={formData.avatar || "/default.png"}
                     alt="Avatar"
                     className="w-20 h-20 rounded-full border-2 border-gray-100 object-cover"
                   />
@@ -429,6 +443,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     <input
                       type="file"
                       accept="image/*"
+                      id="avatar-upload"
                       onChange={(e) => {
                         handleFileChange(e, "avatar");
                       }}
@@ -472,6 +487,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     <span className="cursor-pointer sr-only">Choose File</span>
                     <input
                       type="file"
+                      id="resume-upload"
                       onChange={(e) => {
                         handleFileChange(e, "resume");
                       }}
@@ -505,6 +521,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                 <input
                   type="text"
                   name="name"
+                  id="name"
                   value={formData.name ?? ""}
                   onChange={handleInputChange}
                   placeholder="e.g., Prasan Poudel"
@@ -519,6 +536,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                 <input
                   type="text"
                   name="location"
+                  id="location"
                   value={formData.location}
                   onChange={handleInputChange}
                   placeholder="e.g., Butwal-11, Milanchowk"
@@ -537,6 +555,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                   <input
                     type="url"
                     name={field.name}
+                    id={field.name}
                     value={formData[field.name]}
                     onChange={handleInputChange}
                     placeholder="https://"
@@ -571,6 +590,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
             <div className="flex gap-1">
               <input
                 value={newSkill}
+                id="newSkill"
                 onChange={(e) => setNewSkill(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addSkill()}
                 placeholder="Add skill"
@@ -622,6 +642,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       </label>
                       <input
                         value={edu.study ?? ""}
+                        id={`education-study-${index}`}
                         onChange={(e) =>
                           handleEducationChange(index, "study", e.target.value)
                         }
@@ -631,6 +652,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       placeholder="Institution"
+                      id={`education-institution-${index}`}
                       value={edu.institution ?? ""}
                       onChange={(e) =>
                         handleEducationChange(
@@ -644,6 +666,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       placeholder="Location"
+                      id={`education-location-${index}`}
                       value={edu.location ?? ""}
                       onChange={(e) =>
                         handleEducationChange(index, "location", e.target.value)
@@ -653,6 +676,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       type="date"
+                      id={`education-startDate-${index}`}
                       value={formatDate(edu.startDate)}
                       onChange={(e) =>
                         handleEducationChange(
@@ -666,6 +690,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       type="date"
+                      id={`education-endDate-${index}`}
                       value={formatDate(edu.endDate)}
                       onChange={(e) =>
                         handleEducationChange(index, "endDate", e.target.value)
@@ -710,6 +735,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10">
                     <input
                       placeholder="Job Title"
+                      id={`experience-jobTitle-${expIndex}`}
                       value={exp.jobTitle ?? ""}
                       onChange={(e) =>
                         handleExperienceChange(
@@ -723,6 +749,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       placeholder="Company"
+                      id={`experience-company-${expIndex}`}
                       value={exp.company ?? ""}
                       onChange={(e) =>
                         handleExperienceChange(
@@ -736,6 +763,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       placeholder="Location"
+                      id={`experience-location-${expIndex}`}
                       value={exp.location ?? ""}
                       onChange={(e) =>
                         handleExperienceChange(
@@ -750,6 +778,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     <label className="flex items-center gap-2 text-sm">
                       <input
                         type="checkbox"
+                        id={`experience-isCurrent-${expIndex}`}
                         checked={exp.isCurrent}
                         onChange={(e) =>
                           handleExperienceChange(
@@ -764,6 +793,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       type="date"
+                      id={`experience-startDate-${expIndex}`}
                       value={formatDate(exp.startDate)}
                       onChange={(e) =>
                         handleExperienceChange(
@@ -778,6 +808,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     {!exp.isCurrent && (
                       <input
                         type="date"
+                        id={`experience-endDate-${expIndex}`}
                         value={formatDate(exp.endDate)}
                         onChange={(e) =>
                           handleExperienceChange(
@@ -799,6 +830,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                           >
                             <input
                               value={desc ?? ""}
+                              id={`experience-description-${expIndex}-${dIndex}`}
                               onChange={(e) => {
                                 const updated = [...formData.experience];
                                 updated[expIndex].description[dIndex] =
@@ -825,6 +857,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       <div className="flex flex-col sm:flex-row gap-2">
                         <input
                           value={newDesc[expIndex] ?? ""}
+                          id={`experience-newDesc-${expIndex}`}
                           onChange={(e) =>
                             setNewDesc({
                               ...newDesc,
@@ -880,6 +913,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-10">
                     <input
                       placeholder="Certification Name"
+                      id={`certification-name-${index}`}
                       value={cert.name ?? ""}
                       onChange={(e) =>
                         handleCertificationChange(index, "name", e.target.value)
@@ -889,6 +923,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       placeholder="Issuer"
+                      id={`certification-issuer-${index}`}
                       value={cert.issuer ?? ""}
                       onChange={(e) =>
                         handleCertificationChange(
@@ -902,6 +937,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       type="date"
+                      id={`certification-date-${index}`}
                       value={formatDate(cert.date)}
                       onChange={(e) =>
                         handleCertificationChange(index, "date", e.target.value)
@@ -911,6 +947,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
                     <input
                       placeholder="Certificate Link (optional)"
+                      id={`certification-link-${index}`}
                       value={cert.link ?? ""}
                       onChange={(e) =>
                         handleCertificationChange(index, "link", e.target.value)

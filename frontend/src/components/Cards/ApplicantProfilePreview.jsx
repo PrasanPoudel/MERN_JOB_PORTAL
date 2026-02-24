@@ -60,20 +60,12 @@ const ApplicantProfilePreview = ({
 
         <div className="p-4">
           <div className="text-center mb-6">
-            {selectedApplicant.applicant.avatar ? (
-              <img
-                src={selectedApplicant.applicant.avatar}
-                alt={selectedApplicant.applicant.name}
-                className="object-fill h-20 w-20 rounded-full mx-auto"
-                style={{ imageRendering: "auto" }}
-              />
-            ) : (
-              <div className="h-20 w-20 rounded-full bg-sky-100 flex items-center justify-center mx-auto">
-                <span className="text-sky-600 font-semibold text-xl">
-                  {getInitials(selectedApplicant.applicant.name)}
-                </span>
-              </div>
-            )}
+            <img
+              src={selectedApplicant.applicant.avatar || "/default.png"}
+              alt={selectedApplicant.applicant.name}
+              className="object-fill h-20 w-20 rounded-full mx-auto"
+              style={{ imageRendering: "auto" }}
+            />
             <h4 className="mt-4 text-xl font-semibold text-gray-900">
               {selectedApplicant.applicant.name}
             </h4>

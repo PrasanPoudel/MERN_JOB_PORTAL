@@ -33,6 +33,7 @@ import JobSeekerChatBox from "./pages/Chat/JobSeekerChatBox";
 
 import { useAuth } from "./context/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
+import ErrorBoundary from "./components/ErrorBoundary";
 
 const App = () => {
   const { loading } = useAuth();
@@ -42,7 +43,7 @@ const App = () => {
   }
 
   return (
-    <>
+    <ErrorBoundary>
       <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
@@ -98,7 +99,7 @@ const App = () => {
           },
         }}
       />
-    </>
+    </ErrorBoundary>
   );
 };
 

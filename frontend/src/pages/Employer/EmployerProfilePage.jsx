@@ -133,14 +133,22 @@ const EmployerProfilePage = () => {
   };
 
   const handleFileUpload = async (file, type) => {
+    if (!file) return;
+    
     setUploading((prev) => ({ ...prev, [type]: true }));
     const prevValue = formData[type === "avatar" ? "avatar" : "companyLogo"];
     try {
       const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes.fileUrl || prevValue;
+      const fileUrl = fileUploadRes?.fileUrl || prevValue;
       handleInputChange(type === "avatar" ? "avatar" : "companyLogo", fileUrl);
+      toast.success(`${type === 'avatar' ? 'Profile picture' : 'Company logo'} uploaded successfully!`);
     } catch (err) {
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
+      console.error("[File Upload Error]", {
+        type,
+        fileName: file?.name,
+        error: err?.message || err
+      });
+      toast.error(err?.message || `${type === 'avatar' ? 'Profile picture' : 'Company logo'} upload failed. Please try again.`);
       handleInputChange(
         type === "avatar" ? "avatar" : "companyLogo",
         prevValue,
@@ -161,7 +169,6 @@ const EmployerProfilePage = () => {
   };
 
   const handleSave = async () => {
-    // Validate before saving
     if (!validateForm(formData)) {
       toast.error("Please fill all required fields correctly.");
       return;
@@ -180,8 +187,10 @@ const EmployerProfilePage = () => {
         setEditMode(false);
       }
     } catch (err) {
-      console.log(err.response?.data);
-      toast.error(err.response?.data?.message || "Profile update failed.");
+      console.error("[Profile Update Error]", {
+        error: err?.message || err
+      });
+      toast.error(err?.message || "Profile update failed. Please try again.");
     } finally {
       setSaving(false);
     }

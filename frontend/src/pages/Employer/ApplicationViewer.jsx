@@ -222,20 +222,12 @@ const ApplicationViewer = () => {
                         <div className="flex items-center gap-4">
                           {/* Avatar */}
                           <div className="flex shrink-0">
-                            {application.applicant.avatar ? (
-                              <img
-                                src={application.applicant.avatar}
-                                alt={application.applicant.name}
-                                className="object-fill h-12 w-12 rounded-full"
-                                style={{ imageRendering: "auto" }}
-                              />
-                            ) : (
-                              <div className="h-12 w-12 rounded-full bg-sky-100 flex items-center justify-center">
-                                <span className="text-sky-600 font-semibold">
-                                  {getInitials(application.applicant.name)}
-                                </span>
-                              </div>
-                            )}
+                            <img
+                              src={application.applicant.avatar || "/default.png"}
+                              alt={application.applicant.name}
+                              className="object-fill h-12 w-12 rounded-full"
+                              style={{ imageRendering: "auto" }}
+                            />
                           </div>
 
                           {/* Applicant Info */}

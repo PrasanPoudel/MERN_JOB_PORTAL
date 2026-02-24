@@ -24,19 +24,23 @@ const JobCard = ({
 }) => {
   const { user } = useAuth();
 
+  if (!job) {
+    return null;
+  }
+
   const formatSalary = (num) => {
+    if (!num) return "N/A";
     if (num > 1000) {
       return `${(num / 1000).toFixed(0)}k/m`;
     }
+    return `${num}/m`;
   };
 
   return (
     <div
       onClick={onClick}
       className={`bg-white mx-auto min-w-full min-h-60 rounded-2xl border border-gray-200 p-5 ${!hideShadow && "hover:shadow-md "}hover:shadow-gray-200 transition-all duration-200 cursor-pointer group flex flex-col justify-between`}
-    >
-      {/* Top section */}
-      <div>
+    >      <div>
         <div className="flex items-start gap-4 mb-4">
           {job?.company?.companyLogo ? (
             <img
@@ -52,11 +56,11 @@ const JobCard = ({
 
           <div className="flex-1 min-w-0">
             <h3 className="font-semibold text-gray-900 text-base leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors">
-              {job?.title}
+              {job?.title || "Untitled Job"}
             </h3>
             <p className="text-gray-600 text-xs flex items-center gap-1 mt-1 truncate">
               <Building2 className="w-3.5 h-3.5 shrink-0" />
-              {job?.company?.companyName}
+              {job?.company?.companyName || "Unknown Company"}
             </p>
           </div>
         </div>
@@ -65,7 +69,7 @@ const JobCard = ({
         <div className="flex flex-wrap gap-2 mb-4 text-xs">
           <span className="flex items-center gap-1 bg-gray-100 text-gray-700 px-2.5 py-1 rounded-full font-medium">
             <MapPin className="w-3 h-3" />
-            {job?.location}
+            {job?.location || "N/A"}
           </span>
 
           <span
@@ -79,12 +83,12 @@ const JobCard = ({
                     : "bg-sky-100 text-sky-800"
             }`}
           >
-            {job?.type}
+            {job?.type || "N/A"}
           </span>
 
           <span className="flex items-center gap-1 bg-purple-100 text-purple-800 px-2.5 py-1 rounded-full font-medium">
             <BriefcaseBusiness className="w-3 h-3" />
-            {job?.category}
+            {job?.category || "N/A"}
           </span>
         </div>
 

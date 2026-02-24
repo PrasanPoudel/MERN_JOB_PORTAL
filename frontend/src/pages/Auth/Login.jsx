@@ -89,12 +89,16 @@ const Login = () => {
         }, 2000);
       }
     } catch (error) {
+      console.error("[Login Error]", {
+        email: formData.email,
+        error: error?.message || error
+      });
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
           submit:
-            error.response?.data?.message || "Login failed. Please try again",
+            error?.message || "Login failed. Please check your credentials and try again.",
         },
       }));
     }
@@ -152,6 +156,7 @@ const Login = () => {
               <input
                 type="email"
                 name="email"
+                id="email"
                 onChange={handleInputChange}
                 value={formData.email}
                 className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
@@ -177,6 +182,7 @@ const Login = () => {
               <input
                 type={formState.showPassword ? "text" : "password"}
                 name="password"
+                id="password"
                 onChange={handleInputChange}
                 value={formData.password}
                 className={`w-full pl-10 pr-4 py-3 rounded-lg border ${

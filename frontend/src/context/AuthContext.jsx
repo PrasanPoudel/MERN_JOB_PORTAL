@@ -34,7 +34,9 @@ export const AuthProvider = ({ children }) => {
         setIsAuthenticated(true);
       }
     } catch (err) {
-      console.error("Authentication failed", err);
+      console.error("[Auth Check Error]", {
+        error: err?.message || err
+      });
       logout();
     } finally {
       setLoading(false);
@@ -42,12 +44,18 @@ export const AuthProvider = ({ children }) => {
   };
 
   const login = (userData, token) => {
-    localStorage.setItem("token", token);
-    localStorage.setItem("user", JSON.stringify(userData));
-    
-    setUser(userData);
-    setIsAuthenticated(true);
-    // console.log(userData);
+    try {
+      localStorage.setItem("token", token);
+      localStorage.setItem("user", JSON.stringify(userData));
+      
+      setUser(userData);
+      setIsAuthenticated(true);
+    } catch (err) {
+      console.error("[Login Error]", {
+        error: err?.message || err
+      });
+      throw new Error("Failed to save login data");
+    }
   };
 
   const logout = () => {
@@ -60,9 +68,16 @@ export const AuthProvider = ({ children }) => {
   };
 
   const updateUser = (updateUserData) => {
-    const newUserData = { ...user, ...updateUserData };
-    localStorage.setItem("user", JSON.stringify(newUserData));
-    setUser(newUserData);
+    try {
+      const newUserData = { ...user, ...updateUserData };
+      localStorage.setItem("user", JSON.stringify(newUserData));
+      setUser(newUserData);
+    } catch (err) {
+      console.error("[Update User Error]", {
+        error: err?.message || err
+      });
+      throw new Error("Failed to update user data");
+    }
   };
 
   const value = {
