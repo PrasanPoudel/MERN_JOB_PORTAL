@@ -1,9 +1,7 @@
 import React, { useState, useEffect } from "react";
 import {
   Zap,
-  ShieldCheck,
   UserCheck,
-  Briefcase,
   MessageCircle,
   LayoutDashboard,
   Search,
@@ -143,7 +141,7 @@ const Hero = () => {
               <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl">
                 <div className="flex items-center gap-3">
                   <div className="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
-                    <Briefcase className="w-6 h-6 text-sky-600" />
+                    <BriefcaseBusiness className="w-6 h-6 text-sky-600" />
                   </div>
                   <div>
                     <div className="text-xs text-gray-500">Jobs Available</div>
