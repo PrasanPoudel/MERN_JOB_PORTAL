@@ -53,6 +53,8 @@ export const API_PATHS = {
     GET_ADMIN_CONVERSATION: (userId) =>
       `/api/admin/messages/conversation/${userId}`,
     SEND_USER_REPLY: "/api/admin/messages/reply",
+    GET_DAILY_ANALYTICS: "/api/admin/analytics/daily",
+    GET_RISK_DISTRIBUTION: "/api/admin/analytics/risk-distribution",
   },
   FILE: {
     UPLOAD_FILE: "/api/auth/upload-file", //upload profile picture

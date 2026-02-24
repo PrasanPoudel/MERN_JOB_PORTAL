@@ -15,6 +15,8 @@ router.delete("/jobs/:id", protect, adminController.deleteJobByAdmin);
 router.post("/messages/send", protect, adminController.sendAdminMessage);
 router.get("/messages/conversations", protect, adminController.getAdminConversations);
 router.get("/messages/conversation/:userId", protect, adminController.getAdminConversation);
+router.get("/analytics/daily", protect, adminController.getDailyAnalytics);
+router.get("/analytics/risk-distribution", protect, adminController.getRiskDistribution);
 
 // TODO: New routes to be implemented
 // router.put("/users/:id/ban", protect, adminController.banUser);

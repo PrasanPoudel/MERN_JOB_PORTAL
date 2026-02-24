@@ -418,3 +418,72 @@ exports.sendUserReplyToAdmin = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Get daily analytics for bar graph
+exports.getDailyAnalytics = async (req, res) => {
+  try {
+    const days = parseInt(req.query.days) || 7;
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+
+    const dailyData = [];
+
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
+      const nextDate = new Date(date);
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      const userCount = await User.countDocuments({
+        role: { $in: ["jobSeeker", "employer"] },
+        createdAt: { $gte: date, $lt: nextDate },
+      });
+
+      const jobs = await Job.find({
+        createdAt: { $gte: date, $lt: nextDate },
+      });
+
+      const jobCount = jobs.length;
+      dailyData.push({
+        date: date.toISOString().split("T")[0],
+        userRegistrations: userCount,
+        jobPostings: jobCount,
+      });
+    }
+
+    res.json(dailyData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get risk distribution for pie chart
+exports.getRiskDistribution = async (req, res) => {
+  try {
+    const allJobs = await Job.find({});
+
+    let safe = 0;
+    let moderate = 0;
+    let high = 0;
+
+    allJobs.forEach((job) => {
+      const score = job.fraudScore || 0;
+      if (score <= 0.1) {
+        safe++;
+      } else if (score <= 0.25) {
+        moderate++;
+      } else {
+        high++;
+      }
+    });
+
+    res.json([
+      { name: "Safe", value: safe },
+      { name: "Moderate Risk", value: moderate },
+      { name: "High Risk", value: high },
+    ]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
