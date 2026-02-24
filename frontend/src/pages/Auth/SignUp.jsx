@@ -222,6 +222,7 @@ const SignUp = () => {
                   <input
                     type="text"
                     name="fullName"
+                    id="fullName"
                     onChange={handleInputChange}
                     value={formData.fullName}
                     className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
@@ -249,6 +250,7 @@ const SignUp = () => {
                   <input
                     type="email"
                     name="email"
+                    id="email"
                     onChange={handleInputChange}
                     value={formData.email}
                     className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
@@ -276,6 +278,7 @@ const SignUp = () => {
                   <input
                     type={formState.showPassword ? "text" : "password"}
                     name="password"
+                    id="password"
                     onChange={handleInputChange}
                     value={formData.password}
                     className={`w-full pl-10 pr-4 py-3 rounded-lg border ${

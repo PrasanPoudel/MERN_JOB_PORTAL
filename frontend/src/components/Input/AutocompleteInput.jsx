@@ -55,6 +55,7 @@ const AutocompleteInput = ({
         </div>
       )}
       <input
+      id={placeholder}
         ref={inputRef}
         type="text"
         value={value}

@@ -72,6 +72,7 @@ const EditProfileDetails = ({
                         <input
                           type="file"
                           accept="image/*"
+                          id="avatar-upload"
                           onChange={(e) => handleFileChange(e, "avatar")}
                           className="block w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors"
                         />
@@ -85,6 +86,7 @@ const EditProfileDetails = ({
                           </label>
                           <input
                             type="text"
+                            id="name"
                             value={formData.name}
                             onChange={(e) =>
                               handleInputChange("name", e.target.value)
@@ -109,6 +111,7 @@ const EditProfileDetails = ({
                           </label>
                           <input
                             type="email"
+                            id="email"
                             value={formData.email}
                             disabled
                             className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed outline-none"
@@ -148,6 +151,7 @@ const EditProfileDetails = ({
                         <input
                           type="file"
                           accept="image/*"
+                          id="company-logo-upload"
                           onChange={(e) => handleFileChange(e, "companyLogo")}
                           className="block w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-green-50 file:text-green-600 hover:file:bg-green-100 transition-colors"
                         />
@@ -161,6 +165,7 @@ const EditProfileDetails = ({
                           </label>
                           <input
                             type="text"
+                            id="companyName"
                             value={formData.companyName}
                             onChange={(e) =>
                               handleInputChange("companyName", e.target.value)
@@ -186,6 +191,7 @@ const EditProfileDetails = ({
                           <div className="relative">
                             <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <select
+                              id="companySize"
                               value={formData.companySize}
                               onChange={(e) =>
                                 handleInputChange("companySize", e.target.value)
@@ -224,6 +230,7 @@ const EditProfileDetails = ({
                             <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <input
                               type="text"
+                              id="companyLocation"
                               value={formData.companyLocation}
                               onChange={(e) =>
                                 handleInputChange(
@@ -255,6 +262,7 @@ const EditProfileDetails = ({
                             <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <input
                               type="url"
+                              id="companyWebsiteLink"
                               value={formData.companyWebsiteLink}
                               onChange={(e) =>
                                 handleInputChange(
@@ -297,6 +305,7 @@ const EditProfileDetails = ({
                         <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                           type="text"
+                          id="companyRegistrationNumber"
                           value={formData.companyRegistrationNumber}
                           onChange={(e) =>
                             handleInputChange(
@@ -326,6 +335,7 @@ const EditProfileDetails = ({
                         <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                           type="text"
+                          id="panNumber"
                           value={formData.panNumber}
                           onChange={(e) =>
                             handleInputChange("panNumber", e.target.value)
@@ -377,6 +387,7 @@ const EditProfileDetails = ({
                   </h2>
                   <div>
                     <textarea
+                      id="companyDescription"
                       value={formData.companyDescription}
                       onChange={(e) =>
                         handleInputChange("companyDescription", e.target.value)

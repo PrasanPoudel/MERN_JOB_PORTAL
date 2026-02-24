@@ -15,11 +15,7 @@ import {
 } from "../../../utils/data";
 import AutocompleteInput from "../../../components/Input/AutocompleteInput";
 
-const SearchHeader = ({
-  handleFilterChange,
-  filters,
-  clearAllFilters,
-}) => {
+const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
   const [showFilters, setShowFilters] = useState(false);
 
   const applyFilters = () => {
@@ -54,6 +50,7 @@ const SearchHeader = ({
               <div className="relative group flex-1">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
+                  id="searchbar_Mobile"
                   type="text"
                   value={filters.keyword}
                   onChange={(e) =>
@@ -78,9 +75,7 @@ const SearchHeader = ({
               </button>
 
               {/* Search Button */}
-              <button
-                className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 hover:to-purple-700 text-white px-5 transition-all duration-200 font-semibold active:brightness-90"
-              >
+              <button className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 hover:to-purple-700 text-white px-5 transition-all duration-200 font-semibold active:brightness-90">
                 <Search className="w-5 h-5" />
               </button>
             </div>
@@ -125,6 +120,7 @@ const SearchHeader = ({
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
                   type="text"
+                  id="searchbar"
                   value={filters.keyword}
                   onChange={(e) =>
                     handleFilterChange("keyword", e.target.value)
@@ -160,6 +156,7 @@ const SearchHeader = ({
               <div className="relative group flex-1 border-l-2 border-gray-200">
                 <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <select
+                  id="jobType"
                   value={filters.type}
                   onChange={(e) => handleFilterChange("type", e.target.value)}
                   className="w-full pl-12 pr-10 py-3.5 outline-none text-base bg-transparent appearance-none cursor-pointer"
@@ -177,9 +174,7 @@ const SearchHeader = ({
               </div>
 
               {/* Search Button */}
-              <button
-                className="flex items-center justify-center gap-2 text-white bg-sky-600 hover:sky-700 px-6 transition-all duration-200 text-base font-semibold group active:brightness-90 cursor-pointer"
-              >
+              <button className="flex items-center justify-center gap-2 text-white bg-sky-600 hover:sky-700 px-6 transition-all duration-200 text-base font-semibold group active:brightness-90 cursor-pointer">
                 <Search className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                 <span>Search</span>
               </button>

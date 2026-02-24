@@ -39,18 +39,16 @@ const Header = () => {
           </Link>
 
           <div className="flex items-center space-x-3">
-            {user && user?.role === "jobSeeker" && (
-              <Link
-                to="/find-jobs"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <Search className="h-4 w-4 " />
-                <span className="hidden sm:block">Search for jobs</span>
-              </Link>
-            )}
+            <Link
+              to="/find-jobs"
+              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+            >
+              <Search className="h-4 w-4 " />
+              <span className="hidden sm:block">Search for jobs</span>
+            </Link>
             {user && user?.role === "employer" && (
               <Link
-                to="/find-jobs"
+                to="/employer-dashboard"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
               >
                 <LayoutDashboard className="h-4 w-4 " />
