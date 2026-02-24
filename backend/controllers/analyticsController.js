@@ -1,5 +1,6 @@
 const Job = require("../models/Job");
 const Application = require("../models/Application");
+const User= require("../models/User");
 
 const getTrend = (current, previous) => {
   if (previous === 0) {
@@ -113,4 +114,21 @@ exports.getEmployerAnalytics = async (req, res) => {
       .status(500)
       .json({ message: "Failed to fetch analytics", error: err.message });
   }
+};
+
+exports.landingPageStats = async (req, res) => {
+  // Get total active jobs
+  const totalActiveJobs = await Job.countDocuments({ isClosed: false });
+
+  // Get total users
+  const totalUsers = await User.countDocuments({
+    role: { $in: ["jobSeeker", "employer"] },
+  });
+
+  res.status(200).json({
+    counts: {
+      totalUsers,
+      totalActiveJobs,
+    },
+  });
 };

@@ -1,9 +1,13 @@
-const express= require("express");
-const {protect}= require("../middlewares/authMiddleware");
-const {getEmployerAnalytics}= require("../controllers/analyticsController");
+const express = require("express");
+const { protect } = require("../middlewares/authMiddleware");
+const {
+  getEmployerAnalytics,
+  landingPageStats,
+} = require("../controllers/analyticsController");
 
-const router= express.Router();
+const router = express.Router();
 
-router.get("/overview",protect, getEmployerAnalytics);
+router.get("/overview", protect, getEmployerAnalytics);
+router.get("/landingPageStats", landingPageStats);
 
-module.exports= router;
+module.exports = router;

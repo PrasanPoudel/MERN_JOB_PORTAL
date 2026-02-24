@@ -38,6 +38,9 @@ export const API_PATHS = {
     GET_ADMIN_MESSAGES: "/api/messages/admin-messages",
     SEND_TO_ADMIN: "/api/messages/send-to-admin",
   },
+  LANDING_PAGE_STATS: {
+    GET_STATS: "/api/analytics/landingPageStats",
+  },
   ADMIN: {
     GET_STATS: "/api/admin/stats",
     GET_ALL_USERS: "/api/admin/users",
