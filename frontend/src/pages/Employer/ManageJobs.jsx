@@ -60,7 +60,7 @@ const ManageJobs = () => {
   const startIndex = (currentPage - 1) * itemsPerPage;
   const paginatedJobs = filteredAndSortedJobs.slice(
     startIndex,
-    startIndex + itemsPerPage
+    startIndex + itemsPerPage,
   );
 
   const handleSort = (field) => {
@@ -76,7 +76,7 @@ const ManageJobs = () => {
   const handleStatusChange = async (jobId) => {
     try {
       const respones = await axiosInstance.put(
-        API_PATHS.JOBS.TOGGLE_CLOSE(jobId)
+        API_PATHS.JOBS.TOGGLE_CLOSE(jobId),
       );
       getPostedJobs(true);
     } catch (err) {
@@ -88,7 +88,7 @@ const ManageJobs = () => {
   const handleDeleteJob = async (jobId) => {
     try {
       const response = await axiosInstance.delete(
-        API_PATHS.JOBS.DELETE_JOB(jobId)
+        API_PATHS.JOBS.DELETE_JOB(jobId),
       );
       setJobs(jobs.filter((job) => job.id !== jobId));
       toast.success("Job listing deleted successfully");
@@ -144,7 +144,7 @@ const ManageJobs = () => {
 
     try {
       const response = await axiosInstance.get(
-        API_PATHS.JOBS.GET_JOBS_EMPLOYER
+        API_PATHS.JOBS.GET_JOBS_EMPLOYER,
       );
 
       if (response.status === 200 && response.data?.length > 0) {
@@ -341,6 +341,7 @@ const ManageJobs = () => {
                               </td>
                               <td className="px-6 py-5 whitespace-nowrap min-w-32 sm:min-w-0">
                                 <button
+                                  title="View received applications"
                                   className="flex items-center text-sm text-sky-600 hover:text-sky-700 font-semibold transition-colors duration-200 hover:bg-sky-50 px-2 py-1 rounded-lg cursor-pointer"
                                   onClick={() => {
                                     navigate("/applicants", {
@@ -355,6 +356,7 @@ const ManageJobs = () => {
                               <td className="px-6 py-5 whitespace-nowrap min-w-45 sm:min-w-0">
                                 <div className="flex space-x-2">
                                   <button
+                                    title="View Job Details"
                                     className="flex items-center text-xs text-sky-600 hover:text-sky-700 font-semibold transition-colors duration-200 hover:bg-sky-50 px-2 py-1 rounded-lg cursor-pointer"
                                     onClick={() => {
                                       navigate(`/job/${job.id}`);
@@ -364,6 +366,7 @@ const ManageJobs = () => {
                                   </button>
                                   {job.status === "Active" ? (
                                     <button
+                                      title="Job Won't be visible to others"
                                       className="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-700 font-semibold transition-colors duration-200 hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer"
                                       onClick={() => {
                                         handleStatusChange(job.id);
@@ -376,6 +379,7 @@ const ManageJobs = () => {
                                     </button>
                                   ) : (
                                     <button
+                                      title="Job will be visible to others"
                                       className="flex items-center gap-2 text-xs text-green-600 hover:text-green-700 font-semibold transition-colors duration-200 hover:bg-green-50 px-2 py-1 rounded-lg cursor-pointer"
                                       onClick={() => {
                                         handleStatusChange(job.id);
@@ -388,6 +392,7 @@ const ManageJobs = () => {
                                     </button>
                                   )}
                                   <button
+                                    title="Delete this job post"
                                     className="flex items-center text-xs text-red-600 hover:text-red-700 font-semibold transition-colors duration-200 hover:bg-red-50 px-2 py-1 rounded-lg cursor-pointer"
                                     onClick={() => {
                                       handleDeleteJob(job.id);
@@ -435,7 +440,7 @@ const ManageJobs = () => {
                     <span className="font-bold">
                       {Math.min(
                         startIndex + itemsPerPage,
-                        filteredAndSortedJobs.length
+                        filteredAndSortedJobs.length,
                       )}
                     </span>{" "}
                     of{" "}
@@ -471,7 +476,7 @@ const ManageJobs = () => {
                         >
                           {page}
                         </button>
-                      )
+                      ),
                     )}
                     <button
                       onClick={() => {
