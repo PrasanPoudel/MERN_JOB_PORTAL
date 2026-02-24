@@ -64,7 +64,7 @@ const JobPostingForm = () => {
     }
 
     if (!user || user?.role !== "employer") {
-      toast.error("Only employer can post job");
+      toast.error("Only employers can post jobs");
       return;
     }
 
@@ -73,7 +73,7 @@ const JobPostingForm = () => {
       !user.companyLogo?.trim() ||
       !user.companyDescription?.trim()
     ) {
-      toast.error("Complete your company profile before posting a job");
+      toast.error("Please complete your company profile before posting a job");
       return;
     }
 
@@ -98,7 +98,7 @@ const JobPostingForm = () => {
 
       if (response.status === 200 || response.status === 201) {
         toast.success(
-          jobId ? "Job Updated Successfully!" : "Job Posted Successfully!"
+          jobId ? "Job updated successfully!" : "Job posted successfully!"
         );
         setFormData({
           jobTitle: "",
@@ -115,13 +115,17 @@ const JobPostingForm = () => {
         return;
       } else {
         console.log("Unexpected response :", response);
-        toast.error("Something went wrong. Please try again");
+        toast.error("Something went wrong. Please try again.");
       }
     } catch (err) {
-      if (err.response?.data?.message) {
-        toast.error(err.response?.data?.message);
+      console.error("[Job Post Error]", {
+        jobTitle: formData.jobTitle,
+        error: err?.message || err
+      });
+      if (err?.message) {
+        toast.error(err.message);
       } else {
-        console.error("Couldn't post/update job", err);
+        toast.error("❌ Failed to post job. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
@@ -189,7 +193,7 @@ const JobPostingForm = () => {
                   onClick={() => {
                     if (!isFormValid()) {
                       toast.error(
-                        "Please complete all required fields before previewing the job post."
+                        "Please complete all required fields before previewing."
                       );
                     } else {
                       setIsPreview(true);

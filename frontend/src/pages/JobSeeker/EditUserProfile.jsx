@@ -72,19 +72,25 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   };
 
   const handleFileUpload = async (file, type) => {
+    if (!file) return;
+    
     setUploading((prev) => ({ ...prev, [type]: true }));
     try {
       const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes.fileUrl || "";
+      const fileUrl = fileUploadRes?.fileUrl || "";
 
-      // Update form data with new File URL
       setFormData((prev) => ({
         ...prev,
         [type]: fileUrl,
       }));
+      toast.success(`${type === 'avatar' ? 'Profile picture' : 'Resume'} uploaded successfully!`);
     } catch (err) {
-      console.error("upload failed:", err);
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
+      console.error("[File Upload Error]", {
+        type,
+        fileName: file?.name,
+        error: err?.message || err
+      });
+      toast.error(err?.message || `${type === 'avatar' ? 'Profile picture' : 'Resume'} upload failed. Please try again.`);
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -108,20 +114,25 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   };
 
   const deleteResume = async () => {
+    if (!formData.resume) return;
+    
     setIsSaving(true);
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.DELETE_RESUME, {
-        resumeUrl: formData.resume || "",
+        resumeUrl: formData.resume,
       });
 
       if (response.status === 200) {
-        toast.success("Resume Deleted Successfully!");
+        toast.success("Resume deleted successfully!");
         setFormData((prev) => ({ ...prev, resume: "" }));
         updateUser({ ...user, resume: "" });
       }
     } catch (err) {
-      console.error(err);
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
+      console.error("[Delete Resume Error]", {
+        resumeUrl: formData.resume,
+        error: err?.message || err
+      });
+      toast.error(err?.message || "Failed to delete resume. Please try again.");
     } finally {
       setIsSaving(false);
     }
@@ -301,7 +312,6 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      // Prepare data for API - properly formatted
       const dataToSend = {
         ...formData,
         education: formData.education.map((edu) => ({
@@ -319,12 +329,14 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
           date: cert.date || undefined,
         })),
       };
+      
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
         dataToSend,
       );
+      
       if (response.status === 200 && response.data) {
-        toast.success("Profile Updated Successfully!");
+        toast.success("Profile updated successfully!");
         setFormData({
           name: response.data.name || "",
           email: response.data.email || "",
@@ -351,8 +363,10 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
         setEditMode(false);
       }
     } catch (err) {
-      console.error("Error updating profile:", err);
-      toast.error(err.response?.data?.message || "Failed to update profile");
+      console.error("[Profile Update Error]", {
+        error: err?.message || err
+      });
+      toast.error(err?.message || "Failed to update profile. Please try again.");
     } finally {
       setIsSaving(false);
     }

@@ -153,14 +153,17 @@ const SignUp = () => {
         }, 2000);
       }
     } catch (err) {
-      console.log(err);
+      console.error("[SignUp Error]", {
+        email: formData.email,
+        role: formData.role,
+        error: err?.message || err
+      });
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
           submit:
-            err.response?.data?.message ||
-            "Registration failed. Please try again",
+            err?.message || "Registration failed. Please try again.",
         },
       }));
     }

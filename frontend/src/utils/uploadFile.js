@@ -2,6 +2,10 @@ import { API_PATHS } from "./apiPaths";
 import axiosInstance from "./axiosInstance";
 
 const uploadFile = async (file) => {
+  if (!file) {
+    throw new Error("No file provided");
+  }
+
   const formData = new FormData();
   formData.append("file", file);
 
@@ -11,14 +15,18 @@ const uploadFile = async (file) => {
       formData,
       {
         headers: {
-          "Content-Type": "multipart/form-data", //file upload
+          "Content-Type": "multipart/form-data",
         },
       }
     );
     return response.data;
   } catch (err) {
-    // console.log("Error uploading file", err);
-    throw err; //rethrow error for handling (axios Instance)
+    console.error("[File Upload Error]", {
+      fileName: file?.name,
+      fileSize: file?.size,
+      error: err.message || err
+    });
+    throw err;
   }
 };
 

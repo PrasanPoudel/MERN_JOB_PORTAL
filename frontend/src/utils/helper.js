@@ -1,5 +1,5 @@
 export const validateEmail = (email) => {
-  if (!email.trim()) return "Email is required.";
+  if (!email || !email.trim()) return "Email is required.";
   const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   if (!emailRegex.test(email)) return "Please enter a valid email address.";
   return "";
@@ -36,6 +36,7 @@ export const validateAvatar = (file) => {
 };
 
 export const getInitials = (name) => {
+  if (!name || typeof name !== "string") return "NA";
   return name
     .split(" ")
     .map((word) => word.charAt(0))
@@ -47,13 +48,18 @@ export const getInitials = (name) => {
 // Helper to format date for input type="date"
 export const formatDate = (date) => {
   if (!date) return "";
-  if (
-    typeof date === "string" &&
-    date.length === 10 &&
-    date.match(/^\d{4}-\d{2}-\d{2}$/)
-  )
-    return date;
-  const d = new Date(date);
-  if (isNaN(d)) return "";
-  return d.toISOString().slice(0, 10);
+  try {
+    if (
+      typeof date === "string" &&
+      date.length === 10 &&
+      date.match(/^\d{4}-\d{2}-\d{2}$/)
+    )
+      return date;
+    const d = new Date(date);
+    if (isNaN(d.getTime())) return "";
+    return d.toISOString().slice(0, 10);
+  } catch (err) {
+    console.error("[Date Format Error]", { date, error: err?.message });
+    return "";
+  }
 };

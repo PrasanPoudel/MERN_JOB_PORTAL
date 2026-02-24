@@ -89,12 +89,16 @@ const Login = () => {
         }, 2000);
       }
     } catch (error) {
+      console.error("[Login Error]", {
+        email: formData.email,
+        error: error?.message || error
+      });
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
           submit:
-            error.response?.data?.message || "Login failed. Please try again",
+            error?.message || "Login failed. Please check your credentials and try again.",
         },
       }));
     }

@@ -116,34 +116,36 @@ const JobSeekerDashboard = () => {
     try {
       if (isSaved) {
         await axiosInstance.delete(API_PATHS.JOBS.UNSAVE_JOB(jobId));
-        toast.success("Job removed from saved list successfully!");
+        toast.success("Job removed from saved list!");
       } else {
         await axiosInstance.post(API_PATHS.JOBS.SAVE_JOB(jobId));
         toast.success("Job saved successfully!");
       }
       fetchJobs();
     } catch (err) {
-      console.error(err);
-      toast.error(err?.response?.data?.message || "Something went wrong. Try again");
+      console.error("[Toggle Save Job Error]", err);
+      toast.error(err?.message || "Failed to save/unsave job. Please try again.");
     }
   };
 
   const applyToJob = async (jobId) => {
     if (!user) {
-      toast.error("Please login before applying for job");
+      toast.error("Please login before applying for jobs");
       return;
     }
     if (user.role === "employer") {
-      toast.info("Employer cannot apply for jobs");
+      toast.info("Employers cannot apply for jobs");
+      return;
     }
     try {
       if (jobId) {
         await axiosInstance.post(API_PATHS.APPLICATIONS.APPLY_TO_JOB(jobId));
-        toast.success("Applied to job successfully!");
+        toast.success("Application submitted successfully!");
       }
       fetchJobs();
     } catch (err) {
-      console.error(err);
+      console.error("[Apply Job Error]", err);
+      toast.error(err?.message || "Failed to apply. Please try again.");
     }
   };
 
