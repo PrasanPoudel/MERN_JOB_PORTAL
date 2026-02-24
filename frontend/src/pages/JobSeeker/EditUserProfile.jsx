@@ -426,7 +426,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               <div className="flex flex-col space-y-4 items-start md:items-center md:flex-row md:space-x-4">
                 <div className="relative">
                   <img
-                    src={formData.avatar || "/default-avatar.png"}
+                    src={formData.avatar || "/default.png"}
                     alt="Avatar"
                     className="w-20 h-20 rounded-full border-2 border-gray-100 object-cover"
                   />

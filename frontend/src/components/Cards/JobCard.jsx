@@ -40,9 +40,7 @@ const JobCard = ({
     <div
       onClick={onClick}
       className={`bg-white mx-auto min-w-full min-h-60 rounded-2xl border border-gray-200 p-5 ${!hideShadow && "hover:shadow-md "}hover:shadow-gray-200 transition-all duration-200 cursor-pointer group flex flex-col justify-between`}
-    >
-      {/* Top section */}
-      <div>
+    >      <div>
         <div className="flex items-start gap-4 mb-4">
           {job?.company?.companyLogo ? (
             <img

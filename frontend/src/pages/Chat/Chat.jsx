@@ -368,17 +368,11 @@ const Chat = ({ isAdmin = false }) => {
                   }`}
                 >
                   <div className="w-12 h-12 rounded-full bg-sky-100 flex items-center justify-center shrink-0 overflow-hidden">
-                    {getOtherPartyAvatar(conv) ? (
-                      <img
-                        src={getOtherPartyAvatar(conv)}
-                        alt="User"
-                        className="w-full h-full object-cover"
-                      />
-                    ) : (
-                      <span className="text-sky-600 font-semibold text-sm">
-                        {getOtherPartyName(conv).charAt(0).toUpperCase()}
-                      </span>
-                    )}
+                    <img
+                      src={getOtherPartyAvatar(conv) || "/default.png"}
+                      alt="User"
+                      className="w-full h-full object-cover"
+                    />
                   </div>
 
                   <div className="flex-1 min-w-0 text-left">
@@ -459,19 +453,11 @@ const Chat = ({ isAdmin = false }) => {
                 </button>
               )}
               <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden shrink-0">
-                {getOtherPartyAvatar(selectedConversation) ? (
-                  <img
-                    src={getOtherPartyAvatar(selectedConversation)}
-                    alt="User"
-                    className="w-full h-full object-cover"
-                  />
-                ) : (
-                  <span className="text-sky-600 font-semibold text-xs">
-                    {getOtherPartyName(selectedConversation)
-                      .charAt(0)
-                      .toUpperCase()}
-                  </span>
-                )}
+                <img
+                  src={getOtherPartyAvatar(selectedConversation) || "/default.png"}
+                  alt="User"
+                  className="w-full h-full object-cover"
+                />
               </div>
               <div className="text-left min-w-0 flex-1">
                 <p className="font-semibold text-gray-900 text-sm truncate">
@@ -540,17 +526,11 @@ const Chat = ({ isAdmin = false }) => {
                         >
                           {!isOwnMessage && (
                             <div className="w-8 h-8 rounded-full bg-sky-100 flex items-center justify-center shrink-0 overflow-hidden">
-                              {message.sender.avatar ? (
-                                <img
-                                  src={message.sender.avatar}
-                                  alt={message.sender.name}
-                                  className="w-full h-full object-cover"
-                                />
-                              ) : (
-                                <span className="text-sky-600 font-semibold text-xs">
-                                  {message.sender.name.charAt(0).toUpperCase()}
-                                </span>
-                              )}
+                              <img
+                                src={message.sender.avatar || "/default.png"}
+                                alt={message.sender.name}
+                                className="w-full h-full object-cover"
+                              />
                             </div>
                           )}
                           <div
