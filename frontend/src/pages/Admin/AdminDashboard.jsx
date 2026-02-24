@@ -6,7 +6,6 @@ import { API_PATHS } from "../../utils/apiPaths";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { StatCard } from "../../components/Cards/StatCard";
-
 const AdminDashboard = () => {
   const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
@@ -84,7 +83,6 @@ const AdminDashboard = () => {
               color="orange"
             />
           </div>
-
           {/* Quick Actions */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
             {QuickActions.map((action, index) => {
@@ -110,56 +108,6 @@ const AdminDashboard = () => {
               );
             })}
           </div>
-
-          {/* Recent Users */}
-          {dashboardData?.data?.recentUsers &&
-            dashboardData.data.recentUsers.length > 0 && (
-              <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                  Recent Users
-                </h3>
-                <div className="space-y-3">
-                  {dashboardData.data.recentUsers.map((user) => (
-                    <div
-                      key={user._id}
-                      className="flex items-center gap-4 p-3 bg-gray-50 rounded-lg hover:bg-gray-100 cursor-pointer transition-colors"
-                    >
-                      <div className="w-10 h-10 rounded-full bg-sky-100 flex items-center justify-center shrink-0 overflow-hidden">
-                        {user.avatar ? (
-                          <img
-                            src={user.avatar}
-                            alt={user.name}
-                            className="w-full h-full object-cover"
-                          />
-                        ) : (
-                          <span className="text-sky-600 font-semibold text-sm">
-                            {user.name?.charAt(0)}
-                          </span>
-                        )}
-                      </div>
-                      <div className="flex-1 min-w-0">
-                        <p className="font-medium text-gray-900 text-sm">
-                          {user.name}
-                        </p>
-                        <p className="text-xs text-gray-600 truncate">
-                          {user.email}
-                        </p>
-                      </div>
-                      <div className="flex items-center gap-2 shrink-0">
-                        <span
-                          className={`text-xs font-semibold px-3 py-1 rounded-full ${user.role === "employer" ? "bg-orange-100 text-orange-700" : "bg-blue-100 text-blue-700"}`}
-                        >
-                          {user.role === "employer" ? "Employer" : "Job Seeker"}
-                        </span>
-                        {user.isPremium && (
-                          <Crown className="w-4 h-4 text-yellow-500" />
-                        )}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            )}
         </div>
       )}
     </DashboardLayout>

@@ -18,8 +18,6 @@ exports.updateProfile = async (req, res) => {
       location,
       facebookLink,
       instagramLink,
-
-      employerProfile,
       companyName,
       companyDescription,
       companyLogo,
@@ -35,7 +33,6 @@ exports.updateProfile = async (req, res) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
-
     user.name = name ?? user.name;
     user.avatar = avatar ?? user.avatar;
     user.resume = resume ?? user.resume;

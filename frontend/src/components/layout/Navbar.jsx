@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Home, LayoutDashboard, MessageSquare, Search } from "lucide-react";
+import { Home, MessageSquare, Search } from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
 import { NavLink, Link } from "react-router-dom";
@@ -64,18 +64,6 @@ const Navbar = () => {
               <Home className="h-5 w-5" />
               <span className="hidden md:flex">Home</span>
             </NavLink>
-            {user && user?.role === "employer" && (
-              <NavLink to="/employer-dashboard" className={navLinkClasses}>
-                <LayoutDashboard className="h-5 w-5" />
-                <span className="hidden md:flex">Dashboard</span>
-              </NavLink>
-            )}
-            {user && user?.role === "admin" && (
-              <NavLink to="/admin-dashboard" className={navLinkClasses}>
-                <LayoutDashboard className="h-5 w-5" />
-                <span className="hidden md:flex">Dashboard</span>
-              </NavLink>
-            )}
             {user && user?.role === "jobSeeker" && (
               <>
                 <NavLink to="/find-jobs" className={navLinkClasses}>

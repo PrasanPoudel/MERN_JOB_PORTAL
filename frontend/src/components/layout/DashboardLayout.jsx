@@ -237,10 +237,15 @@ const DashboardLayout = ({ activeMenu, children }) => {
               }}
               className="flex items-center gap-2 lg:p-2 rounded-full lg:rounded-lg h-[80%] overflow-hidden cursor-pointer hover:bg-gray-100 shadow-xs"
             >
-              {user?.avatar && (
+              {user?.avatar ? (
                 <img
                   src={user?.avatar}
-                  className="w-12 h-full object-fill rounded-2xl"
+                  className="w-12 h-12 object-fill rounded-full"
+                />
+              ) : (
+                <img
+                  src="/default.png"
+                  className="w-12 h-12 object-fill rounded-full"
                 />
               )}
               <div className="hidden lg:block">

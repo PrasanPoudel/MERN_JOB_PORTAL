@@ -1,16 +1,13 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { useNavigate, Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import ProfileDropdown from "../../../components/layout/ProfileDropdown";
 import logo from "../../../assets/logo.png";
-import { LayoutDashboard, Search } from "lucide-react";
+import { Search } from "lucide-react";
 
 const Header = () => {
   const { user, isAuthenticated, logout } = useAuth();
-
-  const navigate = useNavigate();
-
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
   useEffect(() => {
@@ -46,24 +43,6 @@ const Header = () => {
               <Search className="h-4 w-4 " />
               <span className="hidden sm:block">Search for jobs</span>
             </Link>
-            {user && user?.role === "employer" && (
-              <Link
-                to="/employer-dashboard"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <LayoutDashboard className="h-4 w-4 " />
-                <span className="hidden sm:block">Dashboard</span>
-              </Link>
-            )}
-            {user && user?.role === "admin" && (
-              <Link
-                to="/admin-dashboard"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <LayoutDashboard className="h-4 w-4 " />
-                Dashboard
-              </Link>
-            )}
             {isAuthenticated ? (
               <div id="profileDropdown" className="flex items-center space-x-3">
                 <ProfileDropdown

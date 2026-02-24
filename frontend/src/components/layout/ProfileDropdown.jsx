@@ -8,6 +8,7 @@ import {
   BookmarkCheck,
   MessageSquare,
   Plus,
+  LayoutDashboard,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -52,7 +53,11 @@ const ProfileDropdown = ({
         <div className="hidden md:block text-left">
           <p className="text-sm font-medium text-gray-900">{name}</p>
           <p className="text-xs text-gray-600">
-            {role === "employer" ? "Employer" : role === "admin" ? "Admin" : "Job Seeker"}
+            {role === "employer"
+              ? "Employer"
+              : role === "admin"
+                ? "Admin"
+                : "Job Seeker"}
           </p>
         </div>
 
@@ -66,12 +71,30 @@ const ProfileDropdown = ({
             <p className="text-sm font-medium text-gray-900">{name}</p>
             <p className="text-xs text-gray-600 truncate">{email}</p>
           </div>
-
           <div className="p-2 space-y-2">
+            {(role === "employer" || role === "admin") && (
+              <div
+                onClick={() =>
+                  navigate(
+                    role === "admin"
+                      ? "/admin-dashboard"
+                      : "employer-dashboard",
+                  )
+                }
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <LayoutDashboard className="h-4 w-4 " />
+                Dashboard
+              </div>
+            )}
             <div
               onClick={() =>
                 navigate(
-                  role === "jobSeeker" ? "/profile" : "/employer-profile",
+                  role === "admin"
+                    ? "/edit-admin-profile"
+                    : role === "employer"
+                      ? "/employer-profile"
+                      : "/profile",
                 )
               }
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
@@ -79,62 +102,51 @@ const ProfileDropdown = ({
               <User className="h-4 w-4 " />
               View Profile
             </div>
-
             {role === "jobSeeker" && (
               <>
-              <div
-                onClick={() =>
-                  navigate("/applied-applications")
-                }
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <BriefcaseBusiness className="h-4 w-4 " />
-                My Applications
-              </div>
-  
-              <div
-                onClick={() =>
-                  navigate("/saved-jobs")
-                }
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <BookmarkCheck className="h-4 w-4 " />
-                Saved Jobs
-              </div>
+                <div
+                  onClick={() => navigate("/applied-applications")}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <BriefcaseBusiness className="h-4 w-4 " />
+                  My Applications
+                </div>
+
+                <div
+                  onClick={() => navigate("/saved-jobs")}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <BookmarkCheck className="h-4 w-4 " />
+                  Saved Jobs
+                </div>
               </>
             )}
 
             {role === "employer" && (
               <>
-              <div
-                onClick={() =>
-                  navigate("/manage-jobs")
-                }
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <BriefcaseBusiness className="h-4 w-4 " />
-                Manage Jobs
-              </div>
-  
-              <div
-                onClick={() =>
-                  navigate("/post-job")
-                }
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <Plus className="h-4 w-4 " />
-                Post Job
-              </div>
+                <div
+                  onClick={() => navigate("/manage-jobs")}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <BriefcaseBusiness className="h-4 w-4 " />
+                  Manage Jobs
+                </div>
 
-              <div
-                onClick={() =>
-                  navigate("/EmployerChatBox")
-                }
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <MessageSquare className="h-4 w-4 " />
-                Messages
-              </div>
+                <div
+                  onClick={() => navigate("/post-job")}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <Plus className="h-4 w-4 " />
+                  Post Job
+                </div>
+
+                <div
+                  onClick={() => navigate("/EmployerChatBox")}
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <MessageSquare className="h-4 w-4 " />
+                  Messages
+                </div>
               </>
             )}
 

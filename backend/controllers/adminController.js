@@ -44,9 +44,6 @@ exports.getAdminStats = async (req, res) => {
         totalActiveJobs,
         totalJobs,
       },
-      data: {
-        recentUsers,
-      },
     });
   } catch (err) {
     res
