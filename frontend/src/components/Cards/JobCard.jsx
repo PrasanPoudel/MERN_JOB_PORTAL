@@ -6,7 +6,7 @@ import {
   MapPin,
   Calendar,
   BriefcaseBusiness,
-  DollarSign,
+  Banknote,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
@@ -103,7 +103,7 @@ const JobCard = ({
 
       <div className="flex items-center justify-between p-0">
         <p className="flex items-center gap-1 text-sky-600 font-semibold text-lg">
-          <DollarSign className="w-5 h-5" />
+          <Banknote className="w-5 h-5" />
           NPR {formatSalary(job.salaryMin)}
         </p>
         <div className="flex items-center justify-end gap-2">
