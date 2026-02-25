@@ -113,7 +113,8 @@ const JobCard = ({
                 e.stopPropagation();
                 onToggleSave();
               }}
-              className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+              title={job?.isSaved || saved ? "Remove from saved jobs" : "Save this job"}
+              className="p-2 hover:bg-gray-100 rounded-xl transition-colors cursor-pointer"
             >
               {job?.isSaved || saved ? (
                 <BookmarkCheck className="w-5 h-5 text-sky-600" />
@@ -134,6 +135,7 @@ const JobCard = ({
                     e.stopPropagation();
                     onApply();
                   }}
+                  title="Apply for this job"
                   className="bg-sky-600 hover:bg-sky-600 text-white px-4 py-2 rounded-xl text-sm font-semibold transition-all shadow-md cursor-pointer"
                 >
                   Apply

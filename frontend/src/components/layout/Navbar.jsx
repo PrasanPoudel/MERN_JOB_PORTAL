@@ -117,7 +117,8 @@ const Navbar = () => {
             ) : (
               <a
                 href="/login"
-                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-sky-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                title="Login to your account"
+                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-sky-700 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
               >
                 Login
               </a>

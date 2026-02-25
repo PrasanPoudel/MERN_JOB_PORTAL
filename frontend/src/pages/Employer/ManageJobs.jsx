@@ -191,6 +191,7 @@ const ManageJobs = () => {
                 </p>
               </div>
               <button
+                title="Add new job posting"
                 className="group bg-sky-600 flex items-center space-x-2 px-6 py-3 text-sm font-medium text-white hover:text-white hover:bg-sky-700 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
                 onClick={() => {
                   navigate("/post-job");

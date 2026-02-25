@@ -34,6 +34,7 @@ const ProfileDropdown = ({
       {/* Profile Button */}
       <button
         onClick={onToggle}
+        title="Open profile menu"
         className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer"
       >
         {avatar ? (
@@ -81,6 +82,7 @@ const ProfileDropdown = ({
                       : "employer-dashboard",
                   )
                 }
+                title="Go to dashboard"
                 className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
               >
                 <LayoutDashboard className="h-4 w-4 " />
@@ -97,6 +99,7 @@ const ProfileDropdown = ({
                       : "/profile",
                 )
               }
+              title="View your profile"
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
             >
               <User className="h-4 w-4 " />
@@ -106,6 +109,7 @@ const ProfileDropdown = ({
               <>
                 <div
                   onClick={() => navigate("/applied-applications")}
+                  title="View your applications"
                   className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
                 >
                   <BriefcaseBusiness className="h-4 w-4 " />
@@ -114,6 +118,7 @@ const ProfileDropdown = ({
 
                 <div
                   onClick={() => navigate("/saved-jobs")}
+                  title="View saved jobs"
                   className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
                 >
                   <BookmarkCheck className="h-4 w-4 " />
@@ -126,6 +131,7 @@ const ProfileDropdown = ({
               <>
                 <div
                   onClick={() => navigate("/manage-jobs")}
+                  title="Manage your job postings"
                   className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
                 >
                   <BriefcaseBusiness className="h-4 w-4 " />
@@ -134,6 +140,7 @@ const ProfileDropdown = ({
 
                 <div
                   onClick={() => navigate("/post-job")}
+                  title="Post a new job"
                   className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
                 >
                   <Plus className="h-4 w-4 " />
@@ -142,6 +149,7 @@ const ProfileDropdown = ({
 
                 <div
                   onClick={() => navigate("/EmployerChatBox")}
+                  title="View messages"
                   className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
                 >
                   <MessageSquare className="h-4 w-4 " />
@@ -152,6 +160,7 @@ const ProfileDropdown = ({
 
             <div
               onClick={() => setShowLogoutConfirm(true)}
+              title="Sign out of your account"
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 cursor-pointer"
             >
               <LogOut className="h-4 w-4" />
@@ -170,6 +179,7 @@ const ProfileDropdown = ({
               </h3>
               <X
                 onClick={() => setShowLogoutConfirm(false)}
+                title="Close"
                 className="h-4 w-4 text-gray-500 cursor-pointer"
               />
             </div>
@@ -181,12 +191,14 @@ const ProfileDropdown = ({
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setShowLogoutConfirm(false)}
+                title="Cancel sign out"
                 className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-100 cursor-pointer"
               >
                 Cancel
               </button>
               <button
                 onClick={handleConfirmLogout}
+                title="Confirm sign out"
                 className="px-4 py-2 text-sm rounded-lg bg-red-600 text-white hover:bg-red-700 cursor-pointer"
               >
                 Sign Out

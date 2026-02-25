@@ -70,7 +70,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
         </select>
       </div>
 
-      <div className="bg-white rounded-xl p-4 outline-none border-0">
+      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
         <h3 className="text-lg font-semibold text-gray-900 mb-6">
           Daily User Registrations
         </h3>
@@ -120,11 +120,10 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
         </ResponsiveContainer>
       </div>
 
-      <div className="grid grid-cols-1">
-        <div className="bg-white rounded-xl shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">
-            Job Risk Distribution
-          </h3>
+      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
+        <h3 className="text-lg font-semibold text-gray-900 mb-6">
+          Job Risk Distribution
+        </h3>
 
           <ResponsiveContainer width="100%" height={300}>
             <PieChart>
@@ -167,7 +166,6 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
           </div>
         </div>
       </div>
-    </div>
   );
 };
 
@@ -294,7 +292,8 @@ const AdminDashboard = () => {
                 <button
                   key={index}
                   onClick={() => navigate(action.path)}
-                  className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:cursor-pointer hover:shadow-md transition-all duration-200 p-6 text-left"
+                  title={action.title}
+                  className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-6 text-left cursor-pointer"
                 >
                   <div
                     className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}

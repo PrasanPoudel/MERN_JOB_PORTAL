@@ -38,6 +38,7 @@ const Header = () => {
           <div className="flex items-center space-x-3">
             <Link
               to="/find-jobs"
+              title="Search for jobs"
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
             >
               <Search className="h-4 w-4 " />
@@ -63,7 +64,8 @@ const Header = () => {
             ) : (
               <a
                 href="/login"
-                className="bg-sky-600 hover:bg-sky-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md"
+                title="Login to your account"
+                className="bg-sky-600 hover:bg-sky-700 text-white px-6 py-2 rounded-lg font-medium transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
               >
                 Login
               </a>
