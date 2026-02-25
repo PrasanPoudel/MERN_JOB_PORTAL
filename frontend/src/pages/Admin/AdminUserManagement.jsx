@@ -13,6 +13,8 @@ import {
   Bookmark,
   BriefcaseBusiness,
   Mail,
+  BadgeCheck,
+  User,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -149,7 +151,7 @@ const AdminUserManagement = () => {
         />
       )}
 
-      <div className="max-w-7xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto p-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
@@ -199,7 +201,7 @@ const AdminUserManagement = () => {
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4 shrink-0" />
             <p className="text-gray-600 font-medium">No users found</p>
           </div>
         ) : (
@@ -242,25 +244,34 @@ const AdminUserManagement = () => {
                           {user.name}
                         </p>
                         {user.isPremium && (
-                          <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                            <Crown className="w-3 h-3" /> Premium
+                          <span
+                            title="Premium User"
+                            className="bg-yellow-50 text-yellow-500 text-xs px-2 py-1 rounded-full flex items-center gap-1"
+                          >
+                            <Crown className="w-3 h-3 shrink-0" />
                           </span>
                         )}
-
-                        <span
-                          className={`text-xs px-2 py-1 rounded-full font-medium ${
-                            user.role === "employer"
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {user.role === "employer" ? "Employer" : "Job Seeker"}
-                        </span>
                       </div>
+
+                      <p
+                        className={`text-xs flex w-32 px-2 py-1 rounded-full font-medium ${
+                          user.role === "employer"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}
+                      >
+                        {user.role === "employer" ? "Employer" : "Job Seeker"}
+                      </p>
                       {user && user?.companyName && (
-                        <p className="flex items-center gap-1 text-sm text-gray-700">
-                          <Building2 className="w-4 h-4" />
+                        <p className="flex items-center w-full gap-1 text-xs sm:text-sm text-gray-700">
+                          <span title={user?.companyName} className="flex items-center gap-1 truncate max-w-42 sm:max-w-52">
+                          <Building2 className="w-4 h-4 shrink-0" />
                           {user.companyName}
+                          </span>
+                          {user.role === "employer" &&
+                            user.isCompanyVerified && (
+                              <BadgeCheck className="w-4 h-4 text-sky-600 shrink-0" />
+                            )}
                         </p>
                       )}
                       <p className="text-xs text-gray-500">{user.email}</p>
@@ -440,6 +451,9 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
               <div>
                 <h2 className="text-2xl font-bold text-gray-900">
                   {user.name}
+                  {user.role === "employer" && user.isCompanyVerified && (
+                    <BadgeCheck className="w-5 h-5 text-sky-600 ml-2 inline" />
+                  )}
                 </h2>
                 <p className="text-gray-500">{user.email}</p>
               </div>
@@ -447,7 +461,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
 
             <div className="grid sm:grid-cols-2 gap-6 mb-8 text-sm">
               <InfoItem
-                icon={<Users />}
+                icon={<User />}
                 label="Role"
                 value={
                   user.role === "employer"

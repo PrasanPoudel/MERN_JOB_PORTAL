@@ -20,6 +20,8 @@ const ProfileDropdown = ({
   name,
   email,
   role,
+  companyName,
+  isCompanyVerified,
 }) => {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -60,6 +62,14 @@ const ProfileDropdown = ({
                 ? "Admin"
                 : "Job Seeker"}
           </p>
+          {role === "employer" && companyName && (
+            <p className="text-xs text-gray-600 flex items-center gap-1">
+              {companyName}
+              {isCompanyVerified && (
+                <span className="text-sky-600">✓</span>
+              )}
+            </p>
+          )}
         </div>
 
         <ChevronDown className="h-4 w-4 text-gray-700" />

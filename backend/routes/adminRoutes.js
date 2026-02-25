@@ -18,12 +18,11 @@ router.get("/messages/conversation/:userId", protect, adminController.getAdminCo
 router.get("/analytics/daily", protect, adminController.getDailyAnalytics);
 router.get("/analytics/risk-distribution", protect, adminController.getRiskDistribution);
 
-// TODO: New routes to be implemented
-// router.put("/users/:id/ban", protect, adminController.banUser);
-// router.put("/users/:id/unban", protect, adminController.unbanUser);
-// router.put("/jobs/:id/flag", protect, adminController.flagJob);
-// router.get("/companies/pending", protect, adminController.getPendingCompanies);
-// router.put("/companies/:id/verify", protect, adminController.verifyCompany);
-// router.get("/risk-metrics", protect, adminController.getRiskMetrics);
+// Company verification routes
+router.get("/companies", protect, adminController.getAllCompanies);
+router.get("/companies/pending", protect, adminController.getPendingCompanies);
+router.get("/companies/:id", protect, adminController.getCompanyDetails);
+router.put("/companies/:id/verify", protect, adminController.verifyCompany);
+router.put("/companies/:id/remove-verification", protect, adminController.removeCompanyVerification);
 
 module.exports = router;

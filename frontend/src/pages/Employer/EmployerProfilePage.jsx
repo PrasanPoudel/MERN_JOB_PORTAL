@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   User,
   Plus,
+  BadgeCheck,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";
@@ -279,6 +280,9 @@ const EmployerProfilePage = () => {
                       <div className="min-w-0">
                         <h3 className="text-base sm:text-lg font-semibold truncate">
                           {profileData.companyName}
+                          {profileData.isCompanyVerified && (
+                            <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                          )}
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <MapPin className="w-4 h-4 shrink-0" />

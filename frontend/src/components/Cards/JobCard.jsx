@@ -6,7 +6,7 @@ import {
   MapPin,
   Calendar,
   BriefcaseBusiness,
-  Banknote,
+  BadgeCheck,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
@@ -39,9 +39,9 @@ const JobCard = ({
   return (
     <div
       onClick={onClick}
-      className={`bg-white mx-auto min-w-full min-h-60 rounded-2xl border border-gray-200 p-5 ${!hideShadow && "hover:shadow-md "}hover:shadow-gray-200 transition-all duration-200 cursor-pointer group flex flex-col justify-between`}
+      className={`bg-white mx-auto min-w-full min-h-60 rounded-2xl border border-gray-200 p-5 ${!hideShadow && "hover:shadow-md "}hover:shadow-gray-200 transition-all duration-200 cursor-pointer group flex flex-col justify-between overflow-x-hidden`}
     >      <div>
-        <div className="flex items-start gap-4 mb-4">
+        <div className="flex items-start gap-2 mb-4">
           {job?.company?.companyLogo ? (
             <img
               src={job?.company?.companyLogo}
@@ -58,9 +58,14 @@ const JobCard = ({
             <h3 className="font-semibold text-gray-900 text-base leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors">
               {job?.title || "Untitled Job"}
             </h3>
-            <p className="text-gray-600 text-xs flex items-center gap-1 mt-1 truncate">
+            <p className="text-gray-600 text-sm flex items-center w-full gap-1 mt-1">
               <Building2 className="w-3.5 h-3.5 shrink-0" />
+              <span className="truncate max-w-42">
               {job?.company?.companyName || "Unknown Company"}
+              </span>
+              {job?.company?.isCompanyVerified && (
+                <BadgeCheck className="w-4 h-4 text-sky-600 ml-1 shrink-0" />
+              )}
             </p>
           </div>
         </div>
@@ -102,8 +107,7 @@ const JobCard = ({
       </div>
 
       <div className="flex items-center justify-between p-0">
-        <p className="flex items-center gap-1 text-sky-600 font-semibold text-lg">
-          <Banknote className="w-5 h-5" />
+        <p className="text-sky-600 font-semibold text-lg">
           NPR {formatSalary(job.salaryMin)}
         </p>
         <div className="flex items-center justify-end gap-2">

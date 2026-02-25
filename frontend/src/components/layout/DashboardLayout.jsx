@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Building2, Home, LogOut, Menu, X } from "lucide-react";
+import { Building2, Home, LogOut, Menu, X, BadgeCheck } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   NAVIGATION_MENU_EMPLOYER,
@@ -270,6 +270,9 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   <p className="text-xs text-gray-700 font-medium flex items-center gap-2">
                     <Building2 className="w-4 h-4" />
                     {user?.companyName}
+                    {user?.isCompanyVerified && (
+                      <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                    )}
                   </p>
                 )}
                 <p className="text-xs text-gray-600">{user?.email}</p>

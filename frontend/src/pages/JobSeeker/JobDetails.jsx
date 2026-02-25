@@ -18,6 +18,7 @@ import {
   Mail,
   Banknote,
   BookOpenText,
+  BadgeCheck,
 } from "lucide-react";
 import { StatusBadge } from "../../components/StatusBadge";
 
@@ -218,6 +219,9 @@ const JobDetails = () => {
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
                           {job?.company?.companyName}
+                          {job?.company?.isCompanyVerified && (
+                            <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                          )}
                         </h3>
 
                         <p className="text-sm text-gray-600 mt-1">

@@ -120,6 +120,7 @@ const Navbar = () => {
                 name={user?.name || ""}
                 avatar={user?.avatar || null}
                 companyName={user?.companyName || ""}
+                isCompanyVerified={user?.isCompanyVerified || false}
                 email={user?.email || ""}
                 role={user?.role || "jobSeeker"}
                 companyLogo={user?.companyLogo || null}

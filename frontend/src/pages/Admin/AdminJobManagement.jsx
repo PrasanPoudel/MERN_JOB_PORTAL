@@ -9,6 +9,7 @@ import {
   Banknote,
   Info,
   Tag,
+  BadgeCheck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -386,6 +387,9 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                 <div className="flex flex-col text-center sm:text-left">
                   <h3 className="text-lg font-semibold text-gray-900">
                     {companyName}
+                    {job?.company?.isCompanyVerified && (
+                      <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                    )}
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">{employerName}</p>
                   <p className="text-xs text-gray-600 mt-1">

@@ -51,7 +51,7 @@ export const SocketProvider = ({ children }) => {
         setIsConnected(false);
         
         // Attempt to reconnect if not manually disconnected
-        if (reason !== "io client disconnect") {
+        if (reason !== "io client disconnect" && reason !== "transport close") {
           handleReconnect();
         }
       });
