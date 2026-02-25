@@ -30,7 +30,7 @@ export const SocketProvider = ({ children }) => {
         return;
       }
 
-      const newSocket = io(process.env.REACT_APP_API_URL || "http://localhost:8000", {
+      const newSocket = io("http://localhost:8000", {
         auth: {
           token,
         },
