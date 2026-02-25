@@ -294,7 +294,7 @@ const AdminDashboard = () => {
                 <button
                   key={index}
                   onClick={() => navigate(action.path)}
-                  className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-6 text-left"
+                  className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:cursor-pointer hover:shadow-md transition-all duration-200 p-6 text-left"
                 >
                   <div
                     className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}

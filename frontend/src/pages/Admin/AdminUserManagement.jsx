@@ -258,21 +258,21 @@ const AdminUserManagement = () => {
                   <div className="grid grid-cols-3 gap-2 py-2 justify-center sm:justify-end">
                     <button
                       onClick={() => setSelectedUser(user._id)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
+                      className="px-2 sm:px-4 py-2 hover:cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
                     >
                       View Details
                     </button>
 
                     <button
                       onClick={() => handleMessageUser(user._id)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
+                      className="px-2 sm:px-4 py-2 hover:cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
                     >
                       Message
                     </button>
 
                     <button
                       onClick={() => setConfirmDeleteUser(user)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
+                      className="px-2 sm:px-4 py-2 hover:cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
                     >
                       Delete
                     </button>
