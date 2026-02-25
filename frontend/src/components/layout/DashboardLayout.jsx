@@ -188,7 +188,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
               </button>
             )}
             <div>
-              <h1 className="text-base font-semibold text-gray-900">
+              <h1 className="text-xs sm:text-base font-semibold text-gray-900">
                 Welcome back !
               </h1>
               <p className="text-sm text-gray-600 hidden sm:block">

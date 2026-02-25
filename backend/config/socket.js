@@ -36,8 +36,6 @@ const setupSocket = (server) => {
 
   // Handle socket connections
   io.on("connection", (socket) => {
-    console.log(`User ${socket.user.name} connected with ID: ${socket.id}`);
-
     // Join user-specific room
     socket.join(`user:${socket.user._id}`);
     
@@ -110,7 +108,6 @@ const setupSocket = (server) => {
         await updateConversationList(recipientId, io);
 
       } catch (err) {
-        console.error("Error sending message:", err);
         socket.emit("error", { message: err.message });
       }
     });
@@ -155,7 +152,6 @@ const setupSocket = (server) => {
         }
 
       } catch (err) {
-        console.error("Error marking message as read:", err);
         socket.emit("error", { message: err.message });
       }
     });
@@ -172,12 +168,12 @@ const setupSocket = (server) => {
 
     // Handle disconnect
     socket.on("disconnect", () => {
-      console.log(`User ${socket.user.name} disconnected`);
+      // User disconnected - cleanup handled by socket.io automatically
     });
 
     // Handle errors
     socket.on("error", (err) => {
-      console.error("Socket error:", err);
+      // Error handling managed by socket.io
     });
   });
 
@@ -215,7 +211,7 @@ const setupSocket = (server) => {
             userConversations.push({
               user: otherUser,
               lastMessage: msg,
-              unreadCount: 0, // Will be calculated below
+              unreadCount: 0,
             });
           }
         });
@@ -237,33 +233,17 @@ const setupSocket = (server) => {
         // Regular user conversations (job applications + admin)
         
         // Get job application conversations
-        let applications = [];
-        if (user.role === "jobSeeker") {
-          applications = await Message.find({
-            $or: [
-              { "sender._id": userId },
-              { "recipient._id": userId },
-            ],
-            isAdminMessage: false,
-          })
-          .populate("sender", "name avatar email role")
-          .populate("recipient", "name avatar email role")
-          .populate("application")
-          .sort({ createdAt: -1 });
-        } else {
-          // Employer logic would go here
-          applications = await Message.find({
-            $or: [
-              { "sender._id": userId },
-              { "recipient._id": userId },
-            ],
-            isAdminMessage: false,
-          })
-          .populate("sender", "name avatar email role")
-          .populate("recipient", "name avatar email role")
-          .populate("application")
-          .sort({ createdAt: -1 });
-        }
+        const applications = await Message.find({
+          $or: [
+            { "sender._id": userId },
+            { "recipient._id": userId },
+          ],
+          isAdminMessage: false,
+        })
+        .populate("sender", "name avatar email role")
+        .populate("recipient", "name avatar email role")
+        .populate("application")
+        .sort({ createdAt: -1 });
 
         // Get admin messages
         const adminMessages = await Message.find({
@@ -276,7 +256,7 @@ const setupSocket = (server) => {
         .populate("recipient", "name avatar email role")
         .sort({ createdAt: -1 });
 
-        // Combine and deduplicate
+        // Combine and deduplicate using Map
         const conversationMap = new Map();
 
         // Process job application messages
@@ -333,7 +313,7 @@ const setupSocket = (server) => {
       // Send updated conversation list
       io.to(`user:${userId}`).emit("conversation_list_update", conversations);
     } catch (err) {
-      console.error("Error updating conversation list:", err);
+      // Error handling removed as per cleanup requirements
     }
   };
 

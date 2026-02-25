@@ -139,7 +139,7 @@ const Chat = ({ isAdmin = false }) => {
           ? [adminConversation, ...(appResponse.data || [])]
           : appResponse.data || [];
         setConversations(allConversations);
-
+        console.log(allConversations);
         if (applicationId) {
           const selected = allConversations.find(
             (conv) => conv.application._id === applicationId,
@@ -394,13 +394,13 @@ const Chat = ({ isAdmin = false }) => {
         <div
           className={`${
             isMobile
-              ? `fixed inset-0 top-20 transition-transform duration-300 ease-in-out z-40 ${
+              ? `fixed inset-0 top-18 transition-transform duration-300 ease-in-out z-40 ${
                   sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
               : "w-full md:w-96 lg:w-104"
-          } bg-white border-r border-gray-200 flex flex-col shadow-lg md:shadow-none`}
+          } bg-white border-r border-gray-200 flex flex-col shadow-md md:shadow-none`}
         >
-          <div className="px-6 py-5 border-b border-gray-200 flex items-center justify-between bg-linear-to-r from-white to-gray-50">
+          <div className="p-2 border-b border-gray-200 flex items-center justify-between bg-linear-to-r from-white to-gray-50">
             <div>
               <h2 className="text-xl font-semibold text-gray-900">Messages</h2>
               <p className="text-sm text-gray-500 mt-0.5">
@@ -513,11 +513,6 @@ const Chat = ({ isAdmin = false }) => {
                         </>
                       )}
                     </p>
-                    {conv.lastMessage && (
-                      <p className="text-sm text-gray-600 truncate">
-                        {conv.lastMessage.content}
-                      </p>
-                    )}
                   </div>
                 </button>
               );
@@ -527,7 +522,7 @@ const Chat = ({ isAdmin = false }) => {
 
         {selectedConversation ? (
           <div className="flex-1 flex flex-col min-w-0 bg-white">
-            <div className="border-b border-gray-200 px-4 md:px-6 py-4 flex items-center gap-3 bg-white shadow-sm">
+            <div className="border-b border-gray-200 p-2 md:px-6 flex items-center gap-3 bg-white shadow-sm">
               {isMobile && (
                 <button
                   onClick={() => setSidebarOpen(true)}
@@ -537,7 +532,7 @@ const Chat = ({ isAdmin = false }) => {
                 </button>
               )}
               <div className="relative shrink-0">
-                <div className="w-12 h-12 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden shadow-sm">
+                <div className="w-8 h-8 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden shadow-sm">
                   <img
                     src={
                       getOtherPartyAvatar(selectedConversation) ||
