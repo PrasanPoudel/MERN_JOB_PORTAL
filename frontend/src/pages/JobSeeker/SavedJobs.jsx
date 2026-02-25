@@ -64,6 +64,7 @@ const SavedJobs = () => {
                   onClick={() => {
                     navigate(-1);
                   }}
+                  title="Go back to previous page"
                   className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -80,7 +81,8 @@ const SavedJobs = () => {
                     onClick={() => {
                       setViewMode("grid");
                     }}
-                    className={`p-2 rounded-lg transition-colors ${
+                    title="Grid view"
+                    className={`p-2 rounded-lg transition-colors cursor-pointer ${
                       viewMode === "grid"
                         ? "md:bg-sky-600 bg-gray-100 text-gray-400 md:text-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
@@ -92,7 +94,8 @@ const SavedJobs = () => {
                     onClick={() => {
                       setViewMode("list");
                     }}
-                    className={`p-2 rounded-lg transition-colors ${
+                    title="List view"
+                    className={`p-2 rounded-lg transition-colors cursor-pointer ${
                       viewMode === "list"
                         ? "bg-sky-600 text-white shadow-sm"
                         : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
@@ -119,6 +122,7 @@ const SavedJobs = () => {
                       onClick={() => {
                         navigate("/find-jobs");
                       }}
+                      title="Browse available jobs"
                       className="bg-sky-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-sky-700 transition-colors duration-200 cursor-pointer"
                     >
                       Browse Jobs

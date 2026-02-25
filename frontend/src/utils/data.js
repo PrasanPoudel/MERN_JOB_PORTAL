@@ -1,16 +1,11 @@
 import {
-  Search,
   Users,
-  FileText,
   MessageSquare,
-  BarChart3,
-  Shield,
-  Clock,
-  Award,
   BriefcaseBusiness,
   Building2,
   LayoutDashboard,
   Plus,
+  User
 } from "lucide-react";
 
 // Navigation items configuration
@@ -23,7 +18,9 @@ export const NAVIGATION_MENU_EMPLOYER = [
 ];
 export const NAVIGATION_MENU_ADMIN = [
   { id: "admin-dashboard", name: "Dashboard", icon: LayoutDashboard },
+  { id: "edit-admin-profile", name: "Edit Profile", icon: User },
   { id: "admin-users-management", name: "Manage Users", icon: Users },
+  { id: "admin-company-verification", name: "Company Verification", icon: Building2 },
   { id: "admin-jobs-management", name: "Manage Jobs", icon: BriefcaseBusiness },
   { id: "admin-chat-box", name: "Messages", icon: MessageSquare },
 ];

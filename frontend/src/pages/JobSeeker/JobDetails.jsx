@@ -16,8 +16,9 @@ import {
   ChevronUp,
   Info,
   Mail,
-  DollarSign,
+  Banknote,
   BookOpenText,
+  BadgeCheck,
 } from "lucide-react";
 import { StatusBadge } from "../../components/StatusBadge";
 
@@ -145,7 +146,7 @@ const JobDetails = () => {
           </div>
           <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-gray-700 flex gap-4 items-center">
             <div className="bg-green-400 text-2xl rounded-2xl w-20 h-20 flex items-center justify-center text-white">
-              <DollarSign className="w-6 h-6" />
+              <Banknote className="w-12 h-12" />
             </div>
             <div className="">
               <p className="font-semibold">Compensation</p>
@@ -218,6 +219,9 @@ const JobDetails = () => {
                       <div>
                         <h3 className="text-lg font-semibold text-gray-900">
                           {job?.company?.companyName}
+                          {job?.company?.isCompanyVerified && (
+                            <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                          )}
                         </h3>
 
                         <p className="text-sm text-gray-600 mt-1">

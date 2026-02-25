@@ -44,9 +44,6 @@ exports.getAdminStats = async (req, res) => {
         totalActiveJobs,
         totalJobs,
       },
-      data: {
-        recentUsers,
-      },
     });
   } catch (err) {
     res
@@ -217,7 +214,7 @@ exports.getAllJobs = async (req, res) => {
     }
 
     const jobs = await Job.find(query)
-      .populate("company", "name companyName email companyLogo")
+      .populate("company", "name companyName email companyLogo isCompanyVerified")
       .sort({ createdAt: -1 });
 
     res.json(jobs);
@@ -417,6 +414,235 @@ exports.sendUserReplyToAdmin = async (req, res) => {
     await message.populate("recipient", "name avatar");
 
     res.status(201).json(message);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get daily analytics for bar graph
+exports.getDailyAnalytics = async (req, res) => {
+  try {
+    const days = parseInt(req.query.days) || 7;
+    const endDate = new Date();
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - days);
+
+    const dailyData = [];
+
+    for (let i = 0; i < days; i++) {
+      const date = new Date(startDate);
+      date.setDate(date.getDate() + i);
+      const nextDate = new Date(date);
+      nextDate.setDate(nextDate.getDate() + 1);
+
+      const userCount = await User.countDocuments({
+        role: { $in: ["jobSeeker", "employer"] },
+        createdAt: { $gte: date, $lt: nextDate },
+      });
+
+      const jobs = await Job.find({
+        createdAt: { $gte: date, $lt: nextDate },
+      });
+
+      const jobCount = jobs.length;
+      dailyData.push({
+        date: date.toISOString().split("T")[0],
+        userRegistrations: userCount,
+        jobPostings: jobCount,
+      });
+    }
+
+    res.json(dailyData);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get risk distribution for pie chart
+exports.getRiskDistribution = async (req, res) => {
+  try {
+    const allJobs = await Job.find({});
+
+    let safe = 0;
+    let moderate = 0;
+    let high = 0;
+
+    allJobs.forEach((job) => {
+      const score = job.fraudScore || 0;
+      if (score <= 0.1) {
+        safe++;
+      } else if (score <= 0.25) {
+        moderate++;
+      } else {
+        high++;
+      }
+    });
+
+    res.json([
+      { name: "Safe", value: safe },
+      { name: "Moderate Risk", value: moderate },
+      { name: "High Risk", value: high },
+    ]);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get all companies for verification management
+exports.getAllCompanies = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const { search } = req.query;
+
+    let query = {
+      role: "employer",
+    };
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { companyName: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const companies = await User.find(query)
+      .select("-password")
+      .sort({ createdAt: -1 });
+
+    res.json(companies);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get pending companies for verification
+exports.getPendingCompanies = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const { search } = req.query;
+
+    let query = {
+      role: "employer",
+      isCompanyVerified: false,
+    };
+
+    if (search) {
+      query.$or = [
+        { name: { $regex: search, $options: "i" } },
+        { email: { $regex: search, $options: "i" } },
+        { companyName: { $regex: search, $options: "i" } },
+      ];
+    }
+
+    const companies = await User.find(query)
+      .select("-password")
+      .sort({ createdAt: -1 });
+
+    res.json(companies);
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get company details for verification
+exports.getCompanyDetails = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const company = await User.findById(req.params.id).select("-password");
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    if (company.role !== "employer") {
+      return res.status(400).json({ message: "User is not an employer" });
+    }
+
+    // Get additional stats for the company
+    const postedJobs = await Job.countDocuments({ company: company._id });
+    const totalApplications = await Job.aggregate([
+      { $match: { company: company._id } },
+      {
+        $lookup: {
+          from: "applications",
+          localField: "_id",
+          foreignField: "job",
+          as: "applications",
+        },
+      },
+      { $group: { _id: null, count: { $sum: { $size: "$applications" } } } },
+    ]);
+
+    const companyStats = {
+      postedJobs,
+      totalApplications: totalApplications[0]?.count || 0,
+    };
+
+    res.json({ ...company.toObject(), stats: companyStats });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Verify company
+exports.verifyCompany = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const company = await User.findById(req.params.id);
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    if (company.role !== "employer") {
+      return res.status(400).json({ message: "User is not an employer" });
+    }
+
+    // Update company verification status
+    company.isCompanyVerified = true;
+    await company.save();
+
+    res.json({ message: "Company verified successfully", company });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Remove company verification
+exports.removeCompanyVerification = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const company = await User.findById(req.params.id);
+
+    if (!company) {
+      return res.status(404).json({ message: "Company not found" });
+    }
+
+    if (company.role !== "employer") {
+      return res.status(400).json({ message: "User is not an employer" });
+    }
+
+    // Remove company verification status
+    company.isCompanyVerified = false;
+    await company.save();
+
+    res.json({ message: "Company verification removed successfully", company });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

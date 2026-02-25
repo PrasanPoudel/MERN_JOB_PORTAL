@@ -10,9 +10,11 @@ import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
 
+import EditAdminProfile from "./pages/Admin/EditAdminProfile";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
 import AdminJobManagement from "./pages/Admin/AdminJobManagement";
 import AdminUserManagement from "./pages/Admin/AdminUserManagement";
+import AdminCompanyVerification from "./pages/Admin/AdminCompanyVerification";
 
 import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
 import JobDetails from "./pages/JobSeeker/JobDetails";
@@ -75,6 +77,11 @@ const App = () => {
 
           <Route element={<ProtectedRoute requiredRole="admin" />}>
             <Route path="/admin-dashboard" element={<AdminDashboard />} />
+            <Route path="/edit-admin-profile" element={<EditAdminProfile />} />
+            <Route
+              path="/admin-company-verification"
+              element={<AdminCompanyVerification />}
+            />
             <Route
               path="/admin-users-management"
               element={<AdminUserManagement />}

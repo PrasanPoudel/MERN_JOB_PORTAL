@@ -91,7 +91,8 @@ const Hero = () => {
             <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start mb-12">
               <Link
                 to="/find-jobs"
-                className="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5"
+                title="Explore available jobs"
+                className="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 cursor-pointer"
               >
                 <Search className="w-5 h-5" />
                 Explore Jobs
@@ -100,7 +101,8 @@ const Hero = () => {
               {user && user?.role === "employer" && (
                 <Link
                   to="/employer-dashboard"
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-sky-300 transition-all shadow-lg"
+                  title="Go to employer dashboard"
+                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-sky-300 transition-all shadow-lg cursor-pointer"
                 >
                   <LayoutDashboard className="w-5 h-5" />
                   Go to Dashboard

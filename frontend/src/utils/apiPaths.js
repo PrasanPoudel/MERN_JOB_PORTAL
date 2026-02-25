@@ -53,8 +53,15 @@ export const API_PATHS = {
     GET_ADMIN_CONVERSATION: (userId) =>
       `/api/admin/messages/conversation/${userId}`,
     SEND_USER_REPLY: "/api/admin/messages/reply",
+    GET_DAILY_ANALYTICS: "/api/admin/analytics/daily",
+    GET_RISK_DISTRIBUTION: "/api/admin/analytics/risk-distribution",
+    GET_ALL_COMPANIES: "/api/admin/companies",
+    GET_PENDING_COMPANIES: "/api/admin/companies/pending",
+    GET_COMPANY_DETAILS: (id) => `/api/admin/companies/${id}`,
+    VERIFY_COMPANY: (id) => `/api/admin/companies/${id}/verify`,
+    REMOVE_COMPANY_VERIFICATION: (id) => `/api/admin/companies/${id}/remove-verification`,
   },
   FILE: {
-    UPLOAD_FILE: "/api/auth/upload-file", //upload profile picture
+    UPLOAD_FILE: "/api/auth/upload-file", 
   },
 };

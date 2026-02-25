@@ -6,9 +6,10 @@ import {
   Search,
   MapPin,
   Clock,
-  DollarSign,
+  Banknote,
   Info,
   Tag,
+  BadgeCheck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -34,7 +35,10 @@ const AdminJobManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedJobs = filteredJobs.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedJobs = filteredJobs.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   // Fetch all jobs
   const getAllJobs = async () => {
@@ -169,6 +173,7 @@ const AdminJobManagement = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
+              id="search_job"
               type="text"
               placeholder="Search jobs..."
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent text-sm"
@@ -178,6 +183,7 @@ const AdminJobManagement = () => {
           </div>
 
           <select
+            id="select_status"
             className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
@@ -224,21 +230,24 @@ const AdminJobManagement = () => {
                   <div className="w-full flex flex-wrap gap-2 py-2 justify-end">
                     <button
                       onClick={() => setSelectedJob(job)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
+                      title="View job details"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
                     >
                       View Details
                     </button>
 
                     <button
                       onClick={() => handleMessageEmployer(job?.company?._id)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
+                      title="Send message to employer"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
                     >
                       Message
                     </button>
 
                     <button
                       onClick={() => setConfirmDeleteJob(job)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
+                      title="Delete this job"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
                     >
                       Delete
                     </button>
@@ -260,7 +269,9 @@ const AdminJobManagement = () => {
                     Previous
                   </button>
                   <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    onClick={() =>
+                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                    }
                     disabled={currentPage === totalPages}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -275,16 +286,22 @@ const AdminJobManagement = () => {
                       Showing{" "}
                       <span className="font-bold">{startIndex + 1}</span> to{" "}
                       <span className="font-bold">
-                        {Math.min(startIndex + itemsPerPage, filteredJobs.length)}
+                        {Math.min(
+                          startIndex + itemsPerPage,
+                          filteredJobs.length,
+                        )}
                       </span>{" "}
-                      of <span className="font-bold">{filteredJobs.length}</span>{" "}
+                      of{" "}
+                      <span className="font-bold">{filteredJobs.length}</span>{" "}
                       results
                     </p>
                   </div>
                   <div>
                     <nav className="relative z-0 inline-flex shadow-sm -space-x-px rounded-md">
                       <button
-                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                        onClick={() =>
+                          setCurrentPage(Math.max(1, currentPage - 1))
+                        }
                         disabled={currentPage === 1}
                         className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -314,7 +331,9 @@ const AdminJobManagement = () => {
                           ),
                       )}
                       <button
-                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                        onClick={() =>
+                          setCurrentPage(Math.min(totalPages, currentPage + 1))
+                        }
                         disabled={currentPage === totalPages}
                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -368,6 +387,9 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                 <div className="flex flex-col text-center sm:text-left">
                   <h3 className="text-lg font-semibold text-gray-900">
                     {companyName}
+                    {job?.company?.isCompanyVerified && (
+                      <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                    )}
                   </h3>
                   <p className="text-sm text-gray-600 mt-1">{employerName}</p>
                   <p className="text-xs text-gray-600 mt-1">
@@ -401,9 +423,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   value={job.location || "N/A"}
                 />
                 <InfoItem
-                  icon={
-                    <DollarSign className="w-4 h-4 text-gray-400 shrink-0" />
-                  }
+                  icon={<Banknote className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Salary"
                   value={`NPR ${job.salaryMin || 0} - ${job.salaryMax || 0}`}
                 />

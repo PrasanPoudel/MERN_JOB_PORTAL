@@ -8,12 +8,10 @@ import {
   BriefcaseBusiness,
   GraduationCap,
   Award,
-  Code,
   Crown,
   Edit3,
   User,
   FileText,
-  Mail,
 } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import { useAuth } from "../../context/AuthContext";

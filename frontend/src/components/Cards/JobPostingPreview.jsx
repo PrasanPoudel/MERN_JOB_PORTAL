@@ -8,7 +8,7 @@ import {
   Mail,
   ChevronDown,
   ChevronUp,
-  DollarSign,
+  Banknote,
   BookOpenText,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
@@ -81,7 +81,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
 
           <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-gray-700 flex gap-4 items-center">
             <div className="bg-green-400 text-2xl rounded-2xl w-20 h-20 flex items-center justify-center text-white">
-              <DollarSign className="w-6 h-6" />
+              <Banknote className="w-12 h-12" />
             </div>
             <div className="">
               <p className="font-semibold">Compensation</p>

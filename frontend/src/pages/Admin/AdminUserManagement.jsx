@@ -12,6 +12,9 @@ import {
   FileText,
   Bookmark,
   BriefcaseBusiness,
+  Mail,
+  BadgeCheck,
+  User,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -36,7 +39,10 @@ const AdminUserManagement = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
   const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(startIndex, startIndex + itemsPerPage);
+  const paginatedUsers = filteredUsers.slice(
+    startIndex,
+    startIndex + itemsPerPage,
+  );
 
   const getAllUsers = async () => {
     try {
@@ -68,7 +74,7 @@ const AdminUserManagement = () => {
       filtered = filtered.filter(
         (u) =>
           u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          u.email?.toLowerCase().includes(searchTerm.toLowerCase())
+          u.email?.toLowerCase().includes(searchTerm.toLowerCase()),
       );
     }
 
@@ -129,7 +135,9 @@ const AdminUserManagement = () => {
         <UserModal
           userId={selectedUser}
           onClose={() => setSelectedUser(null)}
-          onDelete={(id) => setConfirmDeleteUser(users.find((u) => u._id === id))}
+          onDelete={(id) =>
+            setConfirmDeleteUser(users.find((u) => u._id === id))
+          }
           onMessage={handleMessageUser}
         />
       )}
@@ -143,7 +151,7 @@ const AdminUserManagement = () => {
         />
       )}
 
-      <div className="max-w-7xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto p-2">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
@@ -165,6 +173,7 @@ const AdminUserManagement = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
+              id="search_users"
               type="text"
               placeholder="Search users..."
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent text-sm"
@@ -174,6 +183,7 @@ const AdminUserManagement = () => {
           </div>
 
           <select
+            id="select_role"
             className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"
             value={roleFilter}
             onChange={(e) => setRoleFilter(e.target.value)}
@@ -191,7 +201,7 @@ const AdminUserManagement = () => {
           </div>
         ) : filteredUsers.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4 shrink-0" />
             <p className="text-gray-600 font-medium">No users found</p>
           </div>
         ) : (
@@ -217,10 +227,10 @@ const AdminUserManagement = () => {
               {paginatedUsers.map((user) => (
                 <div
                   key={user._id}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-6 flex flex-col lg:flex-row lg:items-center justify-between gap-6"
+                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-2 flex flex-col lg:flex-row lg:items-center justify-between gap-4"
                 >
-                  <div className="flex items-start gap-4">
-                    <div className="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
+                  <div className="flex items-start gap-2">
+                    <div className="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
                       <img
                         src={user.avatar || "/default.png"}
                         alt={user.name}
@@ -230,49 +240,65 @@ const AdminUserManagement = () => {
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-semibold text-gray-900 text-lg">
+                        <p className="font-semibold text-gray-900 text-md">
                           {user.name}
                         </p>
-
                         {user.isPremium && (
-                          <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-1 rounded-full flex items-center gap-1">
-                            <Crown className="w-3 h-3" /> Premium
+                          <span
+                            title="Premium User"
+                            className="bg-yellow-50 text-yellow-500 text-xs px-2 py-1 rounded-full flex items-center gap-1"
+                          >
+                            <Crown className="w-3 h-3 shrink-0" />
                           </span>
                         )}
-
-                        <span
-                          className={`text-xs px-2 py-1 rounded-full font-medium ${
-                            user.role === "employer"
-                              ? "bg-orange-100 text-orange-700"
-                              : "bg-blue-100 text-blue-700"
-                          }`}
-                        >
-                          {user.role === "employer" ? "Employer" : "Job Seeker"}
-                        </span>
                       </div>
 
-                      <p className="text-sm text-gray-500 mt-1">{user.email}</p>
+                      <p
+                        className={`text-xs flex w-32 px-2 py-1 rounded-full font-medium ${
+                          user.role === "employer"
+                            ? "bg-orange-100 text-orange-700"
+                            : "bg-blue-100 text-blue-700"
+                        }`}
+                      >
+                        {user.role === "employer" ? "Employer" : "Job Seeker"}
+                      </p>
+                      {user && user?.companyName && (
+                        <p className="flex items-center w-full gap-1 text-xs sm:text-sm text-gray-700">
+                          <span title={user?.companyName} className="flex items-center gap-1 truncate max-w-42 sm:max-w-52">
+                          <Building2 className="w-4 h-4 shrink-0" />
+                          {user.companyName}
+                          </span>
+                          {user.role === "employer" &&
+                            user.isCompanyVerified && (
+                              <BadgeCheck className="w-4 h-4 text-sky-600 shrink-0" />
+                            )}
+                        </p>
+                      )}
+                      <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                   </div>
 
-                  <div className="grid grid-cols-3 gap-2 py-2 justify-center sm:justify-end">
+                  <div className="flex flex-wrap items-center py-2 gap-2 justify-end">
                     <button
                       onClick={() => setSelectedUser(user._id)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
+                      title="View user details"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
                     >
                       View Details
                     </button>
 
                     <button
                       onClick={() => handleMessageUser(user._id)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
+                      title="Send message to user"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
                     >
                       Message
                     </button>
 
                     <button
                       onClick={() => setConfirmDeleteUser(user)}
-                      className="px-2 sm:px-4 py-2 rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
+                      title="Delete this user"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
                     >
                       Delete
                     </button>
@@ -294,7 +320,9 @@ const AdminUserManagement = () => {
                     Previous
                   </button>
                   <button
-                    onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                    onClick={() =>
+                      setCurrentPage(Math.min(totalPages, currentPage + 1))
+                    }
                     disabled={currentPage === totalPages}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
@@ -309,16 +337,22 @@ const AdminUserManagement = () => {
                       Showing{" "}
                       <span className="font-bold">{startIndex + 1}</span> to{" "}
                       <span className="font-bold">
-                        {Math.min(startIndex + itemsPerPage, filteredUsers.length)}
+                        {Math.min(
+                          startIndex + itemsPerPage,
+                          filteredUsers.length,
+                        )}
                       </span>{" "}
-                      of <span className="font-bold">{filteredUsers.length}</span>{" "}
+                      of{" "}
+                      <span className="font-bold">{filteredUsers.length}</span>{" "}
                       results
                     </p>
                   </div>
                   <div>
                     <nav className="relative z-0 inline-flex shadow-sm -space-x-px rounded-md">
                       <button
-                        onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                        onClick={() =>
+                          setCurrentPage(Math.max(1, currentPage - 1))
+                        }
                         disabled={currentPage === 1}
                         className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -348,7 +382,9 @@ const AdminUserManagement = () => {
                           ),
                       )}
                       <button
-                        onClick={() => setCurrentPage(Math.min(totalPages, currentPage + 1))}
+                        onClick={() =>
+                          setCurrentPage(Math.min(totalPages, currentPage + 1))
+                        }
                         disabled={currentPage === totalPages}
                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
@@ -366,7 +402,6 @@ const AdminUserManagement = () => {
   );
 };
 
-
 const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -376,7 +411,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
       try {
         setLoading(true);
         const response = await axiosInstance.get(
-          API_PATHS.ADMIN.GET_USER_BY_ID(userId)
+          API_PATHS.ADMIN.GET_USER_BY_ID(userId),
         );
         setUser(response.data);
       } catch {
@@ -414,21 +449,26 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
               </div>
 
               <div>
-                <h2 className="text-2xl font-bold text-gray-900">{user.name}</h2>
+                <h2 className="text-2xl font-bold text-gray-900">
+                  {user.name}
+                  {user.role === "employer" && user.isCompanyVerified && (
+                    <BadgeCheck className="w-5 h-5 text-sky-600 ml-2 inline" />
+                  )}
+                </h2>
                 <p className="text-gray-500">{user.email}</p>
               </div>
             </div>
 
             <div className="grid sm:grid-cols-2 gap-6 mb-8 text-sm">
               <InfoItem
-                icon={<Users />}
+                icon={<User />}
                 label="Role"
                 value={
                   user.role === "employer"
                     ? "Employer"
                     : user.role === "jobSeeker"
-                    ? "Job Seeker"
-                    : "Admin"
+                      ? "Job Seeker"
+                      : "Admin"
                 }
               />
               <InfoItem
@@ -437,10 +477,18 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                 value={new Date(user.createdAt).toLocaleDateString()}
               />
               {user.location && (
-                <InfoItem icon={<MapPin />} label="Location" value={user.location} />
+                <InfoItem
+                  icon={<MapPin />}
+                  label="Location"
+                  value={user.location}
+                />
               )}
               {user.companyName && (
-                <InfoItem icon={<Building2 />} label="Company" value={user.companyName} />
+                <InfoItem
+                  icon={<Building2 />}
+                  label="Company"
+                  value={user.companyName}
+                />
               )}
             </div>
 
@@ -448,14 +496,30 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
               <div className="grid sm:grid-cols-2 gap-6 mb-8">
                 {user.role === "jobSeeker" && (
                   <>
-                    <StatCard icon={<FileText />} label="Applications" value={user.stats.appliedJobs} />
-                    <StatCard icon={<Bookmark />} label="Saved Jobs" value={user.stats.savedJobs} />
+                    <StatCard
+                      icon={<FileText />}
+                      label="Applications"
+                      value={user.stats.appliedJobs}
+                    />
+                    <StatCard
+                      icon={<Bookmark />}
+                      label="Saved Jobs"
+                      value={user.stats.savedJobs}
+                    />
                   </>
                 )}
                 {user.role === "employer" && (
                   <>
-                    <StatCard icon={<BriefcaseBusiness />} label="Posted Jobs" value={user.stats.postedJobs} />
-                    <StatCard icon={<Users />} label="Total Applications" value={user.stats.totalApplications} />
+                    <StatCard
+                      icon={<BriefcaseBusiness />}
+                      label="Posted Jobs"
+                      value={user.stats.postedJobs}
+                    />
+                    <StatCard
+                      icon={<Users />}
+                      label="Total Applications"
+                      value={user.stats.totalApplications}
+                    />
                   </>
                 )}
               </div>
@@ -494,7 +558,8 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
         <h3 className="text-xl font-bold text-gray-900 mb-2">Delete User?</h3>
 
         <p className="text-gray-500 text-sm mb-6">
-          Permanently delete <strong>{user.name}</strong>? This action cannot be undone.
+          Permanently delete <strong>{user.name}</strong>? This action cannot be
+          undone.
         </p>
 
         <div className="flex gap-3">

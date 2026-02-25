@@ -13,12 +13,17 @@ exports.register = async (req, res) => {
     if (userExists) {
       return res.status(400).json({ message: "User already exists" });
     }
+    if (!name || !email || !password || !role) {
+      return res
+        .status(400)
+        .json({ message: "Please provide required details for registration!" });
+    }
     const user = await User.create({
       name,
       email,
       password,
       role,
-      avatar,
+      avatar
     });
     res.status(201).json({
       _id: user._id,

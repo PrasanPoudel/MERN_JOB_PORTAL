@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Home, LayoutDashboard, MessageSquare, Search } from "lucide-react";
+import { Home, MessageSquare, Search } from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
+import { useSocket } from "../../context/SocketContext";
 import { NavLink, Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -9,6 +10,7 @@ import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { socket, isConnected, sendMessage } = useSocket();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -26,12 +28,21 @@ const Navbar = () => {
       }
     };
     fetchUnreadCount();
-
-    // Poll every 5 seconds
-    const interval = setInterval(fetchUnreadCount, 5000);
-
-    return () => clearInterval(interval);
   }, [user, isAuthenticated]);
+
+  useEffect(() => {
+    if (!socket || !isConnected) return;
+
+    const handleUnreadCountUpdate = (data) => {
+      setUnreadCount(data.totalUnreadCount || 0);
+    };
+
+    socket.on("unread_count_update", handleUnreadCountUpdate);
+
+    return () => {
+      socket.off("unread_count_update", handleUnreadCountUpdate);
+    };
+  }, [socket, isConnected]);
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -64,18 +75,6 @@ const Navbar = () => {
               <Home className="h-5 w-5" />
               <span className="hidden md:flex">Home</span>
             </NavLink>
-            {user && user?.role === "employer" && (
-              <NavLink to="/employer-dashboard" className={navLinkClasses}>
-                <LayoutDashboard className="h-5 w-5" />
-                <span className="hidden md:flex">Dashboard</span>
-              </NavLink>
-            )}
-            {user && user?.role === "admin" && (
-              <NavLink to="/admin-dashboard" className={navLinkClasses}>
-                <LayoutDashboard className="h-5 w-5" />
-                <span className="hidden md:flex">Dashboard</span>
-              </NavLink>
-            )}
             {user && user?.role === "jobSeeker" && (
               <>
                 <NavLink to="/find-jobs" className={navLinkClasses}>
@@ -121,6 +120,7 @@ const Navbar = () => {
                 name={user?.name || ""}
                 avatar={user?.avatar || null}
                 companyName={user?.companyName || ""}
+                isCompanyVerified={user?.isCompanyVerified || false}
                 email={user?.email || ""}
                 role={user?.role || "jobSeeker"}
                 companyLogo={user?.companyLogo || null}
@@ -129,7 +129,8 @@ const Navbar = () => {
             ) : (
               <a
                 href="/login"
-                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-sky-700 transition-all duration-200 shadow-sm hover:shadow-md"
+                title="Login to your account"
+                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-sky-700 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
               >
                 Login
               </a>
