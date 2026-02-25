@@ -55,9 +55,7 @@ const Chat = ({ isAdmin = false }) => {
     scrollToBottom();
   }, [messages]);
 
-  // Use custom hook to mark messages as read
   useMarkMessagesAsRead(messages, user, (messageId) => {
-    // Optional callback when messages are marked as read
     console.log(`Message ${messageId} marked as read`);
   });
 
@@ -269,8 +267,6 @@ const Chat = ({ isAdmin = false }) => {
             };
             return updated;
           } else {
-            // Add new conversation
-            // This would need more logic to create the conversation object properly
             return prev;
           }
         });
@@ -283,7 +279,7 @@ const Chat = ({ isAdmin = false }) => {
       // Update conversation list with new unread counts
       setConversations(prev => prev.map(conv => ({
         ...conv,
-        unreadCount: data.totalUnreadCount // This is a simplified approach
+        unreadCount: data.totalUnreadCount
       })));
     },
     onMessageReadStatus: (data) => {

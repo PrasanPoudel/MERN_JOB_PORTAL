@@ -125,47 +125,47 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
           Job Risk Distribution
         </h3>
 
-          <ResponsiveContainer width="100%" height={300}>
-            <PieChart>
-              <Pie
-                data={riskData}
-                cx="50%"
-                cy="50%"
-                outerRadius={100}
-                dataKey="value"
+        <ResponsiveContainer width="100%" height={300}>
+          <PieChart>
+            <Pie
+              data={riskData}
+              cx="50%"
+              cy="50%"
+              outerRadius={100}
+              dataKey="value"
+            >
+              {riskData.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
+              ))}
+            </Pie>
+            <Tooltip />
+          </PieChart>
+        </ResponsiveContainer>
+
+        <div className="mt-6 space-y-2">
+          {riskData.map((item, index) => {
+            const total = riskData.reduce((sum, d) => sum + d.value, 0);
+            const percentage = ((item.value / total) * 100).toFixed(2);
+
+            return (
+              <div
+                key={index}
+                className="flex justify-between text-sm text-gray-700"
               >
-                {riskData.map((entry, index) => (
-                  <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
-                ))}
-              </Pie>
-              <Tooltip />
-            </PieChart>
-          </ResponsiveContainer>
-
-          <div className="mt-6 space-y-2">
-            {riskData.map((item, index) => {
-              const total = riskData.reduce((sum, d) => sum + d.value, 0);
-              const percentage = ((item.value / total) * 100).toFixed(2);
-
-              return (
-                <div
-                  key={index}
-                  className="flex justify-between text-sm text-gray-700"
-                >
-                  <span className="flex items-center gap-2">
-                    <span
-                      className="w-3 h-3 rounded-full"
-                      style={{ backgroundColor: COLORS[item.name] }}
-                    />
-                    {item.name}
-                  </span>
-                  <span className="font-medium">{percentage}%</span>
-                </div>
-              );
-            })}
-          </div>
+                <span className="flex items-center gap-2">
+                  <span
+                    className="w-3 h-3 rounded-full"
+                    style={{ backgroundColor: COLORS[item.name] }}
+                  />
+                  {item.name}
+                </span>
+                <span className="font-medium">{percentage}%</span>
+              </div>
+            );
+          })}
         </div>
       </div>
+    </div>
   );
 };
 
@@ -277,7 +277,6 @@ const AdminDashboard = () => {
               color="orange"
             />
           </div>
-          {/* Bar Graphs */}
           <BarGraph
             data={analyticsData}
             days={days}
