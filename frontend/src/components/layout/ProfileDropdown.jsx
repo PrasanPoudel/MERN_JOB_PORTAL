@@ -32,7 +32,7 @@ const ProfileDropdown = ({
   };
 
   return (
-    <div className="relative">
+    <div className="relative z-100">
       {/* Profile Button */}
       <button
         onClick={onToggle}
@@ -65,9 +65,7 @@ const ProfileDropdown = ({
           {role === "employer" && companyName && (
             <p className="text-xs text-gray-600 flex items-center gap-1">
               {companyName}
-              {isCompanyVerified && (
-                <span className="text-sky-600">✓</span>
-              )}
+              {isCompanyVerified && <span className="text-sky-600">✓</span>}
             </p>
           )}
         </div>
@@ -99,22 +97,6 @@ const ProfileDropdown = ({
                 Dashboard
               </div>
             )}
-            <div
-              onClick={() =>
-                navigate(
-                  role === "admin"
-                    ? "/edit-admin-profile"
-                    : role === "employer"
-                      ? "/employer-profile"
-                      : "/profile",
-                )
-              }
-              title="View your profile"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <User className="h-4 w-4 " />
-              View Profile
-            </div>
             {role === "jobSeeker" && (
               <>
                 <div
@@ -137,37 +119,6 @@ const ProfileDropdown = ({
               </>
             )}
 
-            {role === "employer" && (
-              <>
-                <div
-                  onClick={() => navigate("/manage-jobs")}
-                  title="Manage your job postings"
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-                >
-                  <BriefcaseBusiness className="h-4 w-4 " />
-                  Manage Jobs
-                </div>
-
-                <div
-                  onClick={() => navigate("/post-job")}
-                  title="Post a new job"
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-                >
-                  <Plus className="h-4 w-4 " />
-                  Post Job
-                </div>
-
-                <div
-                  onClick={() => navigate("/EmployerChatBox")}
-                  title="View messages"
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-                >
-                  <MessageSquare className="h-4 w-4 " />
-                  Messages
-                </div>
-              </>
-            )}
-
             <div
               onClick={() => setShowLogoutConfirm(true)}
               title="Sign out of your account"
@@ -181,7 +132,7 @@ const ProfileDropdown = ({
       )}
 
       {showLogoutConfirm && (
-        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-50">
+        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-100">
           <div className="bg-white rounded-xl w-80 p-5 shadow-2xl mx-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-900">
