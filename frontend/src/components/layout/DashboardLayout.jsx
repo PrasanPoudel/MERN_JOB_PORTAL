@@ -140,7 +140,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         {/* Navigation */}
 
         {user?.role === "employer" && (
-          <nav className="p-4 space-y-2" id="navigation">
+          <nav className="p-2 space-y-1" id="navigation">
             {NAVIGATION_MENU_EMPLOYER.map((item) => (
               <NavigationItem
                 key={item.id}
@@ -155,7 +155,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         )}
 
         {user?.role === "admin" && (
-          <nav className="p-4 space-y-2" id="navigation">
+          <nav className="p-2 space-y-1" id="navigation">
             {NAVIGATION_MENU_ADMIN.map((item) => (
               <NavigationItem
                 key={item.id}
