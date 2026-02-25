@@ -17,11 +17,14 @@ import { useParams, useNavigate, useSearchParams } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
+import { useSocket } from "../../context/SocketContext";
+import { useSocketEvents, useMarkMessagesAsRead } from "../../hooks/useSocketEvents";
 import toast from "react-hot-toast";
 import moment from "moment";
 
 const Chat = ({ isAdmin = false }) => {
   const { user } = useAuth();
+  const { socket, isConnected, sendMessage: sendSocketMessage } = useSocket();
   const { applicationId } = useParams();
   const [searchParams] = useSearchParams();
   const userIdParam = searchParams.get("userId");
@@ -51,6 +54,12 @@ const Chat = ({ isAdmin = false }) => {
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  // Use custom hook to mark messages as read
+  useMarkMessagesAsRead(messages, user, (messageId) => {
+    // Optional callback when messages are marked as read
+    console.log(`Message ${messageId} marked as read`);
+  });
 
   const getConvId = (conv) => {
     if (isAdmin) return conv.user._id;
@@ -223,14 +232,71 @@ const Chat = ({ isAdmin = false }) => {
     fetchConversations();
   }, []);
 
-  useEffect(() => {
-    if (!selectedConversation) return;
-    const interval = setInterval(
-      () => fetchMessages(getConvId(selectedConversation)),
-      5000,
-    );
-    return () => clearInterval(interval);
-  }, [selectedConversation, isAdmin]);
+  // Use custom socket events hook
+  useSocketEvents({
+    onNewMessage: (message) => {
+      // Check if this message is for the currently selected conversation
+      const convId = getConvId(selectedConversation);
+      const isForCurrentConv = isAdmin
+        ? message.recipient._id === convId || message.sender._id === convId
+        : selectedConversation?.isAdminConversation
+          ? message.application === null
+          : message.application?._id === convId;
+
+      if (isForCurrentConv) {
+        setMessages(prev => [...prev, message]);
+      } else {
+        // Update conversation list if this is a new conversation or update existing
+        setConversations(prev => {
+          // Find if conversation exists
+          const existingConvIndex = prev.findIndex(conv => {
+            if (isAdmin) {
+              return conv.user._id === (message.sender._id === user._id ? message.recipient._id : message.sender._id);
+            } else if (selectedConversation?.isAdminConversation) {
+              return conv.isAdminConversation;
+            } else {
+              return conv.application._id === message.application?._id;
+            }
+          });
+
+          if (existingConvIndex >= 0) {
+            // Update existing conversation
+            const updated = [...prev];
+            updated[existingConvIndex] = {
+              ...updated[existingConvIndex],
+              lastMessage: message,
+              unreadCount: updated[existingConvIndex].unreadCount + 1
+            };
+            return updated;
+          } else {
+            // Add new conversation
+            // This would need more logic to create the conversation object properly
+            return prev;
+          }
+        });
+      }
+    },
+    onConversationUpdate: (updatedConversations) => {
+      setConversations(updatedConversations);
+    },
+    onUnreadCountUpdate: (data) => {
+      // Update conversation list with new unread counts
+      setConversations(prev => prev.map(conv => ({
+        ...conv,
+        unreadCount: data.totalUnreadCount // This is a simplified approach
+      })));
+    },
+    onMessageReadStatus: (data) => {
+      const { messageId, read, timestamp } = data;
+      
+      // Update the specific message in the current conversation
+      setMessages(prev => prev.map(msg => 
+        msg._id === messageId 
+          ? { ...msg, read, readAt: timestamp }
+          : msg
+      ));
+    }
+  }, [selectedConversation, isAdmin, user._id]);
 
   if (loading) {
     return (

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Home, MessageSquare, Search } from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
+import { useSocket } from "../../context/SocketContext";
 import { NavLink, Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -9,6 +10,7 @@ import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const { socket, isConnected, sendMessage } = useSocket();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -26,12 +28,21 @@ const Navbar = () => {
       }
     };
     fetchUnreadCount();
-
-    // Poll every 5 seconds
-    const interval = setInterval(fetchUnreadCount, 5000);
-
-    return () => clearInterval(interval);
   }, [user, isAuthenticated]);
+
+  useEffect(() => {
+    if (!socket || !isConnected) return;
+
+    const handleUnreadCountUpdate = (data) => {
+      setUnreadCount(data.totalUnreadCount || 0);
+    };
+
+    socket.on("unread_count_update", handleUnreadCountUpdate);
+
+    return () => {
+      socket.off("unread_count_update", handleUnreadCountUpdate);
+    };
+  }, [socket, isConnected]);
 
   useEffect(() => {
     const handleClickOutside = () => {

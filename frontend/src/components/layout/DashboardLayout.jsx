@@ -6,6 +6,7 @@ import {
   NAVIGATION_MENU_ADMIN,
 } from "../../utils/data";
 import { useAuth } from "../../context/AuthContext";
+import { useSocket } from "../../context/SocketContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import NavigationItem from "./NavigationItem";
@@ -13,6 +14,7 @@ import logo from "../../assets/logo.png";
 
 const DashboardLayout = ({ activeMenu, children }) => {
   const { user, logout } = useAuth();
+  const { socket, isConnected } = useSocket();
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -35,10 +37,22 @@ const DashboardLayout = ({ activeMenu, children }) => {
     };
 
     fetchUnreadCount();
-    const interval = setInterval(fetchUnreadCount, 5000);
-
-    return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (!socket || !isConnected) return;
+
+    const handleUnreadCountUpdate = (data) => {
+      const newUnreadCount = data.totalUnreadCount || 0;
+      setUnreadCount(newUnreadCount);
+    };
+
+    socket.on("unread_count_update", handleUnreadCountUpdate);
+
+    return () => {
+      socket.off("unread_count_update", handleUnreadCountUpdate);
+    };
+  }, [socket, isConnected]);
 
   useEffect(() => {
     const handleResize = () => {

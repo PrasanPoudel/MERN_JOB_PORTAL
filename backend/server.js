@@ -5,6 +5,7 @@ const path = require("path");
 const connectDB = require("./config/database");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
+const setupSocket = require("./config/socket");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -50,9 +51,12 @@ app.use("/api/notifications", notificationRoutes);
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
 //Start Server
 const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
+const server = app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
+
+// Setup Socket.IO
+const io = setupSocket(server);
 
 // Start uploads cleanup cron job
 
