@@ -11,6 +11,7 @@ import {
   GraduationCap,
   Code,
   X,
+  Edit3
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -382,8 +383,8 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 p-4 my-16 lg:my-20">
-        <div className="w-full mx-auto">
+      <div className="min-h-screen bg-gray-50 p-4 pt-24 pb-8">
+        <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
             <div>

@@ -11,7 +11,6 @@ const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [pollingInterval, setPollingInterval] = useState(null);
 
   useEffect(() => {
     if (!user || !isAuthenticated) return;
@@ -31,7 +30,6 @@ const Navbar = () => {
 
     // Start polling for unread count updates
     const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
-    setPollingInterval(interval);
 
     return () => {
       if (interval) clearInterval(interval);
@@ -57,14 +55,14 @@ const Navbar = () => {
      }`;
 
   return (
-    <header className="fixed top-0 left-0 z-40 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
+      <div className="container mx-auto p-0">
+        <div className="flex items-center p-0 justify-between max-h-20">
           <Link className="flex items-center" to="/">
-            <img src={logo} className="h-full w-20 object-fill" alt="logo" />
+            <img src={logo} className="h-20 w-20 object-contain mix-blend-multiply" alt="logo" />
           </Link>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
               <Home className="h-6 w-6" />
             </NavLink>

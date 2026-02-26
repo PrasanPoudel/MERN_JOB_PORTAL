@@ -84,7 +84,7 @@ const JobDetails = () => {
           onClick={() => {
             navigate(-1);
           }}
-          className="group mt-20 ml-5 flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+          className="group mt-24 ml-5 flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
         >
           <ArrowLeft className="w-4 h-4" />
           <span>Back</span>

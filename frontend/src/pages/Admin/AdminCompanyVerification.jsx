@@ -250,20 +250,17 @@ const AdminCompanyVerification = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-gray-600 text-sm lg:text-base">
-                  Showing{" "}
-                  <span className="mr-1 font-bold text-gray-900">
-                    {paginatedCompanies.length}
-                  </span>
-                  of{" "}
-                  <span className="mr-1 font-bold text-gray-900">
-                    {filteredCompanies.length}
+                <p className="text-sm text-gray-700 lg:text-base">
+                  Showing <span className="font-bold">{startIndex + 1}</span> to{" "}
+                  <span className="font-bold">
+                    {Math.min(
+                      startIndex + itemsPerPage,
+                      filteredCompanies.length,
+                    )}
                   </span>{" "}
-                  {verificationFilter === "verified"
-                    ? "verified companies"
-                    : verificationFilter === "unverified"
-                      ? "unverified companies"
-                      : "companies"}
+                  of{" "}
+                  <span className="font-bold">{filteredCompanies.length}</span>{" "}
+                  results
                 </p>
               </div>
             </div>

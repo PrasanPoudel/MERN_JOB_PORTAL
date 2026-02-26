@@ -14,7 +14,7 @@
     scroll-behavior: smooth;
   }
   body{
-    background-color: #f7fafe;
+    /* background-color: #f7fafe; */
     overflow-x: hidden;
   }
 }
