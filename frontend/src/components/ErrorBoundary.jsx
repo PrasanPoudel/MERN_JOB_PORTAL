@@ -24,7 +24,7 @@ class ErrorBoundary extends React.Component {
     if (this.state.hasError) {
       return (
         <div className="min-h-screen flex items-center justify-center bg-gray-50">
-          <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6">
+          <div className="max-w-md w-full bg-white rounded-xl shadow-lg p-6 overflow-hidden">
             <div className="flex items-center justify-center w-12 h-12 bg-red-100 rounded-full mx-auto mb-4">
               <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
@@ -55,7 +55,7 @@ class ErrorBoundary extends React.Component {
                 <summary className="cursor-pointer text-sm text-gray-500 hover:text-gray-700">
                   Error Details (Development)
                 </summary>
-                <pre className="mt-2 text-xs text-gray-600 bg-gray-50 p-3 rounded">
+                <pre className="mt-2 text-[5px] text-gray-600 bg-gray-50 rounded wrap-break-word">
                   {this.state.error && this.state.error.toString()}
                   {this.state.errorInfo && this.state.errorInfo.componentStack}
                 </pre>
