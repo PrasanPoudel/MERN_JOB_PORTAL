@@ -423,7 +423,6 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   value={job.location || "N/A"}
                 />
                 <InfoItem
-                  icon={<Banknote className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Salary"
                   value={`NPR ${job.salaryMin || 0} - ${job.salaryMax || 0}`}
                 />
