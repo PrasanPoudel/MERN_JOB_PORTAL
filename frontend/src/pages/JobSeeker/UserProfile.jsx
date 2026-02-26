@@ -54,12 +54,12 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 pt-20 pb-8">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="min-h-screen bg-gray-50 p-4 mt-24 pb-8">
+        <div className="max-w-7xl mx-auto">
           {/* Profile Header */}
-          <div className="bg-white rounded-lg shadow mb-6">
+          <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
             {/* Header with Edit Button */}
-            <div className="flex justify-between items-center p-4">
+            <div className="flex justify-between items-center">
               <h1 className="text-xl font-semibold text-gray-900">Profile</h1>
               <button
                 onClick={() => setEditMode(true)}

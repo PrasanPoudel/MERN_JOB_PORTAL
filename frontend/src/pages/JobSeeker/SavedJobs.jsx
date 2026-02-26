@@ -55,7 +55,7 @@ const SavedJobs = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-16 bg-white">
+      <div className="mt-24 bg-white">
         {savedJobList && (
           <div className="min-h-screen">
             <div className="mx-auto p-4 lg:p-12">

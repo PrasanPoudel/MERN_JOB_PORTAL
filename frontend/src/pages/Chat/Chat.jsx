@@ -366,10 +366,10 @@ const Chat = ({ isAdmin = false }) => {
           } bg-white border-r border-gray-200/70 flex flex-col shadow-lg md:shadow-none`}
         >
           {/* Header */}
-          <div className="p-2 border-b border-gray-200/70 bg-linear-to-r from-white to-gray-50">
+          <div className="p-2 border border-gray-200/70 bg-linear-to-r from-white to-gray-50">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl font-semibold text-gray-900 tracking-tight">
+                <h2 className="text-xl pt-2 font-semibold text-gray-900 tracking-tight">
                   Messages
                 </h2>
                 <p className="text-sm text-gray-600 mt-1 font-medium">
@@ -486,7 +486,7 @@ const Chat = ({ isAdmin = false }) => {
                     {/* Avatar Section */}
                     <div className="relative shrink-0">
                       <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300">
-                        <img
+                      <img
                           src={getOtherPartyAvatar(conv) || "/default.png"}
                           alt="User"
                           className="w-full h-full object-cover"
@@ -502,7 +502,6 @@ const Chat = ({ isAdmin = false }) => {
                     {/* Content Section */}
                     <div className="flex-1 min-w-0 text-left space-y-1">
                       {/* Name & Time Row */}
-                      <div className="flex items-center justify-between">
                         <div className="flex items-center gap-2">
                           <p className="text-gray-900 font-semibold text-base truncate leading-tight">
                             {getOtherPartyName(conv)}
@@ -513,23 +512,11 @@ const Chat = ({ isAdmin = false }) => {
                             </span>
                           )}
                         </div>
-                        {conv.lastMessage && (
-                          <span className="text-xs text-gray-500 font-medium whitespace-nowrap">
-                            {moment(conv.lastMessage.createdAt).calendar(null, {
-                              sameDay: "LT",
-                              lastDay: "[Yesterday]",
-                              lastWeek: "ddd",
-                              sameElse: "MMM D",
-                            })}
-                          </span>
-                        )}
-                      </div>
 
                       {/* Badges Row */}
-                      <div className="flex flex-wrap items-center gap-2">
+                      <div className="flex flex-col items-start">
                         {isAdmin ? (
-                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-linear-to-r from-gray-100 to-gray-200 text-gray-700 border border-gray-300 shadow-sm">
-                            <Mail className="w-4 h-4 mr-2 text-gray-600" />
+                          <span className="text-xs">
                             {conv.user.email}
                           </span>
                         ) : conv.isAdminConversation ? (
@@ -597,7 +584,7 @@ const Chat = ({ isAdmin = false }) => {
         {selectedConversation ? (
           <div className="flex-1 flex flex-col min-w-0">
             {/* Chat Header */}
-            <div className="border-b bg-white border-gray-200 p-2 bg-linear-to-r shadow-sm z-50">
+            <div className="border border-l-0 bg-white border-gray-200 p-2 bg-linear-to-r shadow-sm z-10">
               <div className="flex items-center gap-2">
                 {isMobile && (
                   <button
@@ -608,14 +595,14 @@ const Chat = ({ isAdmin = false }) => {
                   </button>
                 )}
                 <div className="relative">
-                  <div className="w-8 h-8 rounded-2xl bg-linear-to-br flex items-center justify-center overflow-hidden shadow-md">
+                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shadow-md">
                     <img
                       src={
                         getOtherPartyAvatar(selectedConversation) ||
                         "/default.png"
                       }
                       alt="User"
-                      className="w-full h-full object-cover"
+                      className="w-full h-full object-cover mix-blend-multiply"
                     />
                   </div>
                 </div>
@@ -626,7 +613,7 @@ const Chat = ({ isAdmin = false }) => {
                   <div className="flex items-center gap-1 text-sm text-gray-600 font-medium mt-1">
                     {isAdmin ? (
                       selectedConversation.user.role === "employer" ? (
-                        <BriefcaseBusiness className="w-4 h-4" />
+                        <Mail className="w-4 h-4" />
                       ) : (
                         <Mail className="w-4 h-4" />
                       )
@@ -760,8 +747,8 @@ const Chat = ({ isAdmin = false }) => {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200/70 p-4 md:p-6 bg-white shadow-md">
-              <div className="flex gap-4 max-w-4xl mx-auto">
+            <div className="border-t border-gray-200/70 p-2 bg-white shadow-md">
+              <div className="flex gap-4 max-w-5xl mx-auto">
                 <div className="relative flex-1">
                   <input
                     autoComplete="off"
@@ -776,24 +763,24 @@ const Chat = ({ isAdmin = false }) => {
                       }
                     }}
                     placeholder="Type your message..."
-                    className="w-full px-5 py-4 pr-16 bg-white border border-gray-300 rounded-2xl focus:outline-none focus:border-sky-500 text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
+                    className="w-full p-4 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
                     disabled={sending}
                   />
                 </div>
                 <button
                   onClick={handleSendMessage}
                   disabled={sending || !newMessage.trim()}
-                  className="bg-linear-to-br from-sky-600 to-sky-700 text-white p-4 rounded-2xl hover:from-sky-700 hover:to-sky-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-lg hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md font-medium"
+                  className="bg-linear-to-br from-sky-600 to-sky-700 text-white p-4 rounded-2xl hover:from-sky-700 hover:to-sky-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md"
                 >
                   {sending ? (
                     <div className="flex items-center gap-2">
                       <Loader className="w-5 h-5 animate-spin" />
-                      <span className="text-sm">Sending...</span>
+                      <span className="text-base">Sending...</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
                       <Send className="w-5 h-5" />
-                      <span className="text-sm font-medium">Send</span>
+                      <span className="text-base font-medium">Send</span>
                     </div>
                   )}
                 </button>

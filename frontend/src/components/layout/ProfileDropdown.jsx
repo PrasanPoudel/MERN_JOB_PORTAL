@@ -36,19 +36,19 @@ const ProfileDropdown = ({
       <button
         onClick={onToggle}
         title="Open profile menu"
-        className="flex items-center gap-3 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer"
+        className="flex items-center gap-2 p-2 rounded-xl hover:bg-gray-100 transition cursor-pointer"
       >
         {avatar ? (
           <img
             src={avatar}
             alt="avatar"
-            className="h-10 w-10 rounded-full object-fill"
+            className="h-14 w-16 rounded-full object-fill mix-blend-multiply"
           />
         ) : (
           <img
             src="/default.png"
             alt="avatar"
-            className="h-10 w-10 rounded-full object-fill"
+            className="h-14 w-16 rounded-full object-fill mix-blend-multiply"
           />
         )}
 
@@ -150,7 +150,7 @@ const ProfileDropdown = ({
       )}
 
       {showLogoutConfirm && (
-        <div className="absolute top-0 left-0 inset-0 min-h-screen min-w-full bg-black/60 flex items-center justify-center z-120">
+        <div className="absolute top-0 left-0 inset-0 min-h-screen min-w-full bg-black/60 flex items-center justify-center z-1200">
           <div className="bg-white rounded-xl w-80 p-5 shadow-2xl mx-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-900">

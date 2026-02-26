@@ -11,7 +11,6 @@ const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
-  const [pollingInterval, setPollingInterval] = useState(null);
 
   useEffect(() => {
     if (!user || !isAuthenticated) return;
@@ -31,7 +30,6 @@ const Navbar = () => {
 
     // Start polling for unread count updates
     const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
-    setPollingInterval(interval);
 
     return () => {
       if (interval) clearInterval(interval);
@@ -51,29 +49,29 @@ const Navbar = () => {
   }, [profileDropdownOpen]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex gap-2 items-center p-2 rounded-xl transition-colors duration-200
+    `p-2 rounded-xl transition-colors duration-200
      ${
        isActive ? "bg-sky-100 text-sky-600" : "text-gray-600 hover:bg-sky-100"
      }`;
 
   return (
-    <header className="fixed top-0 left-0 z-40 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
-      <div className="container mx-auto px-4">
-        <div className="flex items-center justify-between h-16">
+    <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
+      <div className="container mx-auto p-0">
+        <div className="flex items-center p-0 justify-between max-h-20">
           <Link className="flex items-center" to="/">
-            <img src={logo} className="h-14 w-20 object-fill" alt="logo" />
+            <img src={logo} className="h-20 w-20 object-contain mix-blend-multiply" alt="logo" />
           </Link>
 
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center gap-1">
             <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-              <Home className="h-5 w-5" />
+              <Home className="h-6 w-6" />
             </NavLink>
             <NavLink
               title="Search for Jobs"
               to="/find-jobs"
               className={navLinkClasses}
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-6 w-6" />
             </NavLink>
             {user && user?.role === "jobSeeker" && (
               <>
@@ -83,7 +81,7 @@ const Navbar = () => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="h-5 w-5" />
+                    <MessageSquare className="h-6 w-6" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}
@@ -101,7 +99,7 @@ const Navbar = () => {
                 className={navLinkClasses}
               >
                 <div className="relative">
-                  <MessageSquare className="h-5 w-5" />
+                  <MessageSquare className="h-6 w-6" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                       {unreadCount > 99 ? "99+" : unreadCount}

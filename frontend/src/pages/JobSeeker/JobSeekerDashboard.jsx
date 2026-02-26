@@ -188,7 +188,7 @@ const JobSeekerDashboard = () => {
   return (
     <div>
       <Navbar />
-      <div className="min-h-screen mt-16">
+      <div className="min-h-screen mt-24">
         <div className="max-w-full mx-auto px-4 sm:px-6 py-2">
           <SearchHeader
             filters={filters}

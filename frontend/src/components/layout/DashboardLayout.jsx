@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Building2, Home, LogOut, Menu, X, BadgeCheck } from "lucide-react";
+import { Home, Menu, X, Search } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   NAVIGATION_MENU_EMPLOYER,
@@ -23,7 +23,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-  const [pollingInterval, setPollingInterval] = useState(null);
 
   useEffect(() => {
     const fetchUnreadCount = async () => {
@@ -41,7 +40,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
 
     // Start polling for unread count updates
     const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
-    setPollingInterval(interval);
 
     return () => {
       if (interval) clearInterval(interval);
@@ -95,7 +93,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         className={`fixed inset-0 min-h-screen left-0 transition-transform duration-200 transform z-1000 ${
           isMobile
             ? sidebarOpen
-              ? "translate-x-0"
+              ? "translate-x-0 w-full"
               : "-translate-x-full"
             : "translate-x-0"
         } ${
@@ -103,8 +101,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
         } bg-white border-r-2 border-gray-200`}
       >
         <div className="flex items-start">
-          <Link className={`flex items-center mt-2 w-32`} to="/">
-            <img src={logo} className="w-30 h-full" />
+          <Link className="flex items-center mt-2 w-full" to="/">
+            <img src={logo} className="w-48 h-42 mix-blend-multiply" />
           </Link>
           {sidebarOpen && (
             <div className="w-full flex justify-end p-2">
@@ -165,7 +163,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
           isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-16 lg:h-20 flex items-center justify-between px-4 z-500">
+        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-20 flex items-center justify-between px-4 z-500">
           <div className="flex items-center space-x-4">
             {isMobile && (
               <button
@@ -173,14 +171,14 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 className="p-2 rounded-xl hover:bg-gray-100 transition-colors delay-300"
               >
                 {sidebarOpen ? (
-                  <X className="h-5 w-5 text-gray-600" />
+                  ""
                 ) : (
                   <Menu className="h-5 w-5 text-gray-600" />
                 )}
               </button>
             )}
             <div>
-              <h1 className="text-xs sm:text-base font-semibold text-gray-900">
+              <h1 className="text-xs sm:text-base font-semibold hidden sm:block text-gray-900">
                 Welcome back !
               </h1>
               <p className="text-sm text-gray-600 hidden sm:block">
@@ -189,14 +187,23 @@ const DashboardLayout = ({ activeMenu, children }) => {
               </p>
             </div>
           </div>
-          <div className="flex gap-4 items-center">
+          <div className="flex gap-2 items-center">
+            <div className="flex items-center">
             <Link
             title="Go to Homepage"
               to="/"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
             >
-              <Home className="w-4 h-4" />
+              <Home className="w-6 h-6" />
             </Link>
+            <Link
+            title="Search for Jobs"
+              to="/find-jobs"
+              className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+            >
+              <Search className="w-6 h-6" />
+            </Link>
+            </div>
             {isAuthenticated ? (
               <ProfileDropdown
                 isOpen={profileDropdownOpen}

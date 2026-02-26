@@ -44,7 +44,7 @@ const AdminUserManagement = () => {
 
       const params = new URLSearchParams({
         page: page.toString(),
-        limit: itemsPerPage.toString()
+        limit: itemsPerPage.toString(),
       });
 
       if (roleFilter !== "all") {
@@ -56,7 +56,7 @@ const AdminUserManagement = () => {
       }
 
       const response = await axiosInstance.get(
-        `${API_PATHS.ADMIN.GET_ALL_USERS}?${params.toString()}`
+        `${API_PATHS.ADMIN.GET_ALL_USERS}?${params.toString()}`,
       );
 
       setUsers(response.data.users || []);
@@ -204,16 +204,17 @@ const AdminUserManagement = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-gray-600 text-sm lg:text-base">
+                <p className="text-sm text-gray-700 lg:text-base">
                   Showing{" "}
-                  <span className="mr-1 font-bold text-gray-900">
-                    {users.length}
-                  </span>
-                  of{" "}
-                  <span className="mr-1 font-bold text-gray-900">
-                    {pagination?.total || 0}
-                  </span>
-                  users
+                  <span className="font-bold">
+                    {(currentPage - 1) * itemsPerPage + 1}
+                  </span>{" "}
+                  to{" "}
+                  <span className="font-bold">
+                    {Math.min(currentPage * itemsPerPage, pagination.total)}
+                  </span>{" "}
+                  of <span className="font-bold">{pagination.total}</span>{" "}
+                  results
                 </p>
               </div>
             </div>
@@ -259,9 +260,12 @@ const AdminUserManagement = () => {
                       </p>
                       {user && user?.companyName && (
                         <p className="flex items-center w-full gap-1 text-xs sm:text-sm text-gray-700">
-                          <span title={user?.companyName} className="flex items-center gap-1 truncate max-w-42 sm:max-w-52">
-                          <Building2 className="w-4 h-4 shrink-0" />
-                          {user.companyName}
+                          <span
+                            title={user?.companyName}
+                            className="flex items-center gap-1 truncate max-w-42 sm:max-w-52"
+                          >
+                            <Building2 className="w-4 h-4 shrink-0" />
+                            {user.companyName}
                           </span>
                           {user.role === "employer" &&
                             user.isCompanyVerified && (
@@ -319,8 +323,12 @@ const AdminUserManagement = () => {
                   </button>
                   <button
                     onClick={() => {
-                      setCurrentPage(Math.min(pagination.totalPages, currentPage + 1));
-                      getAllUsers(Math.min(pagination.totalPages, currentPage + 1));
+                      setCurrentPage(
+                        Math.min(pagination.totalPages, currentPage + 1),
+                      );
+                      getAllUsers(
+                        Math.min(pagination.totalPages, currentPage + 1),
+                      );
                     }}
                     disabled={currentPage === pagination.totalPages}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -334,12 +342,14 @@ const AdminUserManagement = () => {
                   <div>
                     <p className="text-sm text-gray-700">
                       Showing{" "}
-                      <span className="font-bold">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
+                      <span className="font-bold">
+                        {(currentPage - 1) * itemsPerPage + 1}
+                      </span>{" "}
+                      to{" "}
                       <span className="font-bold">
                         {Math.min(currentPage * itemsPerPage, pagination.total)}
                       </span>{" "}
-                      of{" "}
-                      <span className="font-bold">{pagination.total}</span>{" "}
+                      of <span className="font-bold">{pagination.total}</span>{" "}
                       results
                     </p>
                   </div>
@@ -355,36 +365,42 @@ const AdminUserManagement = () => {
                       >
                         Previous
                       </button>
-                      {getPaginationPages(currentPage, pagination.totalPages).map(
-                        (page, index) =>
-                          page === "..." ? (
-                            <span
-                              key={`dots-${index}`}
-                              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
-                            >
-                              ...
-                            </span>
-                          ) : (
-                            <button
-                              key={page}
-                              onClick={() => {
-                                setCurrentPage(page);
-                                getAllUsers(page);
-                              }}
-                              className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                                currentPage === page
-                                  ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                  : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
-                              }`}
-                            >
-                              {page}
-                            </button>
-                          ),
+                      {getPaginationPages(
+                        currentPage,
+                        pagination.totalPages,
+                      ).map((page, index) =>
+                        page === "..." ? (
+                          <span
+                            key={`dots-${index}`}
+                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
+                          >
+                            ...
+                          </span>
+                        ) : (
+                          <button
+                            key={page}
+                            onClick={() => {
+                              setCurrentPage(page);
+                              getAllUsers(page);
+                            }}
+                            className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                              currentPage === page
+                                ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
+                                : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                            }`}
+                          >
+                            {page}
+                          </button>
+                        ),
                       )}
                       <button
                         onClick={() => {
-                          setCurrentPage(Math.min(pagination.totalPages, currentPage + 1));
-                          getAllUsers(Math.min(pagination.totalPages, currentPage + 1));
+                          setCurrentPage(
+                            Math.min(pagination.totalPages, currentPage + 1),
+                          );
+                          getAllUsers(
+                            Math.min(pagination.totalPages, currentPage + 1),
+                          );
                         }}
                         disabled={currentPage === pagination.totalPages}
                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
