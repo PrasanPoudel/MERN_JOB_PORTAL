@@ -6,7 +6,6 @@ import {
   NAVIGATION_MENU_ADMIN,
 } from "../../utils/data";
 import { useAuth } from "../../context/AuthContext";
-import { useSocket } from "../../context/SocketContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import NavigationItem from "./NavigationItem";
@@ -15,7 +14,6 @@ import ProfileDropdown from "./ProfileDropdown";
 
 const DashboardLayout = ({ activeMenu, children }) => {
   const { user, logout, isAuthenticated } = useAuth();
-  const { socket, isConnected } = useSocket();
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -25,6 +23,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
   const [isMobile, setIsMobile] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
+  const [pollingInterval, setPollingInterval] = useState(null);
 
   useEffect(() => {
     const fetchUnreadCount = async () => {
@@ -39,22 +38,15 @@ const DashboardLayout = ({ activeMenu, children }) => {
     };
 
     fetchUnreadCount();
-  }, []);
 
-  useEffect(() => {
-    if (!socket || !isConnected) return;
-
-    const handleUnreadCountUpdate = (data) => {
-      const newUnreadCount = data.totalUnreadCount || 0;
-      setUnreadCount(newUnreadCount);
-    };
-
-    socket.on("unread_count_update", handleUnreadCountUpdate);
+    // Start polling for unread count updates
+    const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
+    setPollingInterval(interval);
 
     return () => {
-      socket.off("unread_count_update", handleUnreadCountUpdate);
+      if (interval) clearInterval(interval);
     };
-  }, [socket, isConnected]);
+  }, []);
 
   useEffect(() => {
     const handleResize = () => {

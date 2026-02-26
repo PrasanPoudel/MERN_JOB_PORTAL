@@ -53,7 +53,7 @@ const HowItWorks = () => {
   const steps = userType === "jobSeeker" ? jobSeekerSteps : employerSteps;
 
   return (
-    <section className="py-16 px-4 bg-gradient-to-b from-sky-50 to-white">
+    <section className="py-16 px-4 bg-linear-to-b from-sky-50 to-white">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12">
           <p className="text-sky-600 text-xs font-bold tracking-widest uppercase mb-3">

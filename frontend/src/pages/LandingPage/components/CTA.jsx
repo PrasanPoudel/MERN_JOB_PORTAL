@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 
 const CTA = () => {
   return (
-    <section className="py-16 px-4 bg-gradient-to-r from-sky-600 to-sky-700">
+    <section className="py-16 px-4 bg-linear-to-r from-sky-600 to-sky-700">
       <div className="max-w-4xl mx-auto text-center">
         <h2 className="font-extrabold text-3xl sm:text-4xl text-white mb-4">
           Ready to Find Your Next Opportunity?

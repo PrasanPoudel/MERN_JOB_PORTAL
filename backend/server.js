@@ -5,7 +5,6 @@ const path = require("path");
 const connectDB = require("./config/database");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
-const setupSocket = require("./config/socket");
 
 const authRoutes = require("./routes/authRoutes");
 const userRoutes = require("./routes/userRoutes");
@@ -55,8 +54,6 @@ const server = app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
 
-// Setup Socket.IO
-const io = setupSocket(server);
 
 // Start uploads cleanup cron job
 require("./cleanupUploadsCron");

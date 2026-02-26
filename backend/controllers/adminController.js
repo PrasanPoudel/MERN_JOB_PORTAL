@@ -386,7 +386,7 @@ exports.getAdminConversations = async (req, res) => {
     const conversations = await Promise.all(
       Array.from(userIds).map(async (userId) => {
         const user = await User.findById(userId).select(
-          "_id name avatar email",
+          "_id name avatar email role",
         );
 
         const lastMessage = await Message.findOne({

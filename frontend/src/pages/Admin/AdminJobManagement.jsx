@@ -6,7 +6,7 @@ import {
   Search,
   MapPin,
   Clock,
-  Banknote,
+  Trash2,
   Info,
   Tag,
   BadgeCheck,

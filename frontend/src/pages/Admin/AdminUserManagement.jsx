@@ -12,7 +12,6 @@ import {
   FileText,
   Bookmark,
   BriefcaseBusiness,
-  Mail,
   BadgeCheck,
   User,
 } from "lucide-react";

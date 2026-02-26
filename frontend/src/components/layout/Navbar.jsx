@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Home, MessageSquare, Search } from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
-import { useSocket } from "../../context/SocketContext";
 import { NavLink, Link } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -10,9 +9,9 @@ import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
-  const { socket, isConnected, sendMessage } = useSocket();
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+  const [pollingInterval, setPollingInterval] = useState(null);
 
   useEffect(() => {
     if (!user || !isAuthenticated) return;
@@ -27,22 +26,17 @@ const Navbar = () => {
         console.error("Failed to fetch unread count:", err);
       }
     };
+
     fetchUnreadCount();
-  }, [user, isAuthenticated]);
 
-  useEffect(() => {
-    if (!socket || !isConnected) return;
-
-    const handleUnreadCountUpdate = (data) => {
-      setUnreadCount(data.totalUnreadCount || 0);
-    };
-
-    socket.on("unread_count_update", handleUnreadCountUpdate);
+    // Start polling for unread count updates
+    const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
+    setPollingInterval(interval);
 
     return () => {
-      socket.off("unread_count_update", handleUnreadCountUpdate);
+      if (interval) clearInterval(interval);
     };
-  }, [socket, isConnected]);
+  }, [user, isAuthenticated]);
 
   useEffect(() => {
     const handleClickOutside = () => {

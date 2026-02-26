@@ -278,7 +278,7 @@ const EmployerProfilePage = () => {
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-contain shrink-0"
                       />
                       <div className="min-w-0">
-                        <h3 className="text-base sm:text-lg font-semibold truncate">
+                        <h3 className="flex gap-1 items-center text-base sm:text-lg font-semibold truncate">
                           {profileData.companyName}
                           {profileData.isCompanyVerified && (
                             <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />

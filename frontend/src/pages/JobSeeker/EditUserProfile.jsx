@@ -73,7 +73,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
   const handleFileUpload = async (file, type) => {
     if (!file) return;
-    
+
     setUploading((prev) => ({ ...prev, [type]: true }));
     try {
       const fileUploadRes = await uploadFile(file);
@@ -83,14 +83,19 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
         ...prev,
         [type]: fileUrl,
       }));
-      toast.success(`${type === 'avatar' ? 'Profile picture' : 'Resume'} uploaded successfully!`);
+      toast.success(
+        `${type === "avatar" ? "Profile picture" : "Resume"} uploaded successfully!`,
+      );
     } catch (err) {
       console.error("[File Upload Error]", {
         type,
         fileName: file?.name,
-        error: err?.message || err
+        error: err?.message || err,
       });
-      toast.error(err?.message || `${type === 'avatar' ? 'Profile picture' : 'Resume'} upload failed. Please try again.`);
+      toast.error(
+        err?.message ||
+          `${type === "avatar" ? "Profile picture" : "Resume"} upload failed. Please try again.`,
+      );
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -115,7 +120,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
   const deleteResume = async () => {
     if (!formData.resume) return;
-    
+
     setIsSaving(true);
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.DELETE_RESUME, {
@@ -130,7 +135,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
     } catch (err) {
       console.error("[Delete Resume Error]", {
         resumeUrl: formData.resume,
-        error: err?.message || err
+        error: err?.message || err,
       });
       toast.error(err?.message || "Failed to delete resume. Please try again.");
     } finally {
@@ -329,12 +334,12 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
           date: cert.date || undefined,
         })),
       };
-      
+
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
         dataToSend,
       );
-      
+
       if (response.status === 200 && response.data) {
         toast.success("Profile updated successfully!");
         setFormData({
@@ -364,9 +369,11 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
       }
     } catch (err) {
       console.error("[Profile Update Error]", {
-        error: err?.message || err
+        error: err?.message || err,
       });
-      toast.error(err?.message || "Failed to update profile. Please try again.");
+      toast.error(
+        err?.message || "Failed to update profile. Please try again.",
+      );
     } finally {
       setIsSaving(false);
     }
@@ -379,38 +386,13 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
         <div className="w-full mx-auto">
           {/* Header */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
-            <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
-              <div>
-                <h1 className="text-2xl font-semibold text-gray-900 flex items-center gap-2">
-                  Edit Profile
-                </h1>
-                <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
-                  Update your professional information
-                </p>
-              </div>
-              <div className="flex gap-2 flex-col md:flex-row">
-                <button
-                  onClick={handleSave}
-                  disabled={isSaving || uploading.avatar || uploading.resume}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                >
-                  {isSaving ? (
-                    <div className="animate-spin border-2 border-b-sky-600 w-5 h-5 rounded-full"></div>
-                  ) : (
-                    <Save className="w-5 h-5" />
-                  )}
-                  {isSaving ? "Saving..." : "Save Changes"}
-                </button>
-                <button
-                  onClick={() => {
-                    setEditMode(false);
-                  }}
-                  className="p-3 flex items-center justify-center gap-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
-                >
-                  <X className="w-4 h-4" />
-                  <span>Cancel</span>
-                </button>
-              </div>
+            <div>
+              <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
+                Edit Profile
+              </h1>
+              <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
+                Update your professional information
+              </p>
             </div>
           </div>
 
@@ -958,6 +940,29 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                 </div>
               ))}
             </div>
+          </div>
+          <div className="flex gap-2 flex-col md:flex-row justify-end">
+            <button
+              onClick={() => {
+                setEditMode(false);
+              }}
+              className="p-3 flex items-center justify-center gap-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+            >
+              <X className="w-4 h-4" />
+              <span>Cancel</span>
+            </button>
+            <button
+              onClick={handleSave}
+              disabled={isSaving || uploading.avatar || uploading.resume}
+              className="w-full sm:w-auto flex items-center justify-center gap-2 px-4 sm:px-6 py-3 bg-sky-600 text-white rounded-lg hover:bg-sky-700 transition-colors font-medium shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {isSaving ? (
+                <div className="animate-spin border-2 border-b-sky-600 w-5 h-5 rounded-full"></div>
+              ) : (
+                <Save className="w-5 h-5" />
+              )}
+              {isSaving ? "Saving..." : "Save Changes"}
+            </button>
           </div>
         </div>
       </div>
