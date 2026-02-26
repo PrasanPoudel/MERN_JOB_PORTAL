@@ -293,10 +293,10 @@ const AdminCompanyVerification = () => {
                         </span>
                       </div>
                       <p className="flex items-center text-sm text-gray-700 wrap-break-word">
-                          {company.companyName}
-                          {company.isCompanyVerified && (
-                            <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
-                          )}
+                        {company.companyName}
+                        {company.isCompanyVerified && (
+                          <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                        )}
                       </p>
                       <p className="text-xs text-gray-500">{company.email}</p>
                     </div>
@@ -475,8 +475,8 @@ const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
   };
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-start justify-center p-4 pt-8 md:pt-16 overflow-y-auto">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-4xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
+    <div className="fixed inset-0 z-1000 bg-black/40 backdrop-blur-sm flex items-start justify-center p-4 pt-8 md:pt-16 overflow-y-auto">
+      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-4xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 z-10"
@@ -492,7 +492,7 @@ const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
           <>
             {/* Header Section */}
             <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-6">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden flex-shrink-0">
+              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden shrink-0">
                 <img
                   src={company.avatar || "/default.png"}
                   alt={company.name}
@@ -647,7 +647,7 @@ const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
                 <h3 className="text-sm font-semibold text-gray-700 mb-3">
                   Company Description
                 </h3>
-                <p className="text-sm text-gray-600 bg-gray-50 p-4 rounded-xl leading-relaxed text-justify">
+                <p className="text-xs text-gray-600 bg-gray-50 p-4 rounded-xl leading-relaxed text-justify">
                   {company.companyDescription}
                 </p>
               </div>
@@ -675,7 +675,7 @@ const VerifyConfirmationModal = ({
   onConfirm,
   verifying,
 }) => (
-  <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+  <div className="fixed inset-0 z-1200 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
         <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-green-100 mb-4">

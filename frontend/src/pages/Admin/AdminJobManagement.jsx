@@ -356,8 +356,8 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
   const employerName = job.company?.name || "Unknown Employer";
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 pb-8">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
+    <div className="fixed inset-0 z-1000 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 pb-8">
+      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 z-10"
@@ -385,7 +385,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                 )}
 
                 <div className="flex flex-col text-center sm:text-left">
-                  <h3 className="text-lg font-semibold text-gray-900">
+                  <h3 className="flex items-center text-lg font-semibold text-gray-900">
                     {companyName}
                     {job?.company?.isCompanyVerified && (
                       <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
@@ -402,11 +402,11 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                 {job.title}
               </h2>
 
-              <p className="text-gray-600 mb-6 whitespace-normal wrap-break-word">
+              <p className="text-gray-600 text-xs text-justify mb-6 whitespace-normal wrap-break-word">
                 {job.description}
               </p>
 
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-32">
                 <InfoItem
                   icon={<Tag className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Category"
@@ -432,13 +432,16 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   value={job.isClosed ? "Closed" : "Active"}
                 />
                 <div className="sm:col-span-2">
-                  <InfoItem
-                    label="Requirements"
-                    value={job.requirements || "N/A"}
-                  />
+                  <h3>Requirements</h3>
+                  <p className="text-gray-600 my-2 text-xs text-justify whitespace-normal wrap-break-word">
+                    {job.requirements || "N/A"}
+                  </p>
                 </div>
                 <div className="sm:col-span-2">
-                  <InfoItem label="Offer" value={job.offer || "N/A"} />
+                  <h3>Company Offer</h3>
+                  <p className="text-gray-600 my-2 text-xs text-justify mb-6 whitespace-normal wrap-break-word">
+                    {job.offer || "N/A"}
+                  </p>
                 </div>
               </div>
             </>
@@ -475,6 +478,43 @@ const InfoItem = ({ icon, label, value }) => (
       <p className="font-medium text-gray-900 whitespace-normal wrap-break-word">
         {value}
       </p>
+    </div>
+  </div>
+);
+
+const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
+  <div className="fixed inset-0 z-1200 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
+      <div className="text-center">
+        <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-red-100 mb-4">
+          <Trash2 className="text-red-600 w-6 h-6" />
+        </div>
+
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Delete User?</h3>
+
+        <p className="text-gray-500 text-sm mb-6">
+          Permanently delete <strong>{user.name}</strong>? This action cannot be
+          undone.
+        </p>
+
+        <div className="flex gap-3">
+          <button
+            onClick={onCancel}
+            disabled={deleting}
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={() => onConfirm(user._id)}
+            disabled={deleting}
+            className="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition disabled:opacity-50"
+          >
+            {deleting ? "Deleting..." : "Yes, Delete"}
+          </button>
+        </div>
+      </div>
     </div>
   </div>
 );

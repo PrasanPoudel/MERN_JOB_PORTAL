@@ -173,7 +173,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
           isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64"
         }`}
       >
-        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-16 lg:h-20 flex items-center justify-between px-4 z-100">
+        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-16 lg:h-20 flex items-center justify-between px-4 z-500">
           <div className="flex items-center space-x-4">
             {isMobile && (
               <button
@@ -199,11 +199,11 @@ const DashboardLayout = ({ activeMenu, children }) => {
           </div>
           <div className="flex gap-4 items-center">
             <Link
+            title="Go to Homepage"
               to="/"
               className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
             >
               <Home className="w-4 h-4" />
-              <span className="hidden sm:block">Home</span>
             </Link>
             {isAuthenticated ? (
               <ProfileDropdown
