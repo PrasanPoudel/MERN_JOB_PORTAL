@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Building2, Home, LogOut, Menu, X, BadgeCheck } from "lucide-react";
+import { Building2, Home, LogOut, Menu, X, BadgeCheck, Search } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   NAVIGATION_MENU_EMPLOYER,
@@ -190,13 +190,22 @@ const DashboardLayout = ({ activeMenu, children }) => {
             </div>
           </div>
           <div className="flex gap-4 items-center">
+            <div className="flex gap-1 items-center">
             <Link
             title="Go to Homepage"
               to="/"
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              className="px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
             >
-              <Home className="w-4 h-4" />
+              <Home className="w-6 h-6" />
             </Link>
+            <Link
+            title="Search for Jobs"
+              to="/find-jobs"
+              className="px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+            >
+              <Search className="w-6 h-6" />
+            </Link>
+            </div>
             {isAuthenticated ? (
               <ProfileDropdown
                 isOpen={profileDropdownOpen}
