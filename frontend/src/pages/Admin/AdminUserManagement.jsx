@@ -426,8 +426,8 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
   if (!user) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white rounded-3xl shadow-2xl w-full max-w-3xl p-8 relative">
+    <div className="fixed inset-0 z-1000 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl p-8 relative">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
@@ -548,7 +548,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
 };
 
 const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
-  <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+  <div className="fixed inset-0 z-1200 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
         <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-red-100 mb-4">

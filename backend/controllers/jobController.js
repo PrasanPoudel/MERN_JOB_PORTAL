@@ -24,6 +24,22 @@ exports.createJob = async (req, res) => {
     const salaryMax = req.body.salaryMax || 0;
     const salaryRange = salaryMax - salaryMin;
 
+    // Validate no_of_vacancy
+    const noOfVacancy = req.body.no_of_vacancy;
+    if (!noOfVacancy || !Number.isInteger(Number(noOfVacancy)) || Number(noOfVacancy) <= 0) {
+      return res.status(400).json({ message: "Number of vacancies must be a positive integer" });
+    }
+
+    // Validate application_deadline_date
+    const applicationDeadlineDate = new Date(req.body.application_deadline_date);
+    if (!applicationDeadlineDate || isNaN(applicationDeadlineDate.getTime())) {
+      return res.status(400).json({ message: "Application deadline date is required and must be a valid date" });
+    }
+    
+    if (applicationDeadlineDate <= new Date()) {
+      return res.status(400).json({ message: "Application deadline must be in the future" });
+    }
+
     const jobDataForML = {
       title: req.body.title || "",
       description: req.body.description || "",

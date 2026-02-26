@@ -66,23 +66,28 @@ const Navbar = () => {
     <header className="fixed top-0 left-0 z-40 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between h-16">
-          <Link className="flex items-center" to="/find-jobs">
+          <Link className="flex items-center" to="/">
             <img src={logo} className="h-14 w-20 object-fill" alt="logo" />
           </Link>
 
-          <div className="flex items-center space-x-2 md:space-x-6">
-            <NavLink to="/" className={navLinkClasses}>
+          <div className="flex items-center space-x-2">
+            <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
               <Home className="h-5 w-5" />
-              <span className="hidden md:flex">Home</span>
+            </NavLink>
+            <NavLink
+              title="Search for Jobs"
+              to="/find-jobs"
+              className={navLinkClasses}
+            >
+              <Search className="h-5 w-5" />
             </NavLink>
             {user && user?.role === "jobSeeker" && (
               <>
-                <NavLink to="/find-jobs" className={navLinkClasses}>
-                  <Search className="h-5 w-5" />
-                  <span className="hidden md:flex">Search for jobs</span>
-                </NavLink>
-
-                <NavLink to="/JobSeekerChatBox" className={navLinkClasses}>
+                <NavLink
+                  title="Messages"
+                  to="/JobSeekerChatBox"
+                  className={navLinkClasses}
+                >
                   <div className="relative">
                     <MessageSquare className="h-5 w-5" />
                     {unreadCount > 0 && (
@@ -91,13 +96,16 @@ const Navbar = () => {
                       </span>
                     )}
                   </div>
-                  <span className="hidden md:flex">Messages</span>
                 </NavLink>
               </>
             )}
 
             {user && user?.role === "admin" && (
-              <NavLink to="/admin-chat-box" className={navLinkClasses}>
+              <NavLink
+                title="Messages"
+                to="/admin-chat-box"
+                className={navLinkClasses}
+              >
                 <div className="relative">
                   <MessageSquare className="h-5 w-5" />
                   {unreadCount > 0 && (
@@ -106,7 +114,6 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
-                <span className="hidden md:flex">Messages</span>
               </NavLink>
             )}
 

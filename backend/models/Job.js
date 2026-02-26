@@ -18,12 +18,31 @@ const jobSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    }, // Employer
+    }, 
     salaryMin: { type: Number },
     salaryMax: { type: Number },
+    no_of_vacancy: { 
+      type: Number, 
+      required: true,
+      min: 1,
+      validate: {
+        validator: function(v) {
+          return Number.isInteger(v) && v > 0;
+        },
+        message: 'Number of vacancies must be a positive integer'
+      }
+    },
+    application_deadline_date: { 
+      type: Date, 
+      required: true,
+      validate: {
+        validator: function(v) {
+          return v > new Date();
+        },
+        message: 'Application deadline must be in the future'
+      }
+    },
     isClosed: { type: Boolean, default: false },
-    isFlagged: { type: Boolean, default: false },
-    flagReason: { type: String, default: "" },
   },
   { timestamps: true },
 );

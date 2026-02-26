@@ -16,7 +16,7 @@ import {
   ChevronUp,
   Info,
   Mail,
-  Banknote,
+  Users,
   BookOpenText,
   BadgeCheck,
 } from "lucide-react";
@@ -108,7 +108,7 @@ const JobDetails = () => {
         )}
 
         {/* Main Content */}
-        <div className="p-2 pb-24 mt-2 border border-gray-100 rounded-2xl">
+        <div className="p-2 pb-24 mt-4 border border-gray-100 rounded-2xl">
           <div className="z-10 bg-white p-2 rounded-2xl">
             <div className="flex items-start gap-4 mb-0">
               {job?.company?.companyLogo && (
@@ -145,9 +145,6 @@ const JobDetails = () => {
             </div>
           </div>
           <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-gray-700 flex gap-4 items-center">
-            <div className="bg-green-400 text-2xl rounded-2xl w-20 h-20 flex items-center justify-center text-white">
-              <Banknote className="w-12 h-12" />
-            </div>
             <div className="">
               <p className="font-semibold">Compensation</p>
               <p className="font-bold text-xl mt-2">
@@ -157,7 +154,24 @@ const JobDetails = () => {
               </p>
             </div>
           </div>
-
+          <div className="flex flex-col sm:flex-row gap-1 py-2">
+            {job?.no_of_vacancy && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 font-semibold rounded-full border border-blue-200">
+                <Users className="w-4 h-4" />
+                <span className="text-sm font-medium">Available Vacancy: </span>
+                {job?.no_of_vacancy}10
+              </div>
+            )}
+            {job?.application_deadline_date && (
+              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 font-semibold rounded-full border border-red-200">
+                <Calendar className="w-4 h-4" />
+                <span className="text-sm font-medium">
+                  Application Deadline:{" "}
+                </span>
+                {moment(job?.application_deadline_date).format("MMMM Do, YYYY")}
+              </div>
+            )}
+          </div>
           {/* Employer Info */}
 
           <div className="bg-white rounded-2xl shadow-sm">

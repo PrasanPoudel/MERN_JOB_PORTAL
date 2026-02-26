@@ -35,6 +35,8 @@ const JobPostingForm = () => {
     offer: "",
     salaryMin: "",
     salaryMax: "",
+    noOfVacancy: "",
+    applicationDeadlineDate: "",
   });
 
   const [errors, setErrors] = useState({});
@@ -100,6 +102,8 @@ const JobPostingForm = () => {
       offer: formData.offer,
       salaryMin: Number(formData.salaryMin),
       salaryMax: Number(formData.salaryMax),
+      no_of_vacancy: Number(formData.noOfVacancy),
+      application_deadline_date: formData.applicationDeadlineDate,
     };
 
     try {
@@ -121,6 +125,8 @@ const JobPostingForm = () => {
           offer: "",
           salaryMin: "",
           salaryMax: "",
+          noOfVacancy: "",
+          applicationDeadlineDate: "",
         });
         navigate("/employer-dashboard");
         return;
@@ -169,6 +175,19 @@ const JobPostingForm = () => {
       errors.salary = "Both minimum and maximum salary are required";
     } else if (parseInt(formData.salaryMin) > parseInt(formData.salaryMax)) {
       errors.salary = "Maximum salary must be greater than minimum salary";
+    }
+    if (!formData.noOfVacancy || parseInt(formData.noOfVacancy) <= 0) {
+      errors.noOfVacancy = "Number of vacancies must be a positive number";
+    }
+    if (!formData.applicationDeadlineDate) {
+      errors.applicationDeadlineDate = "Application deadline date is required";
+    } else {
+      const deadlineDate = new Date(formData.applicationDeadlineDate);
+      const today = new Date();
+      today.setHours(0, 0, 0, 0);
+      if (deadlineDate <= today) {
+        errors.applicationDeadlineDate = "Application deadline must be in the future";
+      }
     }
     return errors;
   };
@@ -316,6 +335,54 @@ const JobPostingForm = () => {
                 error={errors.offer}
                 helperText="Include key offers and facilities that will be provided by company to this hold holder. Seperate them by dot ( . )"
               />
+              {/* Number of Vacancies */}
+              <div className="space-y-2">
+                <p className="block text-sm font-medium text-gray-700">
+                  Number of Vacancies
+                  <span className="text-red-500 ml-1">*</span>
+                </p>
+                <input
+                  type="number"
+                  id="noOfVacancy"
+                  placeholder="e.g., 5"
+                  value={formData.noOfVacancy}
+                  onChange={(e) => {
+                    handleInputChange("noOfVacancy", e.target.value);
+                  }}
+                  required
+                  min="1"
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors duration-200"
+                />
+                {errors.noOfVacancy && (
+                  <div className="flex items-center space-x-1 text-sm text-red-600">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>{errors.noOfVacancy}</span>
+                  </div>
+                )}
+              </div>
+              {/* Application Deadline Date */}
+              <div className="space-y-2">
+                <p className="block text-sm font-medium text-gray-700">
+                  Application Deadline Date
+                  <span className="text-red-500 ml-1">*</span>
+                </p>
+                <input
+                  type="date"
+                  id="applicationDeadlineDate"
+                  value={formData.applicationDeadlineDate}
+                  onChange={(e) => {
+                    handleInputChange("applicationDeadlineDate", e.target.value);
+                  }}
+                  required
+                  className="w-full px-3 py-2.5 border border-gray-300 rounded-lg text-base focus:outline-none focus:ring-2 focus:ring-sky-500 focus:border-sky-500 transition-colors duration-200"
+                />
+                {errors.applicationDeadlineDate && (
+                  <div className="flex items-center space-x-1 text-sm text-red-600">
+                    <AlertCircle className="h-4 w-4" />
+                    <span>{errors.applicationDeadlineDate}</span>
+                  </div>
+                )}
+              </div>
               {/* Salary Range */}
               <div className="space-y-2">
                 <p className="block text-sm font-medium text-gray-700">
