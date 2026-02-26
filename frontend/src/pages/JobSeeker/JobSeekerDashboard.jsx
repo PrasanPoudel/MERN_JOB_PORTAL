@@ -21,9 +21,7 @@ const JobSeekerDashboard = () => {
   //Pagination
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(jobs.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedJobs = jobs.slice(startIndex, startIndex + itemsPerPage);
+  const [pagination, setPagination] = useState(null);
 
   //Filter states
   const [filters, setFilters] = useState({
@@ -34,11 +32,14 @@ const JobSeekerDashboard = () => {
   });
 
   //Fetch Jobs
-  const fetchJobs = async (filterParams = {}) => {
+  const fetchJobs = async (page = 1, filterParams = {}) => {
     try {
       setLoading(true);
 
-      const params = new URLSearchParams();
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString(),
+      });
 
       if (filterParams.keyword) {
         params.append("keyword", filterParams.keyword);
@@ -55,19 +56,17 @@ const JobSeekerDashboard = () => {
       if (user) {
         params.append("userId", user?._id);
       }
+
       const response = await axiosInstance.get(
         `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`,
       );
-      const jobsData =
-        response?.data?.jobs ||
-        (Array.isArray(response?.data) ? response.data : []);
 
-      setJobs(jobsData);
-      // console.log(jobsData);
-      setCurrentPage(1);
+      setJobs(response.data.jobs || []);
+      setPagination(response.data.pagination || null);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
       setJobs([]);
+      setPagination(null);
     } finally {
       setLoading(false);
     }
@@ -91,9 +90,9 @@ const JobSeekerDashboard = () => {
       );
 
       if (hasFilters) {
-        fetchJobs(apiFilters);
+        fetchJobs(1, apiFilters);
       } else {
-        fetchJobs();
+        fetchJobs(1);
       }
     }, 1000);
     return () => clearTimeout(timeoutId);
@@ -110,6 +109,7 @@ const JobSeekerDashboard = () => {
       category: "",
       type: "",
     });
+    fetchJobs(1);
   };
 
   const toggleSavedJobs = async (jobId, isSaved) => {
@@ -121,10 +121,13 @@ const JobSeekerDashboard = () => {
         await axiosInstance.post(API_PATHS.JOBS.SAVE_JOB(jobId));
         toast.success("Job saved successfully!");
       }
-      fetchJobs();
+      // Refresh current page
+      fetchJobs(currentPage, filters);
     } catch (err) {
       console.error("[Toggle Save Job Error]", err);
-      toast.error(err?.message || "Failed to save/unsave job. Please try again.");
+      toast.error(
+        err?.message || "Failed to save/unsave job. Please try again.",
+      );
     }
   };
 
@@ -142,7 +145,8 @@ const JobSeekerDashboard = () => {
         await axiosInstance.post(API_PATHS.APPLICATIONS.APPLY_TO_JOB(jobId));
         toast.success("Application submitted successfully!");
       }
-      fetchJobs();
+      // Refresh current page
+      fetchJobs(currentPage, filters);
     } catch (err) {
       console.error("[Apply Job Error]", err);
       toast.error(err?.message || "Failed to apply. Please try again.");
@@ -196,16 +200,17 @@ const JobSeekerDashboard = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-gray-600 text-sm lg:text-base">
+                <p className="text-xs text-gray-700 lg:text-base pl-2">
                   Showing{" "}
-                  <span className="mr-1 font-bold text-gray-900">
-                    {paginatedJobs.length}
-                  </span>
-                  of{" "}
-                  <span className="mr-1 font-bold text-gray-900">
-                    {jobs.length}
-                  </span>
-                  jobs
+                  <span className="font-bold">
+                    {(currentPage - 1) * itemsPerPage + 1}
+                  </span>{" "}
+                  to{" "}
+                  <span className="font-bold">
+                    {Math.min(currentPage * itemsPerPage, pagination.total)}
+                  </span>{" "}
+                  of <span className="font-bold">{pagination.total}</span>{" "}
+                  results
                 </p>
               </div>
 
@@ -265,7 +270,7 @@ const JobSeekerDashboard = () => {
                       : "space-y-4 lg:space-y-6"
                   }`}
                 >
-                  {paginatedJobs.map((job, index) => (
+                  {jobs.map((job, index) => (
                     <JobCard
                       key={job._id}
                       job={job}
@@ -283,12 +288,13 @@ const JobSeekerDashboard = () => {
                 </div>
 
                 {/* Pagination */}
-                {jobs.length > itemsPerPage && (
+                {pagination && pagination.total > itemsPerPage && (
                   <div className="mt-8 flex items-center justify-between pb-16">
                     <div className="flex flex-1 justify-between md:hidden">
                       <button
                         onClick={() => {
                           setCurrentPage(Math.max(1, currentPage - 1));
+                          fetchJobs(Math.max(1, currentPage - 1), filters);
                         }}
                         disabled={currentPage === 1}
                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
@@ -297,9 +303,15 @@ const JobSeekerDashboard = () => {
                       </button>
                       <button
                         onClick={() => {
-                          setCurrentPage(Math.min(totalPages, currentPage + 1));
+                          setCurrentPage(
+                            Math.min(pagination.totalPages, currentPage + 1),
+                          );
+                          fetchJobs(
+                            Math.min(pagination.totalPages, currentPage + 1),
+                            filters,
+                          );
                         }}
-                        disabled={currentPage === totalPages}
+                        disabled={currentPage === pagination.totalPages}
                         className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
@@ -309,11 +321,18 @@ const JobSeekerDashboard = () => {
                       <div>
                         <p className="text-sm text-gray-700">
                           Showing{" "}
-                          <span className="font-bold">{startIndex + 1}</span> to{" "}
                           <span className="font-bold">
-                            {Math.min(startIndex + itemsPerPage, jobs.length)}
+                            {(currentPage - 1) * itemsPerPage + 1}
                           </span>{" "}
-                          of <span className="font-bold">{jobs.length}</span>{" "}
+                          to{" "}
+                          <span className="font-bold">
+                            {Math.min(
+                              currentPage * itemsPerPage,
+                              pagination.total,
+                            )}
+                          </span>{" "}
+                          of{" "}
+                          <span className="font-bold">{pagination.total}</span>{" "}
                           results
                         </p>
                       </div>
@@ -322,43 +341,59 @@ const JobSeekerDashboard = () => {
                           <button
                             onClick={() => {
                               setCurrentPage(Math.max(1, currentPage - 1));
+                              fetchJobs(Math.max(1, currentPage - 1), filters);
                             }}
                             disabled={currentPage === 1}
                             className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Previous
                           </button>
-                          {getPaginationPages(currentPage, totalPages).map(
-                            (page, index) =>
-                              page === "..." ? (
-                                <span
-                                  key={`dots-${index}`}
-                                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
-                                >
-                                  ...
-                                </span>
-                              ) : (
-                                <button
-                                  key={page}
-                                  onClick={() => setCurrentPage(page)}
-                                  className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
-                                    currentPage === page
-                                      ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                      : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
-                                  }`}
-                                >
-                                  {page}
-                                </button>
-                              ),
+                          {getPaginationPages(
+                            currentPage,
+                            pagination.totalPages,
+                          ).map((page, index) =>
+                            page === "..." ? (
+                              <span
+                                key={`dots-${index}`}
+                                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
+                              >
+                                ...
+                              </span>
+                            ) : (
+                              <button
+                                key={page}
+                                onClick={() => {
+                                  setCurrentPage(page);
+                                  fetchJobs(page, filters);
+                                }}
+                                className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
+                                  currentPage === page
+                                    ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
+                                    : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                                }`}
+                              >
+                                {page}
+                              </button>
+                            ),
                           )}
 
                           <button
                             onClick={() => {
                               setCurrentPage(
-                                Math.min(totalPages, currentPage + 1),
+                                Math.min(
+                                  pagination.totalPages,
+                                  currentPage + 1,
+                                ),
+                              );
+                              fetchJobs(
+                                Math.min(
+                                  pagination.totalPages,
+                                  currentPage + 1,
+                                ),
+                                filters,
                               );
                             }}
-                            disabled={currentPage === totalPages}
+                            disabled={currentPage === pagination.totalPages}
                             className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Next

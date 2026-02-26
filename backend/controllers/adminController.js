@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 const Message = require("../models/Message");
+const { paginateQuery, buildQuery } = require("../utils/pagination");
 
 // Get admin dashboard stats
 exports.getAdminStats = async (req, res) => {
@@ -52,33 +53,92 @@ exports.getAdminStats = async (req, res) => {
   }
 };
 
-// Get all users for management
+// Get all users for management with backend pagination
 exports.getAllUsers = async (req, res) => {
   try {
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    const { role, search } = req.query;
+    const { page = 1, limit = 9, role, search } = req.query;
 
-    let query = { role: { $in: ["jobSeeker", "employer"] } };
+    // Build query for pagination
+    const query = { role: { $in: ["jobSeeker", "employer"] } };
 
     if (role) {
       query.role = role;
     }
 
-    if (search) {
+    if (search && search.trim()) {
       query.$or = [
-        { name: { $regex: search, $options: "i" } },
-        { email: { $regex: search, $options: "i" } },
+        { name: { $regex: search.trim(), $options: "i" } },
+        { email: { $regex: search.trim(), $options: "i" } },
       ];
     }
 
-    const users = await User.find(query)
-      .select("-password")
-      .sort({ createdAt: -1 });
+    // Use pagination utility
+    const result = await paginateQuery(User, query, {
+      page,
+      limit,
+      sort: { createdAt: -1 }
+    });
 
-    res.json(users);
+    // Add stats to each user
+    const usersWithStats = await Promise.all(
+      result.data.map(async (user) => {
+        let userStats = {};
+
+        if (user.role === "jobSeeker") {
+          const appliedJobs = await Application.countDocuments({
+            applicant: user._id,
+          });
+          const savedJobs = await User.aggregate([
+            { $match: { _id: user._id } },
+            {
+              $lookup: {
+                from: "savedjobs",
+                localField: "_id",
+                foreignField: "jobSeeker",
+                as: "saved",
+              },
+            },
+            { $project: { savedCount: { $size: "$saved" } } },
+          ]);
+          userStats = {
+            appliedJobs,
+            savedJobs: savedJobs[0]?.savedCount || 0,
+          };
+        } else if (user.role === "employer") {
+          const postedJobs = await Job.countDocuments({ company: user._id });
+          const totalApplications = await Job.aggregate([
+            { $match: { company: user._id } },
+            {
+              $lookup: {
+                from: "applications",
+                localField: "_id",
+                foreignField: "job",
+                as: "applications",
+              },
+            },
+            { $group: { _id: null, count: { $sum: { $size: "$applications" } } } },
+          ]);
+          userStats = {
+            postedJobs,
+            totalApplications: totalApplications[0]?.count || 0,
+          };
+        }
+
+        return {
+          ...user.toObject(),
+          stats: userStats
+        };
+      })
+    );
+
+    res.json({
+      users: usersWithStats,
+      pagination: result.pagination
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }
@@ -189,16 +249,17 @@ exports.deleteUser = async (req, res) => {
   }
 };
 
-// Get all jobs for management
+// Get all jobs for management with backend pagination
 exports.getAllJobs = async (req, res) => {
   try {
     if (req.user.role !== "admin") {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    const { status, search } = req.query;
+    const { page = 1, limit = 9, status, search } = req.query;
 
-    let query = {};
+    // Build query for pagination
+    const query = {};
 
     if (status === "active") {
       query.isClosed = false;
@@ -206,18 +267,28 @@ exports.getAllJobs = async (req, res) => {
       query.isClosed = true;
     }
 
-    if (search) {
+    if (search && search.trim()) {
       query.$or = [
-        { title: { $regex: search, $options: "i" } },
-        { description: { $regex: search, $options: "i" } },
+        { title: { $regex: search.trim(), $options: "i" } },
+        { description: { $regex: search.trim(), $options: "i" } },
       ];
     }
 
-    const jobs = await Job.find(query)
-      .populate("company", "name companyName email companyLogo isCompanyVerified")
-      .sort({ createdAt: -1 });
+    // Use pagination utility
+    const result = await paginateQuery(Job, query, {
+      page,
+      limit,
+      populate: {
+        path: "company",
+        select: "name companyName email companyLogo isCompanyVerified"
+      },
+      sort: { createdAt: -1 }
+    });
 
-    res.json(jobs);
+    res.json({
+      jobs: result.data,
+      pagination: result.pagination
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

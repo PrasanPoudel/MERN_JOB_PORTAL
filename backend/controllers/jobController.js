@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
+const { paginateQuery, buildQuery } = require("../utils/pagination");
 
 // FastAPI server URL
 const FRAUD_PREDICTOR_API_URL =
@@ -85,66 +86,70 @@ exports.createJob = async (req, res) => {
   }
 };
 
-// get all jobs
+// get all jobs with backend pagination
 
 exports.getJobs = async (req, res) => {
   try {
-    let { keyword, location, category, type, userId } = req.query;
+    const { page = 1, limit = 9, keyword, location, category, type, userId } = req.query;
 
-    keyword = keyword?.toLowerCase();
-    location = location?.toLowerCase();
-
-    let companyIds = [];
-
-    if (keyword) {
-      const companies = await User.find({
-        companyName: { $regex: keyword, $options: "i" },
-        role: "employer",
-      }).select("_id");
-
-      companyIds = companies.map((c) => c._id);
-    }
-
+    // Build query for pagination
     const query = {
       isClosed: false,
       ...(category && { category }),
       ...(type && { type }),
-      ...(location && { location: { $regex: location, $options: "i" } }),
-      ...(keyword && {
-        $or: [
-          { title: { $regex: keyword, $options: "i" } },
-          { company: { $in: companyIds } },
-        ],
-      }),
     };
 
-    const jobs = await Job.find(query).populate(
-      "company",
-      "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
-    );
+    // Handle keyword search
+    if (keyword && keyword.trim()) {
+      const keywordLower = keyword.toLowerCase();
+      const companies = await User.find({
+        companyName: { $regex: keywordLower, $options: "i" },
+        role: "employer",
+      }).select("_id");
+
+      const companyIds = companies.map((c) => c._id);
+      
+      query.$or = [
+        { title: { $regex: keywordLower, $options: "i" } },
+        { company: { $in: companyIds } },
+      ];
+    }
+
+    // Handle location search
+    if (location && location.trim()) {
+      query.location = { $regex: location.toLowerCase(), $options: "i" };
+    }
+
+    // Use pagination utility
+    const result = await paginateQuery(Job, query, {
+      page,
+      limit,
+      populate: {
+        path: "company",
+        select: "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified"
+      },
+      sort: { createdAt: -1 } // Sort by creation date descending
+    });
 
     let appliedJobStatusMap = {};
     let savedJobIds = [];
     let user = null;
 
+    // Get user data for similarity calculation and status mapping
     if (userId) {
       user = await User.findById(userId);
 
-      const savedJobs = await SavedJob.find({ jobSeeker: userId }).select(
-        "job",
-      );
+      const savedJobs = await SavedJob.find({ jobSeeker: userId }).select("job");
       savedJobIds = savedJobs.map((s) => String(s.job));
 
-      const applications = await Application.find({ applicant: userId }).select(
-        "job status",
-      );
-
+      const applications = await Application.find({ applicant: userId }).select("job status");
       applications.forEach((app) => {
         appliedJobStatusMap[String(app.job)] = app.status;
       });
     }
 
-    const jobsWithExtras = jobs.map((job) => {
+    // Add extra fields to jobs
+    const jobsWithExtras = result.data.map((job) => {
       const jobIdStr = String(job._id);
       const cosineSimilarityScore = user
         ? TFIDFSimilarity.calculateSimilarity(user, job)
@@ -158,16 +163,18 @@ exports.getJobs = async (req, res) => {
       };
     });
 
+    // Sort by cosine similarity (descending), then by creation date (ascending for same similarity)
     jobsWithExtras.sort((a, b) => {
-      // sorting with cosine similarity (descending order)
       if (b.cosineSimilarityScore !== a.cosineSimilarityScore) {
         return b.cosineSimilarityScore - a.cosineSimilarityScore;
       }
-      // Show older jobs first when the similarity score is same
-      return new Date(b.createdAt) - new Date(a.createdAt);
+      return new Date(a.createdAt) - new Date(b.createdAt);
     });
 
-    res.json(jobsWithExtras);
+    res.json({
+      jobs: jobsWithExtras,
+      pagination: result.pagination
+    });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });

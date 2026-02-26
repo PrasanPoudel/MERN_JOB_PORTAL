@@ -26,7 +26,6 @@ const AdminUserManagement = () => {
   const navigate = useNavigate();
 
   const [users, setUsers] = useState([]);
-  const [filteredUsers, setFilteredUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
@@ -37,21 +36,32 @@ const AdminUserManagement = () => {
   // Pagination
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(filteredUsers.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedUsers = filteredUsers.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
+  const [pagination, setPagination] = useState(null);
 
-  const getAllUsers = async () => {
+  // Fetch users with backend pagination
+  const getAllUsers = async (page = 1) => {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(API_PATHS.ADMIN.GET_ALL_USERS);
-      if (response.status === 200) {
-        setUsers(response.data);
-        setFilteredUsers(response.data);
+
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString()
+      });
+
+      if (roleFilter !== "all") {
+        params.append("role", roleFilter);
       }
+
+      if (searchTerm) {
+        params.append("search", searchTerm);
+      }
+
+      const response = await axiosInstance.get(
+        `${API_PATHS.ADMIN.GET_ALL_USERS}?${params.toString()}`
+      );
+
+      setUsers(response.data.users || []);
+      setPagination(response.data.pagination || null);
     } catch {
       toast.error("Failed to fetch users");
     } finally {
@@ -60,34 +70,20 @@ const AdminUserManagement = () => {
   };
 
   useEffect(() => {
-    getAllUsers();
-  }, []);
+    getAllUsers(1);
+  }, [roleFilter, searchTerm]);
 
   useEffect(() => {
-    let filtered = users;
-
-    if (roleFilter !== "all") {
-      filtered = filtered.filter((u) => u.role === roleFilter);
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (u) =>
-          u.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          u.email?.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-    }
-
-    setFilteredUsers(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
-  }, [searchTerm, roleFilter, users]);
+    getAllUsers(currentPage);
+  }, [currentPage]);
 
   const handleDeleteUser = async (userId) => {
     try {
       setDeleting(true);
       await axiosInstance.delete(API_PATHS.ADMIN.DELETE_USER(userId));
       toast.success("User deleted successfully");
-      setUsers((prev) => prev.filter((u) => u._id !== userId));
+      // Refresh current page
+      getAllUsers(currentPage);
       setSelectedUser(null);
       setConfirmDeleteUser(null);
     } catch (err) {
@@ -164,7 +160,7 @@ const AdminUserManagement = () => {
           </div>
 
           <div className="bg-sky-50 text-sky-700 px-4 py-2 rounded-xl text-sm font-semibold">
-            {filteredUsers.length} Users
+            {pagination?.total || 0} Users
           </div>
         </div>
 
@@ -199,7 +195,7 @@ const AdminUserManagement = () => {
           <div className="text-center py-20">
             <Loader className="animate-spin mx-auto text-sky-600" />
           </div>
-        ) : filteredUsers.length === 0 ? (
+        ) : users.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
             <Users className="w-12 h-12 mx-auto text-gray-300 mb-4 shrink-0" />
             <p className="text-gray-600 font-medium">No users found</p>
@@ -212,11 +208,11 @@ const AdminUserManagement = () => {
                 <p className="text-gray-600 text-sm lg:text-base">
                   Showing{" "}
                   <span className="mr-1 font-bold text-gray-900">
-                    {paginatedUsers.length}
+                    {users.length}
                   </span>
                   of{" "}
                   <span className="mr-1 font-bold text-gray-900">
-                    {filteredUsers.length}
+                    {pagination?.total || 0}
                   </span>
                   users
                 </p>
@@ -224,7 +220,7 @@ const AdminUserManagement = () => {
             </div>
 
             <div className="grid gap-6">
-              {paginatedUsers.map((user) => (
+              {users.map((user) => (
                 <div
                   key={user._id}
                   className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-2 flex flex-col lg:flex-row lg:items-center justify-between gap-4"
@@ -308,22 +304,26 @@ const AdminUserManagement = () => {
             </div>
 
             {/* Pagination */}
-            {filteredUsers.length > itemsPerPage && (
+            {pagination && pagination.total > itemsPerPage && (
               <div className="mt-8 flex items-center justify-between pb-16">
                 {/* Mobile pagination */}
                 <div className="flex flex-1 justify-between md:hidden">
                   <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    onClick={() => {
+                      setCurrentPage(Math.max(1, currentPage - 1));
+                      getAllUsers(Math.max(1, currentPage - 1));
+                    }}
                     disabled={currentPage === 1}
                     className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
                   <button
-                    onClick={() =>
-                      setCurrentPage(Math.min(totalPages, currentPage + 1))
-                    }
-                    disabled={currentPage === totalPages}
+                    onClick={() => {
+                      setCurrentPage(Math.min(pagination.totalPages, currentPage + 1));
+                      getAllUsers(Math.min(pagination.totalPages, currentPage + 1));
+                    }}
+                    disabled={currentPage === pagination.totalPages}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
@@ -335,30 +335,28 @@ const AdminUserManagement = () => {
                   <div>
                     <p className="text-sm text-gray-700">
                       Showing{" "}
-                      <span className="font-bold">{startIndex + 1}</span> to{" "}
+                      <span className="font-bold">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
                       <span className="font-bold">
-                        {Math.min(
-                          startIndex + itemsPerPage,
-                          filteredUsers.length,
-                        )}
+                        {Math.min(currentPage * itemsPerPage, pagination.total)}
                       </span>{" "}
                       of{" "}
-                      <span className="font-bold">{filteredUsers.length}</span>{" "}
+                      <span className="font-bold">{pagination.total}</span>{" "}
                       results
                     </p>
                   </div>
                   <div>
                     <nav className="relative z-0 inline-flex shadow-sm -space-x-px rounded-md">
                       <button
-                        onClick={() =>
-                          setCurrentPage(Math.max(1, currentPage - 1))
-                        }
+                        onClick={() => {
+                          setCurrentPage(Math.max(1, currentPage - 1));
+                          getAllUsers(Math.max(1, currentPage - 1));
+                        }}
                         disabled={currentPage === 1}
                         className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
-                      {getPaginationPages(currentPage, totalPages).map(
+                      {getPaginationPages(currentPage, pagination.totalPages).map(
                         (page, index) =>
                           page === "..." ? (
                             <span
@@ -370,7 +368,10 @@ const AdminUserManagement = () => {
                           ) : (
                             <button
                               key={page}
-                              onClick={() => setCurrentPage(page)}
+                              onClick={() => {
+                                setCurrentPage(page);
+                                getAllUsers(page);
+                              }}
                               className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                                 currentPage === page
                                   ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
@@ -382,10 +383,11 @@ const AdminUserManagement = () => {
                           ),
                       )}
                       <button
-                        onClick={() =>
-                          setCurrentPage(Math.min(totalPages, currentPage + 1))
-                        }
-                        disabled={currentPage === totalPages}
+                        onClick={() => {
+                          setCurrentPage(Math.min(pagination.totalPages, currentPage + 1));
+                          getAllUsers(Math.min(pagination.totalPages, currentPage + 1));
+                        }}
+                        disabled={currentPage === pagination.totalPages}
                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next

@@ -31,7 +31,7 @@ const ProfileDropdown = ({
   };
 
   return (
-    <div className="relative z-100">
+    <div className="z-100">
       {/* Profile Button */}
       <button
         onClick={onToggle}
@@ -150,7 +150,7 @@ const ProfileDropdown = ({
       )}
 
       {showLogoutConfirm && (
-        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-100">
+        <div className="absolute top-0 left-0 inset-0 min-h-screen min-w-full bg-black/60 flex items-center justify-center z-120">
           <div className="bg-white rounded-xl w-80 p-5 shadow-2xl mx-4">
             <div className="flex items-center justify-between mb-3">
               <h3 className="text-sm font-semibold text-gray-900">

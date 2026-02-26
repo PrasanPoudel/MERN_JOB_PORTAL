@@ -22,7 +22,6 @@ const AdminJobManagement = () => {
   const navigate = useNavigate();
 
   const [jobs, setJobs] = useState([]);
-  const [filteredJobs, setFilteredJobs] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
@@ -33,22 +32,32 @@ const AdminJobManagement = () => {
   // Pagination
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
-  const totalPages = Math.ceil(filteredJobs.length / itemsPerPage);
-  const startIndex = (currentPage - 1) * itemsPerPage;
-  const paginatedJobs = filteredJobs.slice(
-    startIndex,
-    startIndex + itemsPerPage,
-  );
+  const [pagination, setPagination] = useState(null);
 
-  // Fetch all jobs
-  const getAllJobs = async () => {
+  // Fetch jobs with backend pagination
+  const getAllJobs = async (page = 1) => {
     try {
       setIsLoading(true);
-      const response = await axiosInstance.get(API_PATHS.ADMIN.GET_ALL_JOBS);
-      if (response.status === 200) {
-        setJobs(response.data);
-        setFilteredJobs(response.data);
+
+      const params = new URLSearchParams({
+        page: page.toString(),
+        limit: itemsPerPage.toString()
+      });
+
+      if (statusFilter !== "all") {
+        params.append("status", statusFilter);
       }
+
+      if (searchTerm) {
+        params.append("search", searchTerm);
+      }
+
+      const response = await axiosInstance.get(
+        `${API_PATHS.ADMIN.GET_ALL_JOBS}?${params.toString()}`
+      );
+
+      setJobs(response.data.jobs || []);
+      setPagination(response.data.pagination || null);
     } catch {
       toast.error("Failed to fetch jobs");
     } finally {
@@ -57,37 +66,20 @@ const AdminJobManagement = () => {
   };
 
   useEffect(() => {
-    getAllJobs();
-  }, []);
+    getAllJobs(1);
+  }, [statusFilter, searchTerm]);
 
-  // Filtering
   useEffect(() => {
-    let filtered = jobs;
-
-    if (statusFilter !== "all") {
-      filtered = filtered.filter((j) =>
-        statusFilter === "active" ? !j.isClosed : j.isClosed,
-      );
-    }
-
-    if (searchTerm) {
-      filtered = filtered.filter(
-        (j) =>
-          j.title?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          j.description?.toLowerCase().includes(searchTerm.toLowerCase()),
-      );
-    }
-
-    setFilteredJobs(filtered);
-    setCurrentPage(1); // Reset to first page on filter change
-  }, [searchTerm, statusFilter, jobs]);
+    getAllJobs(currentPage);
+  }, [currentPage]);
 
   const handleDeleteJob = async (jobId) => {
     try {
       setDeleting(true);
       await axiosInstance.delete(API_PATHS.ADMIN.DELETE_JOB(jobId));
       toast.success("Job deleted successfully");
-      setJobs((prev) => prev.filter((j) => j._id !== jobId));
+      // Refresh current page
+      getAllJobs(currentPage);
       setConfirmDeleteJob(null);
       setSelectedJob(null);
     } catch (err) {
@@ -164,7 +156,7 @@ const AdminJobManagement = () => {
             </p>
           </div>
           <div className="bg-sky-50 text-sky-700 px-4 py-2 rounded-xl text-sm font-semibold">
-            {filteredJobs.length} Jobs
+            {pagination?.total || 0} Jobs
           </div>
         </div>
 
@@ -199,7 +191,7 @@ const AdminJobManagement = () => {
           <div className="text-center py-20">
             <Loader className="animate-spin mx-auto text-sky-600" />
           </div>
-        ) : filteredJobs.length === 0 ? (
+        ) : jobs.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
             <BriefcaseBusiness className="w-12 h-12 mx-auto text-gray-300 mb-4" />
             <p className="text-gray-600 font-medium">No jobs found</p>
@@ -212,11 +204,11 @@ const AdminJobManagement = () => {
                 <p className="text-gray-600 text-sm lg:text-base">
                   Showing{" "}
                   <span className="mr-1 font-bold text-gray-900">
-                    {paginatedJobs.length}
+                    {jobs.length}
                   </span>
                   of{" "}
                   <span className="mr-1 font-bold text-gray-900">
-                    {filteredJobs.length}
+                    {pagination?.total || 0}
                   </span>
                   jobs
                 </p>
@@ -224,7 +216,7 @@ const AdminJobManagement = () => {
             </div>
 
             <div className="grid gap-6">
-              {paginatedJobs.map((job) => (
+              {jobs.map((job) => (
                 <div key={job._id} className="flex flex-col gap-2">
                   <JobCard job={job} hideShadow={true} />
                   <div className="w-full flex flex-wrap gap-2 py-2 justify-end">
@@ -257,22 +249,26 @@ const AdminJobManagement = () => {
             </div>
 
             {/* Pagination */}
-            {filteredJobs.length > itemsPerPage && (
+            {pagination && pagination.total > itemsPerPage && (
               <div className="mt-8 flex items-center justify-between pb-16">
                 {/* Mobile pagination */}
                 <div className="flex flex-1 justify-between md:hidden">
                   <button
-                    onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
+                    onClick={() => {
+                      setCurrentPage(Math.max(1, currentPage - 1));
+                      getAllJobs(Math.max(1, currentPage - 1));
+                    }}
                     disabled={currentPage === 1}
                     className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
                   <button
-                    onClick={() =>
-                      setCurrentPage(Math.min(totalPages, currentPage + 1))
-                    }
-                    disabled={currentPage === totalPages}
+                    onClick={() => {
+                      setCurrentPage(Math.min(pagination.totalPages, currentPage + 1));
+                      getAllJobs(Math.min(pagination.totalPages, currentPage + 1));
+                    }}
+                    disabled={currentPage === pagination.totalPages}
                     className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
@@ -284,30 +280,28 @@ const AdminJobManagement = () => {
                   <div>
                     <p className="text-sm text-gray-700">
                       Showing{" "}
-                      <span className="font-bold">{startIndex + 1}</span> to{" "}
+                      <span className="font-bold">{(currentPage - 1) * itemsPerPage + 1}</span> to{" "}
                       <span className="font-bold">
-                        {Math.min(
-                          startIndex + itemsPerPage,
-                          filteredJobs.length,
-                        )}
+                        {Math.min(currentPage * itemsPerPage, pagination.total)}
                       </span>{" "}
                       of{" "}
-                      <span className="font-bold">{filteredJobs.length}</span>{" "}
+                      <span className="font-bold">{pagination.total}</span>{" "}
                       results
                     </p>
                   </div>
                   <div>
                     <nav className="relative z-0 inline-flex shadow-sm -space-x-px rounded-md">
                       <button
-                        onClick={() =>
-                          setCurrentPage(Math.max(1, currentPage - 1))
-                        }
+                        onClick={() => {
+                          setCurrentPage(Math.max(1, currentPage - 1));
+                          getAllJobs(Math.max(1, currentPage - 1));
+                        }}
                         disabled={currentPage === 1}
                         className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
-                      {getPaginationPages(currentPage, totalPages).map(
+                      {getPaginationPages(currentPage, pagination.totalPages).map(
                         (page, index) =>
                           page === "..." ? (
                             <span
@@ -319,7 +313,10 @@ const AdminJobManagement = () => {
                           ) : (
                             <button
                               key={page}
-                              onClick={() => setCurrentPage(page)}
+                              onClick={() => {
+                                setCurrentPage(page);
+                                getAllJobs(page);
+                              }}
                               className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                                 currentPage === page
                                   ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
@@ -331,10 +328,11 @@ const AdminJobManagement = () => {
                           ),
                       )}
                       <button
-                        onClick={() =>
-                          setCurrentPage(Math.min(totalPages, currentPage + 1))
-                        }
-                        disabled={currentPage === totalPages}
+                        onClick={() => {
+                          setCurrentPage(Math.min(pagination.totalPages, currentPage + 1));
+                          getAllJobs(Math.min(pagination.totalPages, currentPage + 1));
+                        }}
+                        disabled={currentPage === pagination.totalPages}
                         className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
