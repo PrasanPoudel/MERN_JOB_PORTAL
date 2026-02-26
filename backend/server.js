@@ -56,7 +56,7 @@ const server = app.listen(PORT, () => {
 
 
 // Start uploads cleanup cron job
-require("./cleanupUploadsCron");
+// require("./cleanupUploadsCron");
 
 // Start job deadline cron job
 const { startCronJob } = require("./services/cronService");
