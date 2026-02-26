@@ -58,8 +58,12 @@ const Navbar = () => {
     <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
       <div className="container mx-auto p-0">
         <div className="flex items-center p-0 justify-between max-h-20">
-          <Link className="flex items-center" to="/">
-            <img src={logo} className="h-20 w-20 object-contain mix-blend-multiply" alt="logo" />
+          <Link title="Go to Homepage" className="flex items-center" to="/">
+            <img
+              src={logo}
+              className="h-20 w-20 object-contain mix-blend-multiply"
+              alt="logo"
+            />
           </Link>
 
           <div className="flex items-center gap-1">

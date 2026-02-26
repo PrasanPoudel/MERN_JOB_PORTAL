@@ -101,7 +101,11 @@ const DashboardLayout = ({ activeMenu, children }) => {
         } bg-white border-r-2 border-gray-200`}
       >
         <div className="flex items-start">
-          <Link className="flex items-center mt-2 w-full" to="/">
+          <Link
+            title="Go to Homepage"
+            className="flex items-center mt-2 w-full"
+            to="/"
+          >
             <img src={logo} className="w-48 h-42 mix-blend-multiply" />
           </Link>
           {sidebarOpen && (
@@ -170,11 +174,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 onClick={toggleSidebar}
                 className="p-2 rounded-xl hover:bg-gray-100 transition-colors delay-300"
               >
-                {sidebarOpen ? (
-                  ""
-                ) : (
-                  <Menu className="h-5 w-5 text-gray-600" />
-                )}
+                {sidebarOpen ? "" : <Menu className="h-5 w-5 text-gray-600" />}
               </button>
             )}
             <div>
@@ -189,20 +189,20 @@ const DashboardLayout = ({ activeMenu, children }) => {
           </div>
           <div className="flex gap-2 items-center">
             <div className="flex items-center">
-            <Link
-            title="Go to Homepage"
-              to="/"
-              className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <Home className="w-6 h-6" />
-            </Link>
-            <Link
-            title="Search for Jobs"
-              to="/find-jobs"
-              className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-            >
-              <Search className="w-6 h-6" />
-            </Link>
+              <Link
+                title="Go to Homepage"
+                to="/"
+                className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <Home className="w-6 h-6" />
+              </Link>
+              <Link
+                title="Search for Jobs"
+                to="/find-jobs"
+                className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+              >
+                <Search className="w-6 h-6" />
+              </Link>
             </div>
             {isAuthenticated ? (
               <ProfileDropdown
