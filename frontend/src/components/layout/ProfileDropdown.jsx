@@ -6,9 +6,8 @@ import {
   X,
   BriefcaseBusiness,
   BookmarkCheck,
-  MessageSquare,
-  Plus,
   LayoutDashboard,
+  BadgeCheck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -64,8 +63,10 @@ const ProfileDropdown = ({
           </p>
           {role === "employer" && companyName && (
             <p className="text-xs text-gray-600 flex items-center gap-1">
-              {companyName}
-              {isCompanyVerified && <span className="text-sky-600">✓</span>}
+              <span className="max-w-32 truncate">{companyName}</span>
+              {isCompanyVerified && (
+                <BadgeCheck className="w-4 h-3 text-sky-600" />
+              )}
             </p>
           )}
         </div>
@@ -78,6 +79,14 @@ const ProfileDropdown = ({
         <div className="absolute right-0 mt-2 w-60 bg-white rounded-xl shadow-xl border border-gray-100">
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="text-sm font-medium text-gray-900">{name}</p>
+            {role === "employer" && companyName && (
+              <p className="text-xs text-gray-600 flex items-center gap-1">
+                <span className="max-w-32 truncate">{companyName}</span>
+                {isCompanyVerified && (
+                  <BadgeCheck className="w-4 h-3 text-sky-600" />
+                )}
+              </p>
+            )}
             <p className="text-xs text-gray-600 truncate">{email}</p>
           </div>
           <div className="p-2 space-y-2">
@@ -99,6 +108,15 @@ const ProfileDropdown = ({
             )}
             {role === "jobSeeker" && (
               <>
+                <div
+                  onClick={() => navigate("/profile")}
+                  title="View your applications"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <User className="h-4 w-4 " />
+                  View Profile
+                </div>
+
                 <div
                   onClick={() => navigate("/applied-applications")}
                   title="View your applications"

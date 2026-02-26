@@ -74,13 +74,20 @@ const Navbar = () => {
             <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
               <Home className="h-5 w-5" />
             </NavLink>
+            <NavLink
+              title="Search for Jobs"
+              to="/find-jobs"
+              className={navLinkClasses}
+            >
+              <Search className="h-5 w-5" />
+            </NavLink>
             {user && user?.role === "jobSeeker" && (
               <>
-                <NavLink title="Search for Jobs" to="/find-jobs" className={navLinkClasses}>
-                  <Search className="h-5 w-5" />
-                </NavLink>
-
-                <NavLink  title="Messages" to="/JobSeekerChatBox" className={navLinkClasses}>
+                <NavLink
+                  title="Messages"
+                  to="/JobSeekerChatBox"
+                  className={navLinkClasses}
+                >
                   <div className="relative">
                     <MessageSquare className="h-5 w-5" />
                     {unreadCount > 0 && (
@@ -94,7 +101,11 @@ const Navbar = () => {
             )}
 
             {user && user?.role === "admin" && (
-              <NavLink title="Messages" to="/admin-chat-box" className={navLinkClasses}>
+              <NavLink
+                title="Messages"
+                to="/admin-chat-box"
+                className={navLinkClasses}
+              >
                 <div className="relative">
                   <MessageSquare className="h-5 w-5" />
                   {unreadCount > 0 && (
