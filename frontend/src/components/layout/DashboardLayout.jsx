@@ -75,7 +75,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
   const toggleSidebar = () => {
     setSidebarOpen(!sidebarOpen);
   };
-  const sidebarCollapsed = false;
 
   useEffect(() => {
     const handleClickOutside = () => {
@@ -90,10 +89,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
   }, [profileDropdownOpen]);
 
   const navLinkClasses = ({ isActive }) =>
-    `p-2 rounded-xl transition-colors duration-200
-     ${
-       isActive ? "bg-sky-100 text-sky-600" : "text-gray-600 hover:bg-sky-100"
-     }`;
+    `flex items-center gap-2 py-2 text-sm font-medium px-3 rounded-xl transition-colors duration-200 hover:text-white hover:bg-sky-600
+     ${isActive ? "bg-sky-600 text-white" : "text-gray-600"}`;
 
   return (
     <div className="flex h-screen bg-white min-w-full">
@@ -105,19 +102,33 @@ const DashboardLayout = ({ activeMenu, children }) => {
               ? "translate-x-0 w-full"
               : "-translate-x-full"
             : "translate-x-0"
-        } ${
-          sidebarCollapsed ? "w-16" : "w-64"
-        } bg-white border-r-2 border-gray-200`}
+        } bg-white border-r-2 w-52 border-gray-200`}
       >
-        <div className="flex items-start border-b-2 py-2 border-gray-300">
-          <Link
-            title="Go to Homepage"
-            className="flex items-center mt-2 w-full"
-            to="/"
-          >
-            <img src={logo} className="w-32 h-24 mix-blend-multiply" />
-          </Link>
-        </div>
+        {!sidebarOpen && (
+          <div className="flex items-start border-b-2 p-3 border-gray-300">
+            <Link
+              title="Go to Homepage"
+              className="flex items-center w-full"
+              to="/"
+            >
+              <img src={logo} className="w-20 h-14 mix-blend-multiply" />
+            </Link>
+            {sidebarOpen && (
+              <X
+                className="w-6 h-6"
+                onClick={() => setSidebarOpen(!sidebarOpen)}
+              />
+            )}
+          </div>
+        )}
+        {sidebarOpen && (
+          <div className="px-4 py-2 flex justify-end">
+            <X
+              className="w-6 h-6"
+              onClick={() => setSidebarOpen(!sidebarOpen)}
+            />
+          </div>
+        )}
         {/* Navigation */}
 
         {user?.role === "employer" && (
@@ -128,7 +139,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 item={item}
                 isActive={activeNavItem === item.id}
                 onClick={handleNavigation}
-                isCollapsed={sidebarCollapsed}
               />
             ))}
           </nav>
@@ -142,59 +152,56 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 item={item}
                 isActive={activeNavItem === item.id}
                 onClick={handleNavigation}
-                isCollapsed={sidebarCollapsed}
               />
             ))}
           </nav>
         )}
       </div>
 
-      {isMobile && sidebarOpen && (
-        <div
-          className="fixed inset-0 bg-black/50 backdrop-blur-sm"
-          onClick={() => {
-            setSidebarOpen(false);
-          }}
-        />
-      )}
-
       {/* main content */}
       <div
         className={`flex flex-1 flex-col transition-all duration-200 ${
-          isMobile ? "ml-0" : sidebarCollapsed ? "ml-16" : "ml-64"
+          isMobile ? "ml-0" : "ml-52"
         }`}
       >
-        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-20 flex items-center justify-between px-4 z-500">
-          <div className="flex items-center space-x-4">
+        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-20 flex items-center justify-between px-2 z-500">
+          <div className="flex items-center">
             {isMobile && (
               <button
                 onClick={toggleSidebar}
                 className="p-2 rounded-xl hover:bg-gray-100 transition-colors delay-300"
               >
-                {sidebarOpen ? "" : <Menu className="h-5 w-5 text-gray-600" />}
+                {sidebarOpen ? "" : <Menu className="h-6 w-6" />}
               </button>
             )}
-            <div>
-              <h1 className="text-xs sm:text-base font-semibold hidden sm:block text-gray-900">
-                Welcome back !
-              </h1>
-              <p className="text-sm text-gray-600 hidden sm:block">
-                Get to know what's happening with your{" "}
-                {user?.role === "admin" ? "platform" : "jobs"}.
-              </p>
+            <div className="flex items-center">
+              {!sidebarOpen && isMobile && (
+                <img src={logo} className="w-16 h-12 mix-blend-multiply" />
+              )}
+              <div>
+                <h1 className="text-xs sm:text-base font-semibold hidden lg:block text-gray-900">
+                  Welcome back !
+                </h1>
+                <p className="text-sm text-gray-600 hidden lg:block">
+                  Get to know what's happening with your{" "}
+                  {user?.role === "admin" ? "platform" : "jobs"}.
+                </p>
+              </div>
             </div>
           </div>
-          <div className="flex gap-2 items-center">
+          <div className="flex items-center">
             <div className="flex items-center">
               <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-                <Home className="w-6 h-6" />
+                <Home className="w-4 h-4" />
+                <span className="hidden md:block">Home</span>
               </NavLink>
               <NavLink
                 title="Search for Jobs"
                 to="/find-jobs"
                 className={navLinkClasses}
               >
-                <Search className="w-6 h-6" />
+                <Search className="w-4 h-4" />
+                <span className="hidden md:block">Search for Jobs</span>
               </NavLink>
               {user && user?.role === "admin" && (
                 <NavLink
@@ -203,13 +210,14 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="h-6 w-6" />
+                    <MessageSquare className="h-4 w-4" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
                   </div>
+                  <span className="hidden md:block">Messages</span>
                 </NavLink>
               )}
               {user && user?.role === "employer" && (
@@ -219,13 +227,14 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="h-6 w-6" />
+                    <MessageSquare className="h-4 w-4" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}
                       </span>
                     )}
                   </div>
+                  <span className="hidden md:block">Messages</span>
                 </NavLink>
               )}
             </div>

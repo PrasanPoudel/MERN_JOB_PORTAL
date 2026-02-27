@@ -12,7 +12,7 @@ import {
   ArrowRight,
   Mail,
   Search,
-  MessageCircleDashedIcon,
+  MessageSquareMore,
   ShieldCheck,
 } from "lucide-react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
@@ -486,7 +486,7 @@ const Chat = ({ isAdmin = false }) => {
                     {/* Avatar Section */}
                     <div className="relative shrink-0">
                       <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300">
-                      <img
+                        <img
                           src={getOtherPartyAvatar(conv) || "/default.png"}
                           alt="User"
                           className="w-full h-full object-cover"
@@ -502,23 +502,21 @@ const Chat = ({ isAdmin = false }) => {
                     {/* Content Section */}
                     <div className="flex-1 min-w-0 text-left space-y-1">
                       {/* Name & Time Row */}
-                        <div className="flex items-center gap-2">
-                          <p className="text-gray-900 font-semibold text-base truncate leading-tight">
-                            {getOtherPartyName(conv)}
-                          </p>
-                          {conv.unreadCount > 0 && (
-                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-linear-to-br from-sky-600 to-sky-700 text-white animate-pulse shadow-md">
-                              {conv.unreadCount} new
-                            </span>
-                          )}
-                        </div>
+                      <div className="flex items-center gap-2">
+                        <p className="text-gray-900 font-semibold text-base truncate leading-tight">
+                          {getOtherPartyName(conv)}
+                        </p>
+                        {conv.unreadCount > 0 && (
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-linear-to-br from-sky-600 to-sky-700 text-white animate-pulse shadow-md">
+                            {conv.unreadCount} new
+                          </span>
+                        )}
+                      </div>
 
                       {/* Badges Row */}
                       <div className="flex flex-col items-start">
                         {isAdmin ? (
-                          <span className="text-xs">
-                            {conv.user.email}
-                          </span>
+                          <span className="text-xs">{conv.user.email}</span>
                         ) : conv.isAdminConversation ? (
                           <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-linear-to-r from-sky-100 to-sky-200 text-sky-700 border border-sky-300 shadow-sm">
                             <ShieldCheck className="w-4 h-4 mr-2 text-sky-600" />
@@ -555,7 +553,7 @@ const Chat = ({ isAdmin = false }) => {
                       {conv.lastMessage && (
                         <div className="flex items-center justify-between text-sm text-gray-600">
                           <span className="truncate flex gap-1 flex-1 font-medium">
-                            <MessageCircleDashedIcon className="w-4 h-4"/>
+                            <MessageSquareMore className="w-4 h-4 text-gray-900" />
                             {conv.lastMessage.content.length > 100
                               ? conv.lastMessage.content.substring(0, 100) +
                                 "..."

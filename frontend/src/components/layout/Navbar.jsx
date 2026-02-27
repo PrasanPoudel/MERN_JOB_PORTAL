@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Home, MessageSquare, Search } from "lucide-react";
+import {
+  BriefcaseBusiness,
+  Home,
+  Menu,
+  MessageSquare,
+  Search,
+  X,
+} from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
 import { NavLink, Link } from "react-router-dom";
@@ -9,6 +16,7 @@ import logo from "../../assets/logo.png";
 
 const Navbar = () => {
   const { user, logout, isAuthenticated } = useAuth();
+  const [openMenu, setOpenMenu] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
@@ -48,27 +56,34 @@ const Navbar = () => {
     };
   }, [profileDropdownOpen]);
 
+  useEffect(() => {
+    const handleClickOutside = () => {
+      if (openMenu) {
+        setOpenMenu(false);
+      }
+    };
+    document
+      .getElementById("profileDropdown_id")
+      .addEventListener("click", handleClickOutside);
+  }, [openMenu]);
+
   const navLinkClasses = ({ isActive }) =>
-    `p-2 rounded-xl transition-colors duration-200
-     ${
-       isActive ? "bg-sky-100 text-sky-600" : "text-gray-600 hover:bg-sky-100"
-     }`;
+    `flex gap-2 items-center py-2 px-3 font-medium text-sm ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-200 hover:text-white hover:bg-sky-600
+     ${isActive ? "bg-sky-600 text-white" : "text-gray-600"}`;
 
   return (
-    <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-50">
-      <div className="container mx-auto p-0">
-        <div className="flex items-center p-0 justify-between max-h-20">
-          <Link title="Go to Homepage" className="flex items-center" to="/">
-            <img
-              src={logo}
-              className="h-20 w-20 object-contain mix-blend-multiply"
-              alt="logo"
-            />
-          </Link>
-
-          <div className="flex items-center gap-1">
+    <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">
+      <div className="flex items-end p-2 justify-between min-h-18">
+        <Link title="Go to Homepage" to="/">
+          <img src={logo} className="h-14 w-24 object-contain" alt="logo" />
+        </Link>
+        <div className="flex items-center gap-2">
+          <div
+            className={`${openMenu ? "z-1200 p-3 absolute top-20 left-0 min-w-full bg-white flex flex-col items-center gap-4 min-h-screen" : "hidden sm:flex gap-2"}`}
+          >
             <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
               <Home className="h-6 w-6" />
+              <span>Home</span>
             </NavLink>
             <NavLink
               title="Search for Jobs"
@@ -76,24 +91,24 @@ const Navbar = () => {
               className={navLinkClasses}
             >
               <Search className="h-6 w-6" />
+              <span>Search for Jobs</span>
             </NavLink>
             {user && user?.role === "jobSeeker" && (
-              <>
-                <NavLink
-                  title="Messages"
-                  to="/JobSeekerChatBox"
-                  className={navLinkClasses}
-                >
-                  <div className="relative">
-                    <MessageSquare className="h-6 w-6" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                        {unreadCount > 99 ? "99+" : unreadCount}
-                      </span>
-                    )}
-                  </div>
-                </NavLink>
-              </>
+              <NavLink
+                title="Messages"
+                to="/JobSeekerChatBox"
+                className={navLinkClasses}
+              >
+                <div className="relative">
+                  <MessageSquare className="h-6 w-6" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </div>
+                <span>Messages</span>
+              </NavLink>
             )}
 
             {user && user?.role === "admin" && (
@@ -110,6 +125,7 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
+                <span>Messages</span>
               </NavLink>
             )}
 
@@ -127,25 +143,30 @@ const Navbar = () => {
                     </span>
                   )}
                 </div>
+                <span>Messages</span>
               </NavLink>
             )}
+          </div>
 
+          <div className="flex gap-4 items-center">
             {isAuthenticated ? (
-              <ProfileDropdown
-                isOpen={profileDropdownOpen}
-                onToggle={(e) => {
-                  e.stopPropagation();
-                  setProfileDropdownOpen(!profileDropdownOpen);
-                }}
-                name={user?.name || ""}
-                avatar={user?.avatar || null}
-                companyName={user?.companyName || ""}
-                isCompanyVerified={user?.isCompanyVerified || false}
-                email={user?.email || ""}
-                role={user?.role || "jobSeeker"}
-                companyLogo={user?.companyLogo || null}
-                onLogout={logout}
-              />
+              <div id="profileDropdown_id">
+                <ProfileDropdown
+                  isOpen={profileDropdownOpen}
+                  onToggle={(e) => {
+                    e.stopPropagation();
+                    setProfileDropdownOpen(!profileDropdownOpen);
+                  }}
+                  name={user?.name || ""}
+                  avatar={user?.avatar || null}
+                  companyName={user?.companyName || ""}
+                  isCompanyVerified={user?.isCompanyVerified || false}
+                  email={user?.email || ""}
+                  role={user?.role || "jobSeeker"}
+                  companyLogo={user?.companyLogo || null}
+                  onLogout={logout}
+                />
+              </div>
             ) : (
               <a
                 href="/login"
@@ -154,6 +175,19 @@ const Navbar = () => {
               >
                 Login
               </a>
+            )}
+            {openMenu ? (
+              <X
+                className="w-6 h-6 block sm:hidden"
+                onClick={() => {
+                  setOpenMenu(false);
+                }}
+              />
+            ) : (
+              <Menu
+                className="w-6 h-6 block sm:hidden"
+                onClick={() => setOpenMenu(!openMenu)}
+              />
             )}
           </div>
         </div>
