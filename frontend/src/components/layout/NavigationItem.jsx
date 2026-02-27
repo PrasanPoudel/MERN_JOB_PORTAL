@@ -5,7 +5,6 @@ const NavigationItem = ({
   isActive,
   isCollapsed,
   onClick,
-  unreadCount,
 }) => {
   const Icon = item.icon;
   return (
@@ -23,11 +22,6 @@ const NavigationItem = ({
         className={`h-5 w-5 ${isActive ? "text-sky-600" : "text-gray-600"}`}
       />
       {!isCollapsed && <span className="ml-3 truncate">{item.name}</span>}
-      {unreadCount > 0 && (
-        <span className="absolute right-3 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-          {unreadCount > 99 ? "99+" : unreadCount}
-        </span>
-      )}
     </button>
   );
 };

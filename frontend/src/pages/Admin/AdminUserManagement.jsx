@@ -444,7 +444,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
 
   return (
     <div className="fixed inset-0 z-1000 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl p-8 relative">
+      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl relative overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
@@ -456,103 +456,104 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
           <Loader className="animate-spin mx-auto text-sky-600" />
         ) : (
           <>
-            <div className="flex flex-col md:flex-row md:items-center gap-6 mb-8">
-              <div className="w-24 h-24 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
-                <img
-                  src={user.avatar || "/default.png"}
-                  alt={user.name}
-                  className="w-full h-full object-cover"
-                />
+            <div className="h-[80vh] overflow-y-scroll p-4">
+              <div className="pt-4 flex flex-col md:flex-row md:items-center gap-6 mb-8">
+                <div className="w-24 h-24 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
+                  <img
+                    src={user.avatar || "/default.png"}
+                    alt={user.name}
+                    className="w-full h-full object-cover"
+                  />
+                </div>
+
+                <div>
+                  <h2 className="flex items-center gap-1 text-xl font-semibold text-gray-900">
+                    {user.name}
+                    {user.role === "employer" && !user.isCompanyVerified && (
+                      <BadgeCheck className="w-5 h-5 text-sky-600 inline" />
+                    )}
+                  </h2>
+                  <p className="text-gray-500">{user.email}</p>
+                </div>
               </div>
 
-              <div>
-                <h2 className="text-2xl font-bold text-gray-900">
-                  {user.name}
-                  {user.role === "employer" && user.isCompanyVerified && (
-                    <BadgeCheck className="w-5 h-5 text-sky-600 ml-2 inline" />
+              <div className="grid sm:grid-cols-2 gap-6 mb-8 text-sm">
+                <InfoItem
+                  icon={<User />}
+                  label="Role"
+                  value={
+                    user.role === "employer"
+                      ? "Employer"
+                      : user.role === "jobSeeker"
+                        ? "Job Seeker"
+                        : "Admin"
+                  }
+                />
+                <InfoItem
+                  icon={<Calendar />}
+                  label="Joined"
+                  value={new Date(user.createdAt).toLocaleDateString()}
+                />
+                {user.location && (
+                  <InfoItem
+                    icon={<MapPin />}
+                    label="Location"
+                    value={user.location}
+                  />
+                )}
+                {user.companyName && (
+                  <InfoItem
+                    icon={<Building2 />}
+                    label="Company"
+                    value={user.companyName}
+                  />
+                )}
+              </div>
+
+              {user.stats && (
+                <div className="grid sm:grid-cols-2 gap-2 mb-8">
+                  {user.role === "jobSeeker" && (
+                    <>
+                      <StatCard
+                        icon={<FileText />}
+                        label="Applications"
+                        value={user.stats.appliedJobs}
+                      />
+                      <StatCard
+                        icon={<Bookmark />}
+                        label="Saved Jobs"
+                        value={user.stats.savedJobs}
+                      />
+                    </>
                   )}
-                </h2>
-                <p className="text-gray-500">{user.email}</p>
-              </div>
-            </div>
-
-            <div className="grid sm:grid-cols-2 gap-6 mb-8 text-sm">
-              <InfoItem
-                icon={<User />}
-                label="Role"
-                value={
-                  user.role === "employer"
-                    ? "Employer"
-                    : user.role === "jobSeeker"
-                      ? "Job Seeker"
-                      : "Admin"
-                }
-              />
-              <InfoItem
-                icon={<Calendar />}
-                label="Joined"
-                value={new Date(user.createdAt).toLocaleDateString()}
-              />
-              {user.location && (
-                <InfoItem
-                  icon={<MapPin />}
-                  label="Location"
-                  value={user.location}
-                />
-              )}
-              {user.companyName && (
-                <InfoItem
-                  icon={<Building2 />}
-                  label="Company"
-                  value={user.companyName}
-                />
+                  {user.role === "employer" && (
+                    <>
+                      <StatCard
+                        icon={<BriefcaseBusiness />}
+                        label="Posted Jobs"
+                        value={user.stats.postedJobs}
+                      />
+                      <StatCard
+                        icon={<Users />}
+                        label="Total Applications"
+                        value={user.stats.totalApplications}
+                      />
+                    </>
+                  )}
+                </div>
               )}
             </div>
-
-            {user.stats && (
-              <div className="grid sm:grid-cols-2 gap-6 mb-8">
-                {user.role === "jobSeeker" && (
-                  <>
-                    <StatCard
-                      icon={<FileText />}
-                      label="Applications"
-                      value={user.stats.appliedJobs}
-                    />
-                    <StatCard
-                      icon={<Bookmark />}
-                      label="Saved Jobs"
-                      value={user.stats.savedJobs}
-                    />
-                  </>
-                )}
-                {user.role === "employer" && (
-                  <>
-                    <StatCard
-                      icon={<BriefcaseBusiness />}
-                      label="Posted Jobs"
-                      value={user.stats.postedJobs}
-                    />
-                    <StatCard
-                      icon={<Users />}
-                      label="Total Applications"
-                      value={user.stats.totalApplications}
-                    />
-                  </>
-                )}
-              </div>
-            )}
-
-            <div className="flex flex-col sm:flex-row gap-4">
+            <div className="absolute bottom-0 left-0 bg-white border border-gray-200 p-2 flex gap-2 w-full">
               <button
                 onClick={() => onMessage(user._id)}
-                className="flex-1 bg-sky-600 text-white py-3 rounded-xl font-semibold hover:bg-sky-700 transition"
+                className="flex-1 text-sm bg-sky-600 text-white py-3 rounded-xl font-semibold hover:bg-sky-700 transition"
               >
-                Send Message
+                Message
               </button>
 
               <button
                 onClick={() => onDelete(user._id)}
-                className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
+                className="flex-1 text-sm bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
               >
                 Delete User
               </button>
@@ -602,20 +603,20 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
 );
 
 const InfoItem = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl">
+  <div className="flex items-start gap-3 bg-gray-50 p-2 rounded-xl">
     <div className="text-sky-600">{icon}</div>
     <div>
       <p className="text-gray-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-gray-900">{value}</p>
+      <p className="font-medium text-xs text-gray-900">{value}</p>
     </div>
   </div>
 );
 
 const StatCard = ({ icon, label, value }) => (
-  <div className="bg-white border border-gray-100 rounded-xl p-6 text-center shadow-sm">
-    <div className="text-sky-600 mb-2 flex justify-center">{icon}</div>
-    <p className="text-2xl font-bold text-gray-900">{value}</p>
-    <p className="text-gray-500 text-sm mt-1">{label}</p>
+  <div className="flex flex-col bg-white border border-gray-100 rounded-xl p-6 text-center shadow-sm">
+    <div className="text-sky-600 flex justify-center">{icon}</div>
+    <p className="text-2xl font-semibold text-gray-900">{value}</p>
+    <p className="text-gray-500 text-sm">{label}</p>
   </div>
 );
 

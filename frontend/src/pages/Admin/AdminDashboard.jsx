@@ -21,7 +21,29 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import { StatCard } from "../../components/Cards/StatCard";
 
 const BarGraph = ({ data, days, onDaysChange, riskData }) => {
+  const navigate = useNavigate();
   if (!data || data.length === 0) return null;
+
+  const QuickActions = [
+    {
+      title: "Manage Users",
+      icon: Users,
+      color: "bg-sky-50 text-sky-700",
+      path: "/admin-users-management",
+    },
+    {
+      title: "Manage Jobs",
+      icon: BriefcaseBusiness,
+      color: "bg-green-50 text-green-700",
+      path: "/admin-jobs-management",
+    },
+    {
+      title: "Admin Messages",
+      icon: MessageSquare,
+      color: "bg-purple-50 text-purple-700",
+      path: "/admin-chat-box",
+    },
+  ];
 
   const userChartData = data.map((d) => ({
     date: new Date(d.date).toLocaleDateString("en-US", {
@@ -117,48 +139,77 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
           </BarChart>
         </ResponsiveContainer>
       </div>
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+        <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
+          <h3 className="text-lg font-semibold text-gray-900 mb-6">
+            Job Risk Distribution
+          </h3>
 
-      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">
-          Job Risk Distribution
-        </h3>
-
-        <ResponsiveContainer width="100%" height={300}>
-          <PieChart>
-            <Pie
-              data={riskData}
-              cx="50%"
-              cy="50%"
-              outerRadius={100}
-              dataKey="value"
-            >
-              {riskData.map((entry, index) => (
-                <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
-              ))}
-            </Pie>
-            <Tooltip />
-          </PieChart>
-        </ResponsiveContainer>
-
-        <div className="mt-6 space-y-2">
-          {riskData.map((item, index) => {
-            const total = riskData.reduce((sum, d) => sum + d.value, 0);
-            const percentage = ((item.value / total) * 100).toFixed(2);
-
-            return (
-              <div
-                key={index}
-                className="flex justify-between text-sm text-gray-700"
+          <ResponsiveContainer width="100%" height={300}>
+            <PieChart>
+              <Pie
+                data={riskData}
+                cx="50%"
+                cy="50%"
+                outerRadius={100}
+                dataKey="value"
               >
-                <span className="flex items-center gap-2">
-                  <span
-                    className="w-3 h-3 rounded-full"
-                    style={{ backgroundColor: COLORS[item.name] }}
-                  />
-                  {item.name}
-                </span>
-                <span className="font-medium">{percentage}%</span>
-              </div>
+                {riskData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[entry.name]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+
+          <div className="mt-6 space-y-2">
+            {riskData.map((item, index) => {
+              const total = riskData.reduce((sum, d) => sum + d.value, 0);
+              const percentage = ((item.value / total) * 100).toFixed(2);
+
+              return (
+                <div
+                  key={index}
+                  className="flex justify-between text-sm text-gray-700"
+                >
+                  <span className="flex items-center gap-2">
+                    <span
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: COLORS[item.name] }}
+                    />
+                    {item.name}
+                  </span>
+                  <span className="font-medium">{percentage}%</span>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        {/* Quick Actions */}
+        <div className="grid grid-cols-1 gap-4">
+          {QuickActions.map((action, index) => {
+            const Icon = action.icon;
+            return (
+              <button
+                key={index}
+                onClick={() => navigate(action.path)}
+                title={action.title}
+                className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-6 text-left cursor-pointer flex gap-2 items-center"
+              >
+                <div
+                  className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center`}
+                >
+                  <Icon className="w-6 h-6" />
+                </div>
+                <div>
+                  <h3 className="font-semibold text-gray-900">
+                    {action.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-1">
+                    Manage platform data
+                  </p>
+                </div>
+              </button>
             );
           })}
         </div>
@@ -168,7 +219,6 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
 };
 
 const AdminDashboard = () => {
-  const navigate = useNavigate();
   const [dashboardData, setDashboardData] = useState(null);
   const [analyticsData, setAnalyticsData] = useState([]);
   const [riskData, setRiskData] = useState([]);
@@ -221,27 +271,6 @@ const AdminDashboard = () => {
     getRiskDistribution();
   }, [days]);
 
-  const QuickActions = [
-    {
-      title: "Manage Users",
-      icon: Users,
-      color: "bg-sky-50 text-sky-700",
-      path: "/admin-users-management",
-    },
-    {
-      title: "Manage Jobs",
-      icon: BriefcaseBusiness,
-      color: "bg-green-50 text-green-700",
-      path: "/admin-jobs-management",
-    },
-    {
-      title: "Admin Messages",
-      icon: MessageSquare,
-      color: "bg-purple-50 text-purple-700",
-      path: "/admin-chat-box",
-    },
-  ];
-
   return (
     <DashboardLayout activeMenu="admin-dashboard">
       {isLoading ? (
@@ -281,32 +310,6 @@ const AdminDashboard = () => {
             onDaysChange={setDays}
             riskData={riskData}
           />
-          {/* Quick Actions */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {QuickActions.map((action, index) => {
-              const Icon = action.icon;
-              return (
-                <button
-                  key={index}
-                  onClick={() => navigate(action.path)}
-                  title={action.title}
-                  className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-6 text-left cursor-pointer"
-                >
-                  <div
-                    className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center mb-4`}
-                  >
-                    <Icon className="w-6 h-6" />
-                  </div>
-                  <h3 className="font-semibold text-gray-900">
-                    {action.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Manage platform data
-                  </p>
-                </button>
-              );
-            })}
-          </div>
         </div>
       )}
     </DashboardLayout>

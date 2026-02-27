@@ -460,17 +460,17 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
         </div>
 
         {!loading && (
-          <div className="bg-white border border-gray-200 p-4 flex flex-row gap-4 fixed bottom-0 left-0 right-0 max-w-3xl mx-auto z-20 shadow-md">
+          <div className="bg-white border border-gray-200 p-2 flex gap-2">
             <button
               onClick={() => onMessage(job.company?._id)}
-              className="flex-1 bg-sky-600 text-white py-3 rounded-xl font-semibold hover:bg-sky-700 transition"
+              className="flex-1 text-sm bg-sky-600 text-white py-3 rounded-xl font-semibold hover:bg-sky-700 transition"
             >
               Message
             </button>
 
             <button
               onClick={() => onDelete(job._id)}
-              className="flex-1 bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
+              className="flex-1 text-sm bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
             >
               Delete Job
             </button>

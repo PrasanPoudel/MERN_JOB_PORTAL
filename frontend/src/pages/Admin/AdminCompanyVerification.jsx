@@ -123,6 +123,7 @@ const AdminCompanyVerification = () => {
       );
     } finally {
       setVerifying(false);
+      setSelectedCompany(null);
     }
   };
 
@@ -168,6 +169,7 @@ const AdminCompanyVerification = () => {
             setConfirmVerifyCompany(companies.find((c) => c._id === id))
           }
           onMessage={handleMessageCompany}
+          handleVerificationRemoval={handleRemoveVerification}
         />
       )}
 
@@ -426,7 +428,13 @@ const AdminCompanyVerification = () => {
   );
 };
 
-const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
+const CompanyModal = ({
+  companyId,
+  onClose,
+  onVerify,
+  onMessage,
+  handleVerificationRemoval,
+}) => {
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -448,28 +456,6 @@ const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
   }, [companyId]);
 
   if (!company) return null;
-
-  const handleVerify = async () => {
-    try {
-      const endpoint = company.isCompanyVerified
-        ? API_PATHS.ADMIN.REMOVE_COMPANY_VERIFICATION(company._id)
-        : API_PATHS.ADMIN.VERIFY_COMPANY(company._id);
-
-      const response = await axiosInstance.put(endpoint);
-      const action = company.isCompanyVerified ? "removed" : "added";
-      toast.success(`Company verification ${action} successfully`);
-
-      // Refresh the company data to get updated verification status
-      const updatedResponse = await axiosInstance.get(
-        API_PATHS.ADMIN.GET_COMPANY_DETAILS(companyId),
-      );
-      setCompany(updatedResponse.data);
-    } catch (err) {
-      toast.error(
-        err.response?.data?.message || "Failed to update verification status",
-      );
-    }
-  };
 
   return (
     <div className="fixed inset-0 z-1000 bg-black/40 backdrop-blur-sm flex items-start justify-center p-4 pt-8 md:pt-16 overflow-y-auto">
@@ -535,7 +521,7 @@ const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
 
               {company.isCompanyVerified ? (
                 <button
-                  onClick={handleVerify}
+                  onClick={() => handleVerificationRemoval(company._id)}
                   className="flex-1 bg-red-600 text-white py-2.5 px-4 rounded-xl font-semibold hover:bg-red-700 transition text-sm"
                 >
                   Remove Verification
@@ -642,7 +628,7 @@ const CompanyModal = ({ companyId, onClose, onVerify, onMessage }) => {
             {company.companyDescription && (
               <div className="mb-6">
                 <h3 className="text-sm font-semibold text-gray-700 mb-3">
-                  Company Description
+                  About Company
                 </h3>
                 <p className="text-xs text-gray-600 bg-gray-50 p-4 rounded-xl leading-relaxed text-justify">
                   {company.companyDescription}

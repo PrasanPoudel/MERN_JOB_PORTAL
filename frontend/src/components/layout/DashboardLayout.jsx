@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Home, Menu, X, Search } from "lucide-react";
-import { Link, useNavigate } from "react-router-dom";
+import { Home, Menu, X, Search, MessageSquare } from "lucide-react";
+import { Link, useNavigate, NavLink } from "react-router-dom";
 import {
   NAVIGATION_MENU_EMPLOYER,
   NAVIGATION_MENU_ADMIN,
@@ -21,10 +21,13 @@ const DashboardLayout = ({ activeMenu, children }) => {
     activeMenu || "employer-dashboard",
   );
   const [isMobile, setIsMobile] = useState(false);
-  const [unreadCount, setUnreadCount] = useState(0);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
 
+  const [unreadCount, setUnreadCount] = useState(0);
+
   useEffect(() => {
+    if (!user || !isAuthenticated) return;
+
     const fetchUnreadCount = async () => {
       try {
         const response = await axiosInstance.get(
@@ -44,7 +47,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
     return () => {
       if (interval) clearInterval(interval);
     };
-  }, []);
+  }, [user, isAuthenticated]);
 
   useEffect(() => {
     const handleResize = () => {
@@ -86,6 +89,12 @@ const DashboardLayout = ({ activeMenu, children }) => {
     };
   }, [profileDropdownOpen]);
 
+  const navLinkClasses = ({ isActive }) =>
+    `p-2 rounded-xl transition-colors duration-200
+     ${
+       isActive ? "bg-sky-100 text-sky-600" : "text-gray-600 hover:bg-sky-100"
+     }`;
+
   return (
     <div className="flex h-screen bg-white min-w-full">
       <div
@@ -100,24 +109,14 @@ const DashboardLayout = ({ activeMenu, children }) => {
           sidebarCollapsed ? "w-16" : "w-64"
         } bg-white border-r-2 border-gray-200`}
       >
-        <div className="flex items-start">
+        <div className="flex items-start border-b-2 py-2 border-gray-300">
           <Link
             title="Go to Homepage"
             className="flex items-center mt-2 w-full"
             to="/"
           >
-            <img src={logo} className="w-48 h-42 mix-blend-multiply" />
+            <img src={logo} className="w-32 h-24 mix-blend-multiply" />
           </Link>
-          {sidebarOpen && (
-            <div className="w-full flex justify-end p-2">
-              <button
-                onClick={toggleSidebar}
-                className="p-2 rounded-xl hover:bg-gray-100 transition-colors delay-300"
-              >
-                <X className="h-5 w-5 text-gray-600" />
-              </button>
-            </div>
-          )}
         </div>
         {/* Navigation */}
 
@@ -130,7 +129,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 isActive={activeNavItem === item.id}
                 onClick={handleNavigation}
                 isCollapsed={sidebarCollapsed}
-                unreadCount={item.id === "EmployerChatBox" ? unreadCount : 0}
               />
             ))}
           </nav>
@@ -145,7 +143,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 isActive={activeNavItem === item.id}
                 onClick={handleNavigation}
                 isCollapsed={sidebarCollapsed}
-                unreadCount={item.id === "admin-chat-box" ? unreadCount : 0}
               />
             ))}
           </nav>
@@ -189,20 +186,48 @@ const DashboardLayout = ({ activeMenu, children }) => {
           </div>
           <div className="flex gap-2 items-center">
             <div className="flex items-center">
-              <Link
-                title="Go to Homepage"
-                to="/"
-                className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
+              <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
                 <Home className="w-6 h-6" />
-              </Link>
-              <Link
+              </NavLink>
+              <NavLink
                 title="Search for Jobs"
                 to="/find-jobs"
-                className="p-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                className={navLinkClasses}
               >
                 <Search className="w-6 h-6" />
-              </Link>
+              </NavLink>
+              {user && user?.role === "admin" && (
+                <NavLink
+                  title="Messages"
+                  to="/admin-chat-box"
+                  className={navLinkClasses}
+                >
+                  <div className="relative">
+                    <MessageSquare className="h-6 w-6" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </div>
+                </NavLink>
+              )}
+              {user && user?.role === "employer" && (
+                <NavLink
+                  title="Messages"
+                  to="/EmployerChatBox"
+                  className={navLinkClasses}
+                >
+                  <div className="relative">
+                    <MessageSquare className="h-6 w-6" />
+                    {unreadCount > 0 && (
+                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
+                        {unreadCount > 99 ? "99+" : unreadCount}
+                      </span>
+                    )}
+                  </div>
+                </NavLink>
+              )}
             </div>
             {isAuthenticated ? (
               <ProfileDropdown
