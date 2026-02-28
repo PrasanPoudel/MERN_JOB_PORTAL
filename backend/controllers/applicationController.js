@@ -1,6 +1,7 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
+const { sendStatusChangeEmail } = require("../services/emailService");
 
 // apply to a job
 exports.applyToJob = async (req, res) => {
@@ -118,7 +119,55 @@ exports.getApplicationById = async (req, res) => {
   }
 };
 
-// update application status (employer only)
+// change application status with email notification (employer only)
+exports.changeApplicationStatus = async (req, res) => {
+  try {
+    const { status } = req.body;
+    
+    if (!status) {
+      return res.status(400).json({ message: "Status is required" });
+    }
+
+    const app = await Application.findById(req.params.id)
+      .populate("job", "title company")
+      .populate("applicant", "name email");
+
+    if (!app) {
+      return res.status(404).json({ message: "Application not found" });
+    }
+
+    if (app.job.company.toString() !== req.user._id.toString()) {
+      return res.status(403).json({ message: "Not authorized to update this application" });
+    }
+
+    app.status = status;
+    await app.save();
+
+    // Send email notification
+    try {
+      await sendStatusChangeEmail(
+        app.applicant.email,
+        app.applicant.name,
+        app._id,
+        status,
+        app.job.title
+      );
+    } catch (emailError) {
+      console.error("Failed to send email:", emailError);
+      // Continue even if email fails
+    }
+
+    res.status(200).json({ 
+      message: "Application status updated successfully", 
+      status,
+      application: app 
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// update application status (employer only) - legacy method
 exports.updateStatus = async (req, res) => {
   try {
     const { status } = req.body;
