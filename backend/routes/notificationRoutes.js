@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
+const { protect } = require("../middlewares/authMiddleware");
+const notificationController = require("../controllers/notificationController");
 
-// TODO: Implement notification controller
-// const notificationController = require("../controllers/notificationController");
+router.post("/send-recommendations", protect, notificationController.sendJobRecommendations);
 
-// router.post("/send-email", notificationController.sendEmail);
-// router.get("/logs", notificationController.getLogs);
+
+router.get("/logs", protect, notificationController.getNotificationLogs);
 
 module.exports = router;
