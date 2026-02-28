@@ -57,14 +57,19 @@ const Navbar = () => {
   }, [profileDropdownOpen]);
 
   useEffect(() => {
+    const element = document.getElementById("profileDropdown_id");
+    if (!element || !openMenu) return;
+
     const handleClickOutside = () => {
       if (openMenu) {
         setOpenMenu(false);
       }
     };
-    document
-      .getElementById("profileDropdown_id")
-      .addEventListener("click", handleClickOutside);
+    element.addEventListener("click", handleClickOutside);
+    
+    return () => {
+      element.removeEventListener("click", handleClickOutside);
+    };
   }, [openMenu]);
 
   const navLinkClasses = ({ isActive }) =>
