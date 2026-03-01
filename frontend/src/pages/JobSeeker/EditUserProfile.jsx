@@ -507,7 +507,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                   id="name"
                   value={formData.name ?? ""}
                   onChange={handleInputChange}
-                  placeholder="e.g., Prasan Poudel"
+                  placeholder="e.g., Alex Johnson"
                   className="w-full px-3 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-sky-600 text-sm sm:text-base"
                 />
               </div>
