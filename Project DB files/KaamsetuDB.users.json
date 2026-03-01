@@ -2,7 +2,7 @@
   "_id": {
     "$oid": "6965f254a24a14e44ba7b901"
   },
-  "name": "Prasan Poudel",
+  "name": "John Smith",
   "email": "employer@kaamsetu.com",
   "password": "$2b$10$vmVhxLL21phPRv1ywlJ.3uEHxIc2GhCgLtyQ/tCSmhzHv9b6Wq6dC",
   "role": "employer",
