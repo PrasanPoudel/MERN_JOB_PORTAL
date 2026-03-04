@@ -61,8 +61,8 @@ const JobSeekerDashboard = () => {
         `${API_PATHS.JOBS.GET_ALL_JOBS}?${params.toString()}`,
       );
 
-      setJobs(response.data.jobs || []);
-      setPagination(response.data.pagination || null);
+      setJobs(response?.data?.jobs || []);
+      setPagination(response?.data?.pagination || null);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
       setJobs([]);
@@ -243,7 +243,7 @@ const JobSeekerDashboard = () => {
             </div>
 
             {/* Job list*/}
-            {jobs.length === 0 ? (
+            {jobs?.length === 0 ? (
               <div className="text-center py-16 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20">
                 <div className="text-gray-400 mb-6">
                   <Search className="w-16 h-16 mx-auto" />
@@ -270,7 +270,7 @@ const JobSeekerDashboard = () => {
                       : "space-y-4 lg:space-y-6"
                   }`}
                 >
-                  {jobs.map((job, index) => (
+                  {jobs?.map((job, index) => (
                     <JobCard
                       key={job._id}
                       job={job}
