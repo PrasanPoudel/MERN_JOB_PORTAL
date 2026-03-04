@@ -78,7 +78,7 @@ const Navbar = () => {
 
   return (
     <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">
-      <div className="flex items-end p-2 justify-between min-h-18">
+      <div className="flex items-end p-2 justify-between h-18">
         <Link title="Go to Homepage" to="/">
           <img src={logo} className="h-14 w-24 object-contain" alt="logo" />
         </Link>

@@ -8,6 +8,7 @@ import {
   BookmarkCheck,
   LayoutDashboard,
   BadgeCheck,
+  ChevronUp,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -70,8 +71,11 @@ const ProfileDropdown = ({
             </p>
           )}
         </div>
-
-        <ChevronDown className="h-4 w-4 text-gray-700" />
+        {isOpen ? (
+          <ChevronUp className="h-4 w-4 text-gray-700" />
+        ) : (
+          <ChevronDown className="h-4 w-4 text-gray-700" />
+        )}
       </button>
 
       {/* Dropdown */}

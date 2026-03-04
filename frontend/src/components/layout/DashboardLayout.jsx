@@ -105,13 +105,13 @@ const DashboardLayout = ({ activeMenu, children }) => {
         } bg-white border-r-2 w-52 border-gray-200`}
       >
         {!sidebarOpen && (
-          <div className="flex items-start border-b-2 p-3 border-gray-300">
+          <div className="flex items-start border-b-2 p-2 border-gray-300">
             <Link
               title="Go to Homepage"
               className="flex items-center w-full"
               to="/"
             >
-              <img src={logo} className="w-20 h-14 mix-blend-multiply" />
+              <img src={logo} className="w-24 h-14 mix-blend-multiply" />
             </Link>
             {sidebarOpen && (
               <X
@@ -164,7 +164,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
           isMobile ? "ml-0" : "ml-52"
         }`}
       >
-        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-20 flex items-center justify-between px-2 z-500">
+        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-18 flex items-center justify-between p-2 z-500">
           <div className="flex items-center">
             {isMobile && (
               <button
