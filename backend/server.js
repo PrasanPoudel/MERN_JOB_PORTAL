@@ -2,6 +2,7 @@ require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
 const path = require("path");
+const rateLimit = require("express-rate-limit");
 const connectDB = require("./config/database");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./config/swagger");
@@ -26,25 +27,52 @@ app.use(
   }),
 );
 
-//Connect database
+
 connectDB();
 
-//Middleware
+
 app.use(express.json());
 
-// Swagger Documentation
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 5, 
+  message: "Too many login attempts, please try again later",
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: "Too many login attempts. Please try again after 15 minutes."
+    });
+  },
+});
+
+const apiLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, 
+  max: 100, 
+  message: "Too many requests, please try again later",
+  standardHeaders: true,
+  legacyHeaders: false,
+  handler: (req, res) => {
+    res.status(429).json({
+      error: "Too many requests. Please try again after 15 minutes."
+    });
+  },
+});
+
+
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
-//Routes
-app.use("/api/auth", authRoutes);
-app.use("/api/user", userRoutes);
-app.use("/api/jobs", jobRoutes);
-app.use("/api/applications", applicationRoutes);
-app.use("/api/save-jobs", savedJobRoutes);
-app.use("/api/analytics", analyticsRoutes);
-app.use("/api/messages", messageRoutes);
-app.use("/api/admin", adminRoutes);
-app.use("/api/notifications", notificationRoutes);
+
+app.use("/api/auth", authLimiter, authRoutes);
+app.use("/api/user", apiLimiter, userRoutes);
+app.use("/api/jobs", apiLimiter, jobRoutes);
+app.use("/api/applications", apiLimiter, applicationRoutes);
+app.use("/api/save-jobs", apiLimiter, savedJobRoutes);
+app.use("/api/analytics", apiLimiter, analyticsRoutes);
+app.use("/api/messages", apiLimiter, messageRoutes);
+app.use("/api/admin", apiLimiter, adminRoutes);
+app.use("/api/notifications", apiLimiter, notificationRoutes);
 
 //Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
