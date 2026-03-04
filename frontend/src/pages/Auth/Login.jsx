@@ -114,7 +114,7 @@ const Login = () => {
           className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
             Welcome Back!
           </h2>
           <p className="text-gray-600 mb-4">
@@ -137,11 +137,11 @@ const Login = () => {
         transition={{ duration: 0.6 }}
         className="bg-white p-2 lg:p-8 rounded-xl shadow-lg max-w-md w-full"
       >
-        <div className="flex items-center justify-center">
-          <img src={logo} className="w-40 h-30" />
+        <div className="flex items-center justify-center mb-4">
+          <img src={logo} className="w-32 h-24" />
         </div>
         <div className="text-center mb-4">
-          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl text-gray-900 mb-2">
             Welcome Back!
           </h2>
           <p className="text-gray-600">Sign in to your account</p>
