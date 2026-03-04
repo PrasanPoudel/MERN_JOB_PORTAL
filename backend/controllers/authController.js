@@ -69,6 +69,15 @@ exports.login = async (req, res, next) => {
       return res.status(401).json({ message: "Invalid email or password" });
     }
 
+    // Check if user is banned
+    if (user.isBanned) {
+      return res.status(403).json({
+        error: "Your account has been banned",
+        banReason: user.banReason,
+        banDate: user.banDate,
+      });
+    }
+
     res.status(200).json({
       _id: user._id,
       name: user.name,

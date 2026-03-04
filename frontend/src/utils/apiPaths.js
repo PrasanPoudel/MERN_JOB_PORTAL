@@ -46,6 +46,8 @@ export const API_PATHS = {
     GET_ALL_USERS: "/api/admin/users",
     GET_USER_BY_ID: (id) => `/api/admin/users/${id}`,
     DELETE_USER: (id) => `/api/admin/users/${id}`,
+    BAN_USER: (id) => `/api/admin/users/${id}/ban`,
+    UNBAN_USER: (id) => `/api/admin/users/${id}/unban`,
     GET_ALL_JOBS: "/api/admin/jobs",
     DELETE_JOB: (id) => `/api/admin/jobs/${id}`,
     SEND_ADMIN_MESSAGE: "/api/admin/messages/send",

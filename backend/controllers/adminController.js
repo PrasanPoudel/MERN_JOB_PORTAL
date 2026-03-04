@@ -718,3 +718,69 @@ exports.removeCompanyVerification = async (req, res) => {
     res.status(500).json({ message: err.message });
   }
 };
+
+// Ban user
+exports.banUser = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const { reason } = req.body;
+
+    if (!reason || !reason.trim()) {
+      return res.status(400).json({ message: "Ban reason is required" });
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (user.role === "admin") {
+      return res.status(400).json({ message: "Cannot ban admin users" });
+    }
+
+    if (user.isBanned) {
+      return res.status(400).json({ message: "User is already banned" });
+    }
+
+    user.isBanned = true;
+    user.banReason = reason.trim();
+    user.banDate = new Date();
+    await user.save();
+
+    res.json({ message: "User banned successfully", user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Unban user
+exports.unbanUser = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const user = await User.findById(req.params.id);
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+
+    if (!user.isBanned) {
+      return res.status(400).json({ message: "User is not banned" });
+    }
+
+    user.isBanned = false;
+    user.banReason = undefined;
+    user.banDate = undefined;
+    await user.save();
+
+    res.json({ message: "User unbanned successfully", user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};

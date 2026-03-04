@@ -25,4 +25,8 @@ router.get("/companies/:id", protect, adminController.getCompanyDetails);
 router.put("/companies/:id/verify", protect, adminController.verifyCompany);
 router.put("/companies/:id/remove-verification", protect, adminController.removeCompanyVerification);
 
+// Ban/Unban user routes
+router.put("/users/:id/ban", protect, adminController.banUser);
+router.put("/users/:id/unban", protect, adminController.unbanUser);
+
 module.exports = router;
