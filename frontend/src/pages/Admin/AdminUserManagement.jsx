@@ -14,6 +14,8 @@ import {
   BriefcaseBusiness,
   BadgeCheck,
   User,
+  Ban,
+  ShieldCheck,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -422,6 +424,9 @@ const AdminUserManagement = () => {
 const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [banModalOpen, setBanModalOpen] = useState(false);
+  const [banReason, setBanReason] = useState("");
+  const [banning, setBanning] = useState(false);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -439,6 +444,49 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
     };
     fetchUser();
   }, [userId]);
+
+  const handleBanUser = async () => {
+    if (!banReason.trim()) {
+      toast.error("Please provide a ban reason");
+      return;
+    }
+
+    try {
+      setBanning(true);
+      await axiosInstance.put(API_PATHS.ADMIN.BAN_USER(userId), {
+        reason: banReason,
+      });
+      toast.success("User banned successfully");
+      setBanModalOpen(false);
+      setBanReason("");
+      // Refresh user data
+      const response = await axiosInstance.get(
+        API_PATHS.ADMIN.GET_USER_BY_ID(userId),
+      );
+      setUser(response.data);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to ban user");
+    } finally {
+      setBanning(false);
+    }
+  };
+
+  const handleUnbanUser = async () => {
+    try {
+      setBanning(true);
+      await axiosInstance.put(API_PATHS.ADMIN.UNBAN_USER(userId));
+      toast.success("User unbanned successfully");
+      // Refresh user data
+      const response = await axiosInstance.get(
+        API_PATHS.ADMIN.GET_USER_BY_ID(userId),
+      );
+      setUser(response.data);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to unban user");
+    } finally {
+      setBanning(false);
+    }
+  };
 
   if (!user) return null;
 
@@ -542,6 +590,19 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                   )}
                 </div>
               )}
+
+              {user.isBanned && (
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                  <div className="flex items-start gap-2">
+                    <Ban className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-semibold text-red-900 text-sm">User is Banned</p>
+                      <p className="text-red-700 text-xs mt-1"><strong>Reason:</strong> {user.banReason}</p>
+                      <p className="text-red-600 text-xs mt-1"><strong>Banned on:</strong> {new Date(user.banDate).toLocaleDateString()}</p>
+                    </div>
+                  </div>
+                </div>
+              )}
             </div>
             <div className="absolute bottom-0 left-0 bg-white border border-gray-200 p-2 flex gap-2 w-full">
               <button
@@ -551,16 +612,82 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                 Message
               </button>
 
+              {user.isBanned ? (
+                <button
+                  onClick={handleUnbanUser}
+                  disabled={banning}
+                  className="flex-1 text-sm bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
+                >
+                  <ShieldCheck className="w-4 h-4" />
+                  {banning ? "Unbanning..." : "Unban"}
+                </button>
+              ) : (
+                <button
+                  onClick={() => setBanModalOpen(true)}
+                  className="flex-1 text-sm bg-orange-600 text-white py-3 rounded-xl font-semibold hover:bg-orange-700 transition flex items-center justify-center gap-2"
+                >
+                  <Ban className="w-4 h-4" />
+                  Ban
+                </button>
+              )}
+
               <button
                 onClick={() => onDelete(user._id)}
                 className="flex-1 text-sm bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
               >
-                Delete User
+                Delete
               </button>
             </div>
           </>
         )}
       </div>
+
+      {banModalOpen && (
+        <div className="fixed inset-0 z-1300 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+          <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
+            <div className="text-center">
+              <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-orange-100 mb-4">
+                <Ban className="text-orange-600 w-6 h-6" />
+              </div>
+
+              <h3 className="text-xl font-bold text-gray-900 mb-2">Ban User</h3>
+
+              <p className="text-gray-500 text-sm mb-4">
+                Provide a reason for banning <strong>{user.name}</strong>
+              </p>
+
+              <textarea
+                value={banReason}
+                onChange={(e) => setBanReason(e.target.value)}
+                placeholder="Enter ban reason..."
+                className="w-full p-3 border border-gray-300 rounded-xl text-sm mb-4 focus:ring-2 focus:ring-orange-500 focus:border-transparent"
+                rows="4"
+              />
+
+              <div className="flex gap-3">
+                <button
+                  onClick={() => {
+                    setBanModalOpen(false);
+                    setBanReason("");
+                  }}
+                  disabled={banning}
+                  className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+                >
+                  Cancel
+                </button>
+
+                <button
+                  onClick={handleBanUser}
+                  disabled={banning || !banReason.trim()}
+                  className="flex-1 py-3 rounded-xl bg-orange-600 text-white font-semibold hover:bg-orange-700 transition disabled:opacity-50"
+                >
+                  {banning ? "Banning..." : "Ban User"}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };
