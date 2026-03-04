@@ -213,7 +213,7 @@
   "_id": {
     "$oid": "696c6eb3c80f9c65206f1c79"
   },
-  "name": "Prasan Poudel",
+  "name": "John Doman",
   "email": "jobseeker@kaamsetu.com",
   "password": "$2b$10$zj7gckpr4zKug6vmIsMUBexqjB9EnBYHgsMSm1FZm8qtcaKfNXoKa",
   "role": "jobSeeker",
