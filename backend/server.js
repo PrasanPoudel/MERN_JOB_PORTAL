@@ -27,42 +27,37 @@ app.use(
   }),
 );
 
-
 connectDB();
-
 
 app.use(express.json());
 
-
 const authLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 5, 
+  windowMs: 10 * 60 * 1000,
+  max: 25,
   message: "Too many login attempts, please try again later",
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     res.status(429).json({
-      error: "Too many login attempts. Please try again after 15 minutes."
+      error: "Too many login attempts. Please try again after 15 minutes.",
     });
   },
 });
 
 const apiLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000, 
-  max: 100, 
+  windowMs: 10 * 60 * 1000,
+  max: 250,
   message: "Too many requests, please try again later",
   standardHeaders: true,
   legacyHeaders: false,
   handler: (req, res) => {
     res.status(429).json({
-      error: "Too many requests. Please try again after 15 minutes."
+      error: "Too many requests. Please try again after 15 minutes.",
     });
   },
 });
 
-
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
-
 
 app.use("/api/auth", authLimiter, authRoutes);
 app.use("/api/user", apiLimiter, userRoutes);
@@ -82,9 +77,7 @@ const server = app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
 
-
 // Start uploads cleanup cron job
-
 
 // require("./cleanupUploadsCron");
 

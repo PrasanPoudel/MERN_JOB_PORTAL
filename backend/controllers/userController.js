@@ -211,13 +211,13 @@ exports.changePassword = async (req, res) => {
     // Verify old password
     const isPasswordCorrect = await user.matchPassword(oldPassword);
     if (!isPasswordCorrect) {
-      return res.status(401).json({ message: "Old password is incorrect" });
+      return res.status(401).json({ message: "Current password is incorrect" });
     }
 
     // Check if new password is same as old password
     if (oldPassword === newPassword) {
       return res.status(400).json({
-        message: "New password must be different from old password",
+        message: "New password must be different from current password",
       });
     }
 
