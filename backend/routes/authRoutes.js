@@ -6,7 +6,6 @@ const upload= require("../middlewares/uploadMiddleware");
 
 router.post("/register", register);
 router.post("/login", login);
-router.post("/getMe", protect, getMe);
 
 router.post("/upload-file", (req, res) => {
   upload.single("file")(req, res, function (err) {

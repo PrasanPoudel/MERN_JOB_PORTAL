@@ -141,18 +141,6 @@
  *       401:
  *         description: Invalid credentials
  * 
- * /api/auth/getMe:
- *   post:
- *     tags: [Auth]
- *     summary: Get current user profile
- *     security:
- *       - bearerAuth: []
- *     responses:
- *       200:
- *         description: User profile
- *       401:
- *         description: Not authorized
- * 
  * /api/auth/upload-file:
  *   post:
  *     tags: [Auth]
