@@ -9,6 +9,7 @@ import {
   LayoutDashboard,
   BadgeCheck,
   ChevronUp,
+  UserLock,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -95,20 +96,30 @@ const ProfileDropdown = ({
           </div>
           <div className="p-2 space-y-2">
             {(role === "employer" || role === "admin") && (
-              <div
-                onClick={() =>
-                  navigate(
-                    role === "admin"
-                      ? "/admin-dashboard"
-                      : "employer-dashboard",
-                  )
-                }
-                title="Go to dashboard"
-                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
-              >
-                <LayoutDashboard className="h-4 w-4 " />
-                Dashboard
-              </div>
+              <>
+                <div
+                  onClick={() =>
+                    navigate(
+                      role === "admin"
+                        ? "/admin-dashboard"
+                        : "employer-dashboard",
+                    )
+                  }
+                  title="Go to dashboard"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <LayoutDashboard className="h-4 w-4 " />
+                  Dashboard
+                </div>
+                <div
+                  onClick={() => navigate("/change-password")}
+                  title="Change your account password"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <UserLock className="h-4 w-4 " />
+                  Change Password
+                </div>
+              </>
             )}
             {role === "jobSeeker" && (
               <>
@@ -120,7 +131,14 @@ const ProfileDropdown = ({
                   <User className="h-4 w-4 " />
                   View Profile
                 </div>
-
+                <div
+                  onClick={() => navigate("/change-password")}
+                  title="Change your account password"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-sky-50 cursor-pointer"
+                >
+                  <UserLock className="h-4 w-4 " />
+                  Change Password
+                </div>
                 <div
                   onClick={() => navigate("/applied-applications")}
                   title="View your applications"

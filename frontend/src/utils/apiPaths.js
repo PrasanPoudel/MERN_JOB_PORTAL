@@ -7,6 +7,7 @@ export const API_PATHS = {
     GET_PROFILE: "/api/auth/getMe", // Get logged-in user details
     UPDATE_PROFILE: "/api/user/profile", // Update profile details
     DELETE_RESUME: "/api/user/resume", // Delete Resume details
+    CHANGE_PASSWORD:"/api/user/change-password" // Change user's password
   },
   DASHBOARD: {
     OVERVIEW: `/api/analytics/overview`,

@@ -37,6 +37,8 @@ import { useAuth } from "./context/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 
+import ChangePassword from "./pages/ChangePassword";
+
 const App = () => {
   const { loading } = useAuth();
 
@@ -54,6 +56,7 @@ const App = () => {
 
           {/* Chat routes - accessible to both jobSeeker and employer */}
           <Route element={<ProtectedRoute />}>
+            <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
             <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
           </Route>

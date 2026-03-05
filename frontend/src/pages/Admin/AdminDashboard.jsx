@@ -61,14 +61,6 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
     "Job Postings": d.jobPostings,
   }));
 
-  const fraudChartData = data.map((d) => ({
-    date: new Date(d.date).toLocaleDateString("en-US", {
-      month: "short",
-      day: "numeric",
-    }),
-    "Fraud Score (%)": d.fraudChance,
-  }));
-
   const COLORS = {
     Safe: "#10b981",
     "Moderate Risk": "#f97316",

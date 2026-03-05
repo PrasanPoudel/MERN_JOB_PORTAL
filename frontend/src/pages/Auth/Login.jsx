@@ -91,14 +91,15 @@ const Login = () => {
     } catch (error) {
       console.error("[Login Error]", {
         email: formData.email,
-        error: error?.message || error
+        error: error?.message || error,
       });
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
           submit:
-            error?.message || "Login failed. Please check your credentials and try again.",
+            error?.message ||
+            "Login failed. Please check your credentials and try again.",
         },
       }));
     }
@@ -141,9 +142,7 @@ const Login = () => {
           <img src={logo} className="w-32 h-24" />
         </div>
         <div className="text-center mb-4">
-          <h2 className="text-2xl text-gray-900 mb-2">
-            Welcome Back!
-          </h2>
+          <h2 className="text-2xl text-gray-900 mb-2">Welcome Back!</h2>
           <p className="text-gray-600">Sign in to your account</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -154,6 +153,7 @@ const Login = () => {
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
               <input
+                autoComplete="off"
                 type="email"
                 name="email"
                 id="email"

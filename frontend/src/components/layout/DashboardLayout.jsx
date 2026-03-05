@@ -102,7 +102,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
               ? "translate-x-0 w-full"
               : "-translate-x-full"
             : "translate-x-0"
-        } bg-white border-r-2 w-52 border-gray-200`}
+        } bg-white border-r-2 w-64 border-gray-200`}
       >
         {!sidebarOpen && (
           <div className="flex items-start border-b-2 p-2 border-gray-300">
@@ -161,7 +161,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
       {/* main content */}
       <div
         className={`flex flex-1 flex-col transition-all duration-200 ${
-          isMobile ? "ml-0" : "ml-52"
+          isMobile ? "ml-0" : "ml-64"
         }`}
       >
         <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-18 flex items-center justify-between p-2 z-500">
