@@ -23,7 +23,7 @@ exports.register = async (req, res) => {
       email,
       password,
       role,
-      avatar
+      avatar,
     });
     res.status(201).json({
       _id: user._id,
@@ -65,12 +65,15 @@ exports.login = async (req, res, next) => {
 
     const user = await User.findOne({ email });
 
-    if (!user || !(await user.matchPassword(password))) {
-      return res.status(401).json({ message: "Invalid email or password" });
+    if (!user) {
+      return res.status(401).json({ message: "User not found" });
+    }
+    if (user && !(await user.matchPassword(password))) {
+      return res.status(401).json({ message: "Invalid password, Try again" });
     }
 
     // Check if user is banned
-    if (user.isBanned) {
+    if (user?.isBanned) {
       return res.status(403).json({
         error: "Your account has been banned",
         banReason: user.banReason,

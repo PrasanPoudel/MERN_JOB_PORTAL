@@ -219,8 +219,8 @@ const Login = () => {
 
           {formState.errors.submit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="flex text-red-700 text-sm items-center">
-                <AlertCircle className="w-4 h-4 mr-1" />
+              <p className="flex text-red-500 text-xs mt-1 items-center justify-center">
+                <AlertCircle className="w-4 h-4 mr-1 shrink-0" />
                 {formState.errors.submit}
               </p>
             </div>

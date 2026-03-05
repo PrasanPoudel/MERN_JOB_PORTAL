@@ -761,14 +761,14 @@ const Chat = ({ isAdmin = false }) => {
                       }
                     }}
                     placeholder="Type your message..."
-                    className="w-full p-4 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
+                    className="w-full py-2 px-4 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
                     disabled={sending}
                   />
                 </div>
                 <button
                   onClick={handleSendMessage}
                   disabled={sending || !newMessage.trim()}
-                  className="bg-linear-to-br from-sky-600 to-sky-700 text-white p-4 rounded-2xl hover:from-sky-700 hover:to-sky-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md"
+                  className="bg-linear-to-br from-sky-600 to-sky-700 text-white p-2 rounded-2xl hover:from-sky-700 hover:to-sky-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md"
                 >
                   {sending ? (
                     <div className="flex items-center gap-2">

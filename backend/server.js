@@ -20,7 +20,7 @@ const notificationRoutes = require("./routes/notificationRoutes");
 const app = express();
 app.use(
   cors({
-    origin: process.env.FRONTEND_URL || "http://localhost:5000",
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
     credentials: true,
@@ -70,9 +70,9 @@ app.use("/api/jobs", apiLimiter, jobRoutes);
 app.use("/api/applications", apiLimiter, applicationRoutes);
 app.use("/api/save-jobs", apiLimiter, savedJobRoutes);
 app.use("/api/analytics", apiLimiter, analyticsRoutes);
-app.use("/api/messages", apiLimiter, messageRoutes);
+app.use("/api/messages", messageRoutes);
 app.use("/api/admin", apiLimiter, adminRoutes);
-app.use("/api/notifications", apiLimiter, notificationRoutes);
+app.use("/api/notifications", notificationRoutes);
 
 //Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));

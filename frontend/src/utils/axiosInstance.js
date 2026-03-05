@@ -28,42 +28,31 @@ axiosInstance.interceptors.response.use(
       message: error.message,
       status: error.response?.status,
       data: error.response?.data,
-      url: error.config?.url
+      url: error.config?.url,
     });
 
     // Handle timeout
     if (error.code === "ECONNABORTED") {
-      return Promise.reject({ 
-        message: "Request timeout. Please check your connection and try again." 
+      return Promise.reject({
+        message: "Request timeout. Please check your connection and try again.",
       });
     }
 
     // Handle network errors
     if (!error.response) {
-      return Promise.reject({ 
-        message: "Network error. Please check your internet connection." 
+      return Promise.reject({
+        message: "Network error. Please check your internet connection.",
       });
     }
 
     // Handle server errors
     if (error.response?.status === 500) {
-      return Promise.reject({ 
-        message: "Server error. Please try again later." 
+      return Promise.reject({
+        message: "Server error. Please try again later.",
       });
     }
-
-    // Handle unauthorized
-    if (error.response?.status === 401) {
-      localStorage.removeItem("token");
-      localStorage.removeItem("user");
-      window.location.href = "/login";
-      return Promise.reject({ 
-        message: "Session expired. Please login again." 
-      });
-    }
-
     return Promise.reject(error.response?.data || error);
-  }
+  },
 );
 
 export default axiosInstance;
