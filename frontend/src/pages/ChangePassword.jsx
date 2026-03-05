@@ -9,7 +9,6 @@ import { useAuth } from "../context/AuthContext";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
-  const { logout } = useAuth();
 
   const [formData, setFormData] = useState({
     oldPassword: "",
@@ -31,17 +30,6 @@ const ChangePassword = () => {
       ...prev,
       [name]: value,
     }));
-
-    const resetForm = () => {
-      setFormData({ oldPassword: "", newPassword: "", confirmPassword: "" });
-      setFormState({
-        errors: {},
-        showOldPassword: false,
-        showNewPassword: false,
-        showConfirmPassword: false,
-        isLoading: false,
-      });
-    };
     // Clear error when user starts typing
     if (formState.errors[name]) {
       setFormState((prev) => ({
@@ -105,7 +93,14 @@ const ChangePassword = () => {
         },
       );
       toast.success(response?.data?.message);
-      resetForm();
+      setFormData({ oldPassword: "", newPassword: "", confirmPassword: "" });
+      setFormState({
+        errors: {},
+        showOldPassword: false,
+        showNewPassword: false,
+        showConfirmPassword: false,
+        isLoading: false,
+      });
     } catch (err) {
       console.log(err?.message);
       toast.error(
