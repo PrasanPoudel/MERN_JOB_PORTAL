@@ -63,6 +63,7 @@ const JobSeekerDashboard = () => {
 
       setJobs(response?.data?.jobs || []);
       setPagination(response?.data?.pagination || null);
+      // console.log(response?.data);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
       setJobs([]);
@@ -200,18 +201,20 @@ const JobSeekerDashboard = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-xs text-gray-700 lg:text-base pl-2">
-                  Showing{" "}
-                  <span className="font-bold">
-                    {(currentPage - 1) * itemsPerPage + 1}
-                  </span>{" "}
-                  to{" "}
-                  <span className="font-bold">
-                    {Math.min(currentPage * itemsPerPage, pagination.total)}
-                  </span>{" "}
-                  of <span className="font-bold">{pagination.total}</span>{" "}
-                  results
-                </p>
+                {pagination && (
+                  <p className="text-xs text-gray-700 lg:text-base pl-2">
+                    Showing{" "}
+                    <span className="font-bold">
+                      {(currentPage - 1) * itemsPerPage + 1}
+                    </span>{" "}
+                    to{" "}
+                    <span className="font-bold">
+                      {Math.min(currentPage * itemsPerPage, pagination?.total)}
+                    </span>{" "}
+                    of <span className="font-bold">{pagination?.total}</span>{" "}
+                    results
+                  </p>
+                )}
               </div>
 
               <div className="flex w-fit p-2 gap-3 rounded-2xl items-center bg-white">
@@ -243,7 +246,7 @@ const JobSeekerDashboard = () => {
             </div>
 
             {/* Job list*/}
-            {jobs?.length === 0 ? (
+            {jobs && jobs?.length === 0 ? (
               <div className="text-center py-16 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20">
                 <div className="text-gray-400 mb-6">
                   <Search className="w-16 h-16 mx-auto" />
@@ -288,7 +291,7 @@ const JobSeekerDashboard = () => {
                 </div>
 
                 {/* Pagination */}
-                {pagination && pagination.total > itemsPerPage && (
+                {pagination && pagination?.total > itemsPerPage && (
                   <div className="mt-8 flex items-center justify-between pb-16">
                     <div className="flex flex-1 justify-between md:hidden">
                       <button
@@ -304,14 +307,14 @@ const JobSeekerDashboard = () => {
                       <button
                         onClick={() => {
                           setCurrentPage(
-                            Math.min(pagination.totalPages, currentPage + 1),
+                            Math.min(pagination?.totalPages, currentPage + 1),
                           );
                           fetchJobs(
-                            Math.min(pagination.totalPages, currentPage + 1),
+                            Math.min(pagination?.totalPages, currentPage + 1),
                             filters,
                           );
                         }}
-                        disabled={currentPage === pagination.totalPages}
+                        disabled={currentPage === pagination?.totalPages}
                         className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
@@ -328,11 +331,11 @@ const JobSeekerDashboard = () => {
                           <span className="font-bold">
                             {Math.min(
                               currentPage * itemsPerPage,
-                              pagination.total,
+                              pagination?.total,
                             )}
                           </span>{" "}
                           of{" "}
-                          <span className="font-bold">{pagination.total}</span>{" "}
+                          <span className="font-bold">{pagination?.total}</span>{" "}
                           results
                         </p>
                       </div>
@@ -350,7 +353,7 @@ const JobSeekerDashboard = () => {
                           </button>
                           {getPaginationPages(
                             currentPage,
-                            pagination.totalPages,
+                            pagination?.totalPages,
                           ).map((page, index) =>
                             page === "..." ? (
                               <span
@@ -381,19 +384,19 @@ const JobSeekerDashboard = () => {
                             onClick={() => {
                               setCurrentPage(
                                 Math.min(
-                                  pagination.totalPages,
+                                  pagination?.totalPages,
                                   currentPage + 1,
                                 ),
                               );
                               fetchJobs(
                                 Math.min(
-                                  pagination.totalPages,
+                                  pagination?.totalPages,
                                   currentPage + 1,
                                 ),
                                 filters,
                               );
                             }}
-                            disabled={currentPage === pagination.totalPages}
+                            disabled={currentPage === pagination?.totalPages}
                             className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Next

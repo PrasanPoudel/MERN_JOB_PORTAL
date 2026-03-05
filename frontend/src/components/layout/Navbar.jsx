@@ -73,14 +73,14 @@ const Navbar = () => {
   }, [openMenu]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex gap-2 items-center py-2 px-3 font-medium text-sm ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-200 hover:text-white hover:bg-sky-600
-     ${isActive ? "bg-sky-600 text-white" : "text-gray-600"}`;
+    `flex text-md gap-1 items-center p-2 font-medium ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
+     ${isActive ? "underline text-sky-600" : "text-gray-700"}`;
 
   return (
     <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">
       <div className="flex items-end p-2 justify-between h-18">
         <Link title="Go to Homepage" to="/">
-          <img src={logo} className="h-14 w-24 object-contain" alt="logo" />
+          <img src={logo} className="h-14 w-16 object-contain mix-blend-multiply" alt="logo" />
         </Link>
         <div className="flex items-center gap-2">
           <div

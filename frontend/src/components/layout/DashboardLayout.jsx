@@ -89,8 +89,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
   }, [profileDropdownOpen]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex items-center gap-2 py-2 text-sm font-medium px-3 rounded-xl transition-colors duration-200 hover:text-white hover:bg-sky-600
-     ${isActive ? "bg-sky-600 text-white" : "text-gray-600"}`;
+    `flex text-md items-center gap-1 p-2 font-medium rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
+     ${isActive ? "underline text-sky-600" : "text-gray-700"}`;
 
   return (
     <div className="flex h-screen bg-white min-w-full">
@@ -132,7 +132,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         {/* Navigation */}
 
         {user?.role === "employer" && (
-          <nav className="p-2 space-y-1" id="navigation">
+          <nav className="px-4 pt-6 space-y-1" id="navigation">
             {NAVIGATION_MENU_EMPLOYER.map((item) => (
               <NavigationItem
                 key={item.id}
@@ -145,7 +145,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         )}
 
         {user?.role === "admin" && (
-          <nav className="p-2 space-y-1" id="navigation">
+          <nav className="px-4 pt-6 space-y-1" id="navigation">
             {NAVIGATION_MENU_ADMIN.map((item) => (
               <NavigationItem
                 key={item.id}
@@ -176,7 +176,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
             )}
             <div className="flex items-center">
               {!sidebarOpen && isMobile && (
-                <img src={logo} className="w-16 h-12 mix-blend-multiply" />
+                <img src={logo} className="w-14 h-10 mix-blend-multiply" />
               )}
               <div>
                 <h1 className="text-xs sm:text-base font-semibold hidden lg:block text-gray-900">
@@ -192,7 +192,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
           <div className="flex items-center">
             <div className="flex items-center">
               <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-                <Home className="w-4 h-4" />
+                <Home className="sm:h-6 sm:w-6 h-4 w-4" />
                 <span className="hidden md:block">Home</span>
               </NavLink>
               <NavLink
@@ -200,7 +200,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 to="/find-jobs"
                 className={navLinkClasses}
               >
-                <Search className="w-4 h-4" />
+                <Search className="sm:h-6 sm:w-6 h-4 w-4" />
                 <span className="hidden md:block">Search for Jobs</span>
               </NavLink>
               {user && user?.role === "admin" && (
@@ -210,7 +210,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="h-4 w-4" />
+                    <MessageSquare className="sm:h-6 sm:w-6 h-4 w-4" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}
@@ -227,7 +227,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="h-4 w-4" />
+                    <MessageSquare className="sm:h-6 sm:w-6 h-4 w-4" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}
@@ -238,7 +238,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 </NavLink>
               )}
             </div>
-            {isAuthenticated ? (
+            {user && isAuthenticated && (
               <ProfileDropdown
                 isOpen={profileDropdownOpen}
                 onToggle={(e) => {
@@ -254,14 +254,6 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 companyLogo={user?.companyLogo || null}
                 onLogout={logout}
               />
-            ) : (
-              <a
-                href="/login"
-                title="Login to your account"
-                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-sky-700 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-              >
-                Login
-              </a>
             )}
           </div>
         </header>

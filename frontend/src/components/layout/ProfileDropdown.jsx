@@ -32,7 +32,7 @@ const ProfileDropdown = ({
   };
 
   return (
-    <div className="z-100">
+    <div>
       {/* Profile Button */}
       <button
         onClick={onToggle}
