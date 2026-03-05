@@ -8,7 +8,7 @@ const { paginateQuery, buildQuery } = require("../utils/pagination");
 
 // FastAPI server URL
 const FRAUD_PREDICTOR_API_URL =
-  process.env.FRAUD_PREDICTOR_API_URL || "http://localhost:5000";
+  process.env.FRAUD_PREDICTOR_API_URL;
 
 //create job (employer only)
 exports.createJob = async (req, res) => {
