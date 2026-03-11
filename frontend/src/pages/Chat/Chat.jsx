@@ -560,15 +560,12 @@ const Chat = ({ isAdmin = false }) => {
                                 "..."
                               : conv.lastMessage.content}
                           </span>
-                          <div className="flex items-center gap-2 text-gray-400 ml-2">
+                          <div className="flex items-center gap-2 text-gray-600 ml-2">
                             <span className="text-xs font-medium">
                               {moment(conv.lastMessage.createdAt).format(
                                 "HH:mm",
                               )}
                             </span>
-                            {conv.lastMessage.sender._id === user._id && (
-                              <CheckCheck className="w-4 h-4 text-sky-600" />
-                            )}
                           </div>
                         </div>
                       )}

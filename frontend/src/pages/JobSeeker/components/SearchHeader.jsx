@@ -75,7 +75,10 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
               </button>
 
               {/* Search Button */}
-              <button className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 hover:to-purple-700 text-white px-5 transition-all duration-200 font-semibold active:brightness-90">
+              <button
+                title="Search for Jobs"
+                className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 hover:to-purple-700 text-white px-5 transition-all duration-200 font-semibold active:brightness-90"
+              >
                 <Search className="w-5 h-5" />
               </button>
             </div>
@@ -174,7 +177,10 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
               </div>
 
               {/* Search Button */}
-              <button className="flex items-center justify-center gap-2 text-white bg-sky-600 hover:sky-700 px-6 transition-all duration-200 text-base font-semibold group active:brightness-90 cursor-pointer">
+              <button
+                title="Search for Jobs"
+                className="flex items-center justify-center gap-2 text-white bg-sky-600 hover:sky-700 px-6 transition-all duration-200 text-base font-semibold group active:brightness-90 cursor-pointer"
+              >
                 <Search className="w-5 h-5 group-hover:rotate-12 transition-transform" />
                 <span>Search</span>
               </button>
