@@ -354,7 +354,7 @@ const EmployerProfilePage = () => {
                     <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                       About Company
                     </h2>
-                    <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 sm:p-6 rounded-lg">
+                    <p className="text-sm text-justify text-gray-700 leading-relaxed bg-gray-50 p-4 sm:p-6 rounded-lg">
                       {profileData.companyDescription ||
                         "No description provided."}
                     </p>

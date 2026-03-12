@@ -11,7 +11,7 @@ import {
   ArrowLeft,
   MapPin,
   BriefcaseBusiness,
-  Calendar,
+  GraduationCap,
   ChevronDown,
   ChevronUp,
   Info,
@@ -19,6 +19,8 @@ import {
   Users,
   BookOpenText,
   BadgeCheck,
+  CalendarDays,
+  Clock,
 } from "lucide-react";
 import { StatusBadge } from "../../components/StatusBadge";
 
@@ -119,29 +121,61 @@ const JobDetails = () => {
                 />
               )}
               <div className="">
-                <h1 className="font-semibold text-gray-900 text-base sm:text-xl md:text-2xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
+                <h1 className="font-semibold text-gray-900 text-base sm:text-xl leading-snug group-hover:text-sky-600 transition-colors mb-2">
                   {job?.title}
                 </h1>
-                <div className="flex gap-2 items-center text-sm text-gray-600">
-                  <MapPin className="w-4 h-4" />
+                <div className="flex gap-2 items-start text-sm text-gray-600">
+                  <MapPin className="w-4 h-4 shrink-0" />
                   <span className="font-semibold">{job?.location}</span>
                 </div>
               </div>
             </div>
 
             {/* Tags */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <span className="px-4 py-2 bg-green-100 text-sm text-green-800 font-semibold rounded-full border border-purple-200">
+            <div className="flex flex-col sm:flex-row gap-3 mt-6 flex-wrap">
+              {job?.experienceLevel && (
+                <span className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+                  <BriefcaseBusiness className="w-4 h-4" />
+                  {job?.experienceLevel}
+                </span>
+              )}
+              <span className="flex items-center gap-2 px-4 py-2 bg-green-100 text-sm text-green-800 font-semibold rounded-full border border-green-200">
+                <Clock className="w-4 h-4 shrink-0" />
                 {job?.type}
               </span>
               <span className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-sm text-purple-800 font-semibold rounded-full border border-sky-200">
                 <BriefcaseBusiness className="w-4 h-4" />
                 {job?.category}
               </span>
+              {job?.educationLevel && (
+                <span className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-sm text-blue-800 font-semibold rounded-full border border-blue-200">
+                  <GraduationCap className="w-4 h-4" />
+                  {job?.educationLevel}
+                </span>
+              )}
               <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
-                <Calendar className="w-4 h-4" />
+                <CalendarDays className="w-4 h-4" />
+                <span className="text-sm font-medium">Posted Date: </span>
                 <span>{moment(job?.createdAt).format("MMMM Do, YYYY")}</span>
               </div>
+              {job?.no_of_vacancy && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+                  <Users className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    Available Vacancy:{" "}
+                  </span>
+                  {job?.no_of_vacancy}
+                </div>
+              )}
+              {job?.application_deadline_date && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-red-50 text-sm text-red-700 font-semibold rounded-full border border-red-100">
+                  <CalendarDays className="w-4 h-4" />
+                  <span className="text-sm font-medium">Deadline Date: </span>
+                  {moment(job?.application_deadline_date).format(
+                    "MMMM Do, YYYY",
+                  )}
+                </div>
+              )}
             </div>
           </div>
           <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-gray-700 flex gap-4 items-center">
@@ -153,24 +187,6 @@ const JobDetails = () => {
                 <span className="text-sm font-medium ml-2">per Month</span>
               </p>
             </div>
-          </div>
-          <div className="flex flex-col sm:flex-row gap-1 py-2">
-            {job?.no_of_vacancy && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 font-semibold rounded-full border border-blue-200">
-                <Users className="w-4 h-4" />
-                <span className="text-sm font-medium">Available Vacancy: </span>
-                {job?.no_of_vacancy}10
-              </div>
-            )}
-            {job?.application_deadline_date && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 font-semibold rounded-full border border-red-200">
-                <Calendar className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  Application Deadline:{" "}
-                </span>
-                {moment(job?.application_deadline_date).format("MMMM Do, YYYY")}
-              </div>
-            )}
           </div>
           {/* Employer Info */}
 
@@ -195,14 +211,14 @@ const JobDetails = () => {
 
             {/* Expanded Content */}
             {expanded && (
-              <div className="px-4 py-4 md:p-8 space-y-10">
+              <div className="p-4 md:p-8 space-y-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                       Personal Information
                     </h2>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col items-start gap-4">
                       <img
                         src={job?.company?.avatar || "/default.png"}
                         alt="Avatar"
@@ -224,7 +240,7 @@ const JobDetails = () => {
                       Company Overview
                     </h2>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex flex-col items-start gap-4">
                       <img
                         src={job?.company?.companyLogo || "/default.png"}
                         alt="Company Logo"
@@ -303,7 +319,7 @@ const JobDetails = () => {
                     About Company
                   </h2>
 
-                  <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
+                  <p className="text-sm text-justify text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
                     {job?.company?.companyDescription ||
                       "No description provided."}
                   </p>
@@ -331,7 +347,7 @@ const JobDetails = () => {
                 What We're Looking For
               </h2>
             </div>
-            <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
+            <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-gray-700">
               <ul className="list-disc space-y-3 px-4">
                 {job?.requirements
                   .toString()
@@ -351,7 +367,7 @@ const JobDetails = () => {
                   What We're offering
                 </h2>
               </div>
-              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
+              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-gray-700">
                 <ul className="list-disc space-y-3 px-4">
                   {job?.offer
                     .toString()

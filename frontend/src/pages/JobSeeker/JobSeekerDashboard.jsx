@@ -22,6 +22,7 @@ const JobSeekerDashboard = () => {
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
+  const [jobCount, setJobCount] = useState(0);
 
   //Filter states
   const [filters, setFilters] = useState({
@@ -62,12 +63,14 @@ const JobSeekerDashboard = () => {
       );
 
       setJobs(response?.data?.jobs || []);
+      setJobCount(response?.data?.jobs?.length || 0);
       setPagination(response?.data?.pagination || null);
       // console.log(response?.data);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
       setJobs([]);
       setPagination(null);
+      setJobCount(0);
     } finally {
       setLoading(false);
     }
@@ -201,7 +204,7 @@ const JobSeekerDashboard = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                {pagination && (
+                {pagination && jobCount !== 0 && (
                   <p className="text-xs text-gray-700 lg:text-base pl-2">
                     Showing{" "}
                     <span className="font-bold">

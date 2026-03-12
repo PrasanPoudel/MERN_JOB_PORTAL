@@ -542,7 +542,7 @@ exports.getRiskDistribution = async (req, res) => {
       const score = job.fraudScore || 0;
       if (score <= 0.1) {
         safe++;
-      } else if (score <= 0.25) {
+      } else if (score <= 0.4) {
         moderate++;
       } else {
         high++;

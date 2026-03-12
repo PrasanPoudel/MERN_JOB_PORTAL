@@ -193,7 +193,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
             <div className="flex items-center">
               <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
                 <Home className="sm:h-6 sm:w-6 h-4 w-4" />
-                <span className="hidden md:block">Home</span>
+                <span className="hidden lg:block">Home</span>
               </NavLink>
               <NavLink
                 title="Search for Jobs"
@@ -201,7 +201,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 className={navLinkClasses}
               >
                 <Search className="sm:h-6 sm:w-6 h-4 w-4" />
-                <span className="hidden md:block">Search for Jobs</span>
+                <span className="hidden lg:block">Search for Jobs</span>
               </NavLink>
               {user && user?.role === "admin" && (
                 <NavLink
@@ -217,7 +217,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                       </span>
                     )}
                   </div>
-                  <span className="hidden md:block">Messages</span>
+                  <span className="hidden lg:block">Messages</span>
                 </NavLink>
               )}
               {user && user?.role === "employer" && (
@@ -234,7 +234,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                       </span>
                     )}
                   </div>
-                  <span className="hidden md:block">Messages</span>
+                  <span className="hidden lg:block">Messages</span>
                 </NavLink>
               )}
             </div>

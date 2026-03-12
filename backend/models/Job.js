@@ -7,6 +7,8 @@ const jobSchema = new mongoose.Schema(
     requirements: { type: String, required: true },
     location: { type: String },
     category: { type: String },
+    educationLevel: { type: String, required: true },
+    experienceLevel: { type: String, required: true },
     type: {
       type: String,
       enum: ["Full-Time", "Part-Time", "Internship", "Contract"],
@@ -18,29 +20,29 @@ const jobSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
-    }, 
+    },
     salaryMin: { type: Number },
     salaryMax: { type: Number },
-    no_of_vacancy: { 
-      type: Number, 
+    no_of_vacancy: {
+      type: Number,
       required: true,
       min: 1,
       validate: {
-        validator: function(v) {
+        validator: function (v) {
           return Number.isInteger(v) && v > 0;
         },
-        message: 'Number of vacancies must be a positive integer'
-      }
+        message: "Number of vacancies must be a positive integer",
+      },
     },
-    application_deadline_date: { 
-      type: Date, 
+    application_deadline_date: {
+      type: Date,
       required: true,
       validate: {
-        validator: function(v) {
+        validator: function (v) {
           return v > new Date();
         },
-        message: 'Application deadline must be in the future'
-      }
+        message: "Application deadline must be in the future",
+      },
     },
     isClosed: { type: Boolean, default: false },
   },

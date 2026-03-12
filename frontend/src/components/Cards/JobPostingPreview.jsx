@@ -3,13 +3,15 @@ import {
   MapPin,
   ArrowLeft,
   BriefcaseBusiness,
-  Calendar,
   Info,
   Mail,
   ChevronDown,
   ChevronUp,
   BookOpenText,
   Users,
+  GraduationCap,
+  Clock,
+  CalendarDays,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
 import moment from "moment";
@@ -34,7 +36,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
             onClick={() => {
               setIsPreview(false);
             }}
-            className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
+            className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-sm hover:shadow-lg cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Edit</span>
@@ -53,29 +55,66 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 />
               )}
               <div className="">
-                <h1 className="font-semibold text-gray-900 text-base sm:text-xl md:text-2xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
+                <h1 className="font-semibold text-gray-900 text-base sm:text-xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
                   {formData?.jobTitle}
                 </h1>
-                <div className="flex gap-2 items-center text-sm text-gray-600">
-                  <MapPin className="w-4 h-4" />
+                <div className="flex gap-2 items-start text-sm text-gray-600">
+                  <MapPin className="w-4 h-4 shrink-0" />
                   <span className="font-semibold">{formData?.location}</span>
                 </div>
               </div>
             </div>
 
             {/* Tags */}
-            <div className="flex flex-col sm:flex-row gap-3 mt-6">
-              <span className="px-4 py-2 bg-green-100 text-sm text-green-800 font-semibold rounded-full border border-purple-200">
+            <div className="flex flex-col sm:flex-row gap-3 mt-6 flex-wrap">
+              <span className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+                <BriefcaseBusiness className="w-4 h-4" />
+                {formData?.experienceLevel}
+              </span>
+              <span className="flex items-center gap-2 px-4 py-2 bg-green-100 text-sm text-green-800 font-semibold rounded-full border border-green-200">
+                <Clock className="w-4 h-4" />
                 {formData?.jobType}
               </span>
-              <span className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-sm text-purple-800 font-semibold rounded-full border border-sky-200">
+              <span className="flex items-center gap-2 px-4 py-2 bg-purple-100 text-sm text-purple-800 font-semibold rounded-full border border-purple-200">
                 <BriefcaseBusiness className="w-4 h-4" />
                 {formData?.category}
               </span>
+              <span className="flex items-center gap-2 px-4 py-2 bg-blue-100 text-sm text-blue-800 font-semibold rounded-full border border-blue-200">
+                <GraduationCap className="w-4 h-4" />
+                {formData?.educationLevel}
+              </span>
+              {/* Posted Date */}
               <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
-                <Calendar className="w-4 h-4" />
-                {moment(formData.createdAt).format("MMMM Do, YYYY")}
+                <CalendarDays className="w-4 h-4 text-blue-600" />
+                <span className="font-medium text-gray-500">Posted Date:</span>
+                <span>
+                  {moment(formData.createdAt).format("MMMM Do, YYYY")}
+                </span>
               </div>
+
+              {/* Deadline Date */}
+              {formData?.applicationDeadlineDate && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-red-50 text-sm text-red-700 font-semibold rounded-full border border-red-100">
+                  <CalendarDays className="w-4 h-4 shrink-0 text-red-500" />
+                  <span className="font-medium text-red-500">
+                    Deadline Date:
+                  </span>
+                  <span>
+                    {moment(formData.applicationDeadlineDate).format(
+                      "MMMM Do, YYYY",
+                    )}
+                  </span>
+                </div>
+              )}
+              {formData?.noOfVacancy && (
+                <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+                  <Users className="w-4 h-4" />
+                  <span className="text-sm font-medium">
+                    Available Vacancy:{" "}
+                  </span>
+                  {formData?.noOfVacancy}
+                </div>
+              )}
             </div>
           </div>
 
@@ -88,27 +127,6 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 <span className="text-sm font-medium ml-2">per Month</span>
               </p>
             </div>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-1 py-2">
-            {formData?.noOfVacancy && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 font-semibold rounded-full border border-blue-200">
-                <Users className="w-4 h-4" />
-                <span className="text-sm font-medium">Available Vacancy: </span>
-                {formData?.noOfVacancy}
-              </div>
-            )}
-            {formData?.applicationDeadlineDate && (
-              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 font-semibold rounded-full border border-red-200">
-                <Calendar className="w-4 h-4" />
-                <span className="text-sm font-medium">
-                  Application Deadline:{" "}
-                </span>
-                {moment(formData.applicationDeadlineDate).format(
-                  "MMMM Do, YYYY",
-                )}
-              </div>
-            )}
           </div>
           {/* Employer Info */}
 
@@ -133,14 +151,14 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
 
             {/* Expanded Content */}
             {expanded && (
-              <div className="px-4 py-4 md:p-8 space-y-10">
+              <div className="p-4 md:p-8 space-y-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
                     <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
                       Personal Information
                     </h2>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-start gap-4 mb-0">
                       <img
                         src={user?.avatar || "/default.png"}
                         alt="Avatar"
@@ -150,7 +168,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                         <h3 className="text-lg font-semibold text-gray-900">
                           {user?.name}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1 flex-wrap">
                           <Mail className="w-4 h-4" />
                           <span>{user?.email}</span>
                         </div>
@@ -162,7 +180,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                       Company Overview
                     </h2>
 
-                    <div className="flex items-center gap-4">
+                    <div className="flex items-start gap-4 mb-0">
                       <img
                         src={user?.companyLogo || "/default.png"}
                         alt="Company Logo"
@@ -238,7 +256,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                     About Company
                   </h2>
 
-                  <p className="text-sm text-gray-700 leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
+                  <p className="text-sm text-gray-700 text-justify leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
                     {user?.companyDescription || "No description provided."}
                   </p>
                 </div>
@@ -265,7 +283,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 What We're Looking For
               </h2>
             </div>
-            <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
+            <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-gray-700">
               <ul className="list-disc space-y-3 px-4">
                 {formData.requirements
                   .toString()
@@ -286,7 +304,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                   What We're offering
                 </h2>
               </div>
-              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-justify text-gray-700">
+              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-gray-700">
                 <ul className="list-disc space-y-3 px-4">
                   {formData?.offer
                     .toString()

@@ -7,8 +7,7 @@ const TFIDFSimilarity = require("../utils/tfidfSimilarity");
 const { paginateQuery, buildQuery } = require("../utils/pagination");
 
 // FastAPI server URL
-const FRAUD_PREDICTOR_API_URL =
-  process.env.FRAUD_PREDICTOR_API_URL;
+const FRAUD_PREDICTOR_API_URL = process.env.FRAUD_PREDICTOR_API_URL;
 
 //create job (employer only)
 exports.createJob = async (req, res) => {
@@ -23,35 +22,54 @@ exports.createJob = async (req, res) => {
 
     const salaryMin = req.body.salaryMin || 0;
     const salaryMax = req.body.salaryMax || 0;
-    const salaryRange = salaryMax - salaryMin;
+    const salaryRange = `${salaryMin} - ${salaryMax}`;
 
     // Validate no_of_vacancy
     const noOfVacancy = req.body.no_of_vacancy;
-    if (!noOfVacancy || !Number.isInteger(Number(noOfVacancy)) || Number(noOfVacancy) <= 0) {
-      return res.status(400).json({ message: "Number of vacancies must be a positive integer" });
+    if (
+      !noOfVacancy ||
+      !Number.isInteger(Number(noOfVacancy)) ||
+      Number(noOfVacancy) <= 0
+    ) {
+      return res
+        .status(400)
+        .json({ message: "Number of vacancies must be a positive integer" });
     }
 
     // Validate application_deadline_date
-    const applicationDeadlineDate = new Date(req.body.application_deadline_date);
+    const applicationDeadlineDate = new Date(
+      req.body.application_deadline_date,
+    );
     if (!applicationDeadlineDate || isNaN(applicationDeadlineDate.getTime())) {
-      return res.status(400).json({ message: "Application deadline date is required and must be a valid date" });
+      return res.status(400).json({
+        message:
+          "Application deadline date is required and must be a valid date",
+      });
     }
-    
+
     if (applicationDeadlineDate <= new Date()) {
-      return res.status(400).json({ message: "Application deadline must be in the future" });
+      return res
+        .status(400)
+        .json({ message: "Application deadline must be in the future" });
     }
 
     const jobDataForML = {
       title: req.body.title || "",
       description: req.body.description || "",
       requirements: req.body.requirements || "",
-      offer: req.body.offer || "",
+      benefits: req.body.offer || "",
+      company_profile: employer.companyDescription,
+      location: req.body.location,
+      department: req.body.category,
       salaryRange,
+      employment_type: req.body.type,
+      required_experience: req.body.experienceLevel,
+      required_education: req.body.educationLevel,
       hasCompanyLogo,
     };
 
     // Call FastAPI server for fraud prediction
-    let fraudScore = 0.100;
+    let fraudScore = 0.1;
     try {
       const response = await axios.post(
         `${FRAUD_PREDICTOR_API_URL}/predict`,
@@ -61,7 +79,7 @@ exports.createJob = async (req, res) => {
         },
       );
 
-      fraudScore = response.data.fraudScore;
+      fraudScore = response.data.fraudScore.toFixed(4);
     } catch (error) {
       console.error("Fraud predictor API error:", error.message);
       if (error.response) {
@@ -90,7 +108,15 @@ exports.createJob = async (req, res) => {
 
 exports.getJobs = async (req, res) => {
   try {
-    const { page = 1, limit = 9, keyword, location, category, type, userId } = req.query;
+    const {
+      page = 1,
+      limit = 9,
+      keyword,
+      location,
+      category,
+      type,
+      userId,
+    } = req.query;
 
     // Build query for pagination
     const query = {
@@ -108,7 +134,7 @@ exports.getJobs = async (req, res) => {
       }).select("_id");
 
       const companyIds = companies.map((c) => c._id);
-      
+
       query.$or = [
         { title: { $regex: keywordLower, $options: "i" } },
         { company: { $in: companyIds } },
@@ -126,9 +152,10 @@ exports.getJobs = async (req, res) => {
       limit,
       populate: {
         path: "company",
-        select: "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified"
+        select:
+          "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
       },
-      sort: { createdAt: -1 } // Sort by creation date descending
+      sort: { createdAt: -1 }, // Sort by creation date descending
     });
 
     let appliedJobStatusMap = {};
@@ -139,10 +166,14 @@ exports.getJobs = async (req, res) => {
     if (userId) {
       user = await User.findById(userId);
 
-      const savedJobs = await SavedJob.find({ jobSeeker: userId }).select("job");
+      const savedJobs = await SavedJob.find({ jobSeeker: userId }).select(
+        "job",
+      );
       savedJobIds = savedJobs.map((s) => String(s.job));
 
-      const applications = await Application.find({ applicant: userId }).select("job status");
+      const applications = await Application.find({ applicant: userId }).select(
+        "job status",
+      );
       applications.forEach((app) => {
         appliedJobStatusMap[String(app.job)] = app.status;
       });
@@ -173,7 +204,7 @@ exports.getJobs = async (req, res) => {
 
     res.json({
       jobs: jobsWithExtras,
-      pagination: result.pagination
+      pagination: result.pagination,
     });
   } catch (err) {
     console.error(err);

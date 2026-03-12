@@ -102,7 +102,7 @@ const ProfileDropdown = ({
                     navigate(
                       role === "admin"
                         ? "/admin-dashboard"
-                        : "employer-dashboard",
+                        : "/employer-dashboard",
                     )
                   }
                   title="Go to dashboard"

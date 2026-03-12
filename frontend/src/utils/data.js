@@ -4,7 +4,7 @@ import {
   Building2,
   LayoutDashboard,
   Plus,
-  Edit3
+  Edit3,
 } from "lucide-react";
 
 // Navigation items configuration
@@ -18,7 +18,11 @@ export const NAVIGATION_MENU_ADMIN = [
   { id: "admin-dashboard", name: "Dashboard", icon: LayoutDashboard },
   { id: "edit-admin-profile", name: "Edit Profile", icon: Edit3 },
   { id: "admin-users-management", name: "Manage Users", icon: Users },
-  { id: "admin-company-verification", name: "Company Verification", icon: Building2 },
+  {
+    id: "admin-company-verification",
+    name: "Company Verification",
+    icon: Building2,
+  },
   { id: "admin-jobs-management", name: "Manage Jobs", icon: BriefcaseBusiness },
 ];
 // Categories and job types
@@ -45,6 +49,23 @@ export const JOB_TYPES = [
   { value: "Internship", label: "Internship" },
 ];
 
+export const REQUIRED_EXPERIENCE_LEVEL = [
+  { value: "Internship", label: "Internship" },
+  { value: "Entry level", label: "Entry level" },
+  { value: "Mid-Senior level (2-5 years)", label: "Mid-Senior level (2-5 years)" },
+  { value: "Senior level (5 year plus)", label: "Senior level (5 year plus)" },
+  { value: "Executive level", label: "Executive level" },
+  { value: "Not Applicable", label: "Not Applicable" },
+];
+
+export const REQUIRED_EDUCATION_LEVEL = [
+  { value: "High School or equivalent", label: "High School or equivalent" },
+  { value: "Certification", label: "Certification" },
+  { value: "Professional Certification", label: "Professional Certification" },
+  { value: "Bachelor's Degree", label: "Bachelor's Degree" },
+  { value: "Master's Degree", label: "Master's Degree" },
+  { value: "Doctorate/Phd Level", label: "Doctorate/Phd Level" },
+];
 // Nepal locations data
 export const NEPAL_LOCATIONS = [
   // Bagmati Province

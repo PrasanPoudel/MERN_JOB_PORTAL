@@ -442,6 +442,16 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   label="Status"
                   value={job.isClosed ? "Closed" : "Active"}
                 />
+                  <InfoItem
+                  icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
+                  label="Required Education Level"
+                  value={job.educationLevel || "N/A"}
+                />
+                  <InfoItem
+                  icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
+                  label="Required Experience Level"
+                  value={job.experienceLevel || "N/A"}
+                />
                 <div className="sm:col-span-2">
                   <h3>Requirements</h3>
                   <p className="text-gray-600 my-2 text-xs text-justify whitespace-normal wrap-break-word">
