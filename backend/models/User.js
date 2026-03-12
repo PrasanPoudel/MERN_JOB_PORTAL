@@ -69,12 +69,13 @@ const userSchema = new mongoose.Schema(
     panNumber: {
       type: String,
     },
+    no_of_warnings: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
 
 //Encrypt password before save
-userSchema.pre("save", async function () {
+userSchema.pre("save", async () => {
   if (!this.isModified("password")) return;
 
   this.password = await bcrypt.hash(this.password, 10);
