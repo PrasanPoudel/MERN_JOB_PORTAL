@@ -24,3 +24,5 @@ frontend/dist/
 *.bat
 import-to-atlas.bat
 start-app.bat
+
+fastapi-server
