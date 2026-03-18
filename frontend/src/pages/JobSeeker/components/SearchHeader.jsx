@@ -50,14 +50,15 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
               <div className="relative group flex-1">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
+                  autoComplete="off"
                   id="searchbar_Mobile"
                   type="text"
                   value={filters.keyword}
                   onChange={(e) =>
                     handleFilterChange("keyword", e.target.value)
                   }
-                  placeholder="Job title, keywords"
-                  className="w-full pl-12 pr-4 py-3.5 outline-none bg-transparent placeholder:text-xs placeholder:text-gray-400 text-sm"
+                  placeholder=""
+                  className="w-full pl-12 pr-4 py-3.5 outline-none bg-transparent placeholder:text-xs sm:placeholder:text-sm placeholder:text-gray-400 text-sm"
                 />
               </div>
 
@@ -122,6 +123,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
               <div className="relative group flex-1">
                 <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
+                  autoComplete="off"
                   type="text"
                   id="searchbar"
                   value={filters.keyword}

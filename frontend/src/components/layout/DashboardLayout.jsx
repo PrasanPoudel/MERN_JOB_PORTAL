@@ -89,8 +89,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
   }, [profileDropdownOpen]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex text-md items-center gap-1 p-2 font-medium rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
-     ${isActive ? "underline text-sky-600" : "text-gray-700"}`;
+    `flex text-md items-center gap-1 p-1 font-medium rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
+     ${isActive ? "text-sky-600" : "text-gray-500"}`;
 
   return (
     <div className="flex h-screen bg-white min-w-full">
@@ -190,9 +190,9 @@ const DashboardLayout = ({ activeMenu, children }) => {
             </div>
           </div>
           <div className="flex items-center">
-            <div className="flex items-center">
+            <div className="flex items-center gap-1">
               <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-                <Home className="sm:h-6 sm:w-6 h-4 w-4" />
+                <Home className="h-4 w-4" />
                 <span className="hidden lg:block">Home</span>
               </NavLink>
               <NavLink
@@ -200,7 +200,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 to="/find-jobs"
                 className={navLinkClasses}
               >
-                <Search className="sm:h-6 sm:w-6 h-4 w-4" />
+                <Search className="h-4 w-4" />
                 <span className="hidden lg:block">Search for Jobs</span>
               </NavLink>
               {user && user?.role === "admin" && (
@@ -210,7 +210,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="sm:h-6 sm:w-6 h-4 w-4" />
+                    <MessageSquare className="h-4 w-4" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}
@@ -227,7 +227,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   className={navLinkClasses}
                 >
                   <div className="relative">
-                    <MessageSquare className="sm:h-6 sm:w-6 h-4 w-4" />
+                    <MessageSquare className="h-4 w-4" />
                     {unreadCount > 0 && (
                       <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                         {unreadCount > 99 ? "99+" : unreadCount}

@@ -73,12 +73,12 @@ const Navbar = () => {
   }, [openMenu]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex text-md gap-1 items-center p-2 font-medium ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
-     ${isActive ? "underline text-sky-600" : "text-gray-700"}`;
+    `flex text-md gap-1 items-center p-1 font-medium ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
+     ${isActive ? "text-sky-600" : "text-gray-500"}`;
 
   return (
     <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">
-      <div className="flex items-end p-2 justify-between h-18">
+      <div className="flex items-end p-2 gap-1 justify-between h-18">
         <Link title="Go to Homepage" to="/">
           <img src={logo} className="h-14 w-16 object-contain mix-blend-multiply" alt="logo" />
         </Link>
@@ -87,7 +87,7 @@ const Navbar = () => {
             className={`${openMenu ? "z-1200 p-3 absolute top-20 left-0 min-w-full bg-white flex flex-col items-center gap-4 min-h-screen" : "hidden sm:flex gap-2"}`}
           >
             <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-              <Home className="h-6 w-6" />
+              <Home className="h-4 w-4" />
               <span>Home</span>
             </NavLink>
             <NavLink
@@ -95,7 +95,7 @@ const Navbar = () => {
               to="/find-jobs"
               className={navLinkClasses}
             >
-              <Search className="h-6 w-6" />
+              <Search className="h-4 w-4" />
               <span>Search for Jobs</span>
             </NavLink>
             {user && user?.role === "jobSeeker" && (
@@ -105,7 +105,7 @@ const Navbar = () => {
                 className={navLinkClasses}
               >
                 <div className="relative">
-                  <MessageSquare className="h-6 w-6" />
+                  <MessageSquare className="h-4 w-4" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                       {unreadCount > 99 ? "99+" : unreadCount}
@@ -123,7 +123,7 @@ const Navbar = () => {
                 className={navLinkClasses}
               >
                 <div className="relative">
-                  <MessageSquare className="h-6 w-6" />
+                  <MessageSquare className="h-4 w-4" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                       {unreadCount > 99 ? "99+" : unreadCount}
@@ -141,7 +141,7 @@ const Navbar = () => {
                 className={navLinkClasses}
               >
                 <div className="relative">
-                  <MessageSquare className="h-6 w-6" />
+                  <MessageSquare className="h-4 w-4" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
                       {unreadCount > 99 ? "99+" : unreadCount}

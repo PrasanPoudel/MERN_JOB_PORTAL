@@ -12,6 +12,8 @@ import {
   ChevronUp,
   Users,
   View,
+  AlertTriangle,
+  Clock,
 } from "lucide-react";
 import { toast } from "react-hot-toast";
 import DashboardLayout from "../../components/layout/DashboardLayout";
@@ -26,6 +28,12 @@ const ManageJobs = () => {
   const [isLoading, setIsLoading] = useState(false);
 
   const [jobs, setJobs] = useState([]);
+
+  // Confirmation overlay state
+  const [showConfirmation, setShowConfirmation] = useState(false);
+  const [confirmationAction, setConfirmationAction] = useState(null);
+  const [confirmationJobId, setConfirmationJobId] = useState(null);
+  const [confirmationJobTitle, setConfirmationJobTitle] = useState("");
 
   const filteredAndSortedJobs = useMemo(() => {
     let filtered = jobs.filter((job) => {
@@ -156,6 +164,10 @@ const ManageJobs = () => {
           applicants: job?.applicationCount || 0,
           datePosted: moment(job?.createdAt).format("MMMM Do, YYYY"),
           logo: job?.company?.companyLogo,
+          applicationDeadline: job?.application_deadline_date,
+          isExpired: job?.application_deadline_date
+            ? moment(job.application_deadline_date).isBefore(moment())
+            : false,
         }));
         setJobs(formattedJobs);
       }
@@ -174,6 +186,124 @@ const ManageJobs = () => {
     getPostedJobs();
     return () => {};
   }, []);
+
+  // Confirmation handlers
+  const openConfirmation = (action, jobId, jobTitle) => {
+    setConfirmationAction(action);
+    setConfirmationJobId(jobId);
+    setConfirmationJobTitle(jobTitle);
+    setShowConfirmation(true);
+  };
+
+  const closeConfirmation = () => {
+    setShowConfirmation(false);
+    setConfirmationAction(null);
+    setConfirmationJobId(null);
+    setConfirmationJobTitle("");
+  };
+
+  const handleConfirmedAction = async () => {
+    if (confirmationAction === "delete") {
+      try {
+        await axiosInstance.delete(
+          API_PATHS.JOBS.DELETE_JOB(confirmationJobId),
+        );
+        setJobs(jobs.filter((job) => job.id !== confirmationJobId));
+        toast.success("Job listing deleted successfully");
+      } catch (err) {
+        console.error("Error deleting job", err);
+        toast.error("Failed to delete job listing");
+      }
+    } else if (confirmationAction === "close") {
+      try {
+        await axiosInstance.put(API_PATHS.JOBS.TOGGLE_CLOSE(confirmationJobId));
+        getPostedJobs(true);
+        toast.success("Job status updated successfully");
+      } catch (err) {
+        console.error("Error changing job status", err);
+        toast.error("Failed to update job status");
+      }
+    } else if (confirmationAction === "activate") {
+      try {
+        await axiosInstance.put(API_PATHS.JOBS.TOGGLE_CLOSE(confirmationJobId));
+        getPostedJobs(true);
+        toast.success("Job status updated successfully");
+      } catch (err) {
+        console.error("Error changing job status", err);
+        toast.error("Failed to update job status");
+      }
+    }
+    closeConfirmation();
+  };
+
+  // Confirmation Overlay Component
+  const ConfirmationOverlay = () => {
+    if (!showConfirmation) return null;
+
+    const getConfirmationConfig = () => {
+      switch (confirmationAction) {
+        case "delete":
+          return {
+            title: "Delete Job Listing",
+            message: `Are you sure you want to delete "${confirmationJobTitle}"? This action cannot be undone.`,
+            icon: <Trash2 className="w-6 h-6 text-red-600" />,
+            confirmText: "Delete",
+            confirmColor: "bg-red-600 hover:bg-red-700",
+          };
+        case "close":
+          return {
+            title: "Close Job Listing",
+            message: `Are you sure you want to close "${confirmationJobTitle}"? This will hide the job from job seekers.`,
+            icon: <X className="w-6 h-6 text-orange-600" />,
+            confirmText: "Close Job",
+            confirmColor: "bg-orange-600 hover:bg-orange-700",
+          };
+        case "activate":
+          return {
+            title: "Activate Job Listing",
+            message: `Are you sure you want to activate "${confirmationJobTitle}"? This will make the job visible to job seekers.`,
+            icon: <Plus className="w-6 h-6 text-green-600" />,
+            confirmText: "Activate",
+            confirmColor: "bg-green-600 hover:bg-green-700",
+          };
+        default:
+          return null;
+      }
+    };
+
+    const config = getConfirmationConfig();
+    if (!config) return null;
+
+    return (
+      <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-1200 p-4">
+        <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4">
+          <div className="p-6">
+            <h3 className="flex items-center gap-2  justify-center text-lg font-semibold text-gray-900 text-center mb-2">
+              {config.icon}
+              {config.title}
+            </h3>
+            <p className="text-sm text-gray-600 text-center mb-6">
+              {config.message}
+            </p>
+            <div className="flex gap-3">
+              <button
+                onClick={closeConfirmation}
+                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmedAction}
+                className={`flex-1 px-4 py-2 text-sm font-medium text-white ${config.confirmColor} rounded-lg transition-colors duration-200 hover:shadow-lg`}
+              >
+                {config.confirmText}
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  };
 
   return (
     <DashboardLayout activeMenu="manage-jobs">
@@ -363,14 +493,25 @@ const ManageJobs = () => {
                                       navigate(`/job/${job.id}`);
                                     }}
                                   >
-                                    <View className="w-5 h-5" />
+                                    <View className="w-4 h-4" />
                                   </button>
-                                  {job.status === "Active" ? (
+
+                                  {/* Expired Job Status */}
+                                  {job.isExpired ? (
+                                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-semibold rounded-full bg-orange-100 text-orange-700 border border-orange-200">
+                                      <Clock className="w-4 h-4" />
+                                      Expired
+                                    </span>
+                                  ) : job.status === "Active" ? (
                                     <button
                                       title="Job Won't be visible to others"
                                       className="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-700 font-semibold transition-colors duration-200 hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer"
                                       onClick={() => {
-                                        handleStatusChange(job.id);
+                                        openConfirmation(
+                                          "close",
+                                          job.id,
+                                          job.title,
+                                        );
                                       }}
                                     >
                                       <X className="w-4 h-4 mr-1.5" />
@@ -383,7 +524,11 @@ const ManageJobs = () => {
                                       title="Job will be visible to others"
                                       className="flex items-center gap-2 text-xs text-green-600 hover:text-green-700 font-semibold transition-colors duration-200 hover:bg-green-50 px-2 py-1 rounded-lg cursor-pointer"
                                       onClick={() => {
-                                        handleStatusChange(job.id);
+                                        openConfirmation(
+                                          "activate",
+                                          job.id,
+                                          job.title,
+                                        );
                                       }}
                                     >
                                       <Plus className="w-4 h-4 mr-1.5" />
@@ -392,11 +537,16 @@ const ManageJobs = () => {
                                       </span>
                                     </button>
                                   )}
+
                                   <button
                                     title="Delete this job post"
                                     className="flex items-center text-xs text-red-600 hover:text-red-700 font-semibold transition-colors duration-200 hover:bg-red-50 px-2 py-1 rounded-lg cursor-pointer"
                                     onClick={() => {
-                                      handleDeleteJob(job.id);
+                                      openConfirmation(
+                                        "delete",
+                                        job.id,
+                                        job.title,
+                                      );
                                     }}
                                   >
                                     <Trash2 className="w-4 h-4" />
@@ -495,6 +645,8 @@ const ManageJobs = () => {
           </div>
         </div>
       </div>
+      {/* Confirmation Overlay */}
+      <ConfirmationOverlay />
     </DashboardLayout>
   );
 };
