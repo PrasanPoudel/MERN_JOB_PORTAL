@@ -16,6 +16,7 @@ import {
 import Navbar from "../../components/layout/Navbar";
 import { useAuth } from "../../context/AuthContext";
 import EditUserProfile from "./EditUserProfile";
+import { Link } from "react-router-dom";
 
 const UserProfile = () => {
   const { user, updateUser } = useAuth();
@@ -55,7 +56,7 @@ const UserProfile = () => {
     <>
       <Navbar />
       <div className="min-h-screen bg-gray-50 p-4 mt-24 pb-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Profile Header */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
             {/* Header with Edit Button */}
@@ -81,25 +82,34 @@ const UserProfile = () => {
                 />
                 {/* User Details */}
                 <div className="flex flex-col items-center">
-                  <h2 className="text-2xl font-bold text-gray-900">
+                  <h2 className="text-2xl font-semibold text-gray-900">
                     {user?.name || ""}
                   </h2>
                   {user?.isPremium ? (
-                    <span className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-400 text-white text-xs shadow-sm">
+                    <span className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-500 text-white text-sm shadow-sm">
                       <Crown className="w-4 h-4" />
                       Premium User
                     </span>
                   ) : (
-                    <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-xs font-medium border border-gray-200">
-                      <User className="w-4 h-4" />
-                      Free User
-                    </span>
+                    <div className="flex items-center gap-1">
+                      <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-medium border border-gray-200">
+                        <User className="w-4 h-4" />
+                        Free User
+                      </span>
+                      <Link
+                        title="Upgrade to premium"
+                        to="/pricing"
+                        className="text-sm underline text-blue-600 hover:text-blue-700"
+                      >
+                        Upgrade
+                      </Link>
+                    </div>
                   )}
                   <div className="flex items-center mt-1 text-gray-600">
                     <p className="text-sm">{user?.email}</p>
                   </div>
 
-                  <div className="flex flex-wrap gap-3 mt-1">
+                  <div className="flex flex-wrap gap-3 mt-2">
                     {user?.location && (
                       <div className="flex items-center gap-1.5 text-gray-700 text-sm">
                         <MapPin className="w-4 h-4 text-sky-600" />
