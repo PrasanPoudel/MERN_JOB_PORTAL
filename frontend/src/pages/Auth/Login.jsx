@@ -85,7 +85,11 @@ const Login = () => {
         //Redirect after logged in successfully
         setTimeout(() => {
           window.location.href =
-            role === "employer" ? "/employer-dashboard" : "/find-jobs";
+            role === "employer"
+              ? "/employer-dashboard"
+              : role === admin
+                ? "/admin-dashboard"
+                : "/";
         }, 2000);
       }
     } catch (error) {
