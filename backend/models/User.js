@@ -16,11 +16,14 @@ const userSchema = new mongoose.Schema(
     location: String,
     facebookLink: String,
     instagramLink: String,
-    isPremium: Boolean,
+    isPremium: {
+      type: Boolean,
+      default: false,
+    },
+    premiumIssueDate: { type: Date, default: null },
     isBanned: { type: Boolean, default: false },
     banReason: { type: String, default: "" },
     banDate: { type: Date },
-    premiumIssueDate: { type: Date, default: null },
     skills: [String],
     education: [
       {
@@ -75,7 +78,7 @@ const userSchema = new mongoose.Schema(
 );
 
 //Encrypt password before save
-userSchema.pre("save", async () => {
+userSchema.pre("save", async function () {
   if (!this.isModified("password")) return;
 
   this.password = await bcrypt.hash(this.password, 10);
