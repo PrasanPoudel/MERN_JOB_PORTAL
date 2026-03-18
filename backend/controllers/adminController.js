@@ -7,7 +7,6 @@ const { paginateQuery, buildQuery } = require("../utils/pagination");
 // Get admin dashboard stats
 exports.getAdminStats = async (req, res) => {
   try {
-
     // Get total users
     const totalUsers = await User.countDocuments({
       role: { $in: ["jobSeeker", "employer"] },
@@ -60,7 +59,7 @@ exports.getAllUsers = async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    const { page = 1, limit = 9, role, search } = req.query;
+    const { page = 1, limit = 9, user, role, search } = req.query;
 
     // Build query for pagination
     const query = { role: { $in: ["jobSeeker", "employer"] } };
@@ -68,10 +67,21 @@ exports.getAllUsers = async (req, res) => {
     if (role) {
       query.role = role;
     }
-
+    if (user && user !== "all") {
+      if (user === "banned") {
+        query.isBanned = true;
+      } else if (user === "unbanned") {
+        query.isBanned = false;
+      } else if (user === "premium") {
+        query.isPremium = true;
+      } else if (user === "nonPremium") {
+        query.isPremium = false || undefined;
+      }
+    }
     if (search && search.trim()) {
       query.$or = [
         { name: { $regex: search.trim(), $options: "i" } },
+        { companyName: { $regex: search.trim(), $options: "i" } },
         { email: { $regex: search.trim(), $options: "i" } },
       ];
     }
@@ -80,7 +90,7 @@ exports.getAllUsers = async (req, res) => {
     const result = await paginateQuery(User, query, {
       page,
       limit,
-      sort: { createdAt: -1 }
+      sort: { createdAt: -1 },
     });
 
     // Add stats to each user
@@ -120,7 +130,12 @@ exports.getAllUsers = async (req, res) => {
                 as: "applications",
               },
             },
-            { $group: { _id: null, count: { $sum: { $size: "$applications" } } } },
+            {
+              $group: {
+                _id: null,
+                count: { $sum: { $size: "$applications" } },
+              },
+            },
           ]);
           userStats = {
             postedJobs,
@@ -130,14 +145,14 @@ exports.getAllUsers = async (req, res) => {
 
         return {
           ...user.toObject(),
-          stats: userStats
+          stats: userStats,
         };
-      })
+      }),
     );
 
     res.json({
       users: usersWithStats,
-      pagination: result.pagination
+      pagination: result.pagination,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -280,14 +295,14 @@ exports.getAllJobs = async (req, res) => {
       limit,
       populate: {
         path: "company",
-        select: "name companyName email companyLogo isCompanyVerified"
+        select: "name companyName email companyLogo isCompanyVerified",
       },
-      sort: { createdAt: -1 }
+      sort: { createdAt: -1 },
     });
 
     res.json({
       jobs: result.data,
-      pagination: result.pagination
+      pagination: result.pagination,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });

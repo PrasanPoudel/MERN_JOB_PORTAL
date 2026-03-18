@@ -102,8 +102,7 @@ const Login = () => {
         loading: false,
         errors: {
           submit:
-            error?.message ||
-            "Login failed. Please check your credentials and try again.",
+            error?.message
         },
       }));
     }

@@ -342,6 +342,7 @@ const ManageJobs = () => {
                   <Search className="w-4 h-4 text-gray-400" />
                 </div>
                 <input
+                  autoComplete="off"
                   type="text"
                   placeholder="Search jobs..."
                   value={searchTerm}

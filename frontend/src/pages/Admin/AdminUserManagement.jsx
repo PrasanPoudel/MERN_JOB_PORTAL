@@ -16,6 +16,7 @@ import {
   User,
   Ban,
   ShieldCheck,
+  AlertTriangle,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -30,6 +31,7 @@ const AdminUserManagement = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
+  const [userFilter, setUserFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
   const [confirmDeleteUser, setConfirmDeleteUser] = useState(null);
   const [deleting, setDeleting] = useState(false);
@@ -52,7 +54,9 @@ const AdminUserManagement = () => {
       if (roleFilter !== "all") {
         params.append("role", roleFilter);
       }
-
+      if (userFilter !== "all") {
+        params.append("user", userFilter);
+      }
       if (searchTerm) {
         params.append("search", searchTerm);
       }
@@ -72,7 +76,7 @@ const AdminUserManagement = () => {
 
   useEffect(() => {
     getAllUsers(1);
-  }, [roleFilter, searchTerm]);
+  }, [roleFilter, searchTerm, userFilter]);
 
   useEffect(() => {
     getAllUsers(currentPage);
@@ -189,6 +193,19 @@ const AdminUserManagement = () => {
             <option value="jobSeeker">Job Seekers</option>
             <option value="employer">Employers</option>
           </select>
+
+          <select
+            id="select_user"
+            className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"
+            value={userFilter}
+            onChange={(e) => setUserFilter(e.target.value)}
+          >
+            <option value="all">Show All Users</option>
+            <option value="banned">Show Only Banned Users</option>
+            <option value="unbanned">Show Only Unbanned Users</option>
+            <option value="premium">Show Only Premium Users</option>
+            <option value="nonPremium">Show Only Non Premium Users</option>
+          </select>
         </div>
 
         {/* User Cards */}
@@ -250,7 +267,6 @@ const AdminUserManagement = () => {
                           </span>
                         )}
                       </div>
-
                       <p
                         className={`text-xs flex w-32 px-2 py-1 rounded-full font-medium ${
                           user.role === "employer"
@@ -274,6 +290,12 @@ const AdminUserManagement = () => {
                               <BadgeCheck className="w-4 h-4 text-sky-600 shrink-0" />
                             )}
                         </p>
+                      )}
+                      {user?.isBanned && (
+                        <span className="flex gap-1 items-center text-red-600">
+                          <AlertTriangle className="w-3 h-3" />
+                          Banned
+                        </span>
                       )}
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
@@ -504,8 +526,8 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
           <Loader className="animate-spin mx-auto text-sky-600" />
         ) : (
           <>
-            <div className="h-[80vh] overflow-y-scroll p-4">
-              <div className="pt-4 flex flex-col md:flex-row md:items-center gap-6 mb-8">
+            <div className="h-[90vh] overflow-y-scroll p-4">
+              <div className="pt-4 flex flex-col md:flex-row md:items-center gap-6 mb-6">
                 <div className="w-24 h-24 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
                   <img
                     src={user.avatar || "/default.png"}
@@ -525,7 +547,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                 </div>
               </div>
 
-              <div className="grid sm:grid-cols-2 gap-6 mb-8 text-sm">
+              <div className="grid sm:grid-cols-2 gap-6 mb-4 text-sm">
                 <InfoItem
                   icon={<User />}
                   label="Role"
@@ -592,13 +614,20 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
               )}
 
               {user.isBanned && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-4">
+                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-24">
                   <div className="flex items-start gap-2">
                     <Ban className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
                     <div>
-                      <p className="font-semibold text-red-900 text-sm">User is Banned</p>
-                      <p className="text-red-700 text-xs mt-1"><strong>Reason:</strong> {user.banReason}</p>
-                      <p className="text-red-600 text-xs mt-1"><strong>Banned on:</strong> {new Date(user.banDate).toLocaleDateString()}</p>
+                      <p className="font-semibold text-red-900 text-sm">
+                        User is Banned
+                      </p>
+                      <p className="text-red-700 text-xs mt-1">
+                        <strong>Reason:</strong> {user.banReason}
+                      </p>
+                      <p className="text-red-600 text-xs mt-1">
+                        <strong>Banned on:</strong>{" "}
+                        {new Date(user.banDate).toLocaleDateString()}
+                      </p>
                     </div>
                   </div>
                 </div>

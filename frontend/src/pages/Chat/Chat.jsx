@@ -650,15 +650,15 @@ const Chat = ({ isAdmin = false }) => {
                     </div>
                     <div className="flex gap-2 justify-center">
                       <div
-                        className="w-2 h-2 bg-sky-500 rounded-full animate-bounce"
+                        className="w-2 h-2 bg-sky-500 rounded-full"
                         style={{ animationDelay: "0ms" }}
                       ></div>
                       <div
-                        className="w-2 h-2 bg-sky-500 rounded-full animate-bounce"
+                        className="w-2 h-2 bg-sky-500 rounded-full"
                         style={{ animationDelay: "150ms" }}
                       ></div>
                       <div
-                        className="w-2 h-2 bg-sky-500 rounded-full animate-bounce"
+                        className="w-2 h-2 bg-sky-500 rounded-full"
                         style={{ animationDelay: "300ms" }}
                       ></div>
                     </div>
@@ -743,7 +743,7 @@ const Chat = ({ isAdmin = false }) => {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200/70 p-2 bg-white shadow-md">
+            <div className="border-t border-gray-200/70 p-2 pb-6 bg-white shadow-md">
               <div className="flex gap-4 max-w-5xl mx-auto">
                 <div className="relative flex-1">
                   <input
@@ -759,7 +759,7 @@ const Chat = ({ isAdmin = false }) => {
                       }
                     }}
                     placeholder="Type your message..."
-                    className="w-full py-2 px-4 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
+                    className="w-full p-4 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
                     disabled={sending}
                   />
                 </div>

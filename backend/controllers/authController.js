@@ -75,7 +75,7 @@ exports.login = async (req, res, next) => {
     // Check if user is banned
     if (user?.isBanned) {
       return res.status(403).json({
-        error: "Your account has been banned",
+        message: "Your account has been banned",
         banReason: user.banReason,
         banDate: user.banDate,
       });

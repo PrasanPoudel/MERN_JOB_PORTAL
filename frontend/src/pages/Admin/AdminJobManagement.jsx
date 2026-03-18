@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
   Loader,
   BriefcaseBusiness,
@@ -27,6 +27,8 @@ const AdminJobManagement = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [confirmDeleteJob, setConfirmDeleteJob] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
+  const [sortType, setSortType] = useState("Risk Score (Descending Order)");
+
   const [deleting, setDeleting] = useState(false);
 
   // Pagination
@@ -121,6 +123,27 @@ const AdminJobManagement = () => {
     return pages;
   };
 
+  const sortedJobs = useMemo(() => {
+    return [...jobs].sort((a, b) => {
+      switch (sortType) {
+        case "Posted Date (Ascending Order)":
+          return new Date(a.createdAt) - new Date(b.createdAt);
+
+        case "Posted Date (Descending Order)":
+          return new Date(b.createdAt) - new Date(a.createdAt);
+
+        case "Risk Score (Ascending Order)":
+          return (a.fraudScore || 0) - (b.fraudScore || 0);
+
+        case "Risk Score (Descending Order)":
+          return (b.fraudScore || 0) - (a.fraudScore || 0);
+
+        default:
+          return 0;
+      }
+    });
+  }, [jobs, sortType]);
+
   return (
     <DashboardLayout activeMenu="admin-jobs-management">
       {/* Job Modal */}
@@ -184,6 +207,26 @@ const AdminJobManagement = () => {
             <option value="active">Active</option>
             <option value="closed">Closed</option>
           </select>
+
+          <select
+            id="select_sortType"
+            className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"
+            value={sortType}
+            onChange={(e) => setSortType(e.target.value)}
+          >
+            <option value="Posted Date (Ascending Order)">
+              Posted Date (Ascending Order)
+            </option>
+            <option value="Posted Date (Descending Order)">
+              Posted Date (Descending Order)
+            </option>
+            <option value="Risk Score (Ascending Order)">
+              Risk Score (Ascending Order)
+            </option>
+            <option value="Risk Score (Descending Order)">
+              Risk Score (Descending Order)
+            </option>
+          </select>
         </div>
 
         {/* Job Cards */}
@@ -217,9 +260,54 @@ const AdminJobManagement = () => {
             </div>
 
             <div className="grid gap-6">
-              {jobs.map((job) => (
+              {sortedJobs?.map((job) => (
                 <div key={job._id} className="flex flex-col gap-2">
                   <JobCard job={job} hideShadow={true} />
+                  {job?.fraudScore !== undefined &&
+                    (() => {
+                      const score = job.fraudScore;
+                      const percentage = Math.round(score * 100);
+
+                      let label = "";
+                      let color = "";
+                      let bg = "";
+
+                      if (score < 0.25) {
+                        label = "Safe";
+                        color = "text-green-600";
+                        bg = "bg-green-500";
+                      } else if (score < 0.4) {
+                        label = "Moderate Risk";
+                        color = "text-yellow-600";
+                        bg = "bg-yellow-500";
+                      } else {
+                        label = "High Risk";
+                        color = "text-red-600";
+                        bg = "bg-red-500";
+                      }
+
+                      return (
+                        <div className="px-4 py-3 rounded-lg border bg-gray-50 space-y-2">
+                          <div className="flex justify-between items-center">
+                            <span className="text-sm font-medium text-gray-600">
+                              Fraud Risk
+                            </span>
+                            <span className={`text-sm font-semibold ${color}`}>
+                              {label}
+                            </span>
+                          </div>
+                          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                            <div
+                              className={`${bg} h-full transition-all duration-300`}
+                              style={{ width: `${percentage}%` }}
+                            />
+                          </div>
+                          <p className={`text-sm ${color}`}>
+                            {percentage}% probability
+                          </p>
+                        </div>
+                      );
+                    })()}
                   <div className="w-full flex flex-wrap gap-2 py-2 justify-end">
                     <button
                       onClick={() => setSelectedJob(job)}
@@ -442,12 +530,12 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   label="Status"
                   value={job.isClosed ? "Closed" : "Active"}
                 />
-                  <InfoItem
+                <InfoItem
                   icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Required Education Level"
                   value={job.educationLevel || "N/A"}
                 />
-                  <InfoItem
+                <InfoItem
                   icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Required Experience Level"
                   value={job.experienceLevel || "N/A"}
@@ -503,7 +591,7 @@ const InfoItem = ({ icon, label, value }) => (
   </div>
 );
 
-const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
+const DeleteConfirmationModal = ({ job, onCancel, onConfirm, deleting }) => (
   <div className="fixed inset-0 z-1200 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
@@ -511,10 +599,10 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
           <Trash2 className="text-red-600 w-6 h-6" />
         </div>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Delete User?</h3>
+        <h3 className="text-xl font-bold text-gray-900 mb-2">Delete Job?</h3>
 
         <p className="text-gray-500 text-sm mb-6">
-          Permanently delete <strong>{user.name}</strong>? This action cannot be
+          Permanently delete <strong>{job.title}</strong>? This action cannot be
           undone.
         </p>
 
@@ -528,7 +616,7 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
           </button>
 
           <button
-            onClick={() => onConfirm(user._id)}
+            onClick={() => onConfirm(job._id)}
             disabled={deleting}
             className="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition disabled:opacity-50"
           >
