@@ -26,3 +26,5 @@ import-to-atlas.bat
 start-app.bat
 
 fastapi-server
+uploads
+Project DB files
