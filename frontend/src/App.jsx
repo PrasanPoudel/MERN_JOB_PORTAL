@@ -38,6 +38,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 import ChangePassword from "./pages/ChangePassword";
+import Pricing from "./pages/LandingPage/components/Pricing";
 
 const App = () => {
   const { loading } = useAuth();
@@ -68,6 +69,7 @@ const App = () => {
               element={<AppliedApplications />}
             />
             <Route path="/profile" element={<UserProfile />} />
+            <Route path="/pricing" element={<Pricing />} />
           </Route>
           {/* Protected Routes */}
           <Route element={<ProtectedRoute requiredRole="employer" />}>
