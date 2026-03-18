@@ -10,10 +10,6 @@ frontend/node_modules/
 # Build outputs
 frontend/dist/
 
-# # Uploads
-# backend/uploads/
-# uploads/
-
 # Logs
 *.log
 
@@ -25,6 +21,6 @@ frontend/dist/
 import-to-atlas.bat
 start-app.bat
 
-fastapi-server
+fastAPI-server
 uploads
 Project DB files
