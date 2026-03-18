@@ -6,7 +6,7 @@ export const API_PATHS = {
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
     UPDATE_PROFILE: "/api/user/profile", // Update profile details
     DELETE_RESUME: "/api/user/resume", // Delete Resume details
-    CHANGE_PASSWORD:"/api/user/change-password" // Change user's password
+    CHANGE_PASSWORD: "/api/user/change-password", // Change user's password
   },
   DASHBOARD: {
     OVERVIEW: `/api/analytics/overview`,
@@ -61,9 +61,18 @@ export const API_PATHS = {
     GET_PENDING_COMPANIES: "/api/admin/companies/pending",
     GET_COMPANY_DETAILS: (id) => `/api/admin/companies/${id}`,
     VERIFY_COMPANY: (id) => `/api/admin/companies/${id}/verify`,
-    REMOVE_COMPANY_VERIFICATION: (id) => `/api/admin/companies/${id}/remove-verification`,
+    REMOVE_COMPANY_VERIFICATION: (id) =>
+      `/api/admin/companies/${id}/remove-verification`,
   },
   FILE: {
-    UPLOAD_FILE: "/api/auth/upload-file", 
+    UPLOAD_FILE: "/api/auth/upload-file",
+  },
+
+  ESEWA_PAYMENT: {
+    GENERATE_SIGNATURE: "/api/payment/generate-signature",
+    ESEWA_API: "https://rc-epay.esewa.com.np/api/epay/main/v2/form",
+    PAYMENT_SUCCESS: "http://localhost:5173/payment-success",
+    PAYMENT_FAILED: "http://localhost:5173/payment-failed",
+    UPGRADE_USER_TO_PREMIUM: "/api/payment/upgradeToPremiumUser",
   },
 };

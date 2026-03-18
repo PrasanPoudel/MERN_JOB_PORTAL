@@ -87,7 +87,7 @@ const Login = () => {
           window.location.href =
             role === "employer"
               ? "/employer-dashboard"
-              : role === admin
+              : role === "admin"
                 ? "/admin-dashboard"
                 : "/";
         }, 2000);

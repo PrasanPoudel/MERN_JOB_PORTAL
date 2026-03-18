@@ -39,6 +39,8 @@ import ErrorBoundary from "./components/ErrorBoundary";
 
 import ChangePassword from "./pages/ChangePassword";
 import Pricing from "./pages/LandingPage/components/Pricing";
+import PaymentSuccess from "./pages/Payment/PaymentSuccess";
+import PaymentFailed from "./pages/Payment/PaymentFailed";
 
 const App = () => {
   const { loading } = useAuth();
@@ -60,6 +62,9 @@ const App = () => {
             <Route path="/change-password" element={<ChangePassword />} />
             <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
             <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
+            <Route path="/pricing" element={<Pricing />} />
+            <Route path="/payment-success" element={<PaymentSuccess/>}/>
+            <Route path="/payment-failed" element={<PaymentFailed/>}/>
           </Route>
 
           <Route element={<ProtectedRoute requiredRole="jobSeeker" />}>
@@ -69,7 +74,6 @@ const App = () => {
               element={<AppliedApplications />}
             />
             <Route path="/profile" element={<UserProfile />} />
-            <Route path="/pricing" element={<Pricing />} />
           </Route>
           {/* Protected Routes */}
           <Route element={<ProtectedRoute requiredRole="employer" />}>
