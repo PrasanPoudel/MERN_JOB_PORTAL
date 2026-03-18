@@ -570,18 +570,18 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               ))}
             </div>
 
-            <div className="flex gap-1">
+            <div className="grid grid-cols-4 gap-1">
               <input
                 value={newSkill}
                 id="newSkill"
                 onChange={(e) => setNewSkill(e.target.value)}
                 onKeyDown={(e) => e.key === "Enter" && addSkill()}
                 placeholder="Add skill"
-                className="flex-1 px-2 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-sky-600 text-sm sm:text-base"
+                className="col-span-3 px-2 sm:px-4 py-2 border rounded-lg focus:ring-2 focus:ring-sky-600 text-sm sm:text-base"
               />
               <button
                 onClick={addSkill}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
+                className="flex items-center justify-center gap-2 p-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
               >
                 <Plus className="w-5 h-5" />
                 <span className="hidden lg:flex">Add</span>
@@ -598,7 +598,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               </h2>
               <button
                 onClick={addEducation}
-                className="flex items-center justify-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
+                className="flex items-center justify-center gap-2 p-2 bg-sky-600 text-white rounded-lg hover:bg-sky-700"
               >
                 <Plus className="w-5 h-5" />
                 Add
@@ -695,7 +695,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               </h2>
               <button
                 onClick={addExperience}
-                className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg"
+                className="flex items-center gap-2 p-2 bg-sky-600 text-white rounded-lg"
               >
                 <Plus className="w-5 h-5" />
                 Add
@@ -873,7 +873,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               </h2>
               <button
                 onClick={addCertification}
-                className="flex items-center gap-2 px-4 py-2 bg-sky-600 text-white rounded-lg"
+                className="flex items-center gap-2 p-2 bg-sky-600 text-white rounded-lg"
               >
                 <Plus className="w-5 h-5" />
                 Add
