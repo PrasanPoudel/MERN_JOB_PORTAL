@@ -27,7 +27,7 @@ const AdminJobManagement = () => {
   const [statusFilter, setStatusFilter] = useState("all");
   const [confirmDeleteJob, setConfirmDeleteJob] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
-  const [sortType, setSortType] = useState("Risk Score (Descending Order)");
+  const [sortType, setSortType] = useState("Risk_Score_(Descending_Order)");
 
   const [deleting, setDeleting] = useState(false);
 
@@ -54,6 +54,10 @@ const AdminJobManagement = () => {
         params.append("search", searchTerm);
       }
 
+      if (sortType) {
+        params.append("sort", sortType);
+      }
+
       const response = await axiosInstance.get(
         `${API_PATHS.ADMIN.GET_ALL_JOBS}?${params.toString()}`,
       );
@@ -69,7 +73,7 @@ const AdminJobManagement = () => {
 
   useEffect(() => {
     getAllJobs(1);
-  }, [statusFilter, searchTerm]);
+  }, [statusFilter, searchTerm, sortType]);
 
   useEffect(() => {
     getAllJobs(currentPage);
@@ -122,27 +126,6 @@ const AdminJobManagement = () => {
 
     return pages;
   };
-
-  const sortedJobs = useMemo(() => {
-    return [...jobs].sort((a, b) => {
-      switch (sortType) {
-        case "Posted Date (Ascending Order)":
-          return new Date(a.createdAt) - new Date(b.createdAt);
-
-        case "Posted Date (Descending Order)":
-          return new Date(b.createdAt) - new Date(a.createdAt);
-
-        case "Risk Score (Ascending Order)":
-          return (a.fraudScore || 0) - (b.fraudScore || 0);
-
-        case "Risk Score (Descending Order)":
-          return (b.fraudScore || 0) - (a.fraudScore || 0);
-
-        default:
-          return 0;
-      }
-    });
-  }, [jobs, sortType]);
 
   return (
     <DashboardLayout activeMenu="admin-jobs-management">
@@ -214,16 +197,16 @@ const AdminJobManagement = () => {
             value={sortType}
             onChange={(e) => setSortType(e.target.value)}
           >
-            <option value="Posted Date (Ascending Order)">
+            <option value="Posted_Date_(Ascending_Order)">
               Posted Date (Ascending Order)
             </option>
-            <option value="Posted Date (Descending Order)">
+            <option value="Posted_Date_(Descending_Order)">
               Posted Date (Descending Order)
             </option>
-            <option value="Risk Score (Ascending Order)">
+            <option value="Risk_Score_(Ascending_Order)">
               Risk Score (Ascending Order)
             </option>
-            <option value="Risk Score (Descending Order)">
+            <option value="Risk_Score_(Descending_Order)">
               Risk Score (Descending Order)
             </option>
           </select>
@@ -260,7 +243,7 @@ const AdminJobManagement = () => {
             </div>
 
             <div className="grid gap-6">
-              {sortedJobs?.map((job) => (
+              {jobs?.map((job) => (
                 <div key={job._id} className="flex flex-col gap-2">
                   <JobCard job={job} hideShadow={true} />
                   {job?.fraudScore !== undefined &&

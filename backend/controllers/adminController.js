@@ -271,7 +271,7 @@ exports.getAllJobs = async (req, res) => {
       return res.status(403).json({ message: "Access denied" });
     }
 
-    const { page = 1, limit = 9, status, search } = req.query;
+    const { page = 1, limit = 9, status, search, sort } = req.query;
 
     // Build query for pagination
     const query = {};
@@ -289,6 +289,28 @@ exports.getAllJobs = async (req, res) => {
       ];
     }
 
+    // Determine sort options
+    let sortOptions = { createdAt: -1 }; // Default sort by creation date descending
+
+    if (sort) {
+      switch (sort) {
+        case "Posted_Date_(Ascending_Order)":
+          sortOptions = { createdAt: 1 };
+          break;
+        case "Posted_Date_(Descending_Order)":
+          sortOptions = { createdAt: -1 };
+          break;
+        case "Risk_Score_(Ascending_Order)":
+          sortOptions = { fraudScore: 1 };
+          break;
+        case "Risk_Score_(Descending_Order)":
+          sortOptions = { fraudScore: -1 };
+          break;
+        default:
+          sortOptions = { createdAt: -1 }; // Default fallback
+      }
+    }
+
     // Use pagination utility
     const result = await paginateQuery(Job, query, {
       page,
@@ -297,7 +319,7 @@ exports.getAllJobs = async (req, res) => {
         path: "company",
         select: "name companyName email companyLogo isCompanyVerified",
       },
-      sort: { createdAt: -1 },
+      sort: sortOptions,
     });
 
     res.json({
