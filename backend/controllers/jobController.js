@@ -4,7 +4,7 @@ const User = require("../models/User");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
-const { paginateQuery, buildQuery } = require("../utils/pagination");
+const { paginateQuery } = require("../utils/pagination");
 
 // FastAPI server URL
 const FRAUD_PREDICTOR_API_URL = process.env.FRAUD_PREDICTOR_API_URL;
@@ -21,12 +21,13 @@ exports.createJob = async (req, res) => {
       // Count active jobs for this employer
       const activeJobCount = await Job.countDocuments({
         company: req.user._id,
-        isClosed: false
+        isClosed: false,
       });
-      
+
       if (activeJobCount >= 1) {
-        return res.status(403).json({ 
-          message: "Job posting limit reached. Non-premium employers can have only 1 active job posting at a time." 
+        return res.status(403).json({
+          message:
+            "Job posting limit reached. Non-premium employers can have only 1 active job posting at a time.",
         });
       }
     }
@@ -84,7 +85,7 @@ exports.createJob = async (req, res) => {
     };
 
     // Call FastAPI server for fraud prediction
-    let fraudScore = 0.1;
+    let fraudScore = 0.4;
     try {
       const response = await axios.post(
         `${FRAUD_PREDICTOR_API_URL}/predict`,
@@ -93,8 +94,7 @@ exports.createJob = async (req, res) => {
           timeout: 8000,
         },
       );
-
-      fraudScore = response.data.fraudScore.toFixed(4);
+      fraudScore = Number(response.data.fraudScore.toFixed(4));
     } catch (error) {
       console.error("Fraud predictor API error:", error.message);
       if (error.response) {
@@ -322,7 +322,7 @@ exports.toggleCloseJob = async (req, res) => {
     }
     job.isClosed = !job.isClosed;
     await job.save();
-    res.json({ message: "Job closed" });
+    res.json({ message: job.isClosed ? "Job closed" : "Job reopened" });
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }
