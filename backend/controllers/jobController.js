@@ -4,7 +4,6 @@ const User = require("../models/User");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
-const { paginateQuery } = require("../utils/pagination");
 
 // FastAPI server URL
 const FRAUD_PREDICTOR_API_URL = process.env.FRAUD_PREDICTOR_API_URL;
@@ -123,7 +122,7 @@ exports.createJob = async (req, res) => {
 
 exports.getJobs = async (req, res) => {
   try {
-    const {
+    let {
       page = 1,
       limit = 9,
       keyword,
@@ -133,51 +132,42 @@ exports.getJobs = async (req, res) => {
       userId,
     } = req.query;
 
-    // Build query for pagination
+    const pageNum = Number(page);
+    const limitNum = Number(limit);
+
+    // Build query
     const query = {
       isClosed: false,
       ...(category && { category }),
       ...(type && { type }),
     };
-
-    // Handle keyword search
     if (keyword && keyword.trim()) {
-      const keywordLower = keyword.toLowerCase();
       const companies = await User.find({
-        companyName: { $regex: keywordLower, $options: "i" },
+        companyName: { $regex: keyword, $options: "i" },
         role: "employer",
       }).select("_id");
 
       const companyIds = companies.map((c) => c._id);
 
       query.$or = [
-        { title: { $regex: keywordLower, $options: "i" } },
+        { title: { $regex: keyword, $options: "i" } },
         { company: { $in: companyIds } },
       ];
     }
-
-    // Handle location search
     if (location && location.trim()) {
-      query.location = { $regex: location.toLowerCase(), $options: "i" };
+      query.location = { $regex: location, $options: "i" };
     }
-
-    // Use pagination utility
-    const result = await paginateQuery(Job, query, {
-      page,
-      limit,
-      populate: {
-        path: "company",
-        select:
-          "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
-      },
-      sort: { createdAt: -1 }, // Sort by creation date descending
+    const jobs = await Job.find(query).populate({
+      path: "company",
+      select:
+        "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
     });
 
     let appliedJobStatusMap = {};
     let savedJobIds = [];
     let user = null;
 
-    // Get user data for similarity calculation and status mapping
+    // User data
     if (userId) {
       user = await User.findById(userId);
 
@@ -189,14 +179,14 @@ exports.getJobs = async (req, res) => {
       const applications = await Application.find({ applicant: userId }).select(
         "job status",
       );
+
       applications.forEach((app) => {
         appliedJobStatusMap[String(app.job)] = app.status;
       });
     }
-
-    // Add extra fields to jobs
-    const jobsWithExtras = result.data.map((job) => {
+    let jobsWithExtras = jobs.map((job) => {
       const jobIdStr = String(job._id);
+
       const cosineSimilarityScore = user
         ? TFIDFSimilarity.calculateSimilarity(user, job)
         : 0;
@@ -208,25 +198,34 @@ exports.getJobs = async (req, res) => {
         cosineSimilarityScore,
       };
     });
-
-    // Sort by cosine similarity (descending), then by creation date (ascending for same similarity)
     jobsWithExtras.sort((a, b) => {
       if (b.cosineSimilarityScore !== a.cosineSimilarityScore) {
         return b.cosineSimilarityScore - a.cosineSimilarityScore;
       }
       return new Date(a.createdAt) - new Date(b.createdAt);
     });
+    const total = jobsWithExtras.length;
+    const start = (pageNum - 1) * limitNum;
+    const end = start + limitNum;
+
+    const paginatedJobs = jobsWithExtras.slice(start, end);
 
     res.json({
-      jobs: jobsWithExtras,
-      pagination: result.pagination,
+      jobs: paginatedJobs,
+      pagination: {
+        total,
+        page: pageNum,
+        limit: limitNum,
+        totalPages: Math.ceil(total / limitNum),
+        hasNextPage: end < total,
+        hasPrevPage: start > 0,
+      },
     });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: err.message });
   }
 };
-
 //get employer posted jobs
 exports.getJobsEmployer = async (req, res) => {
   try {

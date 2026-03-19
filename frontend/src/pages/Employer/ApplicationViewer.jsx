@@ -85,11 +85,11 @@ const ApplicationViewer = () => {
     switch (sortType) {
       case "Applied Date (Ascending Order)":
         return sorted.sort(
-          (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );
       case "Applied Date (Descending Order)":
         return sorted.sort(
-          (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
+          (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
         );
 
       case "Relevence (Ascending Order)":
@@ -223,7 +223,9 @@ const ApplicationViewer = () => {
                           {/* Avatar */}
                           <div className="flex shrink-0">
                             <img
-                              src={application.applicant.avatar || "/default.png"}
+                              src={
+                                application.applicant.avatar || "/default.png"
+                              }
                               alt={application.applicant.name}
                               className="object-fill h-12 w-12 rounded-full"
                               style={{ imageRendering: "auto" }}
