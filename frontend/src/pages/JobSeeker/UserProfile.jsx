@@ -86,7 +86,7 @@ const UserProfile = () => {
                     {user?.name || ""}
                   </h2>
                   {user?.isPremium ? (
-                    <span className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-500 text-white text-sm shadow-sm">
+                    <span title="Premium User" className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-500 text-white text-sm shadow-sm">
                       <Crown className="w-4 h-4" />
                       Premium User
                     </span>
@@ -97,7 +97,7 @@ const UserProfile = () => {
                         Free User
                       </span>
                       <Link
-                        title="Upgrade to premium"
+                        title="Upgrade to premium user"
                         to="/pricing"
                         className="text-sm underline text-blue-600 hover:text-blue-700"
                       >

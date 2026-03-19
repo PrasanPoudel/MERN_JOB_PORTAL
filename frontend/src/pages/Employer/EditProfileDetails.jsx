@@ -24,8 +24,8 @@ const EditProfileDetails = ({
   return (
     <DashboardLayout activeMenu="employer-profile">
       {formData && (
-        <div className="min-h-screen py-4 px-3 sm:py-6 sm:px-4 md:py-8">
-          <div className="max-w-5xl mx-auto">
+        <div className="min-h-screen p-4">
+          <div className="max-w-5xl">
             <div className="bg-white rounded-xl shadow-lg overflow-hidden">
               <div className="bg-sky-600 px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center">
                 <h1 className="text-lg sm:text-xl font-semibold text-white">

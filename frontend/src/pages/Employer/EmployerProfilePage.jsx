@@ -11,11 +11,13 @@ import {
   User,
   Plus,
   BadgeCheck,
+  Crown,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import EditProfileDetails from "./EditProfileDetails";
+import { Link } from "react-router-dom";
 
 const EmployerProfilePage = () => {
   const { user, updateUser } = useAuth();
@@ -135,21 +137,26 @@ const EmployerProfilePage = () => {
 
   const handleFileUpload = async (file, type) => {
     if (!file) return;
-    
+
     setUploading((prev) => ({ ...prev, [type]: true }));
     const prevValue = formData[type === "avatar" ? "avatar" : "companyLogo"];
     try {
       const fileUploadRes = await uploadFile(file);
       const fileUrl = fileUploadRes?.fileUrl || prevValue;
       handleInputChange(type === "avatar" ? "avatar" : "companyLogo", fileUrl);
-      toast.success(`${type === 'avatar' ? 'Profile picture' : 'Company logo'} uploaded successfully!`);
+      toast.success(
+        `${type === "avatar" ? "Profile picture" : "Company logo"} uploaded successfully!`,
+      );
     } catch (err) {
       console.error("[File Upload Error]", {
         type,
         fileName: file?.name,
-        error: err?.message || err
+        error: err?.message || err,
       });
-      toast.error(err?.message || `${type === 'avatar' ? 'Profile picture' : 'Company logo'} upload failed. Please try again.`);
+      toast.error(
+        err?.message ||
+          `${type === "avatar" ? "Profile picture" : "Company logo"} upload failed. Please try again.`,
+      );
       handleInputChange(
         type === "avatar" ? "avatar" : "companyLogo",
         prevValue,
@@ -189,7 +196,7 @@ const EmployerProfilePage = () => {
       }
     } catch (err) {
       console.error("[Profile Update Error]", {
-        error: err?.message || err
+        error: err?.message || err,
       });
       toast.error(err?.message || "Profile update failed. Please try again.");
     } finally {
@@ -219,8 +226,8 @@ const EmployerProfilePage = () => {
 
   return (
     <DashboardLayout activeMenu="employer-profile">
-      <div className="min-h-screen py-4 px-3 sm:py-6 sm:px-4 md:py-8">
-        <div className="max-w-5xl mx-auto">
+      <div className="min-h-screen p-4">
+        <div className="max-w-5xl">
           <div className="bg-white rounded-xl shadow-lg overflow-hidden">
             {/* Header */}
             <div className="bg-sky-600 px-4 sm:px-6 py-4 sm:py-6 flex justify-between items-center">
@@ -252,9 +259,32 @@ const EmployerProfilePage = () => {
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shrink-0"
                   />
                   <div className="min-w-0">
-                    <h3 className="text-base sm:text-lg font-semibold truncate">
+                    <h3 className="flex items-center gap-2 text-base sm:text-lg font-semibold truncate">
                       {profileData.name}
+                      {profileData?.isPremium && (
+                        <span
+                          title="Premium User"
+                          className="p-2 rounded-md bg-yellow-500 text-white text-sm shadow-sm"
+                        >
+                          <Crown className="w-4 h-4" />
+                        </span>
+                      )}
                     </h3>
+                    {!profileData?.isPremium && (
+                      <div className="flex items-center gap-1">
+                        <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-medium border border-gray-200">
+                          <User className="w-4 h-4" />
+                          Free User
+                        </span>
+                        <Link
+                          title="Upgrade to premium user"
+                          to="/pricing"
+                          className="text-sm underline text-blue-600 hover:text-blue-700"
+                        >
+                          Upgrade
+                        </Link>
+                      </div>
+                    )}
                     <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                       <Mail className="w-4 h-4 shrink-0" />
                       <span className="truncate">{profileData.email}</span>
@@ -281,7 +311,9 @@ const EmployerProfilePage = () => {
                         <h3 className="flex gap-1 items-center text-base sm:text-lg font-semibold truncate">
                           {profileData.companyName}
                           {profileData.isCompanyVerified && (
-                            <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
+                            <BadgeCheck
+                              className="w-4 h-4 text-sky-600 ml-1 shrink-0"
+                            />
                           )}
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
