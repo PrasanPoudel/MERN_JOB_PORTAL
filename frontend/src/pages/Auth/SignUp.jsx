@@ -14,7 +14,11 @@ import {
   ArrowLeft,
   ArrowRight,
 } from "lucide-react";
-import { validateEmail, validatePassword } from "../../utils/helper";
+import {
+  validateEmail,
+  validateName,
+  validatePassword,
+} from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useAuth } from "../../context/AuthContext";
@@ -61,7 +65,7 @@ const SignUp = () => {
   };
   const validateForm = () => {
     const errors = {
-      fullName: !formData.fullName.trim() ? "Enter full name" : "",
+      fullName: validateName(formData.fullName),
       email: validateEmail(formData.email),
       password: validatePassword(formData.password),
       role: !formData.role ? "Please select a role" : "",
@@ -161,9 +165,7 @@ const SignUp = () => {
           <img src={logo} className="w-32 h-24" />
         </div>
         <div className="text-center mb-4">
-          <h2 className="text-2xl text-gray-900 mb-2">
-            Create Account
-          </h2>
+          <h2 className="text-2xl text-gray-900 mb-2">Create Account</h2>
           <p className="text-gray-600">
             Join thousands of professionals finding their dream job!
           </p>

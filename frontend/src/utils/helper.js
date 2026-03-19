@@ -1,6 +1,12 @@
+export const validateName = (fullName) => {
+  if (!fullName || !fullName.trim()) return "Enter full name.";
+  const nameRegex = /^[A-Za-z]+([ '-][A-Za-z]+)*$/;
+  if (!nameRegex.test(fullName)) return "Please enter a valid full name.";
+  return "";
+};
 export const validateEmail = (email) => {
   if (!email || !email.trim()) return "Email is required.";
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
   if (!emailRegex.test(email)) return "Please enter a valid email address.";
   return "";
 };
@@ -19,12 +25,7 @@ export const validatePassword = (password) => {
 
 export const validateAvatar = (file) => {
   if (!file) return "Avatar (Profile Picture) is required"; // Avatar is not optional
-  const allowedTypes = [
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "image/webp",
-  ];
+  const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
     return "Avatar must be a JPG, webp or PNG file";
   }
