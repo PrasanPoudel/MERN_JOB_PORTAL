@@ -21,6 +21,8 @@ const userSchema = new mongoose.Schema(
       default: false,
     },
     premiumIssueDate: { type: Date, default: null },
+    monthlyApplicationCount: { type: Number, default: 0 },
+    applicationCountResetDate: { type: Date, default: Date.now },
     isBanned: { type: Boolean, default: false },
     banReason: { type: String, default: "" },
     banDate: { type: Date },

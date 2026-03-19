@@ -1,5 +1,6 @@
 const Application = require("../models/Application");
 const Job = require("../models/Job");
+const User = require("../models/User");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
 const { sendStatusChangeEmail } = require("../services/emailService");
 
@@ -8,6 +9,27 @@ exports.applyToJob = async (req, res) => {
   try {
     if (req.user.role !== "jobSeeker") {
       return res.status(403).json({ message: "Only job seekers can apply" });
+    }
+
+    // Check premium constraints for job applications
+    if (!req.user.isPremium) {
+      // Check if monthly reset is needed
+      const now = new Date();
+      const resetDate = new Date(req.user.applicationCountResetDate);
+      
+      // Reset counter if we're in a new month
+      if (now.getMonth() !== resetDate.getMonth() || now.getFullYear() !== resetDate.getFullYear()) {
+        req.user.monthlyApplicationCount = 0;
+        req.user.applicationCountResetDate = now;
+        await req.user.save();
+      }
+      
+      // Check application limit
+      if (req.user.monthlyApplicationCount >= 3) {
+        return res.status(403).json({ 
+          message: "Application limit reached. Non-premium users can apply to only 3 jobs per month." 
+        });
+      }
     }
 
     const existing = await Application.findOne({
@@ -44,6 +66,12 @@ exports.applyToJob = async (req, res) => {
       resume: req.user.resume,
       cosineSimilarityScore: cosineSimilarityScore,
     });
+
+    // Increment application counter for non-premium users
+    if (!req.user.isPremium) {
+      req.user.monthlyApplicationCount += 1;
+      await req.user.save();
+    }
 
     res.status(201).json(application);
   } catch (err) {

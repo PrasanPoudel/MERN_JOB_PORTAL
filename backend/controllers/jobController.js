@@ -16,6 +16,21 @@ exports.createJob = async (req, res) => {
       return res.status(403).json({ message: "Only employer can post jobs" });
     }
 
+    // Check premium constraints for job posting
+    if (!req.user.isPremium) {
+      // Count active jobs for this employer
+      const activeJobCount = await Job.countDocuments({
+        company: req.user._id,
+        isClosed: false
+      });
+      
+      if (activeJobCount >= 1) {
+        return res.status(403).json({ 
+          message: "Job posting limit reached. Non-premium employers can have only 1 active job posting at a time." 
+        });
+      }
+    }
+
     const employer = await User.findById(req.user._id);
 
     const hasCompanyLogo = employer.companyLogo ? 1 : 0;
@@ -269,28 +284,6 @@ exports.getJobById = async (req, res) => {
       }
     }
     return res.json({ ...job.toObject(), applicationStatus });
-  } catch (err) {
-    return res.status(500).json({ message: err.message });
-  }
-};
-
-//update job (no need for now, can use in future if required)
-
-exports.updateJob = async (req, res) => {
-  try {
-    const job = await Job.findById(req.params.id);
-    if (!job) {
-      return res.status(404).json({ message: "Job not found" });
-    }
-    if (job.company.toString() !== req.user._id.toString()) {
-      return res
-        .status(403)
-        .json({ message: "Not authorized to update this job" });
-    }
-
-    Object.assign(job, req.body);
-    const updated = await job.save();
-    res.json(updated);
   } catch (err) {
     return res.status(500).json({ message: err.message });
   }

@@ -47,58 +47,6 @@ const JobPostingForm = () => {
     applicationDeadlineDate: "",
   });
 
-  // Sample Job post (Real)
-
-  // const [formData, setFormData] = useState({
-  //   jobTitle: "Senior Frontend React Engineer",
-  //   location: "San Francisco, CA",
-  //   category: "",
-  //   jobType: "",
-  //   educationLevel: "",
-  //   experienceLevel: "",
-
-  //   description:
-  //     "We are seeking a visionary Senior Frontend Engineer to lead the evolution of our core user interface. You will be responsible for architecting high-performance web applications, mentoring junior developers, and collaborating closely with our design team to deliver seamless, accessible user experiences. This role is perfect for someone who thrives at the intersection of complex state management and polished aesthetic design.",
-
-  //   requirements:
-  //     "The ideal candidate possesses expert-level proficiency in React 18 and TypeScript, with a deep understanding of Next.js and modern server components. We require extensive hands-on experience with state management libraries like Zustand and a strong grasp of Tailwind CSS for building responsive layouts. You should have a proven track record of optimizing web performance and a commitment to maintaining high-quality code standards through rigorous testing.",
-
-  //   offer:
-  //     "We provide a competitive base salary paired with an annual performance bonus and early-stage equity in a high-growth environment. Our comprehensive benefits include full health, dental, and vision insurance for you and your family, alongside an annual professional development stipend. Employees also enjoy a flexible 'Work from Anywhere' policy and an unlimited PTO program designed to promote a healthy work-life balance.",
-
-  //   salaryMin: "145000",
-  //   salaryMax: "185000",
-  //   noOfVacancy: "3",
-  //   createdAt: "2026-03-10",
-  //   applicationDeadlineDate: "2026-05-15",
-  // });
-
-  //Sample job post (Scam)
-
-  // const [formData, setFormData] = useState({
-  //   jobTitle: "PART TIME HOME BASED DATA ENTRY CLERK - START IMMEDIATELY",
-  //   location: "Remote",
-  //   category: "",
-  //   jobType: "",
-  //   educationLevel: "",
-  //   experienceLevel: "",
-
-  //   description:
-  //     "Are you looking for a way to earn extra cash from the comfort of your own home? Our rapidly expanding international firm is seeking motivated individuals to assist with basic data entry tasks and clerical duties. No previous experience is necessary as we provide full online training. This is a perfect opportunity for students, stay-at-home parents, or anyone looking to increase their weekly income with minimal effort.",
-
-  //   requirements:
-  //     "The only requirements for this position are a stable internet connection and a basic understanding of how to use a computer or smartphone. You must be at least 18 years old and capable of following simple instructions. We value reliability and a positive attitude over technical skills or previous employment history. You must be able to start immediately upon acceptance.",
-
-  //   offer:
-  //     "We offer an incredible hourly rate of $50 to $100 per hour depending on your speed and accuracy. Payments are made daily via wire transfer or cryptocurrency. You will also receive a sign-on bonus of $500 after your first week of successful data entry. Flexible hours allow you to work as little or as much as you want without any boss hovering over your shoulder.",
-
-  //   salaryMin: "96000",
-  //   salaryMax: "192000",
-  //   noOfVacancy: "10",
-  //   createdAt: "2026-03-12",
-  //   applicationDeadlineDate: "2026-03-13",
-  // });
-
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [isPreview, setIsPreview] = useState(false);
@@ -208,7 +156,7 @@ const JobPostingForm = () => {
       if (err?.message) {
         toast.error(err.message);
       } else {
-        toast.error("❌ Failed to post job. Please try again.");
+        toast.error("Failed to post job. Please try again.");
       }
     } finally {
       setIsSubmitting(false);
