@@ -96,9 +96,7 @@ const EditAdminProfile = () => {
           <div className="bg-white pb-10 rounded-xl shadow-lg overflow-hidden">
             
             {/* Header */}
-            <div className="bg-sky-600 flex justify-between items-center p-4">
-              <h1 className="text-xl font-medium text-white">Profile</h1>
-            </div>
+              <h1 className="text-xl bg-sky-600 p-4 font-medium text-white">Profile</h1>
 
             <div className="p-2 md:p-8">
               <div className="space-y-6">

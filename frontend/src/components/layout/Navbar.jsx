@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  BriefcaseBusiness,
-  Home,
-  Menu,
-  MessageSquare,
-  Search,
-  X,
-} from "lucide-react";
+import { Home, Menu, MessageSquare, Search, X } from "lucide-react";
 import ProfileDropdown from "../../components/layout/ProfileDropdown";
 import { useAuth } from "../../context/AuthContext";
 import { NavLink, Link } from "react-router-dom";
@@ -66,7 +59,7 @@ const Navbar = () => {
       }
     };
     element.addEventListener("click", handleClickOutside);
-    
+
     return () => {
       element.removeEventListener("click", handleClickOutside);
     };
@@ -80,7 +73,11 @@ const Navbar = () => {
     <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">
       <div className="flex items-end p-2 gap-1 justify-between h-18">
         <Link title="Go to Homepage" to="/">
-          <img src={logo} className="h-14 w-16 object-contain mix-blend-multiply" alt="logo" />
+          <img
+            src={logo}
+            className="h-14 w-16 object-contain mix-blend-multiply"
+            alt="logo"
+          />
         </Link>
         <div className="flex items-center gap-2">
           <div
@@ -163,6 +160,7 @@ const Navbar = () => {
                     setProfileDropdownOpen(!profileDropdownOpen);
                   }}
                   name={user?.name || ""}
+                  isPremium={user?.isPremium}
                   avatar={user?.avatar || null}
                   companyName={user?.companyName || ""}
                   isCompanyVerified={user?.isCompanyVerified || false}

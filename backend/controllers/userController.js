@@ -4,6 +4,8 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
+const Message = require("../models/Message");
+const Notification = require("../models/Notification");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -148,15 +150,33 @@ exports.deleteUser = async (req, res) => {
     if (!user) return res.status(404).json({ message: "User not found" });
 
     // Delete user's files (avatar, resume, company logo)
-    if (fs.existsSync(user.avatar)) {
-      fs.unlinkSync(user.avatar); //delete
+    try {
+      if (user.avatar && fs.existsSync(user.avatar)) {
+        fs.unlinkSync(user.avatar);
+      }
+      if (user.companyLogo && fs.existsSync(user.companyLogo)) {
+        fs.unlinkSync(user.companyLogo);
+      }
+      if (user.resume && fs.existsSync(user.resume)) {
+        fs.unlinkSync(user.resume);
+      }
+    } catch (fileError) {
+      console.error("Error deleting user files:", fileError);
+      // Continue with deletion even if file deletion fails
     }
-    if (fs.existsSync(user.companyLogo)) {
-      fs.unlinkSync(user.companyLogo); //delete
-    }
-    if (fs.existsSync(user.resume)) {
-      fs.unlinkSync(user.resume); //delete
-    }
+
+    // Delete all messages sent or received by this user
+    await Message.deleteMany({ 
+      $or: [
+        { sender: user._id },
+        { receiver: user._id }
+      ]
+    });
+
+    // Delete all notifications for this user
+    await Notification.deleteMany({ 
+      recipient: user._id 
+    });
 
     // If user is an employer
     if (user.role === "employer") {
@@ -180,15 +200,20 @@ exports.deleteUser = async (req, res) => {
       await SavedJob.deleteMany({ jobSeeker: user._id });
     }
 
+    // Remove premium status and clear premium-related data
+    user.isPremium = false;
+    user.premiumIssueDate = null;
+
     // Delete the user
     await User.findByIdAndDelete(user._id);
 
     res.json({
       message:
-        "User account and all associated activities deleted successfully",
+        "User account and all associated data deleted successfully",
     });
   } catch (err) {
-    res.status(500).json({ message: err.message });
+    console.error("Error deleting user:", err);
+    res.status(500).json({ message: "Failed to delete user account" });
   }
 };
 

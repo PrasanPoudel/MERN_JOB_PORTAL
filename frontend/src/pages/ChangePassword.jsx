@@ -4,8 +4,7 @@ import axiosInstance from "../utils/axiosInstance";
 import { validatePassword } from "../utils/helper";
 import { toast } from "react-hot-toast";
 import { API_PATHS } from "../utils/apiPaths";
-import { Lock, Key, Eye, EyeOff, ArrowLeft, UserLock } from "lucide-react";
-import { useAuth } from "../context/AuthContext";
+import { Lock, Key, Eye, EyeOff, ArrowLeft } from "lucide-react";
 
 const ChangePassword = () => {
   const navigate = useNavigate();
@@ -132,18 +131,13 @@ const ChangePassword = () => {
                 Back
               </button>
             </div>
-            <div className="flex gap-2 -ml-10 items-center">
-              <div className="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
-                <UserLock className="w-6 h-6 text-sky-600" />
-              </div>
-              <div>
-                <h1 className="text-sm sm:text-lg font-semibold text-gray-900">
-                  Change Password
-                </h1>
-                <p className="text-xs sm:text-sm text-gray-600">
-                  Keep your account secure
-                </p>
-              </div>
+            <div className="text-center">
+              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+                Change Password
+              </h1>
+              <p className="text-xs sm:text-sm text-gray-600">
+                Keep your account secure
+              </p>
             </div>
           </div>
         </div>

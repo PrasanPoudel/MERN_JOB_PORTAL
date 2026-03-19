@@ -38,6 +38,7 @@ import LoadingSpinner from "./components/LoadingSpinner";
 import ErrorBoundary from "./components/ErrorBoundary";
 
 import ChangePassword from "./pages/ChangePassword";
+import DeleteAccount from "./pages/DeleteAccount";
 import Pricing from "./pages/LandingPage/components/Pricing";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailed from "./pages/Payment/PaymentFailed";
@@ -60,6 +61,7 @@ const App = () => {
           {/* Chat routes - accessible to both jobSeeker and employer */}
           <Route element={<ProtectedRoute />}>
             <Route path="/change-password" element={<ChangePassword />} />
+            <Route path="/delete-account" element={<DeleteAccount />} />
             <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
             <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
             <Route path="/pricing" element={<Pricing />} />

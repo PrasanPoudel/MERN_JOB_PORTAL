@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { Home, Menu, X, Search, MessageSquare } from "lucide-react";
+import { Home, Menu, Search, MessageSquare, X } from "lucide-react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import {
   NAVIGATION_MENU_EMPLOYER,
@@ -22,12 +22,10 @@ const DashboardLayout = ({ activeMenu, children }) => {
   );
   const [isMobile, setIsMobile] = useState(false);
   const [profileDropdownOpen, setProfileDropdownOpen] = useState(false);
-
   const [unreadCount, setUnreadCount] = useState(0);
 
   useEffect(() => {
     if (!user || !isAuthenticated) return;
-
     const fetchUnreadCount = async () => {
       try {
         const response = await axiosInstance.get(
@@ -38,226 +36,184 @@ const DashboardLayout = ({ activeMenu, children }) => {
         console.error("Failed to fetch unread count:", err);
       }
     };
-
     fetchUnreadCount();
-
-    // Start polling for unread count updates
-    const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
-
-    return () => {
-      if (interval) clearInterval(interval);
-    };
+    const interval = setInterval(fetchUnreadCount, 10000);
+    return () => clearInterval(interval);
   }, [user, isAuthenticated]);
 
   useEffect(() => {
     const handleResize = () => {
-      const mobile = window.innerWidth < 768;
+      const mobile = window.innerWidth < 1024;
       setIsMobile(mobile);
-      if (!mobile) {
-        setSidebarOpen(false);
-      }
+      if (!mobile) setSidebarOpen(false);
     };
     handleResize();
     window.addEventListener("resize", handleResize);
-    return () => {
-      window.removeEventListener("resize", handleResize);
-    };
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e) => {
+      if (profileDropdownOpen && !e.target.closest("[data-profile-dropdown]")) {
+        setProfileDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [profileDropdownOpen]);
 
   const handleNavigation = (itemId) => {
     setActiveNavItem(itemId);
     navigate(`/${itemId}`);
-    if (isMobile) {
-      setSidebarOpen(false);
-    }
+    if (isMobile) setSidebarOpen(false);
   };
 
-  const toggleSidebar = () => {
-    setSidebarOpen(!sidebarOpen);
-  };
+  const navMenu =
+    user?.role === "admin" ? NAVIGATION_MENU_ADMIN : NAVIGATION_MENU_EMPLOYER;
+  const chatRoute =
+    user?.role === "admin" ? "/admin-chat-box" : "/EmployerChatBox";
 
-  useEffect(() => {
-    const handleClickOutside = () => {
-      if (profileDropdownOpen) {
-        setProfileDropdownOpen(false);
-      }
-    };
-    document.addEventListener("click", handleClickOutside);
-    return () => {
-      document.removeEventListener("click", handleClickOutside);
-    };
-  }, [profileDropdownOpen]);
-
-  const navLinkClasses = ({ isActive }) =>
-    `flex text-md items-center gap-1 p-1 font-medium rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
+  const headerNavLink = ({ isActive }) =>
+    `flex text-md gap-1 items-center p-1 font-medium  rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
      ${isActive ? "text-sky-600" : "text-gray-500"}`;
 
   return (
-    <div className="flex h-screen bg-white min-w-full">
-      <div
-        id="sidebar"
-        className={`fixed inset-0 min-h-screen left-0 transition-transform duration-200 transform z-1000 ${
+    <div className="flex h-screen w-full overflow-hidden bg-[#f9f9f8]">
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/25 backdrop-blur-[2px] transition-opacity"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+      <aside
+        className={[
+          "fixed inset-y-0 left-0 z-40 flex flex-col w-64 bg-white border-r border-gray-200",
+          "transition-transform duration-300 ease-in-out",
           isMobile
             ? sidebarOpen
-              ? "translate-x-0 w-full"
+              ? "translate-x-0 shadow-2xl"
               : "-translate-x-full"
-            : "translate-x-0"
-        } bg-white border-r-2 w-64 border-gray-200`}
+            : "translate-x-0",
+        ].join(" ")}
       >
-        {!sidebarOpen && (
-          <div className="flex items-start border-b-2 p-2 border-gray-300">
-            <Link
-              title="Go to Homepage"
-              className="flex items-center w-full"
-              to="/"
-            >
-              <img src={logo} className="w-24 h-14 mix-blend-multiply" />
-            </Link>
-            {sidebarOpen && (
-              <X
-                className="w-6 h-6"
-                onClick={() => setSidebarOpen(!sidebarOpen)}
-              />
-            )}
-          </div>
-        )}
-        {sidebarOpen && (
-          <div className="px-4 py-2 flex justify-end">
-            <X
-              className="w-6 h-6"
-              onClick={() => setSidebarOpen(!sidebarOpen)}
+        <div className="flex items-center justify-between p-4 border-b border-gray-200 shrink-0">
+          <Link to="/" className="flex items-center">
+            <img
+              src={logo}
+              alt="Logo"
+              className="h-16 w-24 mix-blend-multiply"
             />
-          </div>
-        )}
-        {/* Navigation */}
+          </Link>
+          {isMobile && (
+            <button
+              title="Close"
+              onClick={() => setSidebarOpen(false)}
+              className="p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
+            >
+              <X className="w-8 h-8" />
+            </button>
+          )}
+        </div>
 
-        {user?.role === "employer" && (
-          <nav className="px-4 pt-6 space-y-1" id="navigation">
-            {NAVIGATION_MENU_EMPLOYER.map((item) => (
-              <NavigationItem
-                key={item.id}
-                item={item}
-                isActive={activeNavItem === item.id}
-                onClick={handleNavigation}
-              />
-            ))}
-          </nav>
-        )}
-
-        {user?.role === "admin" && (
-          <nav className="px-4 pt-6 space-y-1" id="navigation">
-            {NAVIGATION_MENU_ADMIN.map((item) => (
-              <NavigationItem
-                key={item.id}
-                item={item}
-                isActive={activeNavItem === item.id}
-                onClick={handleNavigation}
-              />
-            ))}
-          </nav>
-        )}
-      </div>
-
-      {/* main content */}
+        {/* Nav items */}
+        <nav className="space-y-1 p-2">
+          {navMenu.map((item) => (
+            <NavigationItem
+              key={item.id}
+              item={item}
+              isActive={activeNavItem === item.id}
+              onClick={handleNavigation}
+            />
+          ))}
+        </nav>
+      </aside>
       <div
-        className={`flex flex-1 flex-col transition-all duration-200 ${
-          isMobile ? "ml-0" : "ml-64"
-        }`}
+        className={[
+          "flex flex-col flex-1 min-w-0 transition-all duration-300",
+          isMobile ? "ml-0" : "ml-64",
+        ].join(" ")}
       >
-        <header className="sticky top-0 bg-white/80 backdrop-blur-sm border-b-2 border-gray-200 h-18 flex items-center justify-between p-2 z-500">
-          <div className="flex items-center">
+        <header className="sticky top-0 z-20 flex items-center justify-between px-3 sm:px-5 bg-white/80 backdrop-blur-md border-b border-gray-200 shrink-0">
+          <div className="flex items-center gap-2 min-w-0">
             {isMobile && (
               <button
-                onClick={toggleSidebar}
-                className="p-2 rounded-xl hover:bg-gray-100 transition-colors delay-300"
+                onClick={() => setSidebarOpen(true)}
+                className="p-2 -ml-1 rounded-lg text-gray-500 hover:text-gray-800 hover:bg-gray-100 transition-colors shrink-0"
               >
-                {sidebarOpen ? "" : <Menu className="h-6 w-6" />}
+                <Menu className="w-5 h-5" />
               </button>
             )}
-            <div className="flex items-center">
-              {!sidebarOpen && isMobile && (
-                <img src={logo} className="w-14 h-10 mix-blend-multiply" />
-              )}
-              <div>
-                <h1 className="text-xs sm:text-base font-semibold hidden lg:block text-gray-900">
-                  Welcome back !
-                </h1>
-                <p className="text-sm text-gray-600 hidden lg:block">
-                  Get to know what's happening with your{" "}
-                  {user?.role === "admin" ? "platform" : "jobs"}.
+            {isMobile && (
+              <img
+                src={logo}
+                alt=""
+                className="h-12 w-16 mix-blend-multiply shrink-0"
+              />
+            )}
+
+            {!isMobile && (
+              <div className="min-w-0">
+                <p className="font-semibold text-gray-900 leading-snug">
+                  Welcome back
+                  {user?.name ? `, ${user.name.split(" ")[0]}` : ""}
+                </p>
+                <p className="text-sm text-gray-600 leading-snug hidden sm:block">
+                  {user?.role === "admin"
+                    ? "Here's what's happening on your platform"
+                    : "Here's an overview of your active jobs"}
                 </p>
               </div>
-            </div>
+            )}
           </div>
-          <div className="flex items-center">
-            <div className="flex items-center gap-1">
-              <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-                <Home className="h-4 w-4" />
-                <span className="hidden lg:block">Home</span>
+          <div className="flex items-center gap-0.5 shrink-0">
+            <NavLink to="/" className={headerNavLink}>
+              <Home className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">Home</span>
+            </NavLink>
+
+            <NavLink to="/find-jobs" className={headerNavLink}>
+              <Search className="w-4 h-4 shrink-0" />
+              <span className="hidden sm:inline">Search for Jobs</span>
+            </NavLink>
+
+            {user && (
+              <NavLink to={chatRoute} className={headerNavLink}>
+                <span className="relative flex items-center">
+                  <MessageSquare className="w-4 h-4 shrink-0" />
+                  {unreadCount > 0 && (
+                    <span className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white px-0.5 border-2 border-white">
+                      {unreadCount > 99 ? "99+" : unreadCount}
+                    </span>
+                  )}
+                </span>
+                <span className="hidden sm:inline">Messages</span>
               </NavLink>
-              <NavLink
-                title="Search for Jobs"
-                to="/find-jobs"
-                className={navLinkClasses}
-              >
-                <Search className="h-4 w-4" />
-                <span className="hidden lg:block">Search for Jobs</span>
-              </NavLink>
-              {user && user?.role === "admin" && (
-                <NavLink
-                  title="Messages"
-                  to="/admin-chat-box"
-                  className={navLinkClasses}
-                >
-                  <div className="relative">
-                    <MessageSquare className="h-4 w-4" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                        {unreadCount > 99 ? "99+" : unreadCount}
-                      </span>
-                    )}
-                  </div>
-                  <span className="hidden lg:block">Messages</span>
-                </NavLink>
-              )}
-              {user && user?.role === "employer" && (
-                <NavLink
-                  title="Messages"
-                  to="/EmployerChatBox"
-                  className={navLinkClasses}
-                >
-                  <div className="relative">
-                    <MessageSquare className="h-4 w-4" />
-                    {unreadCount > 0 && (
-                      <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                        {unreadCount > 99 ? "99+" : unreadCount}
-                      </span>
-                    )}
-                  </div>
-                  <span className="hidden lg:block">Messages</span>
-                </NavLink>
-              )}
-            </div>
+            )}
+            <div className="border h-5 border-gray-200 mx-1" />
+
             {user && isAuthenticated && (
-              <ProfileDropdown
-                isOpen={profileDropdownOpen}
-                onToggle={(e) => {
-                  e.stopPropagation();
-                  setProfileDropdownOpen(!profileDropdownOpen);
-                }}
-                name={user?.name || ""}
-                avatar={user?.avatar || null}
-                companyName={user?.companyName || ""}
-                isCompanyVerified={user?.isCompanyVerified || false}
-                email={user?.email || ""}
-                role={user?.role || "jobSeeker"}
-                companyLogo={user?.companyLogo || null}
-                onLogout={logout}
-              />
+              <div data-profile-dropdown>
+                <ProfileDropdown
+                  isOpen={profileDropdownOpen}
+                  onToggle={(e) => {
+                    e.stopPropagation();
+                    setProfileDropdownOpen(!profileDropdownOpen);
+                  }}
+                  name={user?.name || ""}
+                  isPremium={user?.isPremium}
+                  avatar={user?.avatar || null}
+                  companyName={user?.companyName || ""}
+                  isCompanyVerified={user?.isCompanyVerified || false}
+                  email={user?.email || ""}
+                  role={user?.role || "jobSeeker"}
+                  companyLogo={user?.companyLogo || null}
+                  onLogout={logout}
+                />
+              </div>
             )}
           </div>
         </header>
-        <main className="flex-1 overflow-auto">{children}</main>
+        <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
     </div>
   );

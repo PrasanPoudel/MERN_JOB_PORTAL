@@ -64,7 +64,7 @@ const UserProfile = () => {
               <h1 className="text-xl font-semibold text-gray-900">Profile</h1>
               <button
                 onClick={() => setEditMode(true)}
-                className="flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
+                className="flex cursor-pointer items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-4 py-2 rounded-lg text-sm transition-colors"
               >
                 <Edit3 className="w-4 h-4" />
                 Edit Profile
@@ -86,13 +86,16 @@ const UserProfile = () => {
                     {user?.name || ""}
                   </h2>
                   {user?.isPremium ? (
-                    <span title="Premium User" className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-500 text-white text-sm shadow-sm">
+                    <span
+                      title="Premium User"
+                      className="flex justify-center items-center gap-1.5 px-3 py-2 rounded-md bg-yellow-500 text-white font-semibold text-sm shadow-sm"
+                    >
                       <Crown className="w-4 h-4" />
                       Premium User
                     </span>
                   ) : (
                     <div className="flex items-center gap-1">
-                      <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-medium border border-gray-200">
+                      <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-semibold border border-gray-200">
                         <User className="w-4 h-4" />
                         Free User
                       </span>

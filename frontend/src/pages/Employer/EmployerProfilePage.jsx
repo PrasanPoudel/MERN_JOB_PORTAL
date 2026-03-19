@@ -21,7 +21,6 @@ import { Link } from "react-router-dom";
 
 const EmployerProfilePage = () => {
   const { user, updateUser } = useAuth();
-
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
@@ -239,8 +238,8 @@ const EmployerProfilePage = () => {
                 className="text-white flex items-center gap-2 bg-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-white/30 transition text-sm"
               >
                 <Edit3 className="w-4 h-4" />
-                <span className="hidden xs:inline">Edit Profile</span>
-                <span className="xs:hidden">Edit</span>
+                <span className="hidden sm:inline">Edit Profile</span>
+                <span className="sm:hidden">Edit</span>
               </button>
             </div>
 
@@ -272,7 +271,7 @@ const EmployerProfilePage = () => {
                     </h3>
                     {!profileData?.isPremium && (
                       <div className="flex items-center gap-1">
-                        <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-medium border border-gray-200">
+                        <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-semibold border border-gray-200">
                           <User className="w-4 h-4" />
                           Free User
                         </span>
@@ -311,9 +310,7 @@ const EmployerProfilePage = () => {
                         <h3 className="flex gap-1 items-center text-base sm:text-lg font-semibold truncate">
                           {profileData.companyName}
                           {profileData.isCompanyVerified && (
-                            <BadgeCheck
-                              className="w-4 h-4 text-sky-600 ml-1 shrink-0"
-                            />
+                            <BadgeCheck className="w-4 h-4 text-sky-600 ml-1 shrink-0" />
                           )}
                         </h3>
                         <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">

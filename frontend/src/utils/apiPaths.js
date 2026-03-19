@@ -7,6 +7,7 @@ export const API_PATHS = {
     UPDATE_PROFILE: "/api/user/profile", // Update profile details
     DELETE_RESUME: "/api/user/resume", // Delete Resume details
     CHANGE_PASSWORD: "/api/user/change-password", // Change user's password
+    DELETE_USER: (email) => `/api/user/delete-user/${email}`, // Delete user account
   },
   DASHBOARD: {
     OVERVIEW: `/api/analytics/overview`,
