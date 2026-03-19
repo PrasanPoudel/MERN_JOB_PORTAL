@@ -17,6 +17,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
   const navigate = useNavigate();
 
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
+
   const [activeNavItem, setActiveNavItem] = useState(
     activeMenu || "employer-dashboard",
   );
@@ -77,6 +79,13 @@ const DashboardLayout = ({ activeMenu, children }) => {
     `flex text-md gap-1 items-center p-1 font-medium  rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
      ${isActive ? "text-sky-600" : "text-gray-500"}`;
 
+  const handleDashboardSignout = () => {
+    setShowLogoutConfirm(true);
+  };
+  const handleConfirmLogout = () => {
+    setShowLogoutConfirm(false);
+    logout();
+  };
   return (
     <div className="flex h-screen w-full overflow-hidden bg-[#f9f9f8]">
       {isMobile && sidebarOpen && (
@@ -133,7 +142,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
           isMobile ? "ml-0" : "ml-64",
         ].join(" ")}
       >
-        <header className="sticky top-0 z-20 flex items-center justify-between px-3 sm:px-5 bg-white/80 backdrop-blur-md border-b border-gray-200 shrink-0">
+        <header className="sticky top-0 z-20 flex items-center justify-between px-1 sm:px-5 bg-white/80 backdrop-blur-md border-b border-gray-200 shrink-0">
           <div className="flex items-center gap-2 min-w-0">
             {isMobile && (
               <button
@@ -165,7 +174,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
               </div>
             )}
           </div>
-          <div className="flex items-center gap-0.5 shrink-0">
+          <div className="flex items-center gap-2 shrink-0">
             <NavLink to="/" className={headerNavLink}>
               <Home className="w-4 h-4 shrink-0" />
               <span className="hidden sm:inline">Home</span>
@@ -207,7 +216,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   email={user?.email || ""}
                   role={user?.role || "jobSeeker"}
                   companyLogo={user?.companyLogo || null}
-                  onLogout={logout}
+                  dashboardSignout={handleDashboardSignout}
                 />
               </div>
             )}
@@ -215,6 +224,38 @@ const DashboardLayout = ({ activeMenu, children }) => {
         </header>
         <main className="flex-1 overflow-y-auto">{children}</main>
       </div>
+      {showLogoutConfirm && (
+        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-5000">
+          <div className="bg-white rounded-xl w-80 p-5 shadow-2xl">
+            <div className="flex items-center justify-between mb-4">
+              <h3 className="text-sm font-semibold text-gray-900">
+                Confirm Sign Out
+              </h3>
+              <X
+                onClick={() => setShowLogoutConfirm(false)}
+                className="h-5 w-5 text-gray-500 cursor-pointer"
+              />
+            </div>
+            <p className="text-sm text-gray-600 mb-5">
+              Are you sure you want to sign out of your account?
+            </p>
+            <div className="flex justify-end gap-3">
+              <button
+                onClick={() => setShowLogoutConfirm(false)}
+                className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleConfirmLogout}
+                className="px-4 py-2 text-sm rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
+              >
+                Sign Out
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

@@ -26,6 +26,7 @@ const ProfileDropdown = ({
   role,
   companyName,
   isCompanyVerified,
+  dashboardSignout,
 }) => {
   const navigate = useNavigate();
   const [showLogoutConfirm, setShowLogoutConfirm] = useState(false);
@@ -212,21 +213,34 @@ const ProfileDropdown = ({
               </>
             )}
 
-            {/* Sign Out */}
-            <div
-              onClick={() => setShowLogoutConfirm(true)}
-              className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-colors"
-            >
-              <LogOut className="w-4 h-4" />
-              Sign Out
-            </div>
+            {/* Sign Out for Navbar*/}
+            {onLogout && (
+              <div
+                onClick={() => setShowLogoutConfirm(true)}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </div>
+            )}
+
+            {/* Sign Out for dashboard layout*/}
+            {dashboardSignout && (
+              <div
+                onClick={dashboardSignout}
+                className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-colors"
+              >
+                <LogOut className="w-4 h-4" />
+                Sign Out
+              </div>
+            )}
           </div>
         </div>
       )}
 
       {/* Logout Confirmation Modal */}
       {showLogoutConfirm && (
-        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
+        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-5000">
           <div className="bg-white rounded-xl w-80 p-5 shadow-2xl">
             <div className="flex items-center justify-between mb-4">
               <h3 className="text-sm font-semibold text-gray-900">
