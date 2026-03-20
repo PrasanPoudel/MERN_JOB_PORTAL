@@ -84,8 +84,8 @@ const server = app.listen(PORT, () => {
 // require("./cleanupUploadsCron");
 
 // Start job deadline cron job
-const { startCronJobs } = require("./services/cronService");
-startCronJobs();
+// const { startCronJobs } = require("./services/cronService");
+// startCronJobs();
 
 app.get("/", (req, res) => {
   res.send("Hello world!");

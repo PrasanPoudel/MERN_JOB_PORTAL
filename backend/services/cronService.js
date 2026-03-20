@@ -1,6 +1,7 @@
 const cron = require("node-cron");
 const Job = require("../models/Job");
 const User = require("../models/User");
+const Message = require("../models/Message");
 
 // Function to close expired jobs
 const closeExpiredJobs = async () => {
@@ -27,21 +28,76 @@ const closeExpiredJobs = async () => {
   }
 };
 
+// Function to send job closure notification to employer
+const sendJobClosureNotification = async (job, closureTime) => {
+  try {
+    // Find admin user
+    const admin = await User.findOne({ role: "admin" });
+    if (!admin) {
+      console.warn("No admin user found for sending job closure notification");
+      return;
+    }
+
+    const postedDateString = job.createdAt.toLocaleString("en-US", {
+      timeZone: "Asia/Kathmandu",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+      hour12: true,
+    });
+    // Create notification message
+    const messageContent = `⚠️Warning, Your job posting <strong>"${job.title}"</strong> with id <strong>"${job._id}"</strong> posted on <strong>${postedDateString}</strong> has been automatically closed after being flagged by our system as a potential scam. This action was taken on <strong>${closureTime}</strong> as part of our platform's security measures to protect users. If you believe this was done in error, please contact us for further review.<br/><a style="color: blue; text-decoration: underline;" href="${process.env.FRONTEND_URL}/job/${job._id}">Click here to view that job</a>`;
+
+    await Message.create({
+      application: null,
+      sender: admin._id,
+      senderRole: "admin",
+      recipient: job.company._id,
+      content: messageContent,
+      isAdminMessage: true,
+    });
+
+    console.log(
+      `Notification sent to employer ${job.company._id} for job ${job._id}`,
+    );
+  } catch (error) {
+    console.error("Error sending job closure notification:", error);
+  }
+};
+
 // Function to close high fraud score jobs
 const closeHighFraudJobs = async () => {
   try {
-    // Find jobs where fraudScore > 0.5 and isClosed is still false
+    // Find jobs where fraudScore > 0.98 and isClosed is still false
     const highFraudJobs = await Job.find({
-      fraudScore: { $gt: 0.5 },
+      fraudScore: { $gt: 0.98 },
       isClosed: false,
     }).populate("company", "no_of_warnings isBanned");
 
     if (highFraudJobs.length > 0) {
+      const closureTime = new Date();
+      const closureTimeString = closureTime.toLocaleString("en-US", {
+        timeZone: "Asia/Kathmandu",
+        year: "numeric",
+        month: "2-digit",
+        day: "2-digit",
+        hour: "2-digit",
+        minute: "2-digit",
+        hour12: true,
+      });
+
       // Update all high fraud jobs to closed
       await Job.updateMany(
         { _id: { $in: highFraudJobs.map((job) => job._id) } },
         { $set: { isClosed: true } },
       );
+
+      // Send notifications to employers
+      for (const job of highFraudJobs) {
+        await sendJobClosureNotification(job, closureTimeString);
+      }
 
       // Collect unique company IDs to update
       const companyIds = [
@@ -77,7 +133,7 @@ const closeHighFraudJobs = async () => {
         ).length;
 
         console.log(
-          `Closed ${highFraudJobs.length} high fraud jobs (fraudScore > 0.5)`,
+          `Closed ${highFraudJobs.length} high fraud jobs (fraudScore > 0.98)`,
         );
         console.log(
           `Updated ${companyIds.length} companies: ${bannedUsersCount} users banned due to excessive warnings`,
@@ -131,21 +187,21 @@ const checkPremiumExpiration = async () => {
   }
 };
 
-// Cron expression: minute hour day month dayOfWeek
+// Cron expression: second minute hour day month dayOfWeek
 // '0 0 18 * * *' means run at 6 PM every day
 const startCronJobs = () => {
-  // Close high fraud jobs at 1 AM
-  cron.schedule("0 0 1 * * *", closeHighFraudJobs, {
+  // Close high fraud jobs at 6 PM
+  cron.schedule("* * 18 * * *", closeHighFraudJobs, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
-  // Close expired jobs at 1:15 AM
-  cron.schedule("0 15 1 * * *", closeExpiredJobs, {
+  // Close expired jobs at 6:15 PM
+  cron.schedule("0 15 18 * * *", closeExpiredJobs, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
-  // Check premium expiration at 1:30 AM
-  cron.schedule("0 30 1 * * *", checkPremiumExpiration, {
+  // Check premium expiration at 6:30 PM
+  cron.schedule("0 30 18 * * *", checkPremiumExpiration, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
