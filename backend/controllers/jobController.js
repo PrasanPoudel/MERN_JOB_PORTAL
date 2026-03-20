@@ -76,15 +76,15 @@ exports.createJob = async (req, res) => {
       company_profile: employer.companyDescription,
       location: req.body.location,
       department: req.body.category,
-      salaryRange,
+      salary_range: salaryRange,
       employment_type: req.body.type,
       required_experience: req.body.experienceLevel,
       required_education: req.body.educationLevel,
-      hasCompanyLogo,
+      has_company_logo: hasCompanyLogo,
     };
 
     // Call FastAPI server for fraud prediction
-    let fraudScore = 0.4;
+    let fraudScore = 0;
     try {
       const response = await axios.post(
         `${FRAUD_PREDICTOR_API_URL}/predict`,
@@ -93,7 +93,7 @@ exports.createJob = async (req, res) => {
           timeout: 8000,
         },
       );
-      fraudScore = Number(response.data.fraudScore.toFixed(4));
+      fraudScore = Number(response?.data?.fraudScore.toFixed(4)) || 0;
     } catch (error) {
       console.error("Fraud predictor API error:", error.message);
       if (error.response) {
