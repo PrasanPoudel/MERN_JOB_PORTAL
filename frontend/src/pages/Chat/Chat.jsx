@@ -12,7 +12,6 @@ import {
   ArrowRight,
   Mail,
   Search,
-  MessageSquareMore,
   ShieldCheck,
 } from "lucide-react";
 import { useParams, useNavigate, useSearchParams } from "react-router-dom";
@@ -363,10 +362,10 @@ const Chat = ({ isAdmin = false }) => {
                   sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
               : "w-full md:w-96 lg:w-104"
-          } bg-white border-r border-gray-200/70 flex flex-col shadow-lg md:shadow-none`}
+          } bg-white border-r border-gray-200/60 flex flex-col shadow-lg md:shadow-none`}
         >
           {/* Header */}
-          <div className="p-2 border border-gray-200/70 bg-linear-to-r from-white to-gray-50">
+          <div className="p-2">
             <div className="flex items-center justify-between">
               <div>
                 <h2 className="text-xl pt-2 font-semibold text-gray-900 tracking-tight">
@@ -389,7 +388,7 @@ const Chat = ({ isAdmin = false }) => {
           </div>
 
           {/* Search & Filter Section */}
-          <div className="p-4 border-b border-gray-200/70 bg-gray-50/50">
+          <div className="p-2 border-b border-gray-200/60 bg-gray-50/60">
             <div className="space-y-3">
               <div className="relative">
                 <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
@@ -478,15 +477,15 @@ const Chat = ({ isAdmin = false }) => {
                       fetchMessages(getConvId(conv));
                       if (isMobile) setSidebarOpen(false);
                     }}
-                    className={`w-full p-4 border-b border-gray-100/70 hover:bg-gray-50/70 transition-all duration-200 flex gap-3 items-start group ${
+                    className={`w-full p-2 border-b border-gray-100/70 hover:bg-gray-50/70 transition-all duration-200 flex gap-2 items-start group ${
                       isSelected
-                        ? "bg-sky-100 hover:bg-sky-100 border-l-4 border-l-sky-600"
+                        ? "bg-sky-50 hover:bg-sky-100 border-x-4 border-x-sky-600"
                         : "border-l-4 border-l-transparent"
                     }`}
                   >
                     {/* Avatar Section */}
                     <div className="relative shrink-0">
-                      <div className="w-16 h-16 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden shadow-md group-hover:shadow-md transition-all duration-300">
+                      <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden transition-all duration-300">
                         <img
                           src={getOtherPartyAvatar(conv) || "/default.png"}
                           alt="User"
@@ -552,21 +551,16 @@ const Chat = ({ isAdmin = false }) => {
 
                       {/* Message Preview Row */}
                       {conv.lastMessage && (
-                        <div className="flex items-center justify-between text-sm text-gray-600">
-                          <span className="truncate flex gap-1 flex-1 font-medium">
-                            <MessageSquareMore className="w-4 h-4 text-gray-900" />
-                            {conv.lastMessage.content.length > 100
-                              ? conv.lastMessage.content.substring(0, 100) +
+                        <div className="flex items-center justify-between text-gray-600">
+                          <span className="truncate font-medium text-sm">
+                            {conv.lastMessage.content.length > 25
+                              ? conv.lastMessage.content.substring(0, 25) +
                                 "..."
                               : conv.lastMessage.content}
                           </span>
-                          <div className="flex items-center gap-2 text-gray-600 ml-2">
-                            <span className="text-xs font-medium">
-                              {moment(conv.lastMessage.createdAt).format(
-                                "HH:mm",
-                              )}
-                            </span>
-                          </div>
+                          <span className="text-sm font-medium text-gray-900 ml-2">
+                            {moment(conv.lastMessage.createdAt).format("HH:mm")}
+                          </span>
                         </div>
                       )}
                     </div>
@@ -580,7 +574,7 @@ const Chat = ({ isAdmin = false }) => {
         {selectedConversation ? (
           <div className="flex-1 flex flex-col min-w-0">
             {/* Chat Header */}
-            <div className="border border-l-0 bg-white border-gray-200 p-2 bg-linear-to-r shadow-sm z-10">
+            <div className="bg-white p-2 bg-linear-to-r shadow-sm z-10">
               <div className="flex items-center gap-2">
                 {isMobile && (
                   <button
@@ -679,8 +673,8 @@ const Chat = ({ isAdmin = false }) => {
                     <div key={message._id}>
                       {showDateDivider && (
                         <div className="flex items-center justify-center my-8">
-                          <div className="flex-1 border-t border-gray-200/70"></div>
-                          <span className="px-4 py-2 text-xs text-gray-500 font-medium bg-white rounded-full shadow-sm border border-gray-200/70 mx-4">
+                          <div className="flex-1 border-t border-gray-200/60"></div>
+                          <span className="px-4 py-2 text-xs text-gray-500 font-medium bg-white rounded-full shadow-sm border border-gray-200/60 mx-4">
                             {moment(message.createdAt).calendar(null, {
                               sameDay: "[Today]",
                               lastDay: "[Yesterday]",
@@ -688,14 +682,14 @@ const Chat = ({ isAdmin = false }) => {
                               sameElse: "MMM DD, YYYY",
                             })}
                           </span>
-                          <div className="flex-1 border-t border-gray-200/70"></div>
+                          <div className="flex-1 border-t border-gray-200/60"></div>
                         </div>
                       )}
                       <div
                         className={`flex ${isOwnMessage ? "justify-end" : "justify-start"} animate-in fade-in slide-in-from-bottom-2 duration-500`}
                       >
                         <div
-                          className={`flex gap-3 max-w-[85%] sm:max-w-lg ${isOwnMessage ? "flex-row-reverse" : ""}`}
+                          className={`flex gap-2 max-w-[95%] sm:max-w-lg ${isOwnMessage ? "flex-row-reverse" : ""}`}
                         >
                           {!isOwnMessage && (
                             <div className="w-10 h-10 rounded-xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center shrink-0 overflow-hidden shadow-sm mt-auto">
@@ -710,13 +704,17 @@ const Chat = ({ isAdmin = false }) => {
                             className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}
                           >
                             <div
-                              className={`text-sm px-4 py-3 rounded-2xl wrap-break-word shadow-md ${
+                              className={`text-sm p-2 rounded-2xl wrap-break-word shadow-sm ${
                                 isOwnMessage
-                                  ? "bg-linear-to-br from-sky-600 to-sky-700 text-white rounded-br-sm"
-                                  : "bg-white border border-gray-200/70 rounded-bl-sm text-gray-900"
+                                  ? "border-2 bg-sky-600 text-white rounded-br-sm"
+                                  : "bg-white border-2 border-gray-200/60 rounded-bl-sm text-gray-900"
                               }`}
                             >
-                              {message.content}
+                              <div
+                                dangerouslySetInnerHTML={{
+                                  __html: message.content,
+                                }}
+                              />
                             </div>
                             <div className="flex items-center gap-2 mt-2 px-1">
                               <span className="text-xs text-gray-500 font-medium">
@@ -725,9 +723,9 @@ const Chat = ({ isAdmin = false }) => {
                               {isOwnMessage && (
                                 <>
                                   {message.read ? (
-                                    <CheckCheck className="w-4 h-4 text-sky-200" />
+                                    <CheckCheck className="w-4 h-4 text-sky-600" />
                                   ) : (
-                                    <Check className="w-4 h-4 text-gray-400" />
+                                    <Check className="w-4 h-4 text-gray-600" />
                                   )}
                                 </>
                               )}
@@ -743,7 +741,7 @@ const Chat = ({ isAdmin = false }) => {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200/70 p-2 pb-6 bg-white shadow-md">
+            <div className="border-t border-gray-200/60 p-2 pb-6 bg-white shadow-md">
               <div className="flex gap-4 max-w-5xl mx-auto">
                 <div className="relative flex-1">
                   <input
