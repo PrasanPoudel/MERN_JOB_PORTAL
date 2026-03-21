@@ -101,7 +101,7 @@ const DeleteAccount = () => {
   const renderStep1 = () => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
       <div className="text-center">
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
           Delete Your Account
         </h1>
         <p className="text-gray-600 mb-6 max-w-md mx-auto">
@@ -115,7 +115,7 @@ const DeleteAccount = () => {
         <h3 className="font-semibold text-gray-900 mb-3">
           What will be deleted:
         </h3>
-        <ul className="space-y-2 text-sm text-gray-700">
+        <ul className="space-y-2 text-sm text-gray-600">
           <li className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-green-600" />
             Profile information and personal data
@@ -145,14 +145,7 @@ const DeleteAccount = () => {
         </ul>
       </div>
 
-      <div className="flex flex-col sm:flex-row gap-3">
-        <button
-          onClick={handleGoBack}
-          className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
-        >
-          <ArrowLeft className="w-4 h-4" />
-          Cancel
-        </button>
+      <div className="flex">
         <button
           onClick={handleFirstStep}
           className="flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex-1"
@@ -313,7 +306,7 @@ const DeleteAccount = () => {
               ></div>
               Confirm
             </div>
-            <div className="w-8 h-0.5 bg-gray-300"></div>
+            <div className="w-6 h-0.5 bg-gray-300"></div>
             <div
               className={`flex items-center gap-2 ${
                 step >= 2 ? "text-gray-900 font-medium" : ""
@@ -326,7 +319,7 @@ const DeleteAccount = () => {
               ></div>
               Verify
             </div>
-            <div className="w-8 h-0.5 bg-gray-300"></div>
+            <div className="w-6 h-0.5 bg-gray-300"></div>
             <div
               className={`flex items-center gap-2 ${
                 step >= 3 ? "text-gray-900 font-medium" : ""

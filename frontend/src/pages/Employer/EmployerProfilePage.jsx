@@ -258,12 +258,12 @@ const EmployerProfilePage = () => {
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shrink-0"
                   />
                   <div className="min-w-0">
-                    <h3 className="flex items-center gap-2 text-base sm:text-lg font-semibold truncate">
+                    <h3 className="flex items-center gap-1 text-base sm:text-lg font-semibold truncate">
                       {profileData.name}
-                      {profileData?.isPremium && (
+                      {!profileData?.isPremium && (
                         <span
                           title="Premium User"
-                          className="p-2 rounded-md bg-yellow-500 text-white text-sm shadow-sm"
+                          className="text-white p-1 rounded-2xl bg-yellow-400"
                         >
                           <Crown className="w-4 h-4" />
                         </span>

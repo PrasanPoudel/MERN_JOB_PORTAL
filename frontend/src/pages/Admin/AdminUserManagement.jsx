@@ -254,21 +254,21 @@ const AdminUserManagement = () => {
                     </div>
 
                     <div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-semibold text-gray-900 text-md">
+                      <div className="flex items-center gap-1">
+                        <p className="font-semibold text-gray-900 text-sm sm:text-md">
                           {user.name}
                         </p>
                         {user.isPremium && (
                           <span
                             title="Premium User"
-                            className="bg-yellow-50 text-yellow-500 text-xs px-2 py-1 rounded-full flex items-center gap-1"
+                            className="text-white p-1 rounded-2xl bg-yellow-400"
                           >
-                            <Crown className="w-3 h-3 shrink-0" />
+                            <Crown className="w-3 h-3" />
                           </span>
                         )}
                       </div>
                       <p
-                        className={`text-xs flex w-32 px-2 py-1 rounded-full font-medium ${
+                        className={`text-xs mt-1 flex w-32 px-2 py-1 rounded-2xl font-medium ${
                           user.role === "employer"
                             ? "bg-orange-100 text-orange-700"
                             : "bg-blue-100 text-blue-700"
@@ -514,7 +514,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
 
   return (
     <div className="fixed inset-0 z-1000 bg-black/40 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl relative overflow-hidden">
+      <div className="bg-white m-auto rounded-l-2xl w-full max-w-3xl relative overflow-hidden">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"

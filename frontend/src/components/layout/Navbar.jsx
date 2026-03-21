@@ -66,8 +66,8 @@ const Navbar = () => {
   }, [openMenu]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex text-md gap-1 items-center p-1 font-medium ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
-     ${isActive ? "text-sky-600" : "text-gray-500"}`;
+    `flex text-md gap-1 items-center p-1 font-medium ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-500 hover:text-gray-900
+     ${isActive ? "text-sky-600" : "text-gray-600"}`;
 
   return (
     <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">

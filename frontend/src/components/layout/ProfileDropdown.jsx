@@ -78,7 +78,14 @@ const ProfileDropdown = ({
         <div className="hidden md:flex flex-col text-left">
           <p className="flex items-center gap-1 text-sm font-semibold text-gray-900">
             {name}
-            {isPremium && <Crown className="w-3 h-3 text-yellow-500" />}
+            {isPremium && (
+              <span
+                title="Premium User"
+                className="text-white p-1 rounded-2xl bg-yellow-400"
+              >
+                <Crown className="w-4 h-4" />
+              </span>
+            )}
           </p>
           <p className="text-xs text-gray-500">{roleLabel}</p>
           {role === "employer" && companyName && (

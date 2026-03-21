@@ -76,8 +76,8 @@ const DashboardLayout = ({ activeMenu, children }) => {
     user?.role === "admin" ? "/admin-chat-box" : "/EmployerChatBox";
 
   const headerNavLink = ({ isActive }) =>
-    `flex text-md gap-1 items-center p-1 font-medium  rounded-xl transition-colors duration-200 hover:underline hover:text-gray-900
-     ${isActive ? "text-sky-600" : "text-gray-500"}`;
+    `flex text-md gap-1 items-center p-1 font-medium  rounded-xl transition-colors duration-500 hover:text-gray-900
+     ${isActive ? "text-sky-600" : "text-gray-600"}`;
 
   const handleDashboardSignout = () => {
     setShowLogoutConfirm(true);

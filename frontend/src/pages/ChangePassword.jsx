@@ -132,7 +132,7 @@ const ChangePassword = () => {
               </button>
             </div>
             <div className="text-center">
-              <h1 className="text-xl sm:text-2xl font-bold text-gray-900">
+              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
                 Change Password
               </h1>
               <p className="text-xs sm:text-sm text-gray-600">
