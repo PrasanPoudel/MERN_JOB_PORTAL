@@ -190,6 +190,7 @@ const checkPremiumExpiration = async () => {
 // Cron expression: second minute hour day month dayOfWeek
 // '0 0 18 * * *' means run at 6 PM every day
 const startCronJobs = () => {
+
   // Close high fraud jobs at 6 PM
   cron.schedule("* * 18 * * *", closeHighFraudJobs, {
     scheduled: true,
@@ -212,4 +213,5 @@ module.exports = {
   closeExpiredJobs,
   closeHighFraudJobs,
   checkPremiumExpiration,
+  cleanupOrphanedFiles
 };

@@ -68,7 +68,7 @@ const EditProfileDetails = ({
                         </label>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                           id="avatar-upload"
                           onChange={(e) => handleFileChange(e, "avatar")}
                           className="block w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors"
@@ -146,7 +146,7 @@ const EditProfileDetails = ({
                         </label>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                           id="company-logo-upload"
                           onChange={(e) => handleFileChange(e, "companyLogo")}
                           className="block w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-green-50 file:text-green-600 hover:file:bg-green-100 transition-colors"

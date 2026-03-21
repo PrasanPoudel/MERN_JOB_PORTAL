@@ -37,7 +37,12 @@ const EditAdminProfile = () => {
       handleInputChange(type, fileUrl);
     } catch (err) {
       console.error("Upload failed:", err);
-      toast.error("Image upload failed");
+      // Check if it's a file size validation error
+      if (err.message && err.message.includes("File size too large")) {
+        toast.error(err.message);
+      } else {
+        toast.error("Image upload failed. Please try again.");
+      }
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -129,7 +134,7 @@ const EditAdminProfile = () => {
                       id="avatar"
                       name="avatar"
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                       onChange={(e) => handleFileChange(e, "avatar")}
                       className="block w-full text-sm text-gray-600 
                         file:mr-4 file:py-2 file:px-4 

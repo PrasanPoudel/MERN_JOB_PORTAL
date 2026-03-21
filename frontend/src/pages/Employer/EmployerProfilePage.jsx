@@ -152,10 +152,15 @@ const EmployerProfilePage = () => {
         fileName: file?.name,
         error: err?.message || err,
       });
-      toast.error(
-        err?.message ||
-          `${type === "avatar" ? "Profile picture" : "Company logo"} upload failed. Please try again.`,
-      );
+      // Check if it's a file size validation error
+      if (err?.message && err.message.includes("File size too large")) {
+        toast.error(err.message);
+      } else {
+        toast.error(
+          err?.message ||
+            `${type === "avatar" ? "Profile picture" : "Company logo"} upload failed. Please try again.`,
+        );
+      }
       handleInputChange(
         type === "avatar" ? "avatar" : "companyLogo",
         prevValue,

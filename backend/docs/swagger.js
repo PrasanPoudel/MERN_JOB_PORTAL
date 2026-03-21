@@ -34,12 +34,12 @@
  *           example: "jobSeeker"
  *         avatar:
  *           type: string
- *           description: URL to user's profile picture
- *           example: "http://localhost:8000/uploads/avatar.jpg"
+ *           description: URL to user's profile picture (Cloudinary)
+ *           example: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/uploads/avatar.jpg"
  *         resume:
  *           type: string
- *           description: URL to user's resume file
- *           example: "http://localhost:8000/uploads/resume.pdf"
+ *           description: URL to user's resume file (Cloudinary)
+ *           example: "https://res.cloudinary.com/your-cloud-name/raw/upload/v1234567890/uploads/resume.pdf"
  *         skills:
  *           type: array
  *           items:
@@ -55,7 +55,8 @@
  *           description: Company description (for employers)
  *         companyLogo:
  *           type: string
- *           description: URL to company logo (for employers)
+ *           description: URL to company logo (Cloudinary, for employers)
+ *           example: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/uploads/company-logo.png"
  *         experience:
  *           type: array
  *           items:
@@ -487,8 +488,20 @@
  *               properties:
  *                 fileUrl:
  *                   type: string
- *                   description: URL of the uploaded file
- *                   example: "http://localhost:8000/uploads/filename.jpg"
+ *                   description: Cloudinary URL of the uploaded file
+ *                   example: "https://res.cloudinary.com/your-cloud-name/image/upload/v1234567890/uploads/filename.jpg"
+ *                 publicId:
+ *                   type: string
+ *                   description: Cloudinary public ID of the uploaded file
+ *                   example: "uploads/filename"
+ *                 format:
+ *                   type: string
+ *                   description: File format
+ *                   example: "jpg"
+ *                 resourceType:
+ *                   type: string
+ *                   description: Cloudinary resource type
+ *                   example: "image"
  *       400:
  *         description: No file uploaded or invalid file type
  *         content:

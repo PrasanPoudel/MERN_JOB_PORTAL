@@ -1,11 +1,10 @@
-const fs = require("fs");
-const path = require("path");
 const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const Message = require("../models/Message");
 const Notification = require("../models/Notification");
+const { deleteFile } = require("../services/cloudinaryService");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -97,9 +96,8 @@ exports.updateProfile = async (req, res) => {
 //delete resume (jobSeeker only)
 exports.deleteResume = async (req, res) => {
   try {
-    const { resumeUrl } = req.body; //expect resumeUrl to be the url of the resume
-    const fileName = resumeUrl?.split(" ")?.pop(); //extract file name from url
-
+    const { resumeUrl } = req.body; //expect resumeUrl to be the Cloudinary URL of the resume
+    
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -109,12 +107,22 @@ exports.deleteResume = async (req, res) => {
         .json({ message: "Only jobSeekers can delete resume" });
     }
 
-    const filePath = path.join(__dirname, "../uploads", fileName);
-
-    //check if the file exists then only delete the file if found
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath); //delete
+    // Extract public ID from Cloudinary URL
+    if (resumeUrl) {
+      try {
+        // Extract public ID from Cloudinary URL
+        const urlParts = resumeUrl.split('/');
+        const publicIdWithFormat = urlParts[urlParts.length - 1];
+        const publicId = publicIdWithFormat.split('.')[0];
+        
+        // Delete from Cloudinary
+        await deleteFile(publicId);
+      } catch (cloudinaryError) {
+        console.error("Error deleting resume from Cloudinary:", cloudinaryError);
+        // Continue even if Cloudinary deletion fails
+      }
     }
+
     user.resume = "";
     await user.save();
     res.json({ message: "Resume deleted successfully" });
@@ -149,16 +157,42 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Delete user's files (avatar, resume, company logo)
+    // Delete user's files from Cloudinary (avatar, resume, company logo)
     try {
-      if (user.avatar && fs.existsSync(user.avatar)) {
-        fs.unlinkSync(user.avatar);
+      // Delete avatar
+      if (user.avatar) {
+        try {
+          const urlParts = user.avatar.split('/');
+          const publicIdWithFormat = urlParts[urlParts.length - 1];
+          const publicId = publicIdWithFormat.split('.')[0];
+          await deleteFile(publicId);
+        } catch (cloudinaryError) {
+          console.error("Error deleting avatar from Cloudinary:", cloudinaryError);
+        }
       }
-      if (user.companyLogo && fs.existsSync(user.companyLogo)) {
-        fs.unlinkSync(user.companyLogo);
+
+      // Delete company logo
+      if (user.companyLogo) {
+        try {
+          const urlParts = user.companyLogo.split('/');
+          const publicIdWithFormat = urlParts[urlParts.length - 1];
+          const publicId = publicIdWithFormat.split('.')[0];
+          await deleteFile(publicId);
+        } catch (cloudinaryError) {
+          console.error("Error deleting company logo from Cloudinary:", cloudinaryError);
+        }
       }
-      if (user.resume && fs.existsSync(user.resume)) {
-        fs.unlinkSync(user.resume);
+
+      // Delete resume
+      if (user.resume) {
+        try {
+          const urlParts = user.resume.split('/');
+          const publicIdWithFormat = urlParts[urlParts.length - 1];
+          const publicId = publicIdWithFormat.split('.')[0];
+          await deleteFile(publicId);
+        } catch (cloudinaryError) {
+          console.error("Error deleting resume from Cloudinary:", cloudinaryError);
+        }
       }
     } catch (fileError) {
       console.error("Error deleting user files:", fileError);

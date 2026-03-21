@@ -93,10 +93,15 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
         fileName: file?.name,
         error: err?.message || err,
       });
-      toast.error(
-        err?.message ||
-          `${type === "avatar" ? "Profile picture" : "Resume"} upload failed. Please try again.`,
-      );
+      // Check if it's a file size validation error
+      if (err?.message && err.message.includes("File size too large")) {
+        toast.error(err.message);
+      } else {
+        toast.error(
+          err?.message ||
+            `${type === "avatar" ? "Profile picture" : "Resume"} upload failed. Please try again.`,
+        );
+      }
     } finally {
       setUploading((prev) => ({ ...prev, [type]: false }));
     }
@@ -425,7 +430,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     <span className="sr-only">Choose avatar</span>
                     <input
                       type="file"
-                      accept="image/*"
+                      accept="image/jpeg,image/jpg,image/png,image/gif,image/webp"
                       id="avatar-upload"
                       onChange={(e) => {
                         handleFileChange(e, "avatar");
@@ -474,7 +479,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       onChange={(e) => {
                         handleFileChange(e, "resume");
                       }}
-                      accept=".pdf,.doc,.docx"
+                      accept=".pdf"
                       className="mt-2 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
                     />
                   </label>
