@@ -70,9 +70,9 @@ const sendJobClosureNotification = async (job, closureTime) => {
 // Function to close high fraud score jobs
 const closeHighFraudJobs = async () => {
   try {
-    // Find jobs where fraudScore > 0.98 and isClosed is still false
+    // Find jobs where fraudScore > 0.6 and isClosed is still false
     const highFraudJobs = await Job.find({
-      fraudScore: { $gt: 0.98 },
+      fraudScore: { $gt: 0.6 },
       isClosed: false,
     }).populate("company", "no_of_warnings isBanned");
 
@@ -110,7 +110,7 @@ const closeHighFraudJobs = async () => {
           (job) => job.company._id.toString() === companyId.toString(),
         ).company;
         const newWarningCount = (company.no_of_warnings || 0) + 1;
-        const shouldBan = newWarningCount > 5;
+        const shouldBan = newWarningCount > 10;
 
         return {
           updateOne: {
@@ -133,7 +133,7 @@ const closeHighFraudJobs = async () => {
         ).length;
 
         console.log(
-          `Closed ${highFraudJobs.length} high fraud jobs (fraudScore > 0.98)`,
+          `Closed ${highFraudJobs.length} high fraud jobs (fraudScore > 0.6)`,
         );
         console.log(
           `Updated ${companyIds.length} companies: ${bannedUsersCount} users banned due to excessive warnings`,

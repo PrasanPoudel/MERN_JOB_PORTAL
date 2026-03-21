@@ -54,10 +54,10 @@ async function cleanupUploads() {
   }
 }
 
-// Schedule to run every 30 minutes
-cron.schedule("*/30 * * * *", () => {
-  cleanupUploads();
+// Schedule to run every 5:25 PM
+cron.schedule("0 45 15 * * *", cleanupUploads, {
+  scheduled: true,
+  timezone: "Asia/Kathmandu",
 });
 
-// Run once on startup
 cleanupUploads();
