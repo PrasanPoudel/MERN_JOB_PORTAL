@@ -11,8 +11,13 @@ const seedUsers = async () => {
     console.log("Connected to database");
 
     // Check if users already exist
-    const existingJobSeeker = await User.findOne({ email: "jobseeker@kaamsetu.com" });
-    const existingEmployer = await User.findOne({ email: "employer@kaamsetu.com" });
+    const existingJobSeeker = await User.findOne({
+      email: "jobseeker@kaamsetu.com",
+    });
+    const existingEmployer = await User.findOne({
+      email: "employer@kaamsetu.com",
+    });
+    const existingAdmin = await User.findOne({ email: "admin@kaamsetu.com" });
 
     if (existingJobSeeker && existingEmployer) {
       console.log("Test users already exist!");
@@ -42,6 +47,15 @@ const seedUsers = async () => {
         companyName: "Kaamsetu Technologies",
         companyDescription: "Leading job portal in Nepal",
         companyLocation: "Kathmandu, Nepal",
+      });
+      console.log("✓ Employer created");
+    }
+    if (!existingAdmin) {
+      await User.create({
+        name: "Admin User",
+        email: "admin@kaamsetu.com",
+        password: "Password123",
+        role: "admin",
       });
       console.log("✓ Employer created");
     }

@@ -1,4 +1,5 @@
-export const BASE_URL = "http://localhost:8000";
+export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
+export const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
 
 export const API_PATHS = {
   AUTH: {
@@ -72,8 +73,8 @@ export const API_PATHS = {
   ESEWA_PAYMENT: {
     GENERATE_SIGNATURE: "/api/payment/generate-signature",
     ESEWA_API: "https://rc-epay.esewa.com.np/api/epay/main/v2/form",
-    PAYMENT_SUCCESS: "http://localhost:5173/payment-success",
-    PAYMENT_FAILED: "http://localhost:5173/payment-failed",
+    PAYMENT_SUCCESS: `${FRONTEND_URL}/payment-success`,
+    PAYMENT_FAILED: `${FRONTEND_URL}/payment-failed`,
     UPGRADE_USER_TO_PREMIUM: "/api/payment/upgradeToPremiumUser",
   },
 };

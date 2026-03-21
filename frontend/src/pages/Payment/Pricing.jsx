@@ -2,11 +2,11 @@ import React from "react";
 import { Gift, Star, Check, Minus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ArrowLeft } from "lucide-react";
-import Navbar from "../../../components/layout/Navbar";
-import { useAuth } from "../../../context/AuthContext";
+import Navbar from "../../components/layout/Navbar";
+import { useAuth } from "../../context/AuthContext";
 import toast from "react-hot-toast";
-import { API_PATHS } from "../../../utils/apiPaths";
-import axiosInstance from "../../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
+import axiosInstance from "../../utils/axiosInstance";
 
 const Pricing = ({ notPricingPage }) => {
   const navigate = useNavigate();

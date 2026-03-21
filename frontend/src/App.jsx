@@ -39,7 +39,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 
 import ChangePassword from "./pages/ChangePassword";
 import DeleteAccount from "./pages/DeleteAccount";
-import Pricing from "./pages/LandingPage/components/Pricing";
+import Pricing from "./pages/Payment/Pricing";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailed from "./pages/Payment/PaymentFailed";
 
@@ -65,8 +65,8 @@ const App = () => {
             <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
             <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
             <Route path="/pricing" element={<Pricing />} />
-            <Route path="/payment-success" element={<PaymentSuccess/>}/>
-            <Route path="/payment-failed" element={<PaymentFailed/>}/>
+            <Route path="/payment-success" element={<PaymentSuccess />} />
+            <Route path="/payment-failed" element={<PaymentFailed />} />
           </Route>
 
           <Route element={<ProtectedRoute requiredRole="jobSeeker" />}>

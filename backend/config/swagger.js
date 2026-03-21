@@ -13,7 +13,7 @@ const options = {
     },
     servers: [
       {
-        url: "http://localhost:8000",
+        url: process.env.FRONTEND_URL,
         description: "Development server",
       },
     ],

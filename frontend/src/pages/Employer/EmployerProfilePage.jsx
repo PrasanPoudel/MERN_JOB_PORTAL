@@ -260,7 +260,7 @@ const EmployerProfilePage = () => {
                   <div className="min-w-0">
                     <h3 className="flex items-center gap-1 text-base sm:text-lg font-semibold truncate">
                       {profileData.name}
-                      {!profileData?.isPremium && (
+                      {profileData?.isPremium && (
                         <span
                           title="Premium User"
                           className="text-white p-1 rounded-2xl bg-yellow-400"
