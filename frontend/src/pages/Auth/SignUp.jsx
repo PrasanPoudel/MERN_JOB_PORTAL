@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import {
   User,
@@ -13,6 +13,9 @@ import {
   CheckCircle,
   ArrowLeft,
   ArrowRight,
+  ShieldCheck,
+  Clock,
+  RefreshCw,
 } from "lucide-react";
 import {
   validateEmail,
@@ -40,6 +43,12 @@ const SignUp = () => {
     success: false,
   });
   const [step, setStep] = useState(1);
+  const [otpData, setOtpData] = useState({
+    email: "",
+    otp: "",
+    countdown: 0,
+    isVerifying: false,
+  });
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -63,6 +72,7 @@ const SignUp = () => {
       }));
     }
   };
+
   const validateForm = () => {
     const errors = {
       fullName: validateName(formData.fullName),
@@ -82,14 +92,16 @@ const SignUp = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
+  const handleSendVerification = async (e) => {
     e.preventDefault();
     if (!validateForm()) {
       return;
     }
+    
     setFormState((prev) => ({ ...prev, loading: true }));
+    
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.REGISTER, {
+      const response = await axiosInstance.post(API_PATHS.AUTH.SEND_VERIFICATION, {
         name: formData.fullName,
         email: formData.email,
         password: formData.password,
@@ -99,21 +111,30 @@ const SignUp = () => {
       setFormState((prev) => ({
         ...prev,
         loading: false,
-        success: true,
         errors: {},
       }));
 
-      const { token } = response.data;
+      setOtpData({
+        email: formData.email,
+        otp: "",
+        countdown: 300, // 5 minutes in seconds
+        isVerifying: false,
+      });
+      setStep(3); // Go to OTP verification step
 
-      if (token) {
-        login(response.data, token);
-        setTimeout(() => {
-          window.location.href =
-            formData.role === "employer" ? "/employer-dashboard" : "find-jobs";
-        }, 2000);
-      }
+      // Start countdown
+      const interval = setInterval(() => {
+        setOtpData(prev => {
+          if (prev.countdown <= 1) {
+            clearInterval(interval);
+            return { ...prev, countdown: 0 };
+          }
+          return { ...prev, countdown: prev.countdown - 1 };
+        });
+      }, 1000);
+
     } catch (err) {
-      console.error("[SignUp Error]", {
+      console.error("[Send Verification Error]", {
         email: formData.email,
         role: formData.role,
         error: err?.message || err,
@@ -122,10 +143,101 @@ const SignUp = () => {
         ...prev,
         loading: false,
         errors: {
-          submit: err?.message || "Registration failed. Please try again.",
+          submit: err?.message || "Failed to send verification email. Please try again.",
         },
       }));
     }
+  };
+
+  const handleVerifyEmail = async (e) => {
+    e.preventDefault();
+    if (!otpData.otp || otpData.otp.length !== 6) {
+      setFormState((prev) => ({
+        ...prev,
+        errors: { otp: "Please enter a valid 6-digit OTP" },
+      }));
+      return;
+    }
+
+    setOtpData((prev) => ({ ...prev, isVerifying: true }));
+
+    try {
+      const response = await axiosInstance.post(API_PATHS.AUTH.VERIFY_EMAIL, {
+        email: otpData.email,
+        otp: otpData.otp,
+      });
+
+      setOtpData((prev) => ({ ...prev, isVerifying: false }));
+
+      const { token } = response.data;
+
+      if (token) {
+        login(response.data, token);
+        setFormState((prev) => ({ ...prev, success: true }));
+        
+        setTimeout(() => {
+          window.location.href =
+            formData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
+        }, 2000);
+      }
+    } catch (err) {
+      console.error("[Verify Email Error]", {
+        email: otpData.email,
+        error: err?.message || err,
+      });
+      setOtpData((prev) => ({ ...prev, isVerifying: false }));
+      setFormState((prev) => ({
+        ...prev,
+        errors: {
+          otp: err?.message || "Invalid or expired OTP. Please try again.",
+        },
+      }));
+    }
+  };
+
+  const handleResendOTP = async () => {
+    if (otpData.countdown > 0) return;
+
+    setFormState((prev) => ({ ...prev, loading: true }));
+
+    try {
+      await axiosInstance.post(API_PATHS.AUTH.RESEND_VERIFICATION, {
+        email: otpData.email,
+      });
+
+      setFormState((prev) => ({ ...prev, loading: false, errors: {} }));
+      setOtpData(prev => ({ ...prev, countdown: 300, otp: "" }));
+
+      // Restart countdown
+      const interval = setInterval(() => {
+        setOtpData(prev => {
+          if (prev.countdown <= 1) {
+            clearInterval(interval);
+            return { ...prev, countdown: 0 };
+          }
+          return { ...prev, countdown: prev.countdown - 1 };
+        });
+      }, 1000);
+
+    } catch (err) {
+      console.error("[Resend OTP Error]", {
+        email: otpData.email,
+        error: err?.message || err,
+      });
+      setFormState((prev) => ({
+        ...prev,
+        loading: false,
+        errors: {
+          submit: err?.message || "Failed to resend OTP. Please try again.",
+        },
+      }));
+    }
+  };
+
+  const formatTime = (seconds) => {
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
   };
 
   if (formState.success) {
@@ -142,7 +254,7 @@ const SignUp = () => {
             Account Created!
           </h2>
           <p className="text-gray-600 mb-4">
-            Welcome to KAAMSETU! Your account has been successfully created
+            Welcome to KAAMSETU! Your account has been successfully created and verified.
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
           <p className="text-sm text-gray-500 mt-2">
@@ -164,15 +276,17 @@ const SignUp = () => {
         <div className="flex items-center justify-center mb-4">
           <img src={logo} className="w-32 h-24" />
         </div>
-        <div className="text-center mb-4">
-          <h2 className="text-2xl text-gray-900 mb-2">Create Account</h2>
-          <p className="text-gray-600">
-            Join thousands of professionals finding their dream job!
-          </p>
-        </div>
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {step === 1 && (
-            <>
+        
+        {/* Step 1: Basic Information */}
+        {step === 1 && (
+          <>
+            <div className="text-center mb-4">
+              <h2 className="text-2xl text-gray-900 mb-2">Create Account</h2>
+              <p className="text-gray-600">
+                Join thousands of professionals finding their dream job!
+              </p>
+            </div>
+            <form onSubmit={handleSendVerification} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Full Name *
@@ -241,11 +355,90 @@ const SignUp = () => {
                   </button>
                 </div>
               </div>
-            </>
-          )}
 
-          {step == 2 && (
-            <>
+              <div className="flex items-center justify-between">
+                <p
+                  onClick={() => {
+                    if (step > 1) {
+                      setStep((prev) => prev - 1);
+                    }
+                  }}
+                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
+                    step === 2
+                      ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
+                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
+                  } ${step <= 1 && "opacity-0"} `}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Prev
+                </p>
+                <p
+                  onClick={() => {
+                    if (step < 2) {
+                      setStep((prev) => prev + 1);
+                    }
+                  }}
+                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
+                    step === 1
+                      ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
+                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
+                  } ${step == 2 && "opacity-0"}`}
+                >
+                  Next <ArrowRight className="w-4 h-4" />
+                </p>
+              </div>
+
+              <div className="text-center">
+                <p className="text-gray-600">
+                  Already have an account?
+                  <br className="lg:hidden" />
+                  <a
+                    href="/login"
+                    className="text-sky-600 hover:text-sky-700 font-medium"
+                  >
+                    {" "}
+                    Click here to login
+                  </a>
+                </p>
+              </div>
+              {step == 2 && (
+                <>
+                  {formState.errors.submit && (
+                    <div className="bg-red-50 border border-red-200 rounded-lg p-3">
+                      <p className="flex text-red-500 text-xs mt-1 items-center justify-center">
+                        <AlertCircle className="w-4 h-4 mr-1" />
+                        {formState.errors.submit}
+                      </p>
+                    </div>
+                  )}
+                  <button
+                    type="submit"
+                    disabled={formState.loading}
+                    className="cursor-pointer flex w-full bg-sky-600 hover:bg-sky-700  text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center space-x-2"
+                  >
+                    {formState.loading ? (
+                      <>
+                        <Loader className="w-5 h-5 animate-spin" />
+                        <span>Sending Verification...</span>
+                      </>
+                    ) : (
+                      <span className="">Send Verification Email</span>
+                    )}
+                  </button>
+                </>
+              )}
+            </form>
+          </>
+        )}
+
+        {/* Step 2: Email & Password */}
+        {step === 2 && (
+          <>
+            <div className="text-center mb-4">
+              <h2 className="text-2xl text-gray-900 mb-2">Account Details</h2>
+              <p className="text-gray-600">Complete your registration</p>
+            </div>
+            <form onSubmit={handleSendVerification} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Email Address *
@@ -323,57 +516,52 @@ const SignUp = () => {
                   {formState.errors.role}
                 </p>
               )}
-            </>
-          )}
 
-          {/* Steps controllers */}
-          <div className="flex items-center justify-between">
-            <p
-              onClick={() => {
-                if (step > 1) {
-                  setStep((prev) => prev - 1);
-                }
-              }}
-              className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
-                step === 2
-                  ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                  : "bg-gray-300 text-gray-700 cursor-not-allowed"
-              } ${step <= 1 && "opacity-0"} `}
-            >
-              <ArrowLeft className="w-4 h-4" />
-              Prev
-            </p>
-            <p
-              onClick={() => {
-                if (step < 2) {
-                  setStep((prev) => prev + 1);
-                }
-              }}
-              className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
-                step === 1
-                  ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                  : "bg-gray-300 text-gray-700 cursor-not-allowed"
-              } ${step == 2 && "opacity-0"}`}
-            >
-              Next <ArrowRight className="w-4 h-4" />
-            </p>
-          </div>
+              <div className="flex items-center justify-between">
+                <p
+                  onClick={() => {
+                    if (step > 1) {
+                      setStep((prev) => prev - 1);
+                    }
+                  }}
+                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
+                    step === 2
+                      ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
+                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
+                  } ${step <= 1 && "opacity-0"} `}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  Prev
+                </p>
+                <p
+                  onClick={() => {
+                    if (step < 2) {
+                      setStep((prev) => prev + 1);
+                    }
+                  }}
+                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
+                    step === 1
+                      ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
+                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
+                  } ${step == 2 && "opacity-0"}`}
+                >
+                  Next <ArrowRight className="w-4 h-4" />
+                </p>
+              </div>
 
-          <div className="text-center">
-            <p className="text-gray-600">
-              Already have an account?
-              <br className="lg:hidden" />
-              <a
-                href="/login"
-                className="text-sky-600 hover:text-sky-700 font-medium"
-              >
-                {" "}
-                Click here to login
-              </a>
-            </p>
-          </div>
-          {step == 2 && (
-            <>
+              <div className="text-center">
+                <p className="text-gray-600">
+                  Already have an account?
+                  <br className="lg:hidden" />
+                  <a
+                    href="/login"
+                    className="text-sky-600 hover:text-sky-700 font-medium"
+                  >
+                    {" "}
+                    Click here to login
+                  </a>
+                </p>
+              </div>
               {formState.errors.submit && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">
                   <p className="flex text-red-500 text-xs mt-1 items-center justify-center">
@@ -390,15 +578,99 @@ const SignUp = () => {
                 {formState.loading ? (
                   <>
                     <Loader className="w-5 h-5 animate-spin" />
-                    <span>Creating Account...</span>
+                    <span>Sending Verification...</span>
                   </>
                 ) : (
-                  <span className="">Create Account</span>
+                  <span className="">Send Verification Email</span>
                 )}
               </button>
-            </>
-          )}
-        </form>
+            </form>
+          </>
+        )}
+
+        {/* Step 3: OTP Verification */}
+        {step === 3 && (
+          <>
+            <div className="text-center mb-4">
+              <ShieldCheck className="w-16 h-16 text-sky-600 mx-auto mb-4" />
+              <h2 className="text-2xl text-gray-900 mb-2">Verify Your Email</h2>
+              <p className="text-gray-600">
+                We've sent a 6-digit verification code to {otpData.email}
+              </p>
+            </div>
+            
+            <form onSubmit={handleVerifyEmail} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Enter 6-digit OTP *
+                </label>
+                <div className="relative">
+                  <input
+                    type="text"
+                    maxLength="6"
+                    value={otpData.otp}
+                    onChange={(e) => setOtpData(prev => ({ ...prev, otp: e.target.value }))}
+                    className={`w-full px-4 py-3 rounded-lg border ${
+                      formState.errors.otp
+                        ? "border-red-500"
+                        : "border-gray-300"
+                    } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors text-center text-2xl tracking-widest`}
+                    placeholder="000000"
+                    inputMode="numeric"
+                    pattern="[0-9]*"
+                  />
+                </div>
+                {formState.errors.otp && (
+                  <p className="flex text-red-500 text-sm mt-1 items-center">
+                    <AlertCircle className="w-4 h-4 mr-1" />
+                    {formState.errors.otp}
+                  </p>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between text-sm text-gray-600">
+                <div className="flex items-center gap-2">
+                  <Clock className="w-4 h-4" />
+                  <span>Expires in: {formatTime(otpData.countdown)}</span>
+                </div>
+                <button
+                  type="button"
+                  onClick={handleResendOTP}
+                  disabled={otpData.countdown > 0 || formState.loading}
+                  className={`flex items-center gap-2 ${
+                    otpData.countdown > 0
+                      ? "text-gray-400 cursor-not-allowed"
+                      : "text-sky-600 hover:text-sky-700"
+                  }`}
+                >
+                  <RefreshCw className={`w-4 h-4 ${otpData.countdown > 0 ? "animate-spin" : ""}`} />
+                  Resend OTP
+                </button>
+              </div>
+
+              <button
+                type="submit"
+                disabled={otpData.isVerifying || formState.loading}
+                className="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+              >
+                {otpData.isVerifying ? (
+                  <>
+                    <Loader className="w-5 h-5 animate-spin inline mr-2" />
+                    Verifying...
+                  </>
+                ) : (
+                  "Verify Email"
+                )}
+              </button>
+
+              <div className="text-center">
+                <p className="text-gray-600 text-sm">
+                  Didn't receive the email? Check your spam folder or contact support.
+                </p>
+              </div>
+            </form>
+          </>
+        )}
       </motion.div>
     </div>
   );

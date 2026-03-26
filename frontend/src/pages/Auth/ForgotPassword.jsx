@@ -2,37 +2,26 @@ import React, { useState } from "react";
 import { motion } from "framer-motion";
 import {
   Mail,
-  Lock,
-  Eye,
-  EyeOff,
   Loader,
   AlertCircle,
   CheckCircle,
+  ArrowLeft,
 } from "lucide-react";
 import { validateEmail } from "../../utils/helper";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
-import { useAuth } from "../../context/AuthContext";
 import logo from "../../assets/logo.png";
 
-const Login = () => {
-  const { login } = useAuth();
+const ForgotPassword = () => {
   const [formData, setFormData] = useState({
     email: "",
-    password: "",
-    rememberMe: true,
   });
+
   const [formState, setFormState] = useState({
     loading: false,
     errors: {},
-    showPassword: false,
     success: false,
   });
-
-  const validatePassword = (password) => {
-    if (!password.trim()) return "Password is required.";
-    return "";
-  };
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -50,58 +39,46 @@ const Login = () => {
   const validateForm = () => {
     const errors = {
       email: validateEmail(formData.email),
-      password: validatePassword(formData.password),
     };
 
     Object.keys(errors).forEach((key) => {
       if (!errors[key]) delete errors[key];
     });
+
     setFormState((prev) => ({ ...prev, errors }));
     return Object.keys(errors).length === 0;
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    if (!validateForm()) return;
+    if (!validateForm()) {
+      return;
+    }
+    
     setFormState((prev) => ({ ...prev, loading: true }));
-
+    
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
+      await axiosInstance.post(API_PATHS.AUTH.FORGOT_PASSWORD, {
         email: formData.email,
-        password: formData.password,
-        rememberMe: formData.rememberMe,
       });
+
       setFormState((prev) => ({
         ...prev,
         loading: false,
         success: true,
         errors: {},
       }));
-      const { token, role } = response.data;
 
-      if (token && role) {
-        login(response.data, token);
-        //Redirect after logged in successfully
-        setTimeout(() => {
-          window.location.href =
-            role === "employer"
-              ? "/employer-dashboard"
-              : role === "admin"
-                ? "/admin-dashboard"
-                : "/";
-        }, 2000);
-      }
-    } catch (error) {
-      console.error("[Login Error]", {
+    } catch (err) {
+      console.error("[Forgot Password Error]", {
         email: formData.email,
-        error: error?.message || error,
+        error: err?.message || err,
       });
       setFormState((prev) => ({
         ...prev,
         loading: false,
         errors: {
-          submit: error?.message,
+          submit: err?.message || "Failed to send password reset email. Please try again.",
         },
       }));
     }
@@ -118,15 +95,21 @@ const Login = () => {
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
           <h2 className="text-2xl font-semibold text-gray-900 mb-2">
-            Welcome Back!
+            Reset Email Sent!
           </h2>
           <p className="text-gray-600 mb-4">
-            You have been successfully logged in.
+            We've sent a password reset link to {formData.email}. Please check your inbox and follow the instructions.
           </p>
-          <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
-          <p className="text-sm text-gray-500 mt-2">
-            Redirecting to your dashboard...
+          <p className="text-sm text-gray-500 mb-6">
+            The link will expire in 15 minutes.
           </p>
+          <a
+            href="/login"
+            className="inline-flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to Login
+          </a>
         </motion.div>
       </div>
     );
@@ -138,14 +121,16 @@ const Login = () => {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.6 }}
-        className="bg-white p-2 lg:p-8 rounded-xl shadow-lg max-w-md w-full"
+        className="bg-white p-4 lg:p-8 rounded-xl shadow-lg max-w-md w-full"
       >
         <div className="flex items-center justify-center mb-4">
           <img src={logo} className="w-32 h-24" />
         </div>
-        <div className="text-center mb-4">
-          <h2 className="text-2xl text-gray-900 mb-2">Welcome Back!</h2>
-          <p className="text-gray-600">Sign in to your account</p>
+        <div className="text-center mb-6">
+          <h2 className="text-2xl text-gray-900 mb-2">Forgot Password?</h2>
+          <p className="text-gray-600">
+            Enter your email address and we'll send you a link to reset your password.
+          </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -155,14 +140,15 @@ const Login = () => {
             <div className="relative">
               <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
               <input
-                autoComplete="off"
                 type="email"
                 name="email"
                 id="email"
                 onChange={handleInputChange}
                 value={formData.email}
                 className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                  formState.errors.email ? "border-red-500" : "border-gray-300"
+                  formState.errors.email
+                    ? "border-red-500"
+                    : "border-gray-300"
                 } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors`}
                 placeholder="Enter your email"
               />
@@ -175,60 +161,10 @@ const Login = () => {
             )}
           </div>
 
-          <div>
-            <label className="flex justify-between text-sm font-medium text-gray-700 mb-2">
-              Password
-              <a
-                href="/forgot-password"
-                className="text-sky-600 hover:text-sky-700 font-medium"
-              >
-                Forget your password?
-              </a>
-            </label>
-            <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
-              <input
-                type={formState.showPassword ? "text" : "password"}
-                name="password"
-                id="password"
-                onChange={handleInputChange}
-                value={formData.password}
-                className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                  formState.errors.password
-                    ? "border-red-500"
-                    : "border-gray-300"
-                } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors`}
-                placeholder="Enter your password"
-              />
-              <button
-                type="button"
-                onClick={() => {
-                  setFormState((prev) => ({
-                    ...prev,
-                    showPassword: !prev.showPassword,
-                  }));
-                }}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
-              >
-                {formState.showPassword ? (
-                  <EyeOff className="w-5 h-5" />
-                ) : (
-                  <Eye className="w-5 h-5" />
-                )}
-              </button>
-            </div>
-            {formState.errors.password && (
-              <p className="flex text-red-500 text-sm mt-1 items-center">
-                <AlertCircle className="w-4 h-4 mr-1" />
-                {formState.errors.password}
-              </p>
-            )}
-          </div>
-
           {formState.errors.submit && (
             <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-              <p className="flex text-red-500 text-xs mt-1 items-center justify-center">
-                <AlertCircle className="w-4 h-4 mr-1 shrink-0" />
+              <p className="flex text-red-500 text-sm mt-1 items-center justify-center">
+                <AlertCircle className="w-4 h-4 mr-1" />
                 {formState.errors.submit}
               </p>
             </div>
@@ -237,27 +173,28 @@ const Login = () => {
           <button
             type="submit"
             disabled={formState.loading}
-            className="flex w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center space-x-2"
+            className="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             {formState.loading ? (
               <>
-                <Loader className="w-5 h-5 animate-spin" />
-                <span>Signing In...</span>
+                <Loader className="w-5 h-5 animate-spin inline mr-2" />
+                Sending Reset Link...
               </>
             ) : (
-              <span className="">Sign In</span>
+              "Send Reset Link"
             )}
           </button>
 
-          <div className="text-center space-y-2">
+          <div className="text-center">
             <p className="text-gray-600">
-              Don't have an account?
+              Remember your password?
+              <br className="lg:hidden" />
               <a
-                href="/signup"
+                href="/login"
                 className="text-sky-600 hover:text-sky-700 font-medium"
               >
                 {" "}
-                Create one here
+                Back to login
               </a>
             </p>
           </div>
@@ -267,4 +204,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgotPassword;

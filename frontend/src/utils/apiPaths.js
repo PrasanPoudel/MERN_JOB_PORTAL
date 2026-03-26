@@ -5,6 +5,11 @@ export const API_PATHS = {
   AUTH: {
     REGISTER: "/api/auth/register", // Signup
     LOGIN: "/api/auth/login", // Authenticate user & return JWT token
+    SEND_VERIFICATION: "/api/auth/send-verification", // Send OTP for email verification
+    VERIFY_EMAIL: "/api/auth/verify-email", // Verify OTP and create account
+    RESEND_VERIFICATION: "/api/auth/resend-verification", // Resend OTP
+    FORGOT_PASSWORD: "/api/auth/forgot-password", // Send password reset email
+    RESET_PASSWORD: "/api/auth/reset-password", // Reset password with token
     UPDATE_PROFILE: "/api/user/profile", // Update profile details
     DELETE_RESUME: "/api/user/resume", // Delete Resume details
     CHANGE_PASSWORD: "/api/user/change-password", // Change user's password

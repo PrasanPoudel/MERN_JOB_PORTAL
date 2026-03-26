@@ -9,6 +9,8 @@ import { Toaster } from "react-hot-toast";
 import LandingPage from "./pages/LandingPage/LandingPage";
 import SignUp from "./pages/Auth/SignUp";
 import Login from "./pages/Auth/Login";
+import ForgotPassword from "./pages/Auth/ForgotPassword";
+import ResetPassword from "./pages/Auth/ResetPassword";
 
 import EditAdminProfile from "./pages/Admin/EditAdminProfile";
 import AdminDashboard from "./pages/Admin/AdminDashboard";
@@ -57,6 +59,8 @@ const App = () => {
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUp />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
 
           {/* Chat routes - accessible to both jobSeeker and employer */}
           <Route element={<ProtectedRoute />}>

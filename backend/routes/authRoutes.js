@@ -1,11 +1,20 @@
 const express = require("express");
-const { register, login, getMe } = require("../controllers/authController");
+const { register, login, getMe, sendVerificationEmail, verifyEmail, resendVerification, forgotPassword, resetPassword } = require("../controllers/authController");
 const { protect } = require("../middlewares/authMiddleware");
 const router = express.Router();
 const upload= require("../middlewares/uploadMiddleware");
 
 router.post("/register", register);
 router.post("/login", login);
+
+// Email verification routes
+router.post("/send-verification", sendVerificationEmail);
+router.post("/verify-email", verifyEmail);
+router.post("/resend-verification", resendVerification);
+
+// Password reset routes
+router.post("/forgot-password", forgotPassword);
+router.post("/reset-password", resetPassword);
 
 router.post("/upload-file", (req, res) => {
   upload.single("file")(req, res, function (err) {

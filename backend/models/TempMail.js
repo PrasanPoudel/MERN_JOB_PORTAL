@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 
-const userSchema = new mongoose.Schema(
+const tempMailSchema = new mongoose.Schema(
   {
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
@@ -11,27 +11,13 @@ const userSchema = new mongoose.Schema(
       enum: ["jobSeeker", "employer", "admin"],
       required: true,
     },
-    isEmailVerified: {
-      type: Boolean,
-      default: false,
-    },
-    passwordResetToken: String,
-    passwordResetExpires: Date,
+    emailVerificationToken: { type: String, required: true },
+    emailVerificationExpires: { type: Date, required: true },
+    lastOtpSentAt: { type: Date },
     avatar: String,
-    resume: String,
     location: String,
     facebookLink: String,
     instagramLink: String,
-    isPremium: {
-      type: Boolean,
-      default: false,
-    },
-    premiumIssueDate: { type: Date, default: null },
-    monthlyApplicationCount: { type: Number, default: 0 },
-    applicationCountResetDate: { type: Date, default: Date.now },
-    isBanned: { type: Boolean, default: false },
-    banReason: { type: String, default: "" },
-    banDate: { type: Date },
     skills: [String],
     education: [
       {
@@ -42,7 +28,6 @@ const userSchema = new mongoose.Schema(
         endDate: Date,
       },
     ],
-
     experience: [
       {
         jobTitle: String,
@@ -62,7 +47,6 @@ const userSchema = new mongoose.Schema(
         link: String,
       },
     ],
-
     // For employer
     companyName: String,
     companyDescription: String,
@@ -70,31 +54,10 @@ const userSchema = new mongoose.Schema(
     companyLocation: String,
     companyWebsiteLink: String,
     companySize: String,
-    isCompanyVerified: {
-      type: Boolean,
-      default: false,
-    },
-    companyRegistrationNumber: {
-      type: String,
-    },
-    panNumber: {
-      type: String,
-    },
-    no_of_warnings: { type: Number, default: 0 },
+    companyRegistrationNumber: String,
+    panNumber: String,
   },
-  { timestamps: true },
+  { timestamps: true }
 );
 
-//Encrypt password before save
-userSchema.pre("save", async function () {
-  if (!this.isModified("password")) return;
-
-  this.password = await bcrypt.hash(this.password, 10);
-});
-
-// Match entered password
-userSchema.methods.matchPassword = function (enteredPassword) {
-  return bcrypt.compare(enteredPassword, this.password);
-};
-
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("TempMail", tempMailSchema);

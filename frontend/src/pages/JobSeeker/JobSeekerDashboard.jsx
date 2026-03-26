@@ -65,7 +65,7 @@ const JobSeekerDashboard = () => {
       setJobs(response?.data?.jobs || []);
       setJobCount(response?.data?.jobs?.length || 0);
       setPagination(response?.data?.pagination || null);
-      // console.log(response?.data);
+      console.log(response?.data);
     } catch (err) {
       console.error("Error occurred while fetching jobs:", err);
       setJobs([]);
