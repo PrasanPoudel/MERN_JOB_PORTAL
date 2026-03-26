@@ -210,6 +210,7 @@ const AdminCompanyVerification = () => {
           <div className="relative flex-1">
             <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
+              autoComplete="off"
               id="search_companies"
               type="text"
               placeholder="Search companies..."

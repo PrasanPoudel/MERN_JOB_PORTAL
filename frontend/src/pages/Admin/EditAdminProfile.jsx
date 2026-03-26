@@ -165,6 +165,7 @@ const EditAdminProfile = () => {
                   </label>
 
                   <input
+                    autoComplete="off"
                     id="name"
                     name="name"
                     type="text"
@@ -186,6 +187,7 @@ const EditAdminProfile = () => {
                   </label>
 
                   <input
+                    autoComplete="off"
                     id="email"
                     name="email"
                     type="email"

@@ -83,7 +83,7 @@ const ProfileDropdown = ({
                 title="Premium User"
                 className="text-white p-1 rounded-2xl bg-yellow-400"
               >
-                <Crown className="w-4 h-4" />
+                <Crown className="w-3 h-3" />
               </span>
             )}
           </p>
@@ -111,7 +111,14 @@ const ProfileDropdown = ({
           <div className="px-4 py-3 border-b border-gray-100">
             <p className="flex items-center gap-1 text-sm font-semibold text-gray-900 truncate">
               {name}
-              {isPremium && <Crown className="w-3 h-3 text-yellow-500" />}
+              {isPremium && (
+                <span
+                  title="Premium User"
+                  className="text-white p-1 rounded-2xl bg-yellow-400"
+                >
+                  <Crown className="w-3 h-3" />
+                </span>
+              )}
             </p>
             {role === "employer" && companyName && (
               <p className="flex items-center gap-1 text-xs text-gray-500 truncate">

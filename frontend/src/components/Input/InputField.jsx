@@ -28,6 +28,7 @@ const InputField = ({
           </div>
         )}
         <input
+          autoComplete="off"
           type={type}
           value={value}
           placeholder={placeholder}
