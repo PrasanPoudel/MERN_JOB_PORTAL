@@ -77,10 +77,6 @@ app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
 
-// Start uploads cleanup cron job
-
-//require("./cleanupUploadsCron");
-
 // const { startCronJobs } = require("./services/cronService");
 // startCronJobs();
 

@@ -2,6 +2,7 @@ const cron = require("node-cron");
 const Job = require("../models/Job");
 const User = require("../models/User");
 const Message = require("../models/Message");
+const cleanupUploads = require("../cleanupUploadsCron");
 
 // Function to close expired jobs
 const closeExpiredJobs = async () => {
@@ -195,13 +196,18 @@ const startCronJobs = () => {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
-  // Close expired jobs at 6:15 PM
-  cron.schedule("0 15 24 * * *", closeExpiredJobs, {
+  // Check premium expiration at 6:15 PM
+  cron.schedule("0 15 18 * * *", checkPremiumExpiration, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
-  // Check premium expiration at 6:30 PM
-  cron.schedule("0 0 24 * * *", checkPremiumExpiration, {
+  // Close expired jobs at 12:01 AM
+  cron.schedule("0 1 0 * * *", closeExpiredJobs, {
+    scheduled: true,
+    timezone: "Asia/Kathmandu",
+  });
+  // Schedule to run every 12:15 AM
+  cron.schedule("0 15 0 * * *", cleanupUploads, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
