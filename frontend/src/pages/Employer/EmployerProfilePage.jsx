@@ -44,6 +44,8 @@ const EmployerProfilePage = () => {
     avatar: false,
     companyLogo: false,
   });
+  const [tempFiles, setTempFiles] = useState({ avatar: null, companyLogo: null });
+  const [tempPreviews, setTempPreviews] = useState({ avatar: null, companyLogo: null });
   const [saving, setSaving] = useState(false);
 
   // Validation function
@@ -134,44 +136,15 @@ const EmployerProfilePage = () => {
     });
   };
 
-  const handleFileUpload = async (file, type) => {
-    if (!file) return;
-
-    setUploading((prev) => ({ ...prev, [type]: true }));
-    const prevValue = formData[type === "avatar" ? "avatar" : "companyLogo"];
-    try {
-      const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes?.fileUrl || prevValue;
-      handleInputChange(type === "avatar" ? "avatar" : "companyLogo", fileUrl);
-      toast.success(
-        `${type === "avatar" ? "Profile picture" : "Company logo"} uploaded successfully!`,
-      );
-    } catch (err) {
-      console.error("[File Upload Error]", {
-        type,
-        fileName: file?.name,
-        error: err?.message || err,
-      });
-      toast.error(
-        err?.message ||
-          `${type === "avatar" ? "Profile picture" : "Company logo"} upload failed. Please try again.`,
-      );
-      handleInputChange(
-        type === "avatar" ? "avatar" : "companyLogo",
-        prevValue,
-      );
-    } finally {
-      setUploading((prev) => ({ ...prev, [type]: false }));
-    }
-  };
 
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
       const previewUrl = URL.createObjectURL(file);
       const field = type === "avatar" ? "avatar" : "companyLogo";
+      setTempFiles((prev) => ({ ...prev, [field]: file }));
+      setTempPreviews((prev) => ({ ...prev, [field]: previewUrl }));
       handleInputChange(field, previewUrl);
-      handleFileUpload(file, type);
     }
   };
 
@@ -183,14 +156,59 @@ const EmployerProfilePage = () => {
 
     setSaving(true);
     try {
+      let avatarUrl = formData.avatar;
+      let companyLogoUrl = formData.companyLogo;
+      
+      if (tempFiles.avatar) {
+        setUploading((prev) => ({ ...prev, avatar: true }));
+        try {
+          const avatarUploadRes = await uploadFile(tempFiles.avatar);
+          avatarUrl = avatarUploadRes?.fileUrl || "";
+        } catch (err) {
+          console.error("[Avatar Upload Error]", {
+            fileName: tempFiles.avatar?.name,
+            error: err?.message || err,
+          });
+          toast.error("Profile picture upload failed. Please try again.");
+          return;
+        } finally {
+          setUploading((prev) => ({ ...prev, avatar: false }));
+        }
+      }
+      
+      if (tempFiles.companyLogo) {
+        setUploading((prev) => ({ ...prev, companyLogo: true }));
+        try {
+          const companyLogoUploadRes = await uploadFile(tempFiles.companyLogo);
+          companyLogoUrl = companyLogoUploadRes?.fileUrl || "";
+        } catch (err) {
+          console.error("[Company Logo Upload Error]", {
+            fileName: tempFiles.companyLogo?.name,
+            error: err?.message || err,
+          });
+          toast.error("Company logo upload failed. Please try again.");
+          return;
+        } finally {
+          setUploading((prev) => ({ ...prev, companyLogo: false }));
+        }
+      }
+
+      const updatedFormData = {
+        ...formData,
+        avatar: avatarUrl,
+        companyLogo: companyLogoUrl,
+      };
+
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
-        formData,
+        updatedFormData,
       );
       if (response.status === 200) {
         toast.success("Profile updated successfully!");
-        setProfileData(formData);
-        updateUser(formData);
+        setProfileData(updatedFormData);
+        updateUser(updatedFormData);
+        setTempFiles({ avatar: null, companyLogo: null });
+        setTempPreviews({ avatar: null, companyLogo: null });
         setEditMode(false);
       }
     } catch (err) {

@@ -11,7 +11,7 @@ import {
   GraduationCap,
   Code,
   X,
-  Edit3
+  Edit3,
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -40,6 +40,11 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   const [newDesc, setNewDesc] = useState({});
   const [isSaving, setIsSaving] = useState(false);
   const [uploading, setUploading] = useState({ avatar: false, resume: false });
+  const [tempFiles, setTempFiles] = useState({ avatar: null, resume: null });
+  const [tempPreviews, setTempPreviews] = useState({
+    avatar: null,
+    resume: null,
+  });
 
   // Initialize form data when user data is available
   useEffect(() => {
@@ -72,50 +77,21 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
     });
   };
 
-  const handleFileUpload = async (file, type) => {
-    if (!file) return;
-
-    setUploading((prev) => ({ ...prev, [type]: true }));
-    try {
-      const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes?.fileUrl || "";
-
-      setFormData((prev) => ({
-        ...prev,
-        [type]: fileUrl,
-      }));
-      toast.success(
-        `${type === "avatar" ? "Profile picture" : "Resume"} uploaded successfully!`,
-      );
-    } catch (err) {
-      console.error("[File Upload Error]", {
-        type,
-        fileName: file?.name,
-        error: err?.message || err,
-      });
-      toast.error(
-        err?.message ||
-          `${type === "avatar" ? "Profile picture" : "Resume"} upload failed. Please try again.`,
-      );
-    } finally {
-      setUploading((prev) => ({ ...prev, [type]: false }));
-    }
-  };
-
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
-      // Create preview URL for avatar
-      if (type === "avatar") {
-        const previewUrl = URL.createObjectURL(file);
-        setFormData((prev) => ({
-          ...prev,
-          [type]: previewUrl,
-        }));
-      }
+      // Create preview URL
+      const previewUrl = URL.createObjectURL(file);
 
-      // Upload File
-      handleFileUpload(file, type);
+      // Store file and preview in temporary state
+      setTempFiles((prev) => ({ ...prev, [type]: file }));
+      setTempPreviews((prev) => ({ ...prev, [type]: previewUrl }));
+
+      // Update form data with preview URL for immediate display
+      setFormData((prev) => ({
+        ...prev,
+        [type]: previewUrl,
+      }));
     }
   };
 
@@ -318,24 +294,72 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   const handleSave = async () => {
     try {
       setIsSaving(true);
-      const dataToSend = {
+
+      // Upload files first if they exist
+      let avatarUrl = formData.avatar;
+      let resumeUrl = formData.resume;
+
+      if (tempFiles.avatar) {
+        setUploading((prev) => ({ ...prev, avatar: true }));
+        try {
+          const avatarUploadRes = await uploadFile(tempFiles.avatar);
+          avatarUrl = avatarUploadRes?.fileUrl || "";
+        } catch (err) {
+          console.error("[Avatar Upload Error]", {
+            fileName: tempFiles.avatar?.name,
+            error: err?.message || err,
+          });
+          toast.error("Profile picture upload failed. Please try again.");
+          return;
+        } finally {
+          setUploading((prev) => ({ ...prev, avatar: false }));
+        }
+      }
+
+      if (tempFiles.resume) {
+        setUploading((prev) => ({ ...prev, resume: true }));
+        try {
+          const resumeUploadRes = await uploadFile(tempFiles.resume);
+          resumeUrl = resumeUploadRes?.fileUrl || "";
+        } catch (err) {
+          console.error("[Resume Upload Error]", {
+            fileName: tempFiles.resume?.name,
+            error: err?.message || err,
+          });
+          toast.error("Resume upload failed. Please try again.");
+          return;
+        } finally {
+          setUploading((prev) => ({ ...prev, resume: false }));
+        }
+      }
+
+      // Update form data with uploaded URLs
+      const updatedFormData = {
         ...formData,
-        education: formData.education.map((edu) => ({
+        avatar: avatarUrl,
+        resume: resumeUrl,
+      };
+
+      // Prepare data for API
+      const dataToSend = {
+        ...updatedFormData,
+        education: updatedFormData.education.map((edu) => ({
           ...edu,
           startDate: edu.startDate || undefined,
           endDate: edu.endDate || undefined,
         })),
-        experience: formData.experience.map((exp) => ({
+        experience: updatedFormData.experience.map((exp) => ({
           ...exp,
           startDate: exp.startDate || undefined,
           endDate: exp.endDate || undefined,
         })),
-        certifications: formData.certifications.map((cert) => ({
+        certifications: updatedFormData.certifications.map((cert) => ({
           ...cert,
           date: cert.date || undefined,
         })),
       };
 
+      // Update profile
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
         dataToSend,
@@ -367,6 +391,10 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
         });
         updateUser(response.data);
         setEditMode(false);
+
+        // Clean up temporary files and previews
+        setTempFiles({ avatar: null, resume: null });
+        setTempPreviews({ avatar: null, resume: null });
       }
     } catch (err) {
       console.error("[Profile Update Error]", {
@@ -414,7 +442,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     className="w-20 h-20 rounded-full border-2 border-gray-100 object-cover"
                   />
                   {uploading.avatar && (
-                    <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                    <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
                       <div className="animate-spin w-6 h-6 rounded-full border-2 border-white border-t-transparent"></div>
                     </div>
                   )}

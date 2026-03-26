@@ -189,7 +189,7 @@ const UserProfile = () => {
                         <label className="text-sm font-semibold text-gray-600">
                           Email
                         </label>
-                        <p className="mt-1 text-sm text-gray-800">
+                        <p className="mt-1 text-sm text-gray-900">
                           {user?.email || "Not provided"}
                         </p>
                       </div>
@@ -198,7 +198,7 @@ const UserProfile = () => {
                         <label className="text-sm font-semibold text-gray-600">
                           Location
                         </label>
-                        <p className="mt-1 text-sm text-gray-800">
+                        <p className="mt-1 text-sm text-gray-900">
                           {user?.location || "Not provided"}
                         </p>
                       </div>
@@ -207,7 +207,7 @@ const UserProfile = () => {
                         <label className="text-sm font-semibold text-gray-600">
                           Account Type
                         </label>
-                        <p className="mt-1 text-sm text-gray-800">
+                        <p className="mt-1 text-sm text-gray-900">
                           {user?.isPremium ? "Premium User" : "Free User"}
                         </p>
                       </div>

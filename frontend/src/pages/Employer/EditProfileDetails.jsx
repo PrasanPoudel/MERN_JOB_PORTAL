@@ -54,7 +54,7 @@ const EditProfileDetails = ({
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover"
                       />
                       {uploading?.avatar && (
-                        <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         </div>
                       )}
@@ -132,7 +132,7 @@ const EditProfileDetails = ({
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-contain"
                       />
                       {uploading?.companyLogo && (
-                        <div className="absolute inset-0 bg-black/50 rounded-lg flex items-center justify-center">
+                        <div className="absolute inset-0 bg-black/60 rounded-lg flex items-center justify-center">
                           <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
                         </div>
                       )}
