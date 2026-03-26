@@ -15,7 +15,6 @@ const savedJobRoutes = require("./routes/savedJobRoutes");
 const analyticsRoutes = require("./routes/analyticsRoutes");
 const messageRoutes = require("./routes/messageRoutes");
 const adminRoutes = require("./routes/adminRoutes");
-const notificationRoutes = require("./routes/notificationRoutes");
 const paymentRoutes = require("./routes/paymentRoutes");
 
 const app = express();
@@ -68,7 +67,6 @@ app.use("/api/save-jobs", apiLimiter, savedJobRoutes);
 app.use("/api/analytics", apiLimiter, analyticsRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/admin", apiLimiter, adminRoutes);
-app.use("/api/notifications", notificationRoutes);
 app.use("/api/payment", paymentRoutes);
 
 //Serve uploads folder

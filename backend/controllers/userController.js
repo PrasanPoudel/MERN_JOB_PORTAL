@@ -5,7 +5,6 @@ const Job = require("../models/Job");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const Message = require("../models/Message");
-const Notification = require("../models/Notification");
 
 exports.updateProfile = async (req, res) => {
   try {
@@ -171,11 +170,6 @@ exports.deleteUser = async (req, res) => {
         { sender: user._id },
         { receiver: user._id }
       ]
-    });
-
-    // Delete all notifications for this user
-    await Notification.deleteMany({ 
-      recipient: user._id 
     });
 
     // If user is an employer
