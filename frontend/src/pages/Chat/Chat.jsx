@@ -274,7 +274,7 @@ const Chat = ({ isAdmin = false }) => {
     return (
       <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-50 via-white to-gray-50 p-4">
         <div className="text-center max-w-md">
-          <div className="w-20 h-20 bg-linear-to-br from-sky-100 to-sky-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-md shadow-sky-100">
+          <div className="w-20 h-20 bg-linear-to-br from-sky-100 to-sky-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm shadow-sky-100">
             <MessageCircle className="w-10 h-10 text-sky-600" />
           </div>
           <h3 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
@@ -288,7 +288,7 @@ const Chat = ({ isAdmin = false }) => {
               </p>
               <button
                 onClick={() => navigate("/admin-users-management")}
-                className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5"
+                className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5"
               >
                 Manage Users
               </button>
@@ -303,7 +303,7 @@ const Chat = ({ isAdmin = false }) => {
                   </p>
                   <button
                     onClick={() => navigate("/applied-applications")}
-                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5"
+                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5"
                   >
                     View Applications
                   </button>
@@ -316,7 +316,7 @@ const Chat = ({ isAdmin = false }) => {
                   </p>
                   <button
                     onClick={() => navigate("/manage-jobs")}
-                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5"
+                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5"
                   >
                     Manage Jobs
                   </button>
@@ -405,9 +405,9 @@ const Chat = ({ isAdmin = false }) => {
               <div className="flex gap-2">
                 <button
                   onClick={() => setFilterType("all")}
-                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`flex-1 p-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                     filterType === "all"
-                      ? "bg-sky-100 text-sky-700 border border-sky-200"
+                      ? "bg-sky-100 text-sky-600 border border-sky-200"
                       : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
                   }`}
                 >
@@ -415,7 +415,7 @@ const Chat = ({ isAdmin = false }) => {
                 </button>
                 <button
                   onClick={() => setFilterType("unread")}
-                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`flex-1 p-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                     filterType === "unread"
                       ? "bg-orange-100 text-orange-700 border border-orange-200"
                       : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
@@ -425,7 +425,7 @@ const Chat = ({ isAdmin = false }) => {
                 </button>
                 <button
                   onClick={() => setFilterType("recent")}
-                  className={`flex-1 px-3 py-2 rounded-lg text-xs font-medium transition-all duration-200 ${
+                  className={`flex-1 p-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                     filterType === "recent"
                       ? "bg-green-100 text-green-700 border border-green-200"
                       : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
@@ -485,7 +485,7 @@ const Chat = ({ isAdmin = false }) => {
                   >
                     {/* Avatar Section */}
                     <div className="relative shrink-0">
-                      <div className="w-20 h-20 rounded-2xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden transition-all duration-300">
+                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden transition-all duration-300">
                         <img
                           src={getOtherPartyAvatar(conv) || "/default.png"}
                           alt="User"
@@ -493,7 +493,7 @@ const Chat = ({ isAdmin = false }) => {
                         />
                       </div>
                       {conv.unreadCount > 0 && (
-                        <div className="absolute -top-1 -right-1 w-7 h-7 bg-linear-to-br from-sky-600 to-sky-700 text-white text-xs font-semibold rounded-full flex items-center justify-center shadow-md border-2 border-white animate-pulse">
+                        <div className="absolute -top-1 -right-1 w-7 h-7 bg-linear-to-br from-sky-600 to-sky-700 text-white text-xs font-semibold rounded-full flex items-center justify-center shadow-sm border-2 border-white animate-pulse">
                           {conv.unreadCount > 9 ? "9+" : conv.unreadCount}
                         </div>
                       )}
@@ -502,12 +502,13 @@ const Chat = ({ isAdmin = false }) => {
                     {/* Content Section */}
                     <div className="flex-1 min-w-0 text-left space-y-1">
                       {/* Name & Time Row */}
+                      <div className="flex gap-1 items-center flex-wrap">
                       <div className="flex items-center gap-2">
-                        <p className="text-gray-900 font-semibold text-base truncate leading-tight">
+                        <p className="text-gray-900 font-medium text-base truncate leading-tight">
                           {getOtherPartyName(conv)}
                         </p>
                         {conv.unreadCount > 0 && (
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-linear-to-br from-sky-600 to-sky-700 text-white animate-pulse shadow-md">
+                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-linear-to-br from-sky-600 to-sky-700 text-white animate-pulse shadow-sm">
                             {conv.unreadCount} new
                           </span>
                         )}
@@ -516,14 +517,14 @@ const Chat = ({ isAdmin = false }) => {
                       {/* Badges Row */}
                       <div className="flex flex-col items-start">
                         {isAdmin ? (
-                          <span className="text-xs">{conv.user.email}</span>
+                          ""
                         ) : conv.isAdminConversation ? (
-                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-linear-to-r from-sky-100 to-sky-200 text-sky-700 border border-sky-300 shadow-sm">
-                            <ShieldCheck className="w-4 h-4 mr-2 text-sky-600" />
+                          <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border border-sky-300 shadow-sm">
+                            <ShieldCheck className="w-4 h-4 mr-1 text-sky-600" />
                             Admin Support
                           </span>
                         ) : (
-                          <span className="inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium bg-linear-to-r from-green-100 to-green-200 text-green-700 border border-green-300 shadow-sm">
+                          <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-green-100 to-green-200 text-green-700 border border-green-300 shadow-sm">
                             <BriefcaseBusiness className="w-4 h-4 mr-2 text-green-600" />
                             {conv.jobTitle || "Job Application"}
                           </span>
@@ -531,22 +532,23 @@ const Chat = ({ isAdmin = false }) => {
 
                         {isAdmin && conv.user && (
                           <span
-                            className={`inline-flex items-center px-3 py-1.5 rounded-full text-xs font-medium border ${
+                            className={`inline-flex items-center p-2 rounded-full text-xs font-medium border ${
                               conv.user.role === "employer"
-                                ? "bg-linear-to-r from-blue-100 to-blue-200 text-blue-700 border-blue-300 shadow-sm"
-                                : "bg-linear-to-r from-purple-100 to-purple-200 text-purple-700 border-purple-300 shadow-sm"
+                                ? "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
+                                : "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
                             }`}
                           >
                             {conv.user.role === "employer" ? (
-                              <BriefcaseBusiness className="w-4 h-4 mr-2 text-blue-600" />
+                              <BriefcaseBusiness className="w-4 h-4 mr-1" />
                             ) : (
-                              <User className="w-4 h-4 mr-2 text-purple-600" />
+                              <User className="w-4 h-4 mr-1" />
                             )}
                             {conv.user.role === "employer"
                               ? "Employer"
                               : "Job Seeker"}
                           </span>
                         )}
+                      </div>
                       </div>
 
                       {/* Message Preview Row */}
@@ -585,7 +587,7 @@ const Chat = ({ isAdmin = false }) => {
                   </button>
                 )}
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-2xl flex items-center justify-center overflow-hidden shadow-md">
+                  <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden">
                     <img
                       src={
                         getOtherPartyAvatar(selectedConversation) ||
@@ -631,7 +633,7 @@ const Chat = ({ isAdmin = false }) => {
               {messages.length === 0 ? (
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center space-y-4">
-                    <div className="w-20 h-20 bg-linear-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center mx-auto shadow-md">
+                    <div className="w-20 h-20 bg-linear-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center mx-auto shadow-sm">
                       <MessageCircle className="w-10 h-10 text-gray-500" />
                     </div>
                     <div>
@@ -741,7 +743,7 @@ const Chat = ({ isAdmin = false }) => {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200/60 p-2 pb-6 bg-white shadow-md">
+            <div className="border-t border-gray-200/60 p-2 pb-6 bg-white shadow-sm">
               <div className="flex gap-4 max-w-5xl mx-auto">
                 <div className="relative flex-1">
                   <input
@@ -764,7 +766,7 @@ const Chat = ({ isAdmin = false }) => {
                 <button
                   onClick={handleSendMessage}
                   disabled={sending || !newMessage.trim()}
-                  className="text-white p-2 rounded-2xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md"
+                  className="text-white p-2 rounded-2xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-sm"
                 >
                   {sending ? (
                     <div className="flex items-center gap-2">
