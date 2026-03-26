@@ -756,24 +756,24 @@ const Chat = ({ isAdmin = false }) => {
                         handleSendMessage();
                       }
                     }}
-                    placeholder="Type your message..."
-                    className="w-full p-4 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
+                    placeholder="Message..."
+                    className="w-full sm:p-4 p-2 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
                     disabled={sending}
                   />
                 </div>
                 <button
                   onClick={handleSendMessage}
                   disabled={sending || !newMessage.trim()}
-                  className="bg-linear-to-br from-sky-600 to-sky-700 text-white p-2 rounded-2xl hover:from-sky-700 hover:to-sky-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md"
+                  className="text-white p-2 rounded-2xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-md shadow-sky-600/30 hover:shadow-md hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-md"
                 >
                   {sending ? (
                     <div className="flex items-center gap-2">
-                      <Loader className="w-5 h-5 animate-spin" />
+                      <Loader className="w-4 h-4 animate-spin" />
                       <span className="text-base">Sending...</span>
                     </div>
                   ) : (
                     <div className="flex items-center gap-2">
-                      <Send className="w-5 h-5" />
+                      <Send className="w-4 h-4" />
                       <span className="text-base font-medium">Send</span>
                     </div>
                   )}
