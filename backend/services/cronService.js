@@ -168,19 +168,22 @@ const checkPremiumExpiration = async () => {
     });
 
     if (expiredPremiumUsers.length > 0) {
+      const userIds = expiredPremiumUsers.map((user) => user._id);
+
       // Update all expired premium users
       await User.updateMany(
-        { _id: { $in: expiredPremiumUsers.map((user) => user._id) } },
+        { _id: { $in: userIds } },
         {
           $set: {
             isPremium: false,
             premiumIssueDate: null,
+            notificationCount: 0,
           },
         },
       );
 
       console.log(
-        `Expired ${expiredPremiumUsers.length} premium subscriptions (30+ days since issue date)`,
+        `Expired ${expiredPremiumUsers.length} premium subscriptions (30+ days since issue date) and reset notification counts`,
       );
     }
   } catch (error) {

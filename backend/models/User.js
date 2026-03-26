@@ -32,6 +32,7 @@ const userSchema = new mongoose.Schema(
     isBanned: { type: Boolean, default: false },
     banReason: { type: String, default: "" },
     banDate: { type: Date },
+    notificationCount: { type: Number, default: 0 },
     skills: [String],
     education: [
       {

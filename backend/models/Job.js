@@ -45,6 +45,7 @@ const jobSchema = new mongoose.Schema(
       },
     },
     isClosed: { type: Boolean, default: false },
+    emailNotificationSent: { type: Boolean, default: false },
   },
   { timestamps: true },
 );

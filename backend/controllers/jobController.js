@@ -4,6 +4,7 @@ const User = require("../models/User");
 const Application = require("../models/Application");
 const SavedJob = require("../models/SavedJob");
 const TFIDFSimilarity = require("../utils/tfidfSimilarity");
+const JobRecommendationService = require("../services/jobRecommendationService");
 
 // FastAPI server URL
 const FRAUD_PREDICTOR_API_URL = process.env.FRAUD_PREDICTOR_API_URL;
@@ -112,6 +113,29 @@ exports.createJob = async (req, res) => {
       fraudScore,
     });
 
+    try {
+      JobRecommendationService.processJobRecommendations(job._id)
+        .then((result) => {
+          console.log(
+            `Job recommendations processed for job ${job._id}:`,
+            result.message,
+          );
+        })
+        .catch((error) => {
+          console.error(
+            `Failed to process job recommendations for job ${job._id}:`,
+            error.message,
+          );
+          // Don't throw error - job creation should succeed even if recommendations fail
+        });
+    } catch (error) {
+      console.error(
+        `Error sending job recommendations for job ${job._id}:`,
+        error.message,
+      );
+      // Continue with job creation response even if recommendation trigger fails
+    }
+
     res.status(201).json(job);
   } catch (err) {
     res.status(500).json({ message: err.message });
@@ -207,7 +231,6 @@ exports.getJobs = async (req, res) => {
     const total = jobsWithExtras.length;
     const start = (pageNum - 1) * limitNum;
     const end = start + limitNum;
-
     const paginatedJobs = jobsWithExtras.slice(start, end);
 
     res.json({
