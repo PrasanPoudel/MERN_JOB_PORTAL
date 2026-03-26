@@ -191,17 +191,17 @@ const checkPremiumExpiration = async () => {
 // '0 0 18 * * *' means run at 6 PM every day
 const startCronJobs = () => {
   // Close high fraud jobs at 6 PM
-  cron.schedule("* * 18 * * *", closeHighFraudJobs, {
+  cron.schedule("0 0 18 * * *", closeHighFraudJobs, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
   // Close expired jobs at 6:15 PM
-  cron.schedule("0 15 18 * * *", closeExpiredJobs, {
+  cron.schedule("0 15 24 * * *", closeExpiredJobs, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
   // Check premium expiration at 6:30 PM
-  cron.schedule("0 30 18 * * *", checkPremiumExpiration, {
+  cron.schedule("0 0 24 * * *", checkPremiumExpiration, {
     scheduled: true,
     timezone: "Asia/Kathmandu",
   });
