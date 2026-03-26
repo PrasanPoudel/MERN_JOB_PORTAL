@@ -818,7 +818,7 @@ const Chat = ({ isAdmin = false }) => {
       {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div
-          className="fixed inset-0 top-20 bg-black/40 z-30 backdrop-blur-sm transition-opacity duration-300"
+          className="fixed inset-0 top-20 bg-black/60 z-30 backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}

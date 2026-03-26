@@ -46,7 +46,7 @@ export default function PaymentSuccess() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-gray-800 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
           Payment Successful
         </h1>
 

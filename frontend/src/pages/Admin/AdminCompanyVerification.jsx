@@ -458,7 +458,7 @@ const CompanyModal = ({
   if (!company) return null;
 
   return (
-    <div className="fixed inset-0 z-1000 bg-black/40 backdrop-blur-sm flex items-start justify-center p-4 pt-8 md:pt-16 overflow-y-auto">
+    <div className="fixed inset-0 z-1000 bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 pt-8 md:pt-16 overflow-y-auto">
       <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-4xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
@@ -658,7 +658,7 @@ const VerifyConfirmationModal = ({
   onConfirm,
   verifying,
 }) => (
-  <div className="fixed inset-0 z-1200 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+  <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
         <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-green-100 mb-4">

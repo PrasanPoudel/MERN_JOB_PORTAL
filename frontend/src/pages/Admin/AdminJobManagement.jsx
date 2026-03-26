@@ -438,7 +438,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
   const employerName = job.company?.name || "Unknown Employer";
 
   return (
-    <div className="fixed inset-0 z-1000 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4 pb-8">
+    <div className="fixed inset-0 z-1000 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 pb-8">
       <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
         <button
           onClick={onClose}
@@ -575,7 +575,7 @@ const InfoItem = ({ icon, label, value }) => (
 );
 
 const DeleteConfirmationModal = ({ job, onCancel, onConfirm, deleting }) => (
-  <div className="fixed inset-0 z-1200 bg-black/50 backdrop-blur-sm flex items-center justify-center p-4">
+  <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
         <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-red-100 mb-4">

@@ -21,6 +21,8 @@ const EditAdminProfile = () => {
   const [formData, setFormData] = useState({ ...profileData });
   const [uploading, setUploading] = useState({ avatar: false });
   const [saving, setSaving] = useState(false);
+  const [tempFiles, setTempFiles] = useState({ avatar: null });
+  const [tempPreviews, setTempPreviews] = useState({ avatar: null });
 
   const handleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -29,41 +31,54 @@ const EditAdminProfile = () => {
     }));
   };
 
-  const handleFileUpload = async (file, type) => {
-    setUploading((prev) => ({ ...prev, [type]: true }));
-    try {
-      const fileUploadRes = await uploadFile(file);
-      const fileUrl = fileUploadRes.fileUrl || "";
-      handleInputChange(type, fileUrl);
-    } catch (err) {
-      console.error("Upload failed:", err);
-      toast.error("Image upload failed");
-    } finally {
-      setUploading((prev) => ({ ...prev, [type]: false }));
-    }
-  };
-
   const handleFileChange = (e, type) => {
     const file = e.target.files[0];
     if (file) {
       const previewUrl = URL.createObjectURL(file);
+      setTempFiles((prev) => ({ ...prev, [type]: file }));
+      setTempPreviews((prev) => ({ ...prev, [type]: previewUrl }));
       handleInputChange(type, previewUrl);
-      handleFileUpload(file, type);
     }
   };
 
   const handleSave = async () => {
     setSaving(true);
     try {
+      let avatarUrl = formData.avatar;
+
+      if (tempFiles.avatar) {
+        setUploading((prev) => ({ ...prev, avatar: true }));
+        try {
+          const avatarUploadRes = await uploadFile(tempFiles.avatar);
+          avatarUrl = avatarUploadRes?.fileUrl || "";
+        } catch (err) {
+          console.error("[Avatar Upload Error]", {
+            fileName: tempFiles.avatar?.name,
+            error: err?.message || err,
+          });
+          toast.error("Profile picture upload failed. Please try again.");
+          return;
+        } finally {
+          setUploading((prev) => ({ ...prev, avatar: false }));
+        }
+      }
+
+      const updatedFormData = {
+        ...formData,
+        avatar: avatarUrl,
+      };
+
       const response = await axiosInstance.put(
         API_PATHS.AUTH.UPDATE_PROFILE,
-        formData
+        updatedFormData,
       );
 
       if (response.status === 200) {
         toast.success("Profile Updated Successfully!");
-        setProfileData({ ...formData });
-        updateUser({ ...formData });
+        setProfileData({ ...updatedFormData });
+        updateUser({ ...updatedFormData });
+        setTempFiles({ avatar: null });
+        setTempPreviews({ avatar: null });
         navigate("/admin-dashboard");
       }
     } catch (err) {
@@ -94,16 +109,15 @@ const EditAdminProfile = () => {
       <div className="min-h-screen bg-gray-50 p-4">
         <div className="max-w-5xl">
           <div className="bg-white pb-10 rounded-xl shadow-lg overflow-hidden">
-            
             {/* Header */}
-              <h1 className="text-xl bg-sky-600 p-4 font-medium text-white">Profile</h1>
+            <h1 className="text-xl bg-sky-600 p-4 font-medium text-white">
+              Profile
+            </h1>
 
             <div className="p-2 md:p-8">
               <div className="space-y-6">
-
                 {/* Avatar Upload */}
                 <div className="flex flex-col space-y-4 items-start md:items-center md:flex-row md:space-x-6">
-                  
                   <div className="relative">
                     <img
                       src={formData.avatar}
@@ -111,7 +125,7 @@ const EditAdminProfile = () => {
                       className="w-20 h-20 rounded-full border-2 border-gray-100 object-cover"
                     />
                     {uploading.avatar && (
-                      <div className="absolute inset-0 bg-black/50 rounded-full flex items-center justify-center">
+                      <div className="absolute inset-0 bg-black/60 rounded-full flex items-center justify-center">
                         <div className="animate-spin w-6 h-6 rounded-full border-2 border-white border-t-transparent"></div>
                       </div>
                     )}
@@ -155,9 +169,7 @@ const EditAdminProfile = () => {
                     name="name"
                     type="text"
                     value={formData.name}
-                    onChange={(e) =>
-                      handleInputChange("name", e.target.value)
-                    }
+                    onChange={(e) => handleInputChange("name", e.target.value)}
                     placeholder="Enter your full name"
                     className="w-full px-4 py-3 border border-gray-300 rounded-lg 
                       focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all"
@@ -212,7 +224,6 @@ const EditAdminProfile = () => {
                   <span>{saving ? "Saving..." : "Save Changes"}</span>
                 </button>
               </div>
-
             </div>
           </div>
         </div>
