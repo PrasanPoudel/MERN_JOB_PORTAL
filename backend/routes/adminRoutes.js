@@ -29,4 +29,7 @@ router.put("/companies/:id/remove-verification", protect, adminController.remove
 router.put("/users/:id/ban", protect, adminController.banUser);
 router.put("/users/:id/unban", protect, adminController.unbanUser);
 
+// Revenue stats route
+router.get("/revenue-stats", protect, adminController.getRevenueStats);
+
 module.exports = router;

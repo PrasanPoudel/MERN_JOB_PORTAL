@@ -1,4 +1,5 @@
 const User = require("../models/User");
+const PremiumSubscription = require("../models/PremiumSubscription");
 const crypto = require("crypto");
 
 exports.generateSignature = async (req, res) => {
@@ -24,7 +25,17 @@ exports.upgradeToPremiumUser = async (req, res) => {
     user.isPremium = true;
     user.premiumIssueDate = new Date();
     await user.save();
-    res.status(200).json({ message: "Payment Successful" });
+
+    // Create subscription record for tracking
+    const subscription = await PremiumSubscription.create({
+      userId: user._id,
+      amount: 100,
+      paymentMethod: "esewa",
+      status: "completed",
+      issuedAt: new Date(),
+    });
+
+    res.status(200).json({ message: "Payment Successful", subscription });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

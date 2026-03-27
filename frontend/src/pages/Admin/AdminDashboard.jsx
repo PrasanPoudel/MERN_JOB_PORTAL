@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { Users, BriefcaseBusiness, Crown, MessageSquare } from "lucide-react";
+import {
+  Users,
+  BriefcaseBusiness,
+  Crown,
+  MessageSquare,
+  DollarSign,
+  TrendingUp,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import {
   BarChart,
@@ -214,6 +221,7 @@ const AdminDashboard = () => {
   const [dashboardData, setDashboardData] = useState(null);
   const [analyticsData, setAnalyticsData] = useState([]);
   const [riskData, setRiskData] = useState([]);
+  const [revenueData, setRevenueData] = useState(null);
   const [days, setDays] = useState(7);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -257,10 +265,24 @@ const AdminDashboard = () => {
     }
   };
 
+  const getRevenueStats = async () => {
+    try {
+      const response = await axiosInstance.get(
+        API_PATHS.ADMIN.GET_REVENUE_STATS,
+      );
+      if (response.status === 200) {
+        setRevenueData(response.data);
+      }
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
   useEffect(() => {
     getAdminStats();
     getDailyAnalytics(days);
     getRiskDistribution();
+    getRevenueStats();
   }, [days]);
 
   return (
@@ -270,7 +292,7 @@ const AdminDashboard = () => {
       ) : (
         <div className="max-w-7xl mx-auto space-y-8 p-4">
           {/* Dashboard Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
             <StatCard
               title="Total Users"
               value={dashboardData?.counts?.totalUsers || 0}
@@ -294,6 +316,18 @@ const AdminDashboard = () => {
               value={dashboardData?.counts?.totalJobs || 0}
               icon={BriefcaseBusiness}
               color="orange"
+            />
+            <StatCard
+              title="Total Platform Revenue"
+              value={`रू ${revenueData?.totalRevenue || 0}`}
+              icon={DollarSign}
+              color="emerald"
+            />
+            <StatCard
+              title="Revenue This Month"
+              value={`रू ${revenueData?.monthlyRevenue || 0}`}
+              icon={TrendingUp}
+              color="sky"
             />
           </div>
           <BarGraph

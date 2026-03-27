@@ -2,6 +2,7 @@ const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
 const Message = require("../models/Message");
+const PremiumSubscription = require("../models/PremiumSubscription");
 const { paginateQuery, buildQuery } = require("../utils/pagination");
 
 // Get admin dashboard stats
@@ -817,6 +818,58 @@ exports.unbanUser = async (req, res) => {
     await user.save();
 
     res.json({ message: "User unbanned successfully", user });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
+// Get revenue stats for admin dashboard
+exports.getRevenueStats = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    // Get total revenue from all completed subscriptions
+    const totalRevenueResult = await PremiumSubscription.aggregate([
+      { $match: { status: "completed" } },
+      { $group: { _id: null, total: { $sum: "$amount" } } },
+    ]);
+    const totalRevenue = totalRevenueResult[0]?.total || 0;
+
+    // Get revenue for current month
+    const now = new Date();
+    const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
+    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+
+    const monthlyRevenueResult = await PremiumSubscription.aggregate([
+      {
+        $match: {
+          status: "completed",
+          issuedAt: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
+        },
+      },
+      { $group: { _id: null, total: { $sum: "$amount" } } },
+    ]);
+    const monthlyRevenue = monthlyRevenueResult[0]?.total || 0;
+
+    // Get subscription count for current month
+    const monthlySubscriptions = await PremiumSubscription.countDocuments({
+      status: "completed",
+      issuedAt: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
+    });
+
+    // Get total subscription count
+    const totalSubscriptions = await PremiumSubscription.countDocuments({
+      status: "completed",
+    });
+
+    res.status(200).json({
+      totalRevenue,
+      monthlyRevenue,
+      totalSubscriptions,
+      monthlySubscriptions,
+    });
   } catch (err) {
     res.status(500).json({ message: err.message });
   }

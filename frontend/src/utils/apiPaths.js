@@ -70,6 +70,7 @@ export const API_PATHS = {
     VERIFY_COMPANY: (id) => `/api/admin/companies/${id}/verify`,
     REMOVE_COMPANY_VERIFICATION: (id) =>
       `/api/admin/companies/${id}/remove-verification`,
+    GET_REVENUE_STATS: "/api/admin/revenue-stats",
   },
   FILE: {
     UPLOAD_FILE: "/api/auth/upload-file",
