@@ -11,7 +11,6 @@ import {
   GraduationCap,
   Code,
   X,
-  Edit3,
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -19,6 +18,7 @@ import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";
 import Navbar from "../../components/layout/Navbar";
 import { formatDate } from "../../utils/helper";
+import { SAMPLE_PROFILES } from "../../utils/data";
 
 const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   const [formData, setFormData] = useState({
@@ -35,7 +35,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
     experience: [],
     certifications: [],
   });
-
+  const [sampleValue, setSampleValue] = useState("");
   const [newSkill, setNewSkill] = useState("");
   const [newDesc, setNewDesc] = useState({});
   const [isSaving, setIsSaving] = useState(false);
@@ -414,7 +414,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
       <div className="min-h-screen bg-gray-50 p-4 pt-24 pb-8">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
-          <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
+          <div className="flex items-start justify-between sm:flex-row flex-col space-y-2 bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
             <div>
               <h1 className="text-xl font-semibold text-gray-900 flex items-center gap-2">
                 Edit Profile
@@ -422,6 +422,76 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               <p className="text-gray-600 mt-1 sm:mt-2 text-sm sm:text-base">
                 Update your professional information
               </p>
+            </div>
+            <div className="flex gap-2">
+              <select
+                value={sampleValue}
+                onChange={(e) => {
+                  setSampleValue(e.target.value);
+                  SAMPLE_PROFILES[e.target.value]
+                    ? setFormData({
+                        name: user?.name || "Prasan Poudel",
+                        email: user.email || "",
+                        role: user.role || "",
+                        location: user.location || "",
+                        avatar: user.avatar || "",
+                        resume: user.resume || "",
+                        ...SAMPLE_PROFILES[e.target.value],
+                      })
+                    : setFormData({
+                        name: user.name || "",
+                        email: user.email || "",
+                        role: user.role || "",
+                        location: user.location || "",
+                        avatar: user.avatar || "",
+                        resume: user.resume || "",
+                        facebookLink: user.facebookLink || "",
+                        instagramLink: user.instagramLink || "",
+                        skills: Array.isArray(user.skills) ? user.skills : [],
+                        education: Array.isArray(user.education)
+                          ? user.education
+                          : [],
+                        experience: Array.isArray(user.experience)
+                          ? user.experience
+                          : [],
+                        certifications: Array.isArray(user.certifications)
+                          ? user.certifications
+                          : [],
+                      });
+                }}
+                id="profile-select"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+              >
+                <option value="">Sample Profile</option>
+                <option value="Senior Backend Engineer (Node.js)">
+                  Senior Backend Engineer (Node.js)
+                </option>
+
+                <option value="Enterprise Java Developer">
+                  Enterprise Java Developer
+                </option>
+
+                <option value="Full Stack MERN Developer">
+                  Full Stack MERN Developer
+                </option>
+
+                <option value="Senior Bank Cashier / Teller">
+                  Senior Bank Cashier / Teller
+                </option>
+
+                <option value="Heavy Vehicle Driver">
+                  Heavy Vehicle Driver
+                </option>
+              </select>
+              <button
+                onClick={() => {
+                  setEditMode(false);
+                }}
+                className="p-2 flex items-center justify-center gap-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
+              >
+                <X className="w-4 h-4" />
+                <span>Cancel</span>
+              </button>
             </div>
           </div>
 
