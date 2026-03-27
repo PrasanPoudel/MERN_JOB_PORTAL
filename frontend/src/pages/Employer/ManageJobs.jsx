@@ -246,7 +246,6 @@ const ManageJobs = () => {
           return {
             title: "Delete Job Listing",
             message: `Are you sure you want to delete "${confirmationJobTitle}"? This action cannot be undone.`,
-            icon: <Trash2 className="w-6 h-6 text-red-600" />,
             confirmText: "Delete",
             confirmColor: "bg-red-600 hover:bg-red-700",
           };
@@ -254,7 +253,6 @@ const ManageJobs = () => {
           return {
             title: "Close Job Listing",
             message: `Are you sure you want to close "${confirmationJobTitle}"? This will hide the job from job seekers.`,
-            icon: <X className="w-6 h-6 text-orange-600" />,
             confirmText: "Close Job",
             confirmColor: "bg-orange-600 hover:bg-orange-700",
           };
@@ -262,7 +260,6 @@ const ManageJobs = () => {
           return {
             title: "Activate Job Listing",
             message: `Are you sure you want to activate "${confirmationJobTitle}"? This will make the job visible to job seekers.`,
-            icon: <Plus className="w-6 h-6 text-green-600" />,
             confirmText: "Activate",
             confirmColor: "bg-green-600 hover:bg-green-700",
           };
@@ -278,8 +275,7 @@ const ManageJobs = () => {
       <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-1200 p-4">
         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4">
           <div className="p-6">
-            <h3 className="flex items-center gap-2  justify-center text-lg font-semibold text-gray-900 text-center mb-2">
-              {config.icon}
+            <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
               {config.title}
             </h3>
             <p className="text-sm text-gray-600 text-center mb-6">
