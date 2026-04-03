@@ -11,7 +11,6 @@ import {
   GraduationCap,
   Code,
   X,
-  ArrowLeft,
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -413,27 +412,13 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
     <>
       <Navbar />
       <div className="min-h-screen bg-slate-50 p-4 pt-24 pb-8">
-        <div className="max-w-7xl mx-auto">
+        <div className="max-w-6xl mx-auto">
           {/* Header */}
-          <div className="flex items-start justify-between sm:flex-row flex-col space-y-2 bg-white rounded-2xl shadow-sm p-4 sm:p-6 mb-4">
-            <div>
-              <h1 className="text-xl font-semibold text-slate-900 flex items-center gap-2">
-                Edit Profile
-              </h1>
-              <p className="text-slate-600 mt-1 sm:mt-2 text-sm sm:text-base">
-                Update your professional information
-              </p>
-            </div>
+          <div className="bg-sky-600 flex text-white items-start justify-between sm:flex-row flex-col space-y-2 rounded-2xl shadow-sm p-4 sm:p-6 mb-2">
+            <h1 className="text-xl font-semibold flex items-center gap-2">
+              Edit Profile
+            </h1>
             <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  setEditMode(false);
-                }}
-                className="p-2 flex items-center justify-center gap-2 border border-gray-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
-              >
-                <ArrowLeft className="w-4 h-4" />
-                <span>Back</span>
-              </button>
               <select
                 value={sampleValue}
                 onChange={(e) => {
@@ -470,7 +455,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       });
                 }}
                 id="profile-select"
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white text-black"
               >
                 <option value="" disabled>
                   Sample Template
@@ -481,6 +466,16 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                   </option>
                 ))}
               </select>
+              <button
+                title="Turn off edit mode"
+                onClick={() => {
+                  setEditMode(false);
+                }}
+                className="text-white flex items-center gap-2 bg-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-white/30 transition text-sm"
+              >
+                <X className="w-4 h-4" />
+                <span className="hidden xs:inline">Cancel</span>
+              </button>
             </div>
           </div>
 

@@ -60,7 +60,7 @@ const UserProfile = () => {
       <div className="min-h-screen bg-slate-50 pt-24 pb-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
-            <div className="h-24 bg-linear-to-r from-sky-500 to-sky-700 relative">
+            <div className="h-24 bg-sky-600 relative">
               <button
                 onClick={() => setEditMode(true)}
                 className="absolute top-4 right-4 text-white flex items-center gap-2 bg-white/20 px-3 py-1.5 sm:px-4 sm:py-2 rounded-lg hover:bg-white/30 transition text-sm"
