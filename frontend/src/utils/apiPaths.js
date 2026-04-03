@@ -1,4 +1,3 @@
-export const BASE_URL = import.meta.env.VITE_BACKEND_URL;
 export const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
 
 export const API_PATHS = {
@@ -23,7 +22,6 @@ export const API_PATHS = {
     POST_JOB: "/api/jobs",
     GET_JOBS_EMPLOYER: "/api/jobs/get-jobs-employer",
     GET_JOB_BY_ID: (id) => `/api/jobs/${id}`,
-    UPDATE_JOB: (id) => `/api/jobs/${id}`,
     TOGGLE_CLOSE: (id) => `/api/jobs/${id}/toggle-close`,
     DELETE_JOB: (id) => `/api/jobs/${id}`,
     SAVE_JOB: (id) => `/api/save-jobs/${id}`,
@@ -61,7 +59,6 @@ export const API_PATHS = {
     GET_ADMIN_CONVERSATIONS: "/api/admin/messages/conversations",
     GET_ADMIN_CONVERSATION: (userId) =>
       `/api/admin/messages/conversation/${userId}`,
-    SEND_USER_REPLY: "/api/admin/messages/reply",
     GET_DAILY_ANALYTICS: "/api/admin/analytics/daily",
     GET_RISK_DISTRIBUTION: "/api/admin/analytics/risk-distribution",
     GET_ALL_COMPANIES: "/api/admin/companies",
