@@ -12,6 +12,7 @@ import {
   Trash2,
   X,
   Crown,
+  Edit3,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -86,12 +87,14 @@ const ProfileDropdown = ({
             </p>
             <p className="text-xs text-slate-500 leading-tight">{roleLabel}</p>
             {role === "employer" && companyName && (
-              <p className="flex items-center gap-1 text-xs text-slate-500 max-w-36 truncate leading-tight">
-                {companyName}
+              <div className="flex items-center gap-1">
+                <p className="text-xs text-slate-500 max-w-32 truncate leading-tight">
+                  {companyName}
+                </p>
                 {isCompanyVerified && (
                   <BadgeCheck className="w-3.5 h-3.5 text-sky-600 shrink-0" />
                 )}
-              </p>
+              </div>
             )}
           </div>
           {isOpen ? (
@@ -172,6 +175,15 @@ const ProfileDropdown = ({
                       >
                         <User className="w-4 h-4 text-slate-500" />
                         View Profile
+                      </div>
+                    )}
+                    {role === "admin" && (
+                      <div
+                        onClick={() => navigate("/profile")}
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                      >
+                        <Edit3 className="w-4 h-4 text-slate-500" />
+                        Edit Profile
                       </div>
                     )}
 
