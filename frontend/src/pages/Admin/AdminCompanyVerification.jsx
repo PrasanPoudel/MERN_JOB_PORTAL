@@ -9,9 +9,9 @@ import {
   Calendar,
   BriefcaseBusiness,
   BadgeCheck,
-  ShieldCheck,
   FileText as FileTextIcon,
   Link as LinkIcon,
+  User,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -26,6 +26,7 @@ const AdminCompanyVerification = () => {
   const [filteredCompanies, setFilteredCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [verificationFilter, setVerificationFilter] = useState("all");
   const [selectedCompany, setSelectedCompany] = useState(null);
   const [confirmVerifyCompany, setConfirmVerifyCompany] = useState(null);
@@ -40,6 +41,14 @@ const AdminCompanyVerification = () => {
     startIndex,
     startIndex + itemsPerPage,
   );
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   const getCompanies = async () => {
     try {
@@ -76,18 +85,20 @@ const AdminCompanyVerification = () => {
       );
     }
 
-    if (searchTerm) {
+    if (debouncedSearchTerm) {
       filtered = filtered.filter(
         (c) =>
-          c.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          c.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          c.companyName?.toLowerCase().includes(searchTerm.toLowerCase()),
+          c.name?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+          c.email?.toLowerCase().includes(debouncedSearchTerm.toLowerCase()) ||
+          c.companyName
+            ?.toLowerCase()
+            .includes(debouncedSearchTerm.toLowerCase()),
       );
     }
 
     setFilteredCompanies(filtered);
     setCurrentPage(1); // Reset to first page on filter change
-  }, [searchTerm, verificationFilter, companies]);
+  }, [debouncedSearchTerm, verificationFilter, companies]);
 
   const handleVerifyCompany = async (companyId) => {
     try {
@@ -194,7 +205,7 @@ const AdminCompanyVerification = () => {
             </p>
           </div>
 
-          <div className="bg-orange-50 text-orange-700 px-4 py-2 rounded-xl text-sm font-semibold">
+          <div className="bg-sky-50 text-sky-700 px-4 py-2 rounded-xl text-sm font-semibold">
             {filteredCompanies.length}{" "}
             {verificationFilter === "verified"
               ? "Verified"
@@ -254,15 +265,18 @@ const AdminCompanyVerification = () => {
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
                 <p className="text-sm text-slate-700 lg:text-base">
-                  Showing <span className="font-bold">{startIndex + 1}</span> to{" "}
-                  <span className="font-bold">
+                  Showing{" "}
+                  <span className="font-semibold">{startIndex + 1}</span> to{" "}
+                  <span className="font-semibold">
                     {Math.min(
                       startIndex + itemsPerPage,
                       filteredCompanies.length,
                     )}
                   </span>{" "}
                   of{" "}
-                  <span className="font-bold">{filteredCompanies.length}</span>{" "}
+                  <span className="font-semibold">
+                    {filteredCompanies.length}
+                  </span>{" "}
                   results
                 </p>
               </div>
@@ -270,43 +284,50 @@ const AdminCompanyVerification = () => {
 
             <div className="grid gap-6">
               {paginatedCompanies.map((company) => (
-                <div
-                  key={company._id}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-2 flex flex-col lg:flex-row lg:items-center justify-between gap-4"
-                >
-                  <div className="flex items-start gap-2">
-                    <div className="w-12 h-12 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={company.avatar || "/default.png"}
-                        alt={company.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                <div key={company._id} className="flex flex-col gap-2">
+                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                    <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center overflow-hidden shrink-0">
+                          <img
+                            src={company.companyLogo || "/default.png"}
+                            alt={company.companyName || company.name}
+                            className="w-full h-full object-contain"
+                          />
+                        </div>
 
-                    <div>
-                      <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-semibold text-slate-900 text-md">
-                          {company.name}
-                        </p>
-                        <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-medium">
-                          Employer
-                        </span>
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="font-semibold text-xs sm:text-lg text-slate-900 truncate max-w-36 sm:max-w-64">
+                              {company.companyName}
+                            </p>
+                            {company.isCompanyVerified ? (
+                              <span
+                                title="Company Verified"
+                                className="text-sky-500 p-1"
+                              >
+                                <BadgeCheck className="w-5 h-5" />
+                              </span>
+                            ) : (
+                              <span className="bg-yellow-100 text-yellow-700 text-xs px-2 py-0.5 rounded-lg font-medium">
+                                Pending Verification
+                              </span>
+                            )}
+                          </div>
+                          <p className="flex items-center gap-1 text-[10px] sm:text-sm truncate text-slate-500 mt-1">
+                            <MapPin className="w-4 h-4" />
+                            {company.companyLocation}
+                          </p>
+                        </div>
                       </div>
-                      <p className="flex items-center text-sm text-slate-700 wrap-break-word">
-                        {company.companyName}
-                        {company.isCompanyVerified && (
-                          <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
-                        )}
-                      </p>
-                      <p className="text-xs text-slate-500">{company.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center py-2 gap-2 justify-end">
+                  <div className="w-full flex gap-1 flex-wrap py-1 justify-end">
                     <button
                       onClick={() => setSelectedCompany(company._id)}
                       title="View company details"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-[10px] sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
                     >
                       Review Details
                     </button>
@@ -314,15 +335,24 @@ const AdminCompanyVerification = () => {
                     <button
                       onClick={() => handleMessageCompany(company._id)}
                       title="Send message to company"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-[10px] sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
                     >
                       Message
                     </button>
-                    {!company?.isCompanyVerified && (
+
+                    {company?.isCompanyVerified ? (
+                      <button
+                        onClick={() => handleRemoveVerification(company._id)}
+                        title="Verify company"
+                        className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-[10px] sm:text-sm font-semibold bg-red-600 text-white hover:bg-red-700 transition"
+                      >
+                        Remove Verification
+                      </button>
+                    ) : (
                       <button
                         onClick={() => handleVerifyCompany(company._id)}
                         title="Verify company"
-                        className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition"
+                        className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-[10px] sm:text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition"
                       >
                         Verify
                       </button>
@@ -360,15 +390,15 @@ const AdminCompanyVerification = () => {
                   <div>
                     <p className="text-sm text-slate-700">
                       Showing{" "}
-                      <span className="font-bold">{startIndex + 1}</span> to{" "}
-                      <span className="font-bold">
+                      <span className="font-semibold">{startIndex + 1}</span> to{" "}
+                      <span className="font-semibold">
                         {Math.min(
                           startIndex + itemsPerPage,
                           filteredCompanies.length,
                         )}
                       </span>{" "}
                       of{" "}
-                      <span className="font-bold">
+                      <span className="font-semibold">
                         {filteredCompanies.length}
                       </span>{" "}
                       results
@@ -429,13 +459,7 @@ const AdminCompanyVerification = () => {
   );
 };
 
-const CompanyModal = ({
-  companyId,
-  onClose,
-  onVerify,
-  onMessage,
-  handleVerificationRemoval,
-}) => {
+const CompanyModal = ({ companyId, onClose }) => {
   const [company, setCompany] = useState(null);
   const [loading, setLoading] = useState(false);
 
@@ -459,197 +483,226 @@ const CompanyModal = ({
   if (!company) return null;
 
   return (
-    <div className="fixed inset-0 z-1000 bg-black/60 backdrop-blur-sm flex items-start justify-center p-4 pt-8 md:pt-16 overflow-y-auto">
-      <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-4xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 z-10"
-        >
-          <X />
-        </button>
-
-        {loading ? (
-          <div className="flex justify-center py-8">
-            <Loader className="animate-spin mx-auto text-sky-600 w-8 h-8" />
-          </div>
-        ) : (
-          <>
-            {/* Header Section */}
-            <div className="flex flex-col md:flex-row md:items-center gap-4 md:gap-6 mb-6">
-              <div className="w-20 h-20 md:w-24 md:h-24 rounded-full bg-orange-100 flex items-center justify-center overflow-hidden shrink-0">
-                <img
-                  src={company.avatar || "/default.png"}
-                  alt={company.name}
-                  className="w-full h-full object-cover"
-                />
-              </div>
-
-              <div className="flex-1 min-w-0">
-                <div className="flex items-center gap-2 flex-wrap mb-2">
-                  <h2 className="text-xl md:text-2xl font-bold text-slate-900 truncate">
-                    {company.name}
-                  </h2>
-                  <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-medium">
-                    Employer
-                  </span>
-                  {company.isCompanyVerified && (
-                    <span className="bg-green-100 text-green-700 text-xs px-2 py-1 rounded-full font-medium flex items-center gap-1">
-                      <BadgeCheck className="w-3 h-3" />
-                      Verified
-                    </span>
-                  )}
-                </div>
-                <p className="text-slate-500 text-sm md:text-base truncate">
-                  {company.email}
-                </p>
-                <p className="flex items-center gap-1 text-sm text-slate-600 mt-1">
-                  <Building2 className="w-4 h-4" />
-                  <span className="flex font-semibold wrap-break-word">
-                    {company.companyName}
-                  </span>
-                </p>
-              </div>
-            </div>
-
-            {/* Action Buttons */}
-            <div className="flex flex-col sm:flex-row gap-3 mb-6">
-              <button
-                onClick={() => onMessage(company._id)}
-                className="flex-1 bg-sky-600 text-white py-2.5 px-4 rounded-xl font-semibold hover:bg-sky-700 transition text-sm"
-              >
-                Send Message
-              </button>
-
-              {company.isCompanyVerified ? (
-                <button
-                  onClick={() => handleVerificationRemoval(company._id)}
-                  className="flex-1 bg-red-600 text-white py-2.5 px-4 rounded-xl font-semibold hover:bg-red-700 transition text-sm"
-                >
-                  Remove Verification
-                </button>
-              ) : (
-                <button
-                  onClick={() => onVerify(company._id)}
-                  className="flex-1 bg-green-600 text-white py-2.5 px-4 rounded-xl font-semibold hover:bg-green-700 transition text-sm"
-                >
-                  Verify Company
-                </button>
-              )}
-            </div>
-
-            {/* Details Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
-              <InfoItem
-                icon={<Calendar />}
-                label="Joined"
-                value={new Date(company.createdAt).toLocaleDateString()}
-              />
-              {company.location && (
-                <InfoItem
-                  icon={<MapPin />}
-                  label="Location"
-                  value={company.location}
-                />
-              )}
-              {company.companyLocation && (
-                <InfoItem
-                  icon={<Building2 />}
-                  label="Company Location"
-                  value={company.companyLocation}
-                />
-              )}
-              {company.companyWebsiteLink && (
-                <InfoItem
-                  icon={<LinkIcon />}
-                  label="Website"
-                  value={company.companyWebsiteLink}
-                />
-              )}
-            </div>
-
-            {/* Stats Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
-              <div className="bg-slate-50 p-4 rounded-xl">
-                <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-                  <FileTextIcon className="w-4 h-4" />
-                  Company Documents
-                </h3>
-                <div className="space-y-2">
-                  {company.companyRegistrationNumber && (
-                    <div className="flex justify-between items-center py-1">
-                      <span className="text-xs text-slate-600">
-                        Registration No:
-                      </span>
-                      <span className="text-sm font-medium">
-                        {company.companyRegistrationNumber}
-                      </span>
-                    </div>
-                  )}
-                  {company.panNumber && (
-                    <div className="flex justify-between items-center py-1">
-                      <span className="text-xs text-slate-600">
-                        PAN Number:
-                      </span>
-                      <span className="text-sm font-medium">
-                        {company.panNumber}
-                      </span>
-                    </div>
-                  )}
-                  {!company.companyRegistrationNumber && !company.panNumber && (
-                    <div className="text-xs text-slate-500 italic">
-                      No documents provided
-                    </div>
-                  )}
-                </div>
-              </div>
-
-              <div className="bg-slate-50 p-4 rounded-xl">
-                <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
-                  <BriefcaseBusiness />
-                  Company Stats
-                </h3>
-                <div className="space-y-2">
-                  <div className="flex justify-between items-center py-1">
-                    <span className="text-xs text-slate-600">Posted Jobs:</span>
-                    <span className="text-sm font-medium">
-                      {company.stats?.postedJobs || 0}
-                    </span>
-                  </div>
-                  <div className="flex justify-between items-center py-1">
-                    <span className="text-xs text-slate-600">
-                      Total Applications:
-                    </span>
-                    <span className="text-sm font-medium">
-                      {company.stats?.totalApplications || 0}
-                    </span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Company Description */}
-            {company.companyDescription && (
-              <div className="mb-6">
-                <h3 className="text-sm font-semibold text-slate-700 mb-3">
-                  About Company
-                </h3>
-                <p className="text-xs text-slate-600 bg-slate-50 p-4 rounded-xl leading-relaxed text-justify">
-                  {company.companyDescription}
-                </p>
-              </div>
+    <div className="fixed inset-0 z-1000 bg-black/60 backdrop-blur-sm flex items-start justify-center p-2 overflow-y-auto">
+      <div className="bg-slate-50 m-auto rounded-4xl shadow-2xl w-full max-w-5xl relative max-h-[95vh] overflow-hidden flex flex-col">
+        <div className="bg-white p-4 border-b border-slate-100 flex items-center justify-between shrink-0">
+          <div className="flex items-center gap-1">
+            <h2 className="sm:text-xl font-semibold text-slate-900">
+              {company.companyName || "N/A"}
+            </h2>
+            {company.isCompanyVerified && (
+              <span title="Company Verified" className="p-1 text-sky-500">
+                <BadgeCheck className="w-5 h-5" />
+              </span>
             )}
+          </div>
+          <button
+            onClick={onClose}
+            className="p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
 
-            {/* Footer Actions */}
-            <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
-              <button
-                onClick={onClose}
-                className="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition text-sm"
-              >
-                Close
-              </button>
+        <div className="overflow-y-auto p-4 flex-1">
+          {loading ? (
+            <div className="flex flex-col items-center justify-center py-20">
+              <Loader className="animate-spin text-sky-600 w-10 h-10 mb-4" />
+              <p className="text-slate-500 font-medium">Loading details...</p>
             </div>
-          </>
-        )}
+          ) : (
+            <div className="space-y-4">
+              {/* Main Grid Layout */}
+              <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
+                {/* Left: Employer Profile Card */}
+                <section className="flex flex-col">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
+                      <User className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900">
+                      Employer Profile
+                    </h3>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-1">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2 pb-6 border-b border-slate-50">
+                      <div className="w-16 h-16 rounded-full border-2 border-sky-100 p-0.5 shrink-0">
+                        <img
+                          src={company.avatar || "/default.png"}
+                          alt="Avatar"
+                          className="w-full h-full rounded-full object-cover"
+                        />
+                      </div>
+                      <div>
+                        <p className="font-semibold text-slate-900">
+                          {company.name || "N/A"}
+                        </p>
+                        <p className="text-sm text-slate-500">
+                          {company.email || "N/A"}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex flex-col gap-3">
+                      <InfoItem
+                        icon={<User className="w-4 h-4" />}
+                        label="User"
+                        value={
+                          company?.isPremiumUser ? "Premium User" : "Free User"
+                        }
+                      />
+                      <InfoItem
+                        icon={<Calendar className="w-4 h-4" />}
+                        label="Member Since"
+                        value={new Date(company.createdAt).toLocaleDateString()}
+                      />
+                    </div>
+                  </div>
+                </section>
+
+                <section className="flex flex-col">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
+                      <Building2 className="w-5 h-5" />
+                    </div>
+                    <h3 className="font-semibold text-slate-900">
+                      Company Profile
+                    </h3>
+                  </div>
+
+                  <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-1">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2 pb-6 border-b border-slate-50">
+                      <img
+                        src={company.companyLogo || "/default.png"}
+                        alt="Logo"
+                        className="w-16 h-16 rounded-xl object-contain border border-slate-100"
+                      />
+                      <div className="flex-1">
+                        <p className="font-semibold text-slate-900 leading-tight">
+                          {company.companyName || "N/A"}
+                        </p>
+                        {company.companyWebsiteLink && (
+                          <p className="text-sm text-sky-600 truncate hover:underline cursor-pointer">
+                            {company.companyWebsiteLink}
+                          </p>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="grid grid-cols-1 gap-4">
+                      <InfoItem
+                        icon={<MapPin className="w-4 h-4" />}
+                        label="Company Location"
+                        value={company.companyLocation || "N/A"}
+                      />
+                      <InfoItem
+                        icon={<Building2 className="w-4 h-4" />}
+                        label="Company Size"
+                        value={company.companySize || "Not specified"}
+                      />
+                      <InfoItem
+                        icon={<BriefcaseBusiness className="w-4 h-4" />}
+                        label="Total Job Postings"
+                        value={company.stats?.postedJobs || 0}
+                      />
+                    </div>
+                  </div>
+                </section>
+              </div>
+
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+                {/* Documents */}
+                <div className="lg:col-span-1">
+                  <div className="bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200">
+                    {/* Header */}
+                    <div className="flex items-center gap-3 mb-5">
+                      <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
+                        <FileTextIcon className="w-4 h-4" />
+                      </div>
+                      <h4 className="text-sm font-semibold text-slate-700 tracking-wide">
+                        Legal Verification
+                      </h4>
+                    </div>
+
+                    {/* Content */}
+                    <div className="space-y-4">
+                      {/* Registration Number */}
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                          Registration No.
+                        </span>
+                        <span className="text-sm font-mono text-slate-800 bg-slate-100 px-3 py-2 rounded-lg">
+                          {company.companyRegistrationNumber || "Not provided"}
+                        </span>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="h-px bg-slate-200" />
+
+                      {/* PAN */}
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                          PAN / Tax ID
+                        </span>
+                        <span className="text-sm font-mono text-slate-800 bg-slate-100 px-3 py-2 rounded-lg">
+                          {company.panNumber || "Not provided"}
+                        </span>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="h-px bg-slate-200" />
+
+                      {/* Warnings */}
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                          Admin Warnings
+                        </span>
+                        <span
+                          className={`text-sm font-medium px-3 py-2 rounded-lg ${company.noOfWarnings > 0 ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}`}
+                        >
+                          {company.noOfWarnings || 0} warning
+                          {company.noOfWarnings !== 1 ? "s" : ""}
+                        </span>
+                      </div>
+
+                      {/* Divider */}
+                      <div className="h-px bg-slate-200" />
+
+                      {/* Ban Status */}
+                      <div className="flex flex-col gap-1">
+                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
+                          Account Status
+                        </span>
+                        {company.isBanned ? (
+                          <span className="text-sm font-medium bg-red-100 text-red-800 px-3 py-2 rounded-lg">
+                            Banned: {company.banReason || "No reason provided"}
+                          </span>
+                        ) : (
+                          <span className="text-sm font-medium bg-green-100 text-green-800 px-3 py-2 rounded-lg">
+                            Active
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Description */}
+                <div className="lg:col-span-2">
+                  <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
+                    About the Organization
+                  </h4>
+                  <div className="bg-white p-6 rounded-2xl border border-slate-200">
+                    <p className="text-slate-600 text-xs sm:text-sm text-justify">
+                      {company.companyDescription ||
+                        "No company description provided."}
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -664,11 +717,7 @@ const VerifyConfirmationModal = ({
   <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
-        <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-green-100 mb-4">
-          <ShieldCheck className="text-green-600 w-6 h-6" />
-        </div>
-
-        <h3 className="text-xl font-bold text-slate-900 mb-2">
+        <h3 className="text-xl font-semibold text-slate-900 mb-2">
           Verify Company?
         </h3>
 
@@ -703,7 +752,7 @@ const InfoItem = ({ icon, label, value }) => (
     <div className="text-sky-600">{icon}</div>
     <div>
       <p className="text-slate-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-slate-900">{value}</p>
+      <p className="font-medium text-slate-900 text-md">{value}</p>
     </div>
   </div>
 );

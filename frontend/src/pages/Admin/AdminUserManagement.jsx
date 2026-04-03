@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import {
   Crown,
   Loader,
@@ -13,9 +13,10 @@ import {
   BriefcaseBusiness,
   BadgeCheck,
   User,
-  Ban,
+  ShieldBan,
   ShieldCheck,
   AlertTriangle,
+  ShieldUser,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -32,9 +33,12 @@ const AdminUserManagement = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [userFilter, setUserFilter] = useState("all");
-  const [selectedUser, setSelectedUser] = useState(null);
   const [confirmDeleteUser, setConfirmDeleteUser] = useState(null);
   const [deleting, setDeleting] = useState(false);
+  const [banModalOpen, setBanModalOpen] = useState(false);
+  const [banUserId, setBanUserId] = useState(null);
+  const [banReason, setBanReason] = useState("");
+  const [banning, setBanning] = useState(false);
 
   // Pagination
   const itemsPerPage = 9;
@@ -49,7 +53,6 @@ const AdminUserManagement = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  // Fetch users with backend pagination
   const getAllUsers = async (page = 1) => {
     try {
       setIsLoading(true);
@@ -97,7 +100,6 @@ const AdminUserManagement = () => {
       toast.success("User deleted successfully");
       // Refresh current page
       getAllUsers(currentPage);
-      setSelectedUser(null);
       setConfirmDeleteUser(null);
     } catch (err) {
       toast.error(err.response?.data?.message || "Failed to delete user");
@@ -108,6 +110,44 @@ const AdminUserManagement = () => {
 
   const handleMessageUser = (userId) => {
     navigate(`/admin-chat-box?userId=${userId}`);
+  };
+
+  const handleBanUser = async () => {
+    if (!banReason.trim()) {
+      toast.error("Please provide a ban reason");
+      return;
+    }
+
+    try {
+      setBanning(true);
+      await axiosInstance.put(API_PATHS.ADMIN.BAN_USER(banUserId), {
+        reason: banReason,
+      });
+      toast.success("User banned successfully");
+      setBanModalOpen(false);
+      setBanReason("");
+      setBanUserId(null);
+      // Refresh current page
+      getAllUsers(currentPage);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to ban user");
+    } finally {
+      setBanning(false);
+    }
+  };
+
+  const handleUnbanUser = async (userId) => {
+    try {
+      setBanning(true);
+      await axiosInstance.put(API_PATHS.ADMIN.UNBAN_USER(userId));
+      toast.success("User unbanned successfully");
+      // Refresh current page
+      getAllUsers(currentPage);
+    } catch (err) {
+      toast.error(err.response?.data?.message || "Failed to unban user");
+    } finally {
+      setBanning(false);
+    }
   };
 
   const getPaginationPages = (currentPage, totalPages) => {
@@ -140,17 +180,6 @@ const AdminUserManagement = () => {
 
   return (
     <DashboardLayout activeMenu="admin-users-management">
-      {selectedUser && (
-        <UserModal
-          userId={selectedUser}
-          onClose={() => setSelectedUser(null)}
-          onDelete={(id) =>
-            setConfirmDeleteUser(users.find((u) => u._id === id))
-          }
-          onMessage={handleMessageUser}
-        />
-      )}
-
       {confirmDeleteUser && (
         <DeleteConfirmationModal
           user={confirmDeleteUser}
@@ -249,70 +278,72 @@ const AdminUserManagement = () => {
 
             <div className="grid gap-6">
               {users.map((user) => (
-                <div
-                  key={user._id}
-                  className="bg-white rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all p-2 flex flex-col lg:flex-row lg:items-center justify-between gap-4"
-                >
-                  <div className="flex items-start gap-2">
-                    <div className="w-16 h-16 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
-                      <img
-                        src={user.avatar || "/default.png"}
-                        alt={user.name}
-                        className="w-full h-full object-cover"
-                      />
-                    </div>
+                <div key={user._id} className="flex flex-col gap-2">
+                  <div className="bg-white rounded-2xl border border-gray-100 shadow-sm p-4">
+                    <div className="flex flex-col items-start gap-4">
+                      <div className="flex items-start gap-3">
+                        <div className="w-14 h-14 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden shrink-0">
+                          <img
+                            src={user.avatar || "/default.png"}
+                            alt={user.name}
+                            className="w-full h-full object-cover"
+                          />
+                        </div>
 
-                    <div>
-                      <div className="flex items-center gap-1">
-                        <p className="font-semibold text-slate-900 text-sm sm:text-md">
-                          {user.name}
-                        </p>
-                        {user.isPremium && (
-                          <span
-                            title="Premium User"
-                            className="text-white p-1 rounded-2xl bg-yellow-400"
-                          >
-                            <Crown className="w-3 h-3" />
+                        <div className="flex-1 min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="font-semibold text-slate-900">
+                              {user.name}
+                            </p>
+                            {!user.isPremium && (
+                              <span
+                                title="Premium User"
+                                className="text-white p-1 rounded-lg bg-yellow-400"
+                              >
+                                <Crown className="w-3.5 h-3.5" />
+                              </span>
+                            )}
+                            {user?.isBanned && (
+                              <p className="flex items-center gap-1 text-red-600">
+                                <AlertTriangle className="w-4 h-4 text-red-600" />
+                                Banned
+                              </p>
+                            )}
+                            <span
+                              className={`text-xs px-2 py-0.5 rounded-lg font-medium ${
+                                user.role === "employer"
+                                  ? "bg-orange-100 text-orange-700"
+                                  : "bg-blue-100 text-blue-700"
+                              }`}
+                            >
+                              {user.role === "employer"
+                                ? "Employer"
+                                : "Job Seeker"}
+                            </span>
+                          </div>
+                          <p className="text-sm text-slate-500 mt-1">
+                            {user.email}
+                          </p>
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2 mt-1">
+                        {user && user?.companyName && (
+                          <span className="flex items-center gap-1 text-sm text-slate-600">
+                            <Building2 className="w-3.5 h-3.5 shrink-0" />
+                            {user.companyName}
+                            {user.role === "employer" &&
+                              !user.isCompanyVerified && (
+                                <BadgeCheck className="w-4 h-4 text-sky-600" />
+                              )}
                           </span>
                         )}
                       </div>
-                      <p
-                        className={`text-xs mt-1 flex w-32 px-2 py-1 rounded-2xl font-medium ${
-                          user.role === "employer"
-                            ? "bg-orange-100 text-orange-700"
-                            : "bg-blue-100 text-blue-700"
-                        }`}
-                      >
-                        {user.role === "employer" ? "Employer" : "Job Seeker"}
-                      </p>
-                      {user && user?.companyName && (
-                        <p className="flex items-center w-full gap-1 text-xs sm:text-sm text-slate-700">
-                          <span
-                            title={user?.companyName}
-                            className="flex items-center gap-1 truncate max-w-42 sm:max-w-52"
-                          >
-                            <Building2 className="w-4 h-4 shrink-0" />
-                            {user.companyName}
-                          </span>
-                          {user.role === "employer" &&
-                            user.isCompanyVerified && (
-                              <BadgeCheck className="w-4 h-4 text-sky-600 shrink-0" />
-                            )}
-                        </p>
-                      )}
-                      {user?.isBanned && (
-                        <span className="flex gap-1 items-center text-red-600">
-                          <AlertTriangle className="w-3 h-3" />
-                          Banned
-                        </span>
-                      )}
-                      <p className="text-xs text-slate-500">{user.email}</p>
                     </div>
                   </div>
 
-                  <div className="flex flex-wrap items-center py-2 gap-2 justify-end">
+                  <div className="w-full flex flex-wrap gap-2 py-1 justify-end">
                     <button
-                      onClick={() => setSelectedUser(user._id)}
+                      onClick={() => navigate(`/profile/${user?._id}`)}
                       title="View user details"
                       className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-sky-600 text-white hover:bg-sky-700 transition"
                     >
@@ -326,6 +357,29 @@ const AdminUserManagement = () => {
                     >
                       Message
                     </button>
+
+                    {user.isBanned ? (
+                      <button
+                        onClick={() => handleUnbanUser(user._id)}
+                        title="Unban this user"
+                        className="flex items-center gap-1 px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition"
+                      >
+                        <ShieldUser className="w-4 h-4" />
+                        Unban
+                      </button>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          setBanUserId(user._id);
+                          setBanModalOpen(true);
+                        }}
+                        title="Ban this user"
+                        className="flex items-center gap-1 px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-orange-600 text-white hover:bg-orange-700 transition"
+                      >
+                        <ShieldBan className="w-4 h-4" />
+                        Ban
+                      </button>
+                    )}
 
                     <button
                       onClick={() => setConfirmDeleteUser(user)}
@@ -382,7 +436,8 @@ const AdminUserManagement = () => {
                       <span className="font-semibold">
                         {Math.min(currentPage * itemsPerPage, pagination.total)}
                       </span>{" "}
-                      of <span className="font-semibold">{pagination.total}</span>{" "}
+                      of{" "}
+                      <span className="font-semibold">{pagination.total}</span>{" "}
                       results
                     </p>
                   </div>
@@ -448,252 +503,16 @@ const AdminUserManagement = () => {
           </>
         )}
       </div>
-    </DashboardLayout>
-  );
-};
-
-const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
-  const [user, setUser] = useState(null);
-  const [loading, setLoading] = useState(false);
-  const [banModalOpen, setBanModalOpen] = useState(false);
-  const [banReason, setBanReason] = useState("");
-  const [banning, setBanning] = useState(false);
-
-  useEffect(() => {
-    const fetchUser = async () => {
-      try {
-        setLoading(true);
-        const response = await axiosInstance.get(
-          API_PATHS.ADMIN.GET_USER_BY_ID(userId),
-        );
-        setUser(response.data);
-      } catch {
-        toast.error("Failed to fetch user details");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUser();
-  }, [userId]);
-
-  const handleBanUser = async () => {
-    if (!banReason.trim()) {
-      toast.error("Please provide a ban reason");
-      return;
-    }
-
-    try {
-      setBanning(true);
-      await axiosInstance.put(API_PATHS.ADMIN.BAN_USER(userId), {
-        reason: banReason,
-      });
-      toast.success("User banned successfully");
-      setBanModalOpen(false);
-      setBanReason("");
-      // Refresh user data
-      const response = await axiosInstance.get(
-        API_PATHS.ADMIN.GET_USER_BY_ID(userId),
-      );
-      setUser(response.data);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to ban user");
-    } finally {
-      setBanning(false);
-    }
-  };
-
-  const handleUnbanUser = async () => {
-    try {
-      setBanning(true);
-      await axiosInstance.put(API_PATHS.ADMIN.UNBAN_USER(userId));
-      toast.success("User unbanned successfully");
-      // Refresh user data
-      const response = await axiosInstance.get(
-        API_PATHS.ADMIN.GET_USER_BY_ID(userId),
-      );
-      setUser(response.data);
-    } catch (err) {
-      toast.error(err.response?.data?.message || "Failed to unban user");
-    } finally {
-      setBanning(false);
-    }
-  };
-
-  if (!user) return null;
-
-  return (
-    <div className="fixed inset-0 z-1000 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
-      <div className="bg-white m-auto rounded-l-2xl w-full max-w-3xl relative overflow-hidden">
-        <button
-          onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100"
-        >
-          <X />
-        </button>
-
-        {loading ? (
-          <Loader className="animate-spin mx-auto text-sky-600" />
-        ) : (
-          <>
-            <div className="h-[90vh] overflow-y-scroll p-4">
-              <div className="pt-4 flex flex-col md:flex-row md:items-center gap-6 mb-6">
-                <div className="w-24 h-24 rounded-full bg-sky-100 flex items-center justify-center overflow-hidden">
-                  <img
-                    src={user.avatar || "/default.png"}
-                    alt={user.name}
-                    className="w-full h-full object-cover"
-                  />
-                </div>
-
-                <div>
-                  <h2 className="flex items-center gap-1 text-xl font-semibold text-slate-900">
-                    {user.name}
-                    {user.role === "employer" && !user.isCompanyVerified && (
-                      <BadgeCheck className="w-5 h-5 text-sky-600 inline" />
-                    )}
-                  </h2>
-                  <p className="text-slate-500">{user.email}</p>
-                </div>
-              </div>
-
-              <div className="grid sm:grid-cols-2 gap-6 mb-4 text-sm">
-                <InfoItem
-                  icon={<User />}
-                  label="Role"
-                  value={
-                    user.role === "employer"
-                      ? "Employer"
-                      : user.role === "jobSeeker"
-                        ? "Job Seeker"
-                        : "Admin"
-                  }
-                />
-                <InfoItem
-                  icon={<Calendar />}
-                  label="Joined"
-                  value={new Date(user.createdAt).toLocaleDateString()}
-                />
-                {user.location && (
-                  <InfoItem
-                    icon={<MapPin />}
-                    label="Location"
-                    value={user.location}
-                  />
-                )}
-                {user.companyName && (
-                  <InfoItem
-                    icon={<Building2 />}
-                    label="Company"
-                    value={user.companyName}
-                  />
-                )}
-              </div>
-
-              {user.stats && (
-                <div className="grid sm:grid-cols-2 gap-2 mb-8">
-                  {user.role === "jobSeeker" && (
-                    <>
-                      <StatCard
-                        icon={<FileText />}
-                        label="Applications"
-                        value={user.stats.appliedJobs}
-                      />
-                      <StatCard
-                        icon={<Bookmark />}
-                        label="Saved Jobs"
-                        value={user.stats.savedJobs}
-                      />
-                    </>
-                  )}
-                  {user.role === "employer" && (
-                    <>
-                      <StatCard
-                        icon={<BriefcaseBusiness />}
-                        label="Posted Jobs"
-                        value={user.stats.postedJobs}
-                      />
-                      <StatCard
-                        icon={<Users />}
-                        label="Total Applications"
-                        value={user.stats.totalApplications}
-                      />
-                    </>
-                  )}
-                </div>
-              )}
-
-              {user.isBanned && (
-                <div className="bg-red-50 border border-red-200 rounded-xl p-4 mb-24">
-                  <div className="flex items-start gap-2">
-                    <Ban className="w-5 h-5 text-red-600 shrink-0 mt-0.5" />
-                    <div>
-                      <p className="font-semibold text-red-900 text-sm">
-                        User is Banned
-                      </p>
-                      <p className="text-red-700 text-xs mt-1">
-                        <strong>Reason:</strong> {user.banReason}
-                      </p>
-                      <p className="text-red-600 text-xs mt-1">
-                        <strong>Banned on:</strong>{" "}
-                        {new Date(user.banDate).toLocaleDateString()}
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              )}
-            </div>
-            <div className="absolute bottom-0 left-0 bg-white border border-gray-200 p-2 flex gap-2 w-full">
-              <button
-                onClick={() => onMessage(user._id)}
-                className="flex-1 text-sm bg-sky-600 text-white py-3 rounded-xl font-semibold hover:bg-sky-700 transition"
-              >
-                Message
-              </button>
-
-              {user.isBanned ? (
-                <button
-                  onClick={handleUnbanUser}
-                  disabled={banning}
-                  className="flex-1 text-sm bg-green-600 text-white py-3 rounded-xl font-semibold hover:bg-green-700 transition disabled:opacity-50 flex items-center justify-center gap-2"
-                >
-                  <ShieldCheck className="w-4 h-4" />
-                  {banning ? "Unbanning..." : "Unban"}
-                </button>
-              ) : (
-                <button
-                  onClick={() => setBanModalOpen(true)}
-                  className="flex-1 text-sm bg-orange-600 text-white py-3 rounded-xl font-semibold hover:bg-orange-700 transition flex items-center justify-center gap-2"
-                >
-                  <Ban className="w-4 h-4" />
-                  Ban
-                </button>
-              )}
-
-              <button
-                onClick={() => onDelete(user._id)}
-                className="flex-1 text-sm bg-red-600 text-white py-3 rounded-xl font-semibold hover:bg-red-700 transition"
-              >
-                Delete
-              </button>
-            </div>
-          </>
-        )}
-      </div>
 
       {banModalOpen && (
         <div className="fixed inset-0 z-1300 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
             <div className="text-center">
-              <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-orange-100 mb-4">
-                <Ban className="text-orange-600 w-6 h-6" />
-              </div>
-
               <h3 className="text-xl font-semibold text-slate-900 mb-2">
                 Ban User
               </h3>
-
               <p className="text-slate-500 text-sm mb-4">
-                Provide a reason for banning <strong>{user.name}</strong>
+                Provide a reason for banning this user
               </p>
 
               <textarea
@@ -709,6 +528,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                   onClick={() => {
                     setBanModalOpen(false);
                     setBanReason("");
+                    setBanUserId(null);
                   }}
                   disabled={banning}
                   className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
@@ -728,7 +548,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
           </div>
         </div>
       )}
-    </div>
+    </DashboardLayout>
   );
 };
 
@@ -736,7 +556,9 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
   <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">Delete User?</h3>
+        <h3 className="text-xl font-semibold text-slate-900 mb-2">
+          Delete User?
+        </h3>
 
         <p className="text-slate-500 text-sm mb-6">
           Permanently delete <strong>{user.name}</strong>? This action cannot be
@@ -762,24 +584,6 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
         </div>
       </div>
     </div>
-  </div>
-);
-
-const InfoItem = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 bg-slate-50 p-2 rounded-xl">
-    <div className="text-sky-600">{icon}</div>
-    <div>
-      <p className="text-slate-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-xs text-slate-900">{value}</p>
-    </div>
-  </div>
-);
-
-const StatCard = ({ icon, label, value }) => (
-  <div className="flex flex-col bg-white border border-gray-100 rounded-xl p-6 text-center shadow-sm">
-    <div className="text-sky-600 flex justify-center">{icon}</div>
-    <p className="text-2xl font-semibold text-slate-900">{value}</p>
-    <p className="text-slate-500 text-sm">{label}</p>
   </div>
 );
 

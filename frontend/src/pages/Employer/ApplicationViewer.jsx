@@ -26,7 +26,7 @@ const ApplicationViewer = () => {
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
-  const [sortType, setSortType] = useState("Relevence (Descending Order)");
+  const [sortType, setSortType] = useState("Most Relevent");
 
   const fetchApplications = async () => {
     try {
@@ -82,21 +82,21 @@ const ApplicationViewer = () => {
     const sorted = [...applications];
 
     switch (sortType) {
-      case "Applied Date (Ascending Order)":
+      case "Recent Application":
         return sorted.sort(
           (a, b) => new Date(b.createdAt) - new Date(a.createdAt),
         );
-      case "Applied Date (Descending Order)":
+      case "Oldest Application":
         return sorted.sort(
           (a, b) => new Date(a.createdAt) - new Date(b.createdAt),
         );
 
-      case "Relevence (Ascending Order)":
+      case "Least Relevent":
         return sorted.sort(
           (a, b) => a.cosineSimilarityScore - b.cosineSimilarityScore,
         );
 
-      case "Relevence (Descending Order)":
+      case "Most Relevent":
         return sorted.sort(
           (a, b) => b.cosineSimilarityScore - a.cosineSimilarityScore,
         );
@@ -116,7 +116,7 @@ const ApplicationViewer = () => {
           </div>
         </div>
       ) : (
-        <div className="min-h-screen p-4">
+        <div className="min-h-screen">
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
               <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-4 sm:mb-2">
@@ -179,37 +179,18 @@ const ApplicationViewer = () => {
                 {/* Applications List */}
                 <div>
                   <div className="flex items-center justify-end gap-2 pb-2">
-                    <p className="text-xs">Sorted by: </p>
+                    <p className="text-sm">Sorted by: </p>
                     <select
                       value={sortType}
                       onChange={(e) => setSortType(e.target.value)}
-                      className="border outline-sky-200 rounded-lg transition-colors duration-200 disabled:bg-slate-50 p-2 text-xs"
+                      className="border outline-sky-200 rounded-lg transition-colors duration-200 disabled:bg-slate-50 p-2"
                     >
-                      <option
-                        value="Applied Date (Ascending Order)"
-                        className="text-xs"
-                      >
-                        Applied Date (Ascending Order)
+                      <option value="Recent Application">Recent Application</option>
+                      <option value="Oldest Application">
+                        Oldest Application
                       </option>
-                      <option
-                        value="Applied Date (Descending Order)"
-                        className="text-xs"
-                      >
-                        Applied Date (Descending Order)
-                      </option>
-                      <option
-                        value="Relevence (Ascending Order)"
-                        className="text-xs"
-                      >
-                        {" "}
-                        Relevence (Ascending Order)
-                      </option>
-                      <option
-                        value="Relevence (Descending Order)"
-                        className="text-xs"
-                      >
-                        Relevence (Descending Order)
-                      </option>
+                      <option value="Least Relevent"> Least Relevent</option>
+                      <option value="Most Relevent">Most Relevent</option>
                     </select>
                   </div>
                   <div className="space-y-4">
@@ -220,13 +201,21 @@ const ApplicationViewer = () => {
                       >
                         <div className="flex items-center gap-4">
                           {/* Avatar */}
-                          <div className="flex shrink-0">
+                          <div
+                            title="View applicant profile"
+                            onClick={() => {
+                              navigate(
+                                `/profile/${application.applicant?._id}`,
+                              );
+                            }}
+                            className="flex shrink-0"
+                          >
                             <img
                               src={
                                 application.applicant.avatar || "/default.png"
                               }
                               alt={application.applicant.name}
-                              className="object-fill h-12 w-12 rounded-full"
+                              className="object-fill h-12 w-12 rounded-full cursor-pointer hover:border-2 hover:border-slate-400"
                               style={{ imageRendering: "auto" }}
                             />
                           </div>
@@ -236,7 +225,7 @@ const ApplicationViewer = () => {
                             <h3 className="font-semibold text-slate-900">
                               {application.applicant.name}
                             </h3>
-                            <p className="text-sm text-slate-600">
+                            <p className="text-sm text-slate-600 truncate">
                               {application.applicant.email}
                             </p>
                             <div className="flex items-center gap-1 mt-1 text-slate-500 text-xs">
@@ -287,7 +276,7 @@ const ApplicationViewer = () => {
                             className="inline-flex items-center gap-2 px-3 py-2 bg-slate-50 border-2 border-gray-200 text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
-                            View Profile
+                            View Details
                           </button>
                         </div>
                       </div>
