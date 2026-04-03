@@ -13,6 +13,7 @@ import {
   X,
   Crown,
   Edit3,
+  Building2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -177,9 +178,19 @@ const ProfileDropdown = ({
                         View Profile
                       </div>
                     )}
+                    {role === "employer" && (
+                      <div
+                        onClick={() => navigate("/employer-profile")}
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                      >
+                        <Building2 className="w-4 h-4 text-slate-500" />
+                        Company Profile
+                      </div>
+                    )}
+
                     {role === "admin" && (
                       <div
-                        onClick={() => navigate("/profile")}
+                        onClick={() => navigate("/edit-admin-profile")}
                         className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
                       >
                         <Edit3 className="w-4 h-4 text-slate-500" />
