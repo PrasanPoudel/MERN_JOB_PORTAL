@@ -331,7 +331,7 @@ const EmployerProfilePage = () => {
                       />
                       <div className="min-w-0">
                         <h3 className="flex gap-1 items-center text-base sm:text-lg font-semibold truncate">
-                          {profileData.companyName}
+                          {profileData.companyName || "N/A"}
                           {profileData.isCompanyVerified && (
                             <BadgeCheck className="w-4 h-4 text-sky-600 ml-1 shrink-0" />
                           )}
@@ -339,7 +339,7 @@ const EmployerProfilePage = () => {
                         <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
                           <MapPin className="w-4 h-4 shrink-0" />
                           <span className="truncate">
-                            {profileData.companyLocation}
+                            {profileData.companyLocation || "N/A"}
                           </span>
                         </div>
                         <a
@@ -349,12 +349,12 @@ const EmployerProfilePage = () => {
                         >
                           <Globe className="w-4 h-4 shrink-0" />
                           <span className="truncate">
-                            {profileData.companyWebsiteLink}
+                            {profileData.companyWebsiteLink || "N/A"}
                           </span>
                         </a>
                         <p className="flex items-center gap-2 text-sm text-slate-600 mt-1">
                           <User className="w-4 h-4 shrink-0" />
-                          Company Size: {profileData.companySize}
+                          Company Size: {profileData.companySize || "N/A"}
                         </p>
                       </div>
                     </div>
