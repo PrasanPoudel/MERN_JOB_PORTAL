@@ -75,7 +75,7 @@ const closeHighFraudJobs = async () => {
     const highFraudJobs = await Job.find({
       fraudScore: { $gt: 0.6 },
       isClosed: false,
-    }).populate("company", "no_of_warnings isBanned");
+    }).populate("company", "noOfWarnings isBanned");
 
     if (highFraudJobs.length > 0) {
       const closureTime = new Date();
@@ -110,14 +110,14 @@ const closeHighFraudJobs = async () => {
         const company = highFraudJobs.find(
           (job) => job.company._id.toString() === companyId.toString(),
         ).company;
-        const newWarningCount = (company.no_of_warnings || 0) + 1;
+        const newWarningCount = (company.noOfWarnings || 0) + 1;
         const shouldBan = newWarningCount > 10;
 
         return {
           updateOne: {
             filter: { _id: companyId },
             update: {
-              $inc: { no_of_warnings: 1 },
+              $inc: { noOfWarnings: 1 },
               $set: { isBanned: shouldBan },
             },
           },

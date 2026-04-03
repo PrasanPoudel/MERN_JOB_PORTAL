@@ -81,7 +81,7 @@ const userSchema = new mongoose.Schema(
     panNumber: {
       type: String,
     },
-    no_of_warnings: { type: Number, default: 0 },
+    noOfWarnings: { type: Number, default: 0 },
   },
   { timestamps: true },
 );
