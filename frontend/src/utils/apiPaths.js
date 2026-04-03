@@ -1,4 +1,4 @@
-export const FRONTEND_URL= import.meta.env.VITE_FRONTEND_URL;
+export const FRONTEND_URL = import.meta.env.VITE_FRONTEND_URL;
 
 export const API_PATHS = {
   AUTH: {
@@ -13,6 +13,9 @@ export const API_PATHS = {
     DELETE_RESUME: "/api/user/resume", // Delete Resume details
     CHANGE_PASSWORD: "/api/user/change-password", // Change user's password
     DELETE_USER: (email) => `/api/user/delete-user/${email}`, // Delete user account
+  },
+  PROFILE: {
+    GET_USER_BY_ID: (id) => `/api/user/${id}`,
   },
   DASHBOARD: {
     OVERVIEW: `/api/analytics/overview`,

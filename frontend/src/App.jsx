@@ -21,7 +21,7 @@ import AdminCompanyVerification from "./pages/Admin/AdminCompanyVerification";
 import JobSeekerDashboard from "./pages/JobSeeker/JobSeekerDashboard";
 import JobDetails from "./pages/JobSeeker/JobDetails";
 import SavedJobs from "./pages/JobSeeker/SavedJobs";
-import UserProfile from "./pages/JobSeeker/UserProfile";
+import JobSeekerProfilePage from "./pages/JobSeeker/JobSeekerProfilePage";
 import AppliedApplications from "./pages/JobSeeker/AppliedApplications";
 
 import ProtectedRoute from "./routes/ProtectedRoute";
@@ -38,11 +38,12 @@ import JobSeekerChatBox from "./pages/Chat/JobSeekerChatBox";
 import { useAuth } from "./context/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
 
-import ChangePassword from "./pages/ChangePassword";
-import DeleteAccount from "./pages/DeleteAccount";
+import ChangePassword from "./pages/Shared/ChangePassword";
+import DeleteAccount from "./pages/Shared/DeleteAccount";
 import Pricing from "./pages/Payment/Pricing";
 import PaymentSuccess from "./pages/Payment/PaymentSuccess";
 import PaymentFailed from "./pages/Payment/PaymentFailed";
+import UserProfilePage from "./pages/Shared/UserProfilePage";
 
 const App = () => {
   const { loading } = useAuth();
@@ -53,72 +54,73 @@ const App = () => {
 
   return (
     <Router>
-        <Routes>
-          <Route path="/" element={<LandingPage />} />
-          <Route path="/signup" element={<SignUp />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/forgot-password" element={<ForgotPassword />} />
-          <Route path="/reset-password" element={<ResetPassword />} />
+      <Routes>
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/signup" element={<SignUp />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/forgot-password" element={<ForgotPassword />} />
+        <Route path="/reset-password" element={<ResetPassword />} />
 
-          {/* Chat routes - accessible to both jobSeeker and employer */}
-          <Route element={<ProtectedRoute />}>
-            <Route path="/change-password" element={<ChangePassword />} />
-            <Route path="/delete-account" element={<DeleteAccount />} />
-            <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
-            <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
-            <Route path="/pricing" element={<Pricing />} />
-            <Route path="/payment-success" element={<PaymentSuccess />} />
-            <Route path="/payment-failed" element={<PaymentFailed />} />
-          </Route>
+        {/* Chat routes - accessible to both jobSeeker and employer */}
+        <Route element={<ProtectedRoute />}>
+          <Route path="/change-password" element={<ChangePassword />} />
+          <Route path="/delete-account" element={<DeleteAccount />} />
+          <Route path="/EmployerChatBox" element={<EmployerChatBox />} />
+          <Route path="/JobSeekerChatBox" element={<JobSeekerChatBox />} />
+          <Route path="/pricing" element={<Pricing />} />
+          <Route path="/payment-success" element={<PaymentSuccess />} />
+          <Route path="/payment-failed" element={<PaymentFailed />} />
+          <Route path="/profile/:userId" element={<UserProfilePage />} />
+        </Route>
 
-          <Route element={<ProtectedRoute requiredRole="jobSeeker" />}>
-            <Route path="/saved-jobs" element={<SavedJobs />} />
-            <Route
-              path="/applied-applications"
-              element={<AppliedApplications />}
-            />
-            <Route path="/profile" element={<UserProfile />} />
-          </Route>
-          {/* Protected Routes */}
-          <Route element={<ProtectedRoute requiredRole="employer" />}>
-            <Route path="/employer-dashboard" element={<EmployerDashboard />} />
-            <Route path="/post-job" element={<JobPostingForm />} />
-            <Route path="/manage-jobs" element={<ManageJobs />} />
-            <Route path="/applicants" element={<ApplicationViewer />} />
-            <Route path="/employer-profile" element={<EmployerProfilePage />} />
-          </Route>
+        <Route element={<ProtectedRoute requiredRole="jobSeeker" />}>
+          <Route path="/saved-jobs" element={<SavedJobs />} />
+          <Route
+            path="/applied-applications"
+            element={<AppliedApplications />}
+          />
+          <Route path="/profile" element={<JobSeekerProfilePage />} />
+        </Route>
+        {/* Protected Routes */}
+        <Route element={<ProtectedRoute requiredRole="employer" />}>
+          <Route path="/employer-dashboard" element={<EmployerDashboard />} />
+          <Route path="/post-job" element={<JobPostingForm />} />
+          <Route path="/manage-jobs" element={<ManageJobs />} />
+          <Route path="/applicants" element={<ApplicationViewer />} />
+          <Route path="/employer-profile" element={<EmployerProfilePage />} />
+        </Route>
 
-          <Route element={<ProtectedRoute requiredRole="admin" />}>
-            <Route path="/admin-dashboard" element={<AdminDashboard />} />
-            <Route path="/edit-admin-profile" element={<EditAdminProfile />} />
-            <Route
-              path="/admin-company-verification"
-              element={<AdminCompanyVerification />}
-            />
-            <Route
-              path="/admin-users-management"
-              element={<AdminUserManagement />}
-            />
-            <Route
-              path="/admin-jobs-management"
-              element={<AdminJobManagement />}
-            />
-            <Route path="/admin-chat-box" element={<AdminChatBox />} />
-          </Route>
+        <Route element={<ProtectedRoute requiredRole="admin" />}>
+          <Route path="/admin-dashboard" element={<AdminDashboard />} />
+          <Route path="/edit-admin-profile" element={<EditAdminProfile />} />
+          <Route
+            path="/admin-company-verification"
+            element={<AdminCompanyVerification />}
+          />
+          <Route
+            path="/admin-users-management"
+            element={<AdminUserManagement />}
+          />
+          <Route
+            path="/admin-jobs-management"
+            element={<AdminJobManagement />}
+          />
+          <Route path="/admin-chat-box" element={<AdminChatBox />} />
+        </Route>
 
-          <Route path="/find-jobs" element={<JobSeekerDashboard />} />
-          <Route path="/job/:jobId" element={<JobDetails />} />
-          <Route path="*" element={<Navigate to="/" />} />
-        </Routes>
-        <Toaster
-          toastOptions={{
-            className: "",
-            style: {
-              fontSize: "12.5px",
-            },
-          }}
-        />
-      </Router>
+        <Route path="/find-jobs" element={<JobSeekerDashboard />} />
+        <Route path="/job/:jobId" element={<JobDetails />} />
+        <Route path="*" element={<Navigate to="/" />} />
+      </Routes>
+      <Toaster
+        toastOptions={{
+          className: "",
+          style: {
+            fontSize: "12.5px",
+          },
+        }}
+      />
+    </Router>
   );
 };
 

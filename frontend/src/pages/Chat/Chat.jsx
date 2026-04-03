@@ -358,7 +358,7 @@ const Chat = ({ isAdmin = false }) => {
         <div
           className={`${
             isMobile
-              ? `fixed inset-0 top-16 transition-transform duration-300 ease-in-out z-100 ${
+              ? `fixed inset-0 top-16 transition-transform duration-300 ease-in-out z-50 ${
                   sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
               : "w-full md:w-96 lg:w-104"
@@ -484,8 +484,30 @@ const Chat = ({ isAdmin = false }) => {
                     }`}
                   >
                     {/* Avatar Section */}
-                    <div className="relative shrink-0">
-                      <div className="w-12 h-12 rounded-full bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden transition-all duration-300">
+                    <div
+                      className={`relative shrink-0 cursor-pointer`}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        if (conv.isAdminConversation) {
+                          if (conv.user?._id)
+                            navigate(`/profile/${conv.user._id}`);
+                        } else if (isAdmin) {
+                          navigate(`/profile/${conv.user._id}`);
+                        } else {
+                          const targetUserId =
+                            user.role === "jobSeeker"
+                              ? conv.application?.job?.company?._id
+                              : conv.application?.applicant?._id;
+                          if (targetUserId)
+                            navigate(`/profile/${targetUserId}`);
+                        }
+                      }}
+                    >
+                      <div
+                        className={
+                          "w-12 h-12 rounded-full bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center overflow-hidden transition-all duration-300 hover:ring-2 hover:ring-slate-400"
+                        }
+                      >
                         <img
                           src={getOtherPartyAvatar(conv) || "/default.png"}
                           alt="User"
@@ -503,52 +525,52 @@ const Chat = ({ isAdmin = false }) => {
                     <div className="flex-1 min-w-0 text-left space-y-1">
                       {/* Name & Time Row */}
                       <div className="flex gap-1 items-center flex-wrap">
-                      <div className="flex items-center gap-2">
-                        <p className="text-gray-900 font-medium text-base truncate leading-tight">
-                          {getOtherPartyName(conv)}
-                        </p>
-                        {conv.unreadCount > 0 && (
-                          <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-linear-to-br from-sky-600 to-sky-700 text-white animate-pulse shadow-sm">
-                            {conv.unreadCount} new
-                          </span>
-                        )}
-                      </div>
+                        <div className="flex items-center gap-2">
+                          <p className="text-gray-900 font-medium text-base truncate leading-tight">
+                            {getOtherPartyName(conv)}
+                          </p>
+                          {conv.unreadCount > 0 && (
+                            <span className="inline-flex items-center px-2.5 py-1 rounded-full text-xs font-semibold bg-linear-to-br from-sky-600 to-sky-700 text-white animate-pulse shadow-sm">
+                              {conv.unreadCount} new
+                            </span>
+                          )}
+                        </div>
 
-                      {/* Badges Row */}
-                      <div className="flex flex-col items-start">
-                        {isAdmin ? (
-                          ""
-                        ) : conv.isAdminConversation ? (
-                          <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border border-sky-300 shadow-sm">
-                            <ShieldCheck className="w-4 h-4 mr-1 text-sky-600" />
-                            Admin Support
-                          </span>
-                        ) : (
-                          <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-green-100 to-green-200 text-green-700 border border-green-300 shadow-sm">
-                            <BriefcaseBusiness className="w-4 h-4 mr-2 text-green-600" />
-                            {conv.jobTitle || "Job Application"}
-                          </span>
-                        )}
+                        {/* Badges Row */}
+                        <div className="flex flex-col items-start">
+                          {isAdmin ? (
+                            ""
+                          ) : conv.isAdminConversation ? (
+                            <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border border-sky-300 shadow-sm">
+                              <ShieldCheck className="w-4 h-4 mr-1 text-sky-600" />
+                              Admin Support
+                            </span>
+                          ) : (
+                            <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-green-100 to-green-200 text-green-700 border border-green-300 shadow-sm">
+                              <BriefcaseBusiness className="w-4 h-4 mr-2 text-green-600" />
+                              {conv.jobTitle || "Job Application"}
+                            </span>
+                          )}
 
-                        {isAdmin && conv.user && (
-                          <span
-                            className={`inline-flex items-center p-2 rounded-full text-xs font-medium border ${
-                              conv.user.role === "employer"
-                                ? "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
-                                : "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
-                            }`}
-                          >
-                            {conv.user.role === "employer" ? (
-                              <BriefcaseBusiness className="w-4 h-4 mr-1" />
-                            ) : (
-                              <User className="w-4 h-4 mr-1" />
-                            )}
-                            {conv.user.role === "employer"
-                              ? "Employer"
-                              : "Job Seeker"}
-                          </span>
-                        )}
-                      </div>
+                          {isAdmin && conv.user && (
+                            <span
+                              className={`inline-flex items-center p-2 rounded-full text-xs font-medium border ${
+                                conv.user.role === "employer"
+                                  ? "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
+                                  : "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
+                              }`}
+                            >
+                              {conv.user.role === "employer" ? (
+                                <BriefcaseBusiness className="w-4 h-4 mr-1" />
+                              ) : (
+                                <User className="w-4 h-4 mr-1" />
+                              )}
+                              {conv.user.role === "employer"
+                                ? "Employer"
+                                : "Job Seeker"}
+                            </span>
+                          )}
+                        </div>
                       </div>
 
                       {/* Message Preview Row */}
@@ -586,8 +608,25 @@ const Chat = ({ isAdmin = false }) => {
                     <ArrowLeft className="w-5 h-5 text-gray-600" />
                   </button>
                 )}
-                <div className="relative">
-                  <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
+                <div
+                  className="relative cursor-pointer"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    if (isAdmin) {
+                      navigate(`/profile/${selectedConversation.user._id}`);
+                    } else if (selectedConversation.isAdminConversation) {
+                      if (selectedConversation.user?._id)
+                        navigate(`/profile/${selectedConversation.user._id}`);
+                    } else {
+                      const targetUserId =
+                        user.role === "jobSeeker"
+                          ? selectedConversation.application?.job?.company?._id
+                          : selectedConversation.application?.applicant?._id;
+                      if (targetUserId) navigate(`/profile/${targetUserId}`);
+                    }
+                  }}
+                >
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden hover:ring-2 hover:ring-slate-400 transition-all">
                     <img
                       src={
                         getOtherPartyAvatar(selectedConversation) ||
@@ -694,7 +733,12 @@ const Chat = ({ isAdmin = false }) => {
                           className={`flex gap-2 max-w-[95%] sm:max-w-lg ${isOwnMessage ? "flex-row-reverse" : ""}`}
                         >
                           {!isOwnMessage && (
-                            <div className="w-10 h-10 rounded-xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center shrink-0 overflow-hidden shadow-sm mt-auto">
+                            <div
+                              className="w-10 h-10 rounded-xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center shrink-0 overflow-hidden shadow-sm mt-auto cursor-pointer hover:ring-2 hover:ring-slate-400 transition-all"
+                              onClick={() =>
+                                navigate(`/profile/${message.sender._id}`)
+                              }
+                            >
                               <img
                                 src={message.sender.avatar || "/default.png"}
                                 alt={message.sender.name}
@@ -820,7 +864,7 @@ const Chat = ({ isAdmin = false }) => {
       {/* Mobile Overlay */}
       {isMobile && sidebarOpen && (
         <div
-          className="fixed inset-0 top-20 bg-black/60 z-30 backdrop-blur-sm transition-opacity duration-300"
+          className="fixed inset-0 top-20 bg-black/60 z-40 backdrop-blur-sm transition-opacity duration-300"
           onClick={() => setSidebarOpen(false)}
         />
       )}
