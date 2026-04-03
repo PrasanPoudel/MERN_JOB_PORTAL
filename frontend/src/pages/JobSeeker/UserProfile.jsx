@@ -57,7 +57,7 @@ const UserProfile = () => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-gray-50 pt-24 pb-12">
+      <div className="min-h-screen bg-slate-50 pt-24 pb-12">
         <div className="max-w-6xl mx-auto px-4">
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
             <div className="h-24 bg-linear-to-r from-sky-500 to-sky-700 relative">
@@ -79,7 +79,7 @@ const UserProfile = () => {
                     className="w-24 h-24 rounded-full object-cover bg-white shadow-sm"
                   />
                   <div className="pb-1">
-                    <h2 className="flex gap-1 items-center text-2xl font-semibold text-gray-900 leading-tight">
+                    <h2 className="flex gap-1 items-center text-2xl font-semibold text-slate-900 leading-tight">
                       {user?.name || ""}
                       {user?.isPremium && (
                         <span
@@ -90,13 +90,13 @@ const UserProfile = () => {
                         </span>
                       )}
                     </h2>
-                    <p className="text-xs text-gray-500">{user?.email}</p>
+                    <p className="text-xs text-slate-500">{user?.email}</p>
                   </div>
                 </div>
                 <div className="pb-1">
                   {!user?.isPremium && (
                     <div className="flex items-center gap-2">
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 text-gray-600 border border-gray-200 text-sm font-medium">
+                      <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 text-slate-600 border border-gray-200 text-sm font-medium">
                         <User className="w-3.5 h-3.5" />
                         Free User
                       </span>
@@ -115,7 +115,7 @@ const UserProfile = () => {
                 user?.instagramLink) && (
                 <div className="flex flex-wrap items-center gap-4 mt-2 border-t border-gray-100 pt-4">
                   {user?.location && (
-                    <span className="flex items-center gap-1.5 text-sm text-gray-600">
+                    <span className="flex items-center gap-1.5 text-sm text-slate-600">
                       <MapPin className="w-4 h-4 text-sky-500" />
                       {user.location}
                     </span>
@@ -162,7 +162,7 @@ const UserProfile = () => {
                           className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
                             isActive
                               ? "border-sky-500 text-sky-600 bg-sky-50/50"
-                              : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50"
+                              : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50"
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -178,7 +178,7 @@ const UserProfile = () => {
                 {/* ABOUT */}
                 {activeTab === "about" && (
                   <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-slate-900 mb-3 flex items-center gap-2">
                       <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                       About
                     </h3>
@@ -193,12 +193,12 @@ const UserProfile = () => {
                       ].map(({ label, value }) => (
                         <div
                           key={label}
-                          className="bg-gray-50 rounded-xl p-4 border border-gray-100"
+                          className="bg-slate-50 rounded-xl p-4 border border-gray-100"
                         >
-                          <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
+                          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
                             {label}
                           </p>
-                          <p className="text-sm text-gray-800 font-medium">
+                          <p className="text-sm text-slate-800 font-medium">
                             {value || "Not provided"}
                           </p>
                         </div>
@@ -212,7 +212,7 @@ const UserProfile = () => {
                   <div className="space-y-8">
                     {/* Skills */}
                     <section>
-                      <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-slate-900 mb-3 flex items-center gap-2">
                         <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                         Skills
                       </h3>
@@ -234,7 +234,7 @@ const UserProfile = () => {
 
                     {/* Education */}
                     <section>
-                      <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-slate-900 mb-3 flex items-center gap-2">
                         <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                         Education
                       </h3>
@@ -247,13 +247,13 @@ const UserProfile = () => {
                                   <GraduationCap className="w-4 h-4 text-sky-600" />
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="font-semibold text-gray-900 text-sm">
+                                  <p className="font-semibold text-slate-900 text-sm">
                                     {edu.study}
                                   </p>
                                   <p className="text-sky-600 text-sm mt-0.5">
                                     {edu.institution}
                                   </p>
-                                  <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+                                  <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-500">
                                     <span className="flex items-center gap-1">
                                       <MapPin className="w-3 h-3" />
                                       {edu.location}
@@ -279,7 +279,7 @@ const UserProfile = () => {
                 {/* EXPERIENCE */}
                 {activeTab === "experience" && (
                   <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                       <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                       Work Experience
                     </h3>
@@ -294,7 +294,7 @@ const UserProfile = () => {
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-2">
                                   <div>
-                                    <p className="font-semibold text-gray-900 text-sm">
+                                    <p className="font-semibold text-slate-900 text-sm">
                                       {exp.jobTitle}
                                     </p>
                                     <p className="text-sky-600 text-sm mt-0.5">
@@ -307,7 +307,7 @@ const UserProfile = () => {
                                     </span>
                                   )}
                                 </div>
-                                <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+                                <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-500">
                                   <span className="flex items-center gap-1">
                                     <MapPin className="w-3 h-3" />
                                     {exp.location}
@@ -325,7 +325,7 @@ const UserProfile = () => {
                                     {exp.description.map((desc, j) => (
                                       <li
                                         key={j}
-                                        className="flex gap-2 text-sm text-gray-700"
+                                        className="flex gap-2 text-sm text-slate-700"
                                       >
                                         <ChevronRight className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                                         <span>{desc}</span>
@@ -347,7 +347,7 @@ const UserProfile = () => {
                 {/* CERTIFICATIONS */}
                 {activeTab === "certifications" && (
                   <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                       <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                       Certifications
                     </h3>
@@ -363,13 +363,13 @@ const UserProfile = () => {
                                 <Award className="w-4 h-4 text-sky-600" />
                               </div>
                               <div className="min-w-0">
-                                <p className="font-semibold text-gray-900 text-sm leading-snug">
+                                <p className="font-semibold text-slate-900 text-sm leading-snug">
                                   {cert.name}
                                 </p>
                                 <p className="text-sky-600 text-xs mt-1">
                                   {cert.issuer}
                                 </p>
-                                <p className="flex items-center gap-1 text-xs text-gray-500 mt-1.5">
+                                <p className="flex items-center gap-1 text-xs text-slate-500 mt-1.5">
                                   <Calendar className="w-3 h-3" />
                                   {formatDate(cert.date)}
                                 </p>
@@ -399,7 +399,7 @@ const UserProfile = () => {
             <div className="lg:col-span-1">
               <div className="bg-white rounded-xl shadow-sm p-5 sticky top-24">
                 <div className="flex items-center justify-between mb-4">
-                  <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
+                  <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
                     <FileText className="w-4 h-4 text-sky-600" />
                     Resume
                   </h3>
@@ -426,11 +426,11 @@ const UserProfile = () => {
                     />
                   </div>
                 ) : (
-                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50">
+                  <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-slate-50">
                     <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto mb-3">
-                      <FileText className="w-6 h-6 text-gray-400" />
+                      <FileText className="w-6 h-6 text-slate-400" />
                     </div>
-                    <p className="text-sm text-gray-400 font-medium">
+                    <p className="text-sm text-slate-400 font-medium">
                       No resume uploaded
                     </p>
                     <button
@@ -458,7 +458,7 @@ const TimelineCard = ({ children }) => (
 );
 
 const EmptyState = ({ label }) => (
-  <p className="text-sm text-gray-400 py-4 text-center border border-dashed border-gray-200 rounded-xl bg-gray-50">
+  <p className="text-sm text-slate-400 py-4 text-center border border-dashed border-gray-200 rounded-xl bg-slate-50">
     {label}
   </p>
 );

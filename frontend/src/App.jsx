@@ -37,7 +37,6 @@ import JobSeekerChatBox from "./pages/Chat/JobSeekerChatBox";
 
 import { useAuth } from "./context/AuthContext";
 import LoadingSpinner from "./components/LoadingSpinner";
-import ErrorBoundary from "./components/ErrorBoundary";
 
 import ChangePassword from "./pages/ChangePassword";
 import DeleteAccount from "./pages/DeleteAccount";
@@ -53,8 +52,7 @@ const App = () => {
   }
 
   return (
-    <ErrorBoundary>
-      <Router>
+    <Router>
         <Routes>
           <Route path="/" element={<LandingPage />} />
           <Route path="/signup" element={<SignUp />} />
@@ -112,16 +110,15 @@ const App = () => {
           <Route path="/job/:jobId" element={<JobDetails />} />
           <Route path="*" element={<Navigate to="/" />} />
         </Routes>
+        <Toaster
+          toastOptions={{
+            className: "",
+            style: {
+              fontSize: "12.5px",
+            },
+          }}
+        />
       </Router>
-      <Toaster
-        toastOptions={{
-          className: "",
-          style: {
-            fontSize: "12.5px",
-          },
-        }}
-      />
-    </ErrorBoundary>
   );
 };
 

@@ -587,7 +587,7 @@ const Chat = ({ isAdmin = false }) => {
                   </button>
                 )}
                 <div className="relative">
-                  <div className="w-12 h-12 rounded-full flex items-center justify-center overflow-hidden">
+                  <div className="w-8 h-8 rounded-full flex items-center justify-center overflow-hidden">
                     <img
                       src={
                         getOtherPartyAvatar(selectedConversation) ||
@@ -602,7 +602,7 @@ const Chat = ({ isAdmin = false }) => {
                   <p className="font-semibold text-gray-900 text-md tracking-tight truncate">
                     {getOtherPartyName(selectedConversation)}
                   </p>
-                  <div className="flex items-center gap-1 text-sm text-gray-600 font-medium mt-1">
+                  <div className="flex items-center gap-1 text-xs text-gray-600 font-medium mt-1">
                     {isAdmin ? (
                       selectedConversation.user.role === "employer" ? (
                         <Mail className="w-4 h-4" />
@@ -759,7 +759,7 @@ const Chat = ({ isAdmin = false }) => {
                       }
                     }}
                     placeholder="Message..."
-                    className="w-full sm:p-4 p-2 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
+                    className="w-full sm:p-4 p-3 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
                     disabled={sending}
                   />
                 </div>
@@ -774,9 +774,9 @@ const Chat = ({ isAdmin = false }) => {
                       <span className="text-base">Sending...</span>
                     </div>
                   ) : (
-                    <div className="flex items-center gap-2">
-                      <Send className="w-4 h-4" />
-                      <span className="text-base font-medium">Send</span>
+                    <div className="flex items-center gap-1 px-2">
+                      <Send className="w-5 h-5" />
+                      <span className="text-md font-medium">Send</span>
                     </div>
                   )}
                 </button>

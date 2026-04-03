@@ -27,7 +27,7 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { StatCard } from "../../components/Cards/StatCard";
 
-const BarGraph = ({ data, days, onDaysChange, riskData }) => {
+const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) => {
   const navigate = useNavigate();
   if (!data || data.length === 0) return null;
 
@@ -74,6 +74,11 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
     "High Risk": "#ef4444",
   };
 
+  const USER_COLORS = {
+    "Job Seekers": "#0ea5e9",
+    Employers: "#8b5cf6",
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex justify-end">
@@ -89,15 +94,15 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
         </select>
       </div>
 
-      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">
+      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
           Daily User Registrations
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={250}>
           <BarChart data={userChartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#6b7280" />
-            <YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#6b7280" />
+            <YAxis tick={{ fontSize: 11 }} stroke="#6b7280" />
             <Tooltip
               contentStyle={{
                 backgroundColor: "#fff",
@@ -106,7 +111,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
               }}
               cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
             />
-            <Legend wrapperStyle={{ paddingTop: "20px" }} />
+            <Legend wrapperStyle={{ paddingTop: "16px", fontSize: 12 }} />
             <Bar
               dataKey="User Registrations"
               fill="#0ea5e9"
@@ -116,15 +121,15 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
         </ResponsiveContainer>
       </div>
 
-      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
-        <h3 className="text-lg font-semibold text-gray-900 mb-6">
+      <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
+        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
           Daily Job Postings
         </h3>
-        <ResponsiveContainer width="100%" height={300}>
+        <ResponsiveContainer width="100%" height={250}>
           <BarChart data={jobChartData}>
             <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0" />
-            <XAxis dataKey="date" tick={{ fontSize: 12 }} stroke="#6b7280" />
-            <YAxis tick={{ fontSize: 12 }} stroke="#6b7280" />
+            <XAxis dataKey="date" tick={{ fontSize: 11 }} stroke="#6b7280" />
+            <YAxis tick={{ fontSize: 11 }} stroke="#6b7280" />
             <Tooltip
               contentStyle={{
                 backgroundColor: "#fff",
@@ -133,24 +138,25 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
               }}
               cursor={{ fill: "rgba(0, 0, 0, 0.05)" }}
             />
-            <Legend wrapperStyle={{ paddingTop: "20px" }} />
+            <Legend wrapperStyle={{ paddingTop: "16px", fontSize: 12 }} />
             <Bar dataKey="Job Postings" fill="#10b981" radius={[8, 8, 0, 0]} />
           </BarChart>
         </ResponsiveContainer>
       </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
-        <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-6">
-          <h3 className="text-lg font-semibold text-gray-900 mb-6">
+        <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
             Job Risk Distribution
           </h3>
 
-          <ResponsiveContainer width="100%" height={300}>
+          <ResponsiveContainer width="100%" height={250}>
             <PieChart>
               <Pie
                 data={riskData}
                 cx="50%"
                 cy="50%"
-                outerRadius={100}
+                outerRadius={90}
                 dataKey="value"
               >
                 {riskData.map((entry, index) => (
@@ -161,7 +167,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
             </PieChart>
           </ResponsiveContainer>
 
-          <div className="mt-6 space-y-2">
+          <div className="mt-4 sm:mt-6 space-y-2">
             {riskData.map((item, index) => {
               const total = riskData.reduce((sum, d) => sum + d.value, 0);
               const percentage = ((item.value / total) * 100).toFixed(2);
@@ -169,7 +175,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
               return (
                 <div
                   key={index}
-                  className="flex justify-between text-sm text-gray-700"
+                  className="flex justify-between text-sm text-slate-700"
                 >
                   <span className="flex items-center gap-2">
                     <span
@@ -184,34 +190,81 @@ const BarGraph = ({ data, days, onDaysChange, riskData }) => {
             })}
           </div>
         </div>
-        {/* Quick Actions */}
-        <div className="grid grid-cols-1 gap-4">
-          {QuickActions.map((action, index) => {
-            const Icon = action.icon;
-            return (
-              <button
-                key={index}
-                onClick={() => navigate(action.path)}
-                title={action.title}
-                className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-6 text-left cursor-pointer flex gap-2 items-center"
+
+        <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
+          <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
+            User Distribution
+          </h3>
+
+          <ResponsiveContainer width="100%" height={250}>
+            <PieChart>
+              <Pie
+                data={userDistributionData}
+                cx="50%"
+                cy="50%"
+                outerRadius={90}
+                dataKey="value"
               >
+                {userDistributionData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={USER_COLORS[entry.name]} />
+                ))}
+              </Pie>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+
+          <div className="mt-4 sm:mt-6 space-y-2">
+            {userDistributionData.map((item, index) => {
+              const total = userDistributionData.reduce((sum, d) => sum + d.value, 0);
+              const percentage = total > 0 ? ((item.value / total) * 100).toFixed(2) : 0;
+
+              return (
                 <div
-                  className={`${action.color} w-12 h-12 rounded-lg flex items-center justify-center`}
+                  key={index}
+                  className="flex justify-between text-sm text-slate-700"
                 >
-                  <Icon className="w-6 h-6" />
+                  <span className="flex items-center gap-2">
+                    <span
+                      className="w-3 h-3 rounded-full"
+                      style={{ backgroundColor: USER_COLORS[item.name] }}
+                    />
+                    {item.name}
+                  </span>
+                  <span className="font-medium">{percentage}%</span>
                 </div>
-                <div>
-                  <h3 className="font-semibold text-gray-900">
-                    {action.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Manage platform data
-                  </p>
-                </div>
-              </button>
-            );
-          })}
+              );
+            })}
+          </div>
         </div>
+      </div>
+
+      {/* Quick Actions */}
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+        {QuickActions.map((action, index) => {
+          const Icon = action.icon;
+          return (
+            <button
+              key={index}
+              onClick={() => navigate(action.path)}
+              title={action.title}
+              className="bg-white rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-all duration-200 p-4 sm:p-6 text-left cursor-pointer flex gap-3 items-center"
+            >
+              <div
+                className={`${action.color} w-10 h-10 sm:w-12 sm:h-12 rounded-lg flex items-center justify-center shrink-0`}
+              >
+                <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
+              </div>
+              <div className="min-w-0">
+                <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
+                  {action.title}
+                </h3>
+                <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                  Manage platform data
+                </p>
+              </div>
+            </button>
+          );
+        })}
       </div>
     </div>
   );
@@ -290,9 +343,8 @@ const AdminDashboard = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="max-w-7xl mx-auto space-y-8 p-4">
-          {/* Dashboard Stats */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div className="max-w-7xl mx-auto space-y-6 pb-24">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4">
             <StatCard
               title="Total Users"
               value={dashboardData?.counts?.totalUsers || 0}
@@ -330,11 +382,16 @@ const AdminDashboard = () => {
               color="sky"
             />
           </div>
+
           <BarGraph
             data={analyticsData}
             days={days}
             onDaysChange={setDays}
             riskData={riskData}
+            userDistributionData={[
+              { name: "Job Seekers", value: dashboardData?.counts?.totalJobSeekers || 0 },
+              { name: "Employers", value: dashboardData?.counts?.totalEmployers || 0 },
+            ]}
           />
         </div>
       )}

@@ -114,7 +114,7 @@ const ChangePassword = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-slate-50 py-8">
       <div className="max-w-3xl mx-auto px-4">
         {/* Header */}
         <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-2">
@@ -125,17 +125,17 @@ const ChangePassword = () => {
                   navigate(-1);
                 }}
                 title="Go back to previous page"
-                className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+                className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
               >
                 <ArrowLeft className="w-4 h-4" />
                 Back
               </button>
             </div>
             <div className="text-center">
-              <h1 className="text-xl sm:text-2xl font-semibold text-gray-900">
+              <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">
                 Change Password
               </h1>
-              <p className="text-xs sm:text-sm text-gray-600">
+              <p className="text-xs sm:text-sm text-slate-600">
                 Keep your account secure
               </p>
             </div>
@@ -147,12 +147,12 @@ const ChangePassword = () => {
           <form onSubmit={handleSubmit} className="space-y-4 py-4">
             {/* Old Password */}
             <div>
-              <p className="block text-sm font-medium text-gray-700 mb-2">
+              <p className="block text-sm font-medium text-slate-700 mb-2">
                 Current Password *
               </p>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Lock className="h-5 w-5 text-gray-400" />
+                  <Lock className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="oldPassword"
@@ -164,7 +164,7 @@ const ChangePassword = () => {
                     formState.errors.oldPassword
                       ? "border-red-500"
                       : "border-gray-300"
-                  } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base`}
+                  } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors placeholder:text-sm md:placeholder:text-base`}
                   placeholder="Enter your current password"
                 />
                 <button
@@ -183,9 +183,9 @@ const ChangePassword = () => {
                   }
                 >
                   {formState.showOldPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                   )}
                 </button>
               </div>
@@ -198,12 +198,12 @@ const ChangePassword = () => {
 
             {/* New Password */}
             <div>
-              <p className="block text-sm font-medium text-gray-700 mb-2">
+              <p className="block text-sm font-medium text-slate-700 mb-2">
                 New Password *
               </p>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Key className="h-5 w-5 text-gray-400" />
+                  <Key className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="newPassword"
@@ -215,7 +215,7 @@ const ChangePassword = () => {
                     formState.errors.newPassword
                       ? "border-red-500"
                       : "border-gray-300"
-                  } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base`}
+                  } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors placeholder:text-sm md:placeholder:text-base`}
                   placeholder="Enter your new password"
                 />
                 <button
@@ -234,9 +234,9 @@ const ChangePassword = () => {
                   }
                 >
                   {formState.showNewPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                   )}
                 </button>
               </div>
@@ -249,12 +249,12 @@ const ChangePassword = () => {
 
             {/* Confirm New Password */}
             <div>
-              <p className="block text-sm font-medium text-gray-700 mb-2">
+              <p className="block text-sm font-medium text-slate-700 mb-2">
                 Confirm New Password *
               </p>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                  <Key className="h-5 w-5 text-gray-400" />
+                  <Key className="h-5 w-5 text-slate-400" />
                 </div>
                 <input
                   id="comfirmPassword"
@@ -266,7 +266,7 @@ const ChangePassword = () => {
                     formState.errors.confirmPassword
                       ? "border-red-500"
                       : "border-gray-300"
-                  } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors placeholder:text-xs sm:placeholder:text-sm md:placeholder:text-base`}
+                  } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors placeholder:text-sm md:placeholder:text-base`}
                   placeholder="Confirm your new password"
                 />
                 <button
@@ -285,9 +285,9 @@ const ChangePassword = () => {
                   }
                 >
                   {formState.showConfirmPassword ? (
-                    <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                   ) : (
-                    <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
+                    <Eye className="h-5 w-5 text-slate-400 hover:text-slate-600" />
                   )}
                 </button>
               </div>
@@ -299,17 +299,17 @@ const ChangePassword = () => {
             </div>
 
             {/* Password Requirements */}
-            <div className="bg-gray-50 rounded-lg p-4">
-              <p className="text-sm font-medium text-gray-700 mb-2">
+            <div className="bg-slate-50 rounded-lg p-4">
+              <p className="text-sm font-medium text-slate-700 mb-2">
                 Password Requirements:
               </p>
-              <ul className="text-xs text-gray-600 space-y-1">
+              <ul className="text-xs text-slate-600 space-y-1">
                 <li className="flex items-center">
                   <span
                     className={`w-2 h-2 rounded-full mr-2 ${
                       formData.newPassword.length >= 8
                         ? "bg-green-500"
-                        : "bg-gray-300"
+                        : "bg-slate-300"
                     }`}
                   ></span>
                   At least 8 characters
@@ -319,7 +319,7 @@ const ChangePassword = () => {
                     className={`w-2 h-2 rounded-full mr-2 ${
                       /(?=.*[a-z])/.test(formData.newPassword)
                         ? "bg-green-500"
-                        : "bg-gray-300"
+                        : "bg-slate-300"
                     }`}
                   ></span>
                   One lowercase letter
@@ -329,7 +329,7 @@ const ChangePassword = () => {
                     className={`w-2 h-2 rounded-full mr-2 ${
                       /(?=.*[A-Z])/.test(formData.newPassword)
                         ? "bg-green-500"
-                        : "bg-gray-300"
+                        : "bg-slate-300"
                     }`}
                   ></span>
                   One uppercase letter
@@ -339,7 +339,7 @@ const ChangePassword = () => {
                     className={`w-2 h-2 rounded-full mr-2 ${
                       /(?=.*\d)/.test(formData.newPassword)
                         ? "bg-green-500"
-                        : "bg-gray-300"
+                        : "bg-slate-300"
                     }`}
                   ></span>
                   Atleast one number
@@ -353,7 +353,7 @@ const ChangePassword = () => {
               disabled={formState.isLoading}
               className={`w-full py-3 px-4 rounded-lg font-medium transition-colors ${
                 formState.isLoading
-                  ? "bg-gray-300 cursor-not-allowed text-gray-500"
+                  ? "bg-slate-300 cursor-not-allowed text-slate-500"
                   : "bg-sky-600 hover:bg-sky-700 text-white"
               }`}
             >

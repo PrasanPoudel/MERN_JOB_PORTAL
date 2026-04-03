@@ -108,7 +108,7 @@ const ManageJobs = () => {
   //Decide which sort icon to display (for sort direction and field)
   const SortIcon = ({ field }) => {
     if (sortField !== field) {
-      return <ChevronDown className="w-4 h-4 text-gray-400" />;
+      return <ChevronDown className="w-4 h-4 text-slate-400" />;
     }
     return sortDirection === "asc" ? (
       <ChevronUp className="w-4 h-4 text-sky-600" />
@@ -122,26 +122,26 @@ const ManageJobs = () => {
     <tr className="animate-pulse">
       <td className="px-6 py-4">
         <div className="flex items-center space-x-3">
-          <div className="w-10 h-10 bg-gray-200 rounded-full"></div>
+          <div className="w-10 h-10 bg-slate-200 rounded-full"></div>
           <div className="space-y-2">
-            <div className="h-4 bg-gray-200 rounded w-32"></div>
-            <div className="h-4 bg-gray-200 rounded w-32"></div>
+            <div className="h-4 bg-slate-200 rounded w-32"></div>
+            <div className="h-4 bg-slate-200 rounded w-32"></div>
           </div>
         </div>
       </td>
 
       <td className="px-6 py-4">
-        <div className="h-6 bg-gray-200 rounded-full w-16"></div>
+        <div className="h-6 bg-slate-200 rounded-full w-16"></div>
       </td>
       <td className="px-6 py-4">
-        <div className="h-4 bg-gray-200 rounded w-12"></div>
+        <div className="h-4 bg-slate-200 rounded w-12"></div>
       </td>
 
       <td className="px-6 py-4">
         <div className="flex space-x-2">
-          <div className="h-8 bg-gray-200 rounded w-16"></div>
-          <div className="h-8 bg-gray-200 rounded w-16"></div>
-          <div className="h-8 bg-gray-200 rounded w-16"></div>
+          <div className="h-8 bg-slate-200 rounded w-16"></div>
+          <div className="h-8 bg-slate-200 rounded w-16"></div>
+          <div className="h-8 bg-slate-200 rounded w-16"></div>
         </div>
       </td>
     </tr>
@@ -275,16 +275,16 @@ const ManageJobs = () => {
       <div className="fixed inset-0 bg-black/60 flex items-center justify-center z-1200 p-4">
         <div className="bg-white rounded-2xl shadow-2xl max-w-md w-full mx-4">
           <div className="p-6">
-            <h3 className="text-lg font-semibold text-gray-900 text-center mb-2">
+            <h3 className="text-lg font-semibold text-slate-900 text-center mb-2">
               {config.title}
             </h3>
-            <p className="text-sm text-gray-600 text-center mb-6">
+            <p className="text-sm text-slate-600 text-center mb-6">
               {config.message}
             </p>
             <div className="flex gap-3">
               <button
                 onClick={closeConfirmation}
-                className="flex-1 px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 hover:bg-gray-200 rounded-lg transition-colors duration-200"
+                className="flex-1 px-4 py-2 text-sm font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors duration-200"
               >
                 Cancel
               </button>
@@ -303,16 +303,16 @@ const ManageJobs = () => {
 
   return (
     <DashboardLayout activeMenu="manage-jobs">
-      <div className="min-h-screen p-4">
+      <div className="min-h-screen">
         <div className="max-w-7xl mx-auto">
           {/* Header */}
           <div className="mb-8">
             <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between">
               <div className="mb-4 sm:mb-0">
-                <h1 className="text-xl font-semibold text-gray-900">
+                <h1 className="text-xl font-semibold text-slate-900">
                   Job Management
                 </h1>
-                <p className="text-sm text-gray-600 ml-1">
+                <p className="text-sm text-slate-600 ml-1">
                   Manage your job postings and track applications
                 </p>
               </div>
@@ -335,12 +335,12 @@ const ManageJobs = () => {
               {/* Search */}
               <div className="w-full relative">
                 <div className="absolute left-0 top-1/4 inset-y-0 pl-3 items-center pointer-events-none">
-                  <Search className="w-4 h-4 text-gray-400" />
+                  <Search className="w-4 h-4 text-slate-400" />
                 </div>
                 <input
                   autoComplete="off"
                   type="text"
-                  placeholder="Search jobs..."
+                  placeholder="Find Jobs..."
                   value={searchTerm}
                   onChange={(e) => {
                     setSearchTerm(e.target.value);
@@ -368,7 +368,7 @@ const ManageJobs = () => {
 
             {/* Results */}
             <div className="my-4">
-              <p className="text-sm text-gray-600">
+              <p className="text-sm text-slate-600">
                 Showing{" "}
                 <span className="font-bold">{paginatedJobs.length}</span> of{" "}
                 <span className="font-bold">
@@ -382,13 +382,13 @@ const ManageJobs = () => {
             <div className="w-full backdrop-blur-sm rounded-l-2xl border border-gray-200 overflow-hidden">
               {filteredAndSortedJobs.length === 0 && !isLoading ? (
                 <div className="text-center py-12">
-                  <div className="w-24 h-24 mx-auto bg-gray-100 rounded-full flex items-center justify-center mb-4">
-                    <Search className="w-10 h-10 text-gray-400" />
+                  <div className="w-24 h-24 mx-auto bg-slate-100 rounded-full flex items-center justify-center mb-4">
+                    <Search className="w-10 h-10 text-slate-400" />
                   </div>
-                  <h3 className="text-lg font-medium text-gray-900 mb-2">
+                  <h3 className="text-lg font-medium text-slate-900 mb-2">
                     No jobs found
                   </h3>
-                  <p className="text-gray-500">
+                  <p className="text-slate-500">
                     Try adjusting your search and filter criteria
                   </p>
                 </div>
@@ -398,7 +398,7 @@ const ManageJobs = () => {
                     <thead className="bg-linear-to-r from-gray-50 to-gray-400">
                       <tr>
                         <th
-                          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-all duration-200 min-w-52 sm:min-w-0"
+                          className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-50 transition-all duration-200 min-w-52 sm:min-w-0"
                           onClick={() => {
                             handleSort("title");
                           }}
@@ -409,7 +409,7 @@ const ManageJobs = () => {
                           </div>
                         </th>
                         <th
-                          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-all duration-200 min-w-30 sm:min-w-0"
+                          className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-50 transition-all duration-200 min-w-30 sm:min-w-0"
                           onClick={() => {
                             handleSort("status");
                           }}
@@ -420,7 +420,7 @@ const ManageJobs = () => {
                           </div>
                         </th>
                         <th
-                          className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-all duration-200 min-w-32 sm:min-w-0"
+                          className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-50 transition-all duration-200 min-w-32 sm:min-w-0"
                           onClick={() => {
                             handleSort("applicants");
                           }}
@@ -431,7 +431,7 @@ const ManageJobs = () => {
                           </div>
                         </th>
 
-                        <th className="px-6 py-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider cursor-pointer hover:bg-gray-50 transition-all duration-200 min-w-45 sm:min-w-0">
+                        <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider cursor-pointer hover:bg-slate-50 transition-all duration-200 min-w-45 sm:min-w-0">
                           Actions
                         </th>
                       </tr>
@@ -448,10 +448,10 @@ const ManageJobs = () => {
                             >
                               <td className="px-6 py-5 whitespace-nowrap min-w-52 sm:min-w-0">
                                 <div>
-                                  <div className="text-sm font-semibold text-gray-900">
+                                  <div className="text-sm font-semibold text-slate-900">
                                     {job.title}
                                   </div>
-                                  <div className="text-xs font-medium text-gray-600">
+                                  <div className="text-xs font-medium text-slate-600">
                                     {job.company}
                                   </div>
                                 </div>
@@ -461,7 +461,7 @@ const ManageJobs = () => {
                                   className={`inline-flex px-3 py-1.5 text-xs font-semibold rounded-full ${
                                     job.status === "Active"
                                       ? "bg-emerald-100 text-emerald-700 border border-emerald-200"
-                                      : "bg-gray-100 text-gray-700 border border-gray-200"
+                                      : "bg-slate-100 text-slate-700 border border-gray-200"
                                   }`}
                                 >
                                   {job.status}
@@ -502,7 +502,7 @@ const ManageJobs = () => {
                                   ) : job.status === "Active" ? (
                                     <button
                                       title="Job Won't be visible to others"
-                                      className="flex items-center gap-2 text-xs text-gray-600 hover:text-gray-700 font-semibold transition-colors duration-200 hover:bg-gray-200 px-2 py-1 rounded-lg cursor-pointer"
+                                      className="flex items-center gap-2 text-xs text-slate-600 hover:text-slate-700 font-semibold transition-colors duration-200 hover:bg-slate-200 px-2 py-1 rounded-lg cursor-pointer"
                                       onClick={() => {
                                         openConfirmation(
                                           "close",
@@ -566,7 +566,7 @@ const ManageJobs = () => {
                     setCurrentPage(Math.max(1, currentPage - 1));
                   }}
                   disabled={currentPage === 1}
-                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Previous
                 </button>
@@ -575,14 +575,14 @@ const ManageJobs = () => {
                     setCurrentPage(Math.min(totalPages, currentPage + 1));
                   }}
                   disabled={currentPage === totalPages}
-                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                   Next
                 </button>
               </div>
               <div className="hidden sm:flex sm:flex-1 items-center justify-between">
                 <div>
-                  <p className="text-sm text-gray-700">
+                  <p className="text-sm text-slate-700">
                     Showing <span className="font-bold">{startIndex + 1}</span>{" "}
                     to{" "}
                     <span className="font-bold">
@@ -605,7 +605,7 @@ const ManageJobs = () => {
                         setCurrentPage(Math.max(1, currentPage - 1));
                       }}
                       disabled={currentPage === 1}
-                      className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Previous
                     </button>
@@ -619,7 +619,7 @@ const ManageJobs = () => {
                           className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                             currentPage === page
                               ? "z-10 bg-sky-50 border-sky-500 text-sky-600 "
-                              : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                              : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
                           }`}
                         >
                           {page}
@@ -631,7 +631,7 @@ const ManageJobs = () => {
                         setCurrentPage(Math.min(totalPages, currentPage + 1));
                       }}
                       disabled={currentPage === totalPages}
-                      className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                      className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                       Next
                     </button>

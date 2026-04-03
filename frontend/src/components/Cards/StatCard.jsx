@@ -10,24 +10,47 @@ export const Card = ({
 }) => {
   return (
     <div
-      className={`bg-white h-fit rounded-xl border-2 border-gray-100 shadow-sm hover:shadow-md transition-shadow duration-200 ${className}`}
+      className={`card ${className}`}
     >
       {(title || headerAction) && (
-        <div className="flex items-center justify-between p-4">
+        <div className="flex items-center justify-between p-5 border-b border-slate-100">
           <div>
             {title && (
-              <h3 className="text-lg text-gray-900 font-semibold">{title}</h3>
+              <h3 className="text-base font-bold text-slate-900">{title}</h3>
             )}
             {subtitle && (
-              <h3 className="text-sm text-gray-600 mt-1">{subtitle}</h3>
+              <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>
             )}
           </div>
           {headerAction}
         </div>
       )}
-      <div className={`${title ? "px-6 pb-6" : "p-6"}`}>{children}</div>
+      <div className={`${title ? "p-5" : "p-5"}`}>{children}</div>
     </div>
   );
+};
+
+const colorConfig = {
+  sky: {
+    border: "border-l-sky-500",
+    iconBg: "bg-sky-100",
+    iconText: "text-sky-600",
+  },
+  emerald: {
+    border: "border-l-emerald-500",
+    iconBg: "bg-emerald-100",
+    iconText: "text-emerald-600",
+  },
+  violet: {
+    border: "border-l-violet-500",
+    iconBg: "bg-violet-100",
+    iconText: "text-violet-600",
+  },
+  orange: {
+    border: "border-l-orange-500",
+    iconBg: "bg-orange-100",
+    iconText: "text-orange-600",
+  },
 };
 
 export const StatCard = ({
@@ -35,35 +58,23 @@ export const StatCard = ({
   value,
   icon: Icon,
   trend,
-  trendValue,
   color = "sky",
 }) => {
-  const colorClasses = {
-    sky: "from-sky-500 to-sky-600",
-    emerald: "from-emerald-500 to-emerald-600",
-    violet: "from-violet-500 to-violet-600",
-    orange: "from-orange-500 to-orange-600",
-  };
+  const colors = colorConfig[color] || colorConfig.sky;
 
   return (
-    <Card
-      className={`bg-linear-to-br ${colorClasses[color]} text-white border-0`}
+    <div
+      className={`card border-l-4 ${colors.border} p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5`}
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-white/80 text-sm font-medium">{title}</p>
-          <p className="text-3xl font-bold mt-1">{value}</p>
-          {trend && (
-            <div className="flex items-center mt-2 text-sm">
-              <TrendingUp className="h-4 w-4 mr-1" />
-              <span className="font-medium">{trendValue}</span>
-            </div>
-          )}
+          <p className="text-sm font-medium text-slate-500">{title}</p>
+          <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
         </div>
-        <div className="bg-white/10 p-3 rounded-xl">
-          <Icon className="h-6 w-6" />
+        <div className={`${colors.iconBg} p-3 rounded-xl`}>
+          <Icon className={`h-6 w-6 ${colors.iconText}`} />
         </div>
       </div>
-    </Card>
+    </div>
   );
 };

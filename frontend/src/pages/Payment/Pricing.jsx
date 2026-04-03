@@ -38,7 +38,6 @@ const Pricing = ({ notPricingPage }) => {
       const form = document.createElement("form");
       form.method = "POST";
       form.action = `${API_PATHS.ESEWA_PAYMENT.ESEWA_API}`;
-      // console.log(typeof(form.action));
       Object.keys(formData).forEach((key) => {
         const input = document.createElement("input");
         input.type = "hidden";
@@ -46,10 +45,7 @@ const Pricing = ({ notPricingPage }) => {
         input.value = formData[key];
         form.appendChild(input);
       });
-      //Signature from incomming response
-      const signature = response.data.signature;
-      // console.log(signature);
-
+      const signature = response?.data?.signature;
       const signatureInput = document.createElement("input");
       signatureInput.type = "hidden";
       signatureInput.name = "signature";
@@ -69,7 +65,7 @@ const Pricing = ({ notPricingPage }) => {
       {!notPricingPage && <Navbar />}
       <section
         id="pricing"
-        className="mt-16 mx-auto p-4 lg:p-12 bg-gray-50 border-y border-gray-200"
+        className="mt-16 mx-auto p-6 lg:p-12 bg-slate-50 border-y border-slate-200"
       >
         {!notPricingPage && (
           <button
@@ -77,7 +73,7 @@ const Pricing = ({ notPricingPage }) => {
               navigate(-1);
             }}
             title="Go back to previous page"
-            className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+            className="btn-secondary-sm mb-6"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -86,16 +82,10 @@ const Pricing = ({ notPricingPage }) => {
 
         <div className="max-w-4xl mx-auto">
           {/* Header */}
-          <div className="text-center mb-6">
-            <p className="text-sky-600 text-xs font-bold tracking-widest uppercase mb-3">
-              Pricing
-            </p>
-
-            <h2 className="font-extrabold text-3xl sm:text-4xl tracking-tight text-gray-900 mb-4">
-              Simple, transparent pricing.
-            </h2>
-
-            <p className="text-gray-500 text-sm max-w-xs mx-auto leading-relaxed">
+          <div className="text-center mb-8">
+            <p className="section-label">Pricing</p>
+            <h2 className="section-title">Simple, transparent pricing.</h2>
+            <p className="section-subtitle mx-auto">
               Start free. Upgrade when you need more power. No hidden fees.
             </p>
           </div>
@@ -116,7 +106,7 @@ const Pricing = ({ notPricingPage }) => {
                   </div>
 
                   {user?.isPremium && (
-                    <span className="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-full tracking-wide">
+                    <span className="text-xs font-bold bg-white/20 text-white px-2.5 py-1 rounded-full">
                       Current
                     </span>
                   )}
@@ -132,7 +122,7 @@ const Pricing = ({ notPricingPage }) => {
                 </div>
 
                 <p className="text-sky-200 text-xs">
-                  Via eSewa · Cancel anytime
+                  Via eSewa &middot; Cancel anytime
                 </p>
               </div>
 
@@ -142,7 +132,7 @@ const Pricing = ({ notPricingPage }) => {
                   "Post Unlimited Job Applications (Job Seeker)",
                   "Instant Email Notification To Track Application Progress (Job Seeker)",
                   "Post Unlimited Jobs (Employer)",
-                  "Receive Job Recommandation Emails (Job Seeker)",
+                  "Receive Job Recommendation Emails (Job Seeker)",
                 ].map((feature, i) => (
                   <li
                     key={i}
@@ -153,45 +143,46 @@ const Pricing = ({ notPricingPage }) => {
                   </li>
                 ))}
               </ul>
-              {/* Esewa payment */}
+
               <form onSubmit={handleSubmit}>
                 <button
                   disabled={user?.isPremium}
                   id="pay-button"
                   title="Pay with eSewa"
                   type="submit"
-                  className="block cursor-pointer w-full text-center text-sm font-bold bg-white hover:bg-gray-100 text-sky-700 px-5 py-3 rounded-xl transition-colors disabled:bg-gray-50 disabled:cursor-not-allowed disabled:text-gray-400"
+                  className="block w-full text-center text-sm font-bold bg-white hover:bg-slate-50 text-sky-700 px-5 py-3 rounded-xl transition-colors disabled:bg-slate-200 disabled:cursor-not-allowed disabled:text-slate-400 cursor-pointer"
                 >
                   Upgrade to Premium
                 </button>
               </form>
             </div>
+
             {/* Free Plan */}
-            <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col shadow-sm">
+            <div className="rounded-2xl border border-slate-200 bg-white p-8 flex flex-col shadow-sm">
               <div className="mb-7">
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-white/20 border border-white/30 flex items-center justify-center">
-                      <Gift className="w-4 h-4" />
+                    <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center">
+                      <Gift className="w-4 h-4 text-slate-600" />
                     </div>
-                    <span className="font-bold text-base">Free</span>
+                    <span className="font-bold text-base text-slate-900">Free</span>
                   </div>
 
                   {!user?.isPremium && (
-                    <span className="text-sm bg-black text-white font-bold px-2.5 py-1 rounded-full tracking-wide">
+                    <span className="text-sm bg-slate-900 text-white font-bold px-2.5 py-1 rounded-full">
                       Current
                     </span>
                   )}
                 </div>
 
                 <div className="flex items-baseline gap-1.5 mb-1.5">
-                  <span className="font-extrabold text-4xl text-gray-900">
+                  <span className="font-extrabold text-4xl text-slate-900">
                     रू 0
                   </span>
                 </div>
 
-                <p className="text-gray-400 text-xs">
-                  Forever free · No credit card required
+                <p className="text-slate-400 text-xs">
+                  Forever free &middot; No credit card required
                 </p>
               </div>
 
@@ -203,7 +194,7 @@ const Pricing = ({ notPricingPage }) => {
                 ].map((feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-2.5 text-gray-600 text-sm"
+                    className="flex items-center gap-2.5 text-slate-600 text-sm"
                   >
                     <Check className="w-4 h-4 text-sky-600 shrink-0" />
                     {feature}
@@ -211,22 +202,23 @@ const Pricing = ({ notPricingPage }) => {
                 ))}
 
                 {[
-                  "Job Recommandation Email Notification",
+                  "Job Recommendation Email Notification",
                   "Email Notification For Application Tracking",
                 ].map((feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-2.5 text-gray-400 text-sm"
+                    className="flex items-center gap-2.5 text-slate-400 text-sm"
                   >
-                    <Minus className="w-4 h-4 text-gray-300 shrink-0" />
+                    <Minus className="w-4 h-4 text-slate-300 shrink-0" />
                     {feature}
                   </li>
                 ))}
               </ul>
+
               {!user?.isPremium && (
                 <a
                   href="/"
-                  className="block cursor-pointer text-center text-sm font-semibold border border-gray-300 hover:border-sky-600 hover:text-sky-600 text-gray-700 px-5 py-3 rounded-xl transition-all"
+                  className="block text-center text-sm font-semibold border border-slate-300 hover:border-sky-600 hover:text-sky-600 text-slate-700 px-5 py-3 rounded-xl transition-all cursor-pointer"
                 >
                   Get Started Free
                 </a>
@@ -235,12 +227,12 @@ const Pricing = ({ notPricingPage }) => {
           </div>
 
           {/* Footer Note */}
-          <p className="text-center text-gray-400 text-xs mt-6 flex items-center justify-center">
-            Secure payments via eSewa · Instant activation · No hidden charges
+          <p className="text-center text-slate-400 text-xs mt-6 flex items-center justify-center gap-1">
+            Secure payments via eSewa &middot; Instant activation &middot; No hidden charges
           </p>
         </div>
       </section>
-      <div id="formInBody">{/* form element will append here */}</div>
+      <div id="formInBody"></div>
     </>
   );
 };

@@ -1,13 +1,16 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CheckCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { API_PATHS } from "../../utils/apiPaths";
 import axiosInstance from "../../utils/axiosInstance";
 import { useAuth } from "../../context/AuthContext";
+import LoadingSpinner from "../../components/LoadingSpinner";
 
 export default function PaymentSuccess() {
   const navigate = useNavigate();
   const { updateUser } = useAuth();
+  const [loading, setLoading] = useState(true);
+
   useEffect(() => {
     const processPayment = async () => {
       try {
@@ -21,6 +24,7 @@ export default function PaymentSuccess() {
         // console.log(typeof(decodedData));
         const paymentStatus = JSON.parse(decodedData).status;
         if (paymentStatus === "COMPLETE") {
+          setLoading(false);
           try {
             await axiosInstance.post(
               API_PATHS.ESEWA_PAYMENT.UPGRADE_USER_TO_PREMIUM,
@@ -37,6 +41,9 @@ export default function PaymentSuccess() {
     processPayment();
   }, []);
 
+  if (loading) {
+    return <LoadingSpinner />;
+  }
   return (
     <div className="min-h-screen border-2 shadow-sm border-gray-200 rounded-2xl flex items-center justify-center px-4">
       <div className="bg-white shadow-xl rounded-2xl p-8 max-w-md w-full text-center">
@@ -46,12 +53,12 @@ export default function PaymentSuccess() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">
           Payment Successful
         </h1>
 
         {/* Message */}
-        <p className="text-gray-600 mb-6">
+        <p className="text-slate-600 mb-6">
           Your payment has been completed successfully using eSewa. Thank you
           for your purchase!
         </p>

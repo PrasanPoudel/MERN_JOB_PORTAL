@@ -38,7 +38,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
             <h1 className="text-2xl lg:text-3xl font-bold mb-3">
               Find Your Dream Job
             </h1>
-            <p className="text-gray-600 text-base lg:text-lg">
+            <p className="text-slate-600 text-base lg:text-lg">
               Discover opportunities that match your passion and skills
             </p>
           </div>
@@ -48,7 +48,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
             <div className="flex border-2 border-gray-200 rounded-2xl overflow-hidden bg-white hover:border-gray-300 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-100 transition-all">
               {/* Keyword Search */}
               <div className="relative group flex-1">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
                   autoComplete="off"
                   id="searchbar_Mobile"
@@ -58,14 +58,14 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
                     handleFilterChange("keyword", e.target.value)
                   }
                   placeholder=""
-                  className="w-full pl-12 pr-4 py-3.5 outline-none bg-transparent placeholder:text-xs sm:placeholder:text-sm placeholder:text-gray-400 text-sm"
+                  className="w-full pl-12 pr-4 py-3.5 outline-none bg-transparent placeholder:text-xs sm:placeholder:text-sm placeholder:text-slate-400 text-sm"
                 />
               </div>
 
               {/* Filter Button */}
               <button
                 onClick={() => setShowFilters(true)}
-                className="relative flex items-center justify-center text-gray-700 px-4 border-l-2 border-gray-200 hover:bg-gray-50 active:bg-gray-100 transition-all duration-200"
+                className="relative flex items-center justify-center text-slate-700 px-4 border-l-2 border-gray-200 hover:bg-slate-50 active:bg-slate-100 transition-all duration-200"
               >
                 <SlidersHorizontal className="w-5 h-5" />
                 {activeFilterCount > 0 && (
@@ -77,7 +77,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
               {/* Search Button */}
               <button
-                title="Search for Jobs"
+                title="Find Jobs"
                 className="flex items-center justify-center bg-sky-600 hover:bg-sky-700 hover:to-purple-700 text-white px-5 transition-all duration-200 font-semibold active:brightness-90"
               >
                 <Search className="w-5 h-5" />
@@ -90,7 +90,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
                 <div className="flex flex-wrap items-center gap-2 h-full">
                   <button
                     onClick={clearAllFilters}
-                    className="flex items-center gap-1.5 bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1.5 rounded-xl transition-all duration-200 text-xs font-semibold border border-gray-200 hover:border-gray-300"
+                    className="flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-xl transition-all duration-200 text-xs font-semibold border border-gray-200 hover:border-gray-300"
                   >
                     <X className="w-3.5 h-3.5" />
                     Clear All
@@ -121,7 +121,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
             <div className="flex border-2 border-gray-200 rounded-2xl overflow-hidden bg-white hover:border-gray-300 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-100 transition-all">
               {/* Keyword Search */}
               <div className="relative group flex-1">
-                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
                   autoComplete="off"
                   type="text"
@@ -131,7 +131,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
                     handleFilterChange("keyword", e.target.value)
                   }
                   placeholder="Job title, keywords"
-                  className="w-full pl-12 pr-4 py-3.5 outline-none text-base bg-transparent placeholder:text-gray-400"
+                  className="w-full pl-12 pr-4 py-3.5 outline-none text-base bg-transparent placeholder:text-slate-400"
                 />
               </div>
 
@@ -159,7 +159,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
               {/* Job Type */}
               <div className="relative group flex-1 border-l-2 border-gray-200">
-                <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <select
                   id="jobType"
                   value={filters.type}
@@ -180,7 +180,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
               {/* Search Button */}
               <button
-                title="Search for Jobs"
+                title="Find Jobs"
                 className="flex items-center justify-center gap-2 text-white bg-sky-600 hover:sky-700 px-6 transition-all duration-200 text-base font-semibold group active:brightness-90 cursor-pointer"
               >
                 <Search className="w-5 h-5 group-hover:rotate-12 transition-transform" />
@@ -194,7 +194,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
                 <>
                   <button
                     onClick={clearAllFilters}
-                    className="flex items-center gap-2 bg-gray-100 hover:bg-gray-200 text-gray-700 px-4 py-2 rounded-xl transition-all duration-200 text-sm font-semibold border-2 border-gray-200 hover:border-gray-300 active:scale-95"
+                    className="flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-4 py-2 rounded-xl transition-all duration-200 text-sm font-semibold border-2 border-gray-200 hover:border-gray-300 active:scale-95"
                   >
                     <X className="w-4 h-4" />
                     Clear All
@@ -233,19 +233,19 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
           <div className="absolute inset-0 bottom-0 bg-white  overflow-hidden flex flex-col">
             {/* Header */}
             <div className="flex items-center justify-between px-6 py-3 border-b border-gray-200">
-              <h2 className="text-xl font-bold text-gray-900">Filters</h2>
+              <h2 className="text-xl font-bold text-slate-900">Filters</h2>
               <button
                 onClick={() => setShowFilters(false)}
-                className="p-2 hover:bg-gray-100 rounded-xl transition-colors"
+                className="p-2 hover:bg-slate-100 rounded-xl transition-colors"
               >
-                <X className="w-6 h-6 text-gray-500" />
+                <X className="w-6 h-6 text-slate-500" />
               </button>
             </div>
             {/* Filter Content */}
             <div className="flex-1 overflow-y-auto px-6 pt-3 pb-6 space-y-3">
               {/* Location with Autocomplete */}
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-slate-700">
                   Location
                 </label>
                 <AutocompleteInput
@@ -261,7 +261,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
               {/* Category with Autocomplete */}
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-slate-700">
                   Category
                 </label>
                 <AutocompleteInput
@@ -277,11 +277,11 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
               {/* Job Type */}
               <div className="space-y-2">
-                <label className="block text-sm font-semibold text-gray-700">
+                <label className="block text-sm font-semibold text-slate-700">
                   Job Type
                 </label>
                 <div className="relative group">
-                  <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                  <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-slate-400 group-focus-within:text-sky-600 transition-colors z-10" />
                   <select
                     value={filters.type}
                     onChange={(e) => handleFilterChange("type", e.target.value)}
@@ -300,12 +300,12 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
             {/* Footer Actions */}
 
-            <div className="p-6 border-t border-gray-200 bg-gray-50 space-y-3">
+            <div className="p-6 border-t border-gray-200 bg-slate-50 space-y-3">
               {activeFilterCount > 0 && (
                 <>
                   <button
                     onClick={clearAllFilters}
-                    className="w-full flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-700 px-6 py-3.5 rounded-2xl transition-all duration-200 text-base font-semibold border-2 border-gray-200 hover:border-gray-300 active:scale-95"
+                    className="w-full flex items-center justify-center gap-2 bg-white hover:bg-slate-50 text-slate-700 px-6 py-3.5 rounded-2xl transition-all duration-200 text-base font-semibold border-2 border-gray-200 hover:border-gray-300 active:scale-95"
                   >
                     <X className="w-5 h-5" />
                     Clear All Filters

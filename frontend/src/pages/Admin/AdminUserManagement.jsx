@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
-  Trash2,
   Crown,
   Loader,
   Users,
@@ -30,6 +29,7 @@ const AdminUserManagement = () => {
   const [users, setUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [roleFilter, setRoleFilter] = useState("all");
   const [userFilter, setUserFilter] = useState("all");
   const [selectedUser, setSelectedUser] = useState(null);
@@ -40,6 +40,14 @@ const AdminUserManagement = () => {
   const itemsPerPage = 9;
   const [currentPage, setCurrentPage] = useState(1);
   const [pagination, setPagination] = useState(null);
+
+  // Debounce search term
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedSearchTerm(searchTerm);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, [searchTerm]);
 
   // Fetch users with backend pagination
   const getAllUsers = async (page = 1) => {
@@ -57,8 +65,8 @@ const AdminUserManagement = () => {
       if (userFilter !== "all") {
         params.append("user", userFilter);
       }
-      if (searchTerm) {
-        params.append("search", searchTerm);
+      if (debouncedSearchTerm) {
+        params.append("search", debouncedSearchTerm);
       }
 
       const response = await axiosInstance.get(
@@ -76,7 +84,7 @@ const AdminUserManagement = () => {
 
   useEffect(() => {
     getAllUsers(1);
-  }, [roleFilter, searchTerm, userFilter]);
+  }, [roleFilter, debouncedSearchTerm, userFilter]);
 
   useEffect(() => {
     getAllUsers(currentPage);
@@ -152,14 +160,14 @@ const AdminUserManagement = () => {
         />
       )}
 
-      <div className="max-w-7xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-xl font-semibold text-slate-900">
               User Management
             </h1>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-slate-500 text-sm mt-1">
               Manage platform users and activity
             </p>
           </div>
@@ -172,7 +180,7 @@ const AdminUserManagement = () => {
         {/* Filters */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
             <input
               autoComplete="off"
               id="search_users"
@@ -216,24 +224,24 @@ const AdminUserManagement = () => {
           </div>
         ) : users.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4 shrink-0" />
-            <p className="text-gray-600 font-medium">No users found</p>
+            <Users className="w-12 h-12 mx-auto text-slate-300 mb-4 shrink-0" />
+            <p className="text-slate-600 font-medium">No users found</p>
           </div>
         ) : (
           <>
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-sm text-gray-700 lg:text-base">
+                <p className="text-sm text-slate-700 lg:text-base">
                   Showing{" "}
-                  <span className="font-bold">
+                  <span className="font-semibold">
                     {(currentPage - 1) * itemsPerPage + 1}
                   </span>{" "}
                   to{" "}
-                  <span className="font-bold">
+                  <span className="font-semibold">
                     {Math.min(currentPage * itemsPerPage, pagination.total)}
                   </span>{" "}
-                  of <span className="font-bold">{pagination.total}</span>{" "}
+                  of <span className="font-semibold">{pagination.total}</span>{" "}
                   results
                 </p>
               </div>
@@ -256,7 +264,7 @@ const AdminUserManagement = () => {
 
                     <div>
                       <div className="flex items-center gap-1">
-                        <p className="font-semibold text-gray-900 text-sm sm:text-md">
+                        <p className="font-semibold text-slate-900 text-sm sm:text-md">
                           {user.name}
                         </p>
                         {user.isPremium && (
@@ -278,7 +286,7 @@ const AdminUserManagement = () => {
                         {user.role === "employer" ? "Employer" : "Job Seeker"}
                       </p>
                       {user && user?.companyName && (
-                        <p className="flex items-center w-full gap-1 text-xs sm:text-sm text-gray-700">
+                        <p className="flex items-center w-full gap-1 text-xs sm:text-sm text-slate-700">
                           <span
                             title={user?.companyName}
                             className="flex items-center gap-1 truncate max-w-42 sm:max-w-52"
@@ -298,7 +306,7 @@ const AdminUserManagement = () => {
                           Banned
                         </span>
                       )}
-                      <p className="text-xs text-gray-500">{user.email}</p>
+                      <p className="text-xs text-slate-500">{user.email}</p>
                     </div>
                   </div>
 
@@ -314,7 +322,7 @@ const AdminUserManagement = () => {
                     <button
                       onClick={() => handleMessageUser(user._id)}
                       title="Send message to user"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
                     >
                       Message
                     </button>
@@ -342,7 +350,7 @@ const AdminUserManagement = () => {
                       getAllUsers(Math.max(1, currentPage - 1));
                     }}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
@@ -356,7 +364,7 @@ const AdminUserManagement = () => {
                       );
                     }}
                     disabled={currentPage === pagination.totalPages}
-                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
@@ -365,16 +373,16 @@ const AdminUserManagement = () => {
                 {/* Desktop pagination */}
                 <div className="hidden md:flex sm:flex-1 items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-slate-700">
                       Showing{" "}
-                      <span className="font-bold">
+                      <span className="font-semibold">
                         {(currentPage - 1) * itemsPerPage + 1}
                       </span>{" "}
                       to{" "}
-                      <span className="font-bold">
+                      <span className="font-semibold">
                         {Math.min(currentPage * itemsPerPage, pagination.total)}
                       </span>{" "}
-                      of <span className="font-bold">{pagination.total}</span>{" "}
+                      of <span className="font-semibold">{pagination.total}</span>{" "}
                       results
                     </p>
                   </div>
@@ -386,7 +394,7 @@ const AdminUserManagement = () => {
                           getAllUsers(Math.max(1, currentPage - 1));
                         }}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -397,7 +405,7 @@ const AdminUserManagement = () => {
                         page === "..." ? (
                           <span
                             key={`dots-${index}`}
-                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
+                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-slate-500 bg-white"
                           >
                             ...
                           </span>
@@ -411,7 +419,7 @@ const AdminUserManagement = () => {
                             className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                               currentPage === page
                                 ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                                : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
                             }`}
                           >
                             {page}
@@ -428,7 +436,7 @@ const AdminUserManagement = () => {
                           );
                         }}
                         disabled={currentPage === pagination.totalPages}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
@@ -518,7 +526,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
       <div className="bg-white m-auto rounded-l-2xl w-full max-w-3xl relative overflow-hidden">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100"
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100"
         >
           <X />
         </button>
@@ -538,13 +546,13 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                 </div>
 
                 <div>
-                  <h2 className="flex items-center gap-1 text-xl font-semibold text-gray-900">
+                  <h2 className="flex items-center gap-1 text-xl font-semibold text-slate-900">
                     {user.name}
                     {user.role === "employer" && !user.isCompanyVerified && (
                       <BadgeCheck className="w-5 h-5 text-sky-600 inline" />
                     )}
                   </h2>
-                  <p className="text-gray-500">{user.email}</p>
+                  <p className="text-slate-500">{user.email}</p>
                 </div>
               </div>
 
@@ -680,9 +688,11 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                 <Ban className="text-orange-600 w-6 h-6" />
               </div>
 
-              <h3 className="text-xl font-bold text-gray-900 mb-2">Ban User</h3>
+              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+                Ban User
+              </h3>
 
-              <p className="text-gray-500 text-sm mb-4">
+              <p className="text-slate-500 text-sm mb-4">
                 Provide a reason for banning <strong>{user.name}</strong>
               </p>
 
@@ -701,7 +711,7 @@ const UserModal = ({ userId, onClose, onDelete, onMessage }) => {
                     setBanReason("");
                   }}
                   disabled={banning}
-                  className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+                  className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
                 >
                   Cancel
                 </button>
@@ -726,13 +736,9 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
   <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
-        <div className="mx-auto w-16 h-16 flex items-center justify-center rounded-full bg-red-100 mb-4">
-          <Trash2 className="text-red-600 w-6 h-6" />
-        </div>
+        <h3 className="text-xl font-semibold text-slate-900 mb-2">Delete User?</h3>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-2">Delete User?</h3>
-
-        <p className="text-gray-500 text-sm mb-6">
+        <p className="text-slate-500 text-sm mb-6">
           Permanently delete <strong>{user.name}</strong>? This action cannot be
           undone.
         </p>
@@ -741,7 +747,7 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
           <button
             onClick={onCancel}
             disabled={deleting}
-            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
           >
             Cancel
           </button>
@@ -760,11 +766,11 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
 );
 
 const InfoItem = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 bg-gray-50 p-2 rounded-xl">
+  <div className="flex items-start gap-3 bg-slate-50 p-2 rounded-xl">
     <div className="text-sky-600">{icon}</div>
     <div>
-      <p className="text-gray-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-xs text-gray-900">{value}</p>
+      <p className="text-slate-500 text-xs uppercase">{label}</p>
+      <p className="font-medium text-xs text-slate-900">{value}</p>
     </div>
   </div>
 );
@@ -772,8 +778,8 @@ const InfoItem = ({ icon, label, value }) => (
 const StatCard = ({ icon, label, value }) => (
   <div className="flex flex-col bg-white border border-gray-100 rounded-xl p-6 text-center shadow-sm">
     <div className="text-sky-600 flex justify-center">{icon}</div>
-    <p className="text-2xl font-semibold text-gray-900">{value}</p>
-    <p className="text-gray-500 text-sm">{label}</p>
+    <p className="text-2xl font-semibold text-slate-900">{value}</p>
+    <p className="text-slate-500 text-sm">{label}</p>
   </div>
 );
 

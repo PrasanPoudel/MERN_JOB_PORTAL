@@ -32,18 +32,26 @@ const ResetPassword = () => {
 
   // Extract token and email from URL
   const urlParams = new URLSearchParams(window.location.search);
-  const token = urlParams.get('token');
-  const email = urlParams.get('email');
+  const token = urlParams.get("token");
+  const email = urlParams.get("email");
 
   useEffect(() => {
     // Validate token exists
     if (!token || !email) {
-      setFormState(prev => ({ ...prev, checkingToken: false, tokenValid: false }));
+      setFormState((prev) => ({
+        ...prev,
+        checkingToken: false,
+        tokenValid: false,
+      }));
       return;
     }
 
     // Token is valid, we can proceed
-    setFormState(prev => ({ ...prev, checkingToken: false, tokenValid: true }));
+    setFormState((prev) => ({
+      ...prev,
+      checkingToken: false,
+      tokenValid: true,
+    }));
   }, [token, email]);
 
   const handleInputChange = (e) => {
@@ -61,17 +69,24 @@ const ResetPassword = () => {
 
   const validatePassword = (password) => {
     if (!password.trim()) return "Password is required.";
-    if (password.length < 6) return "Password must be at least 6 characters long.";
+    if (password.length < 6)
+      return "Password must be at least 6 characters long.";
     return "";
   };
 
   const validateForm = () => {
     const errors = {
       password: validatePassword(formData.password),
-      confirmPassword: !formData.confirmPassword ? "Please confirm your password." : "",
+      confirmPassword: !formData.confirmPassword
+        ? "Please confirm your password."
+        : "",
     };
 
-    if (formData.password && formData.confirmPassword && formData.password !== formData.confirmPassword) {
+    if (
+      formData.password &&
+      formData.confirmPassword &&
+      formData.password !== formData.confirmPassword
+    ) {
       errors.confirmPassword = "Passwords do not match.";
     }
 
@@ -88,9 +103,9 @@ const ResetPassword = () => {
     if (!validateForm()) {
       return;
     }
-    
+
     setFormState((prev) => ({ ...prev, loading: true }));
-    
+
     try {
       await axiosInstance.post(API_PATHS.AUTH.RESET_PASSWORD, {
         email: email,
@@ -104,7 +119,6 @@ const ResetPassword = () => {
         success: true,
         errors: {},
       }));
-
     } catch (err) {
       console.error("[Reset Password Error]", {
         email: email,
@@ -114,7 +128,9 @@ const ResetPassword = () => {
         ...prev,
         loading: false,
         errors: {
-          submit: err?.message || "Failed to reset password. The link may have expired. Please try again.",
+          submit:
+            err?.message ||
+            "Failed to reset password. The link may have expired. Please try again.",
         },
       }));
     }
@@ -122,7 +138,7 @@ const ResetPassword = () => {
 
   if (formState.checkingToken) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -130,10 +146,10 @@ const ResetPassword = () => {
           className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
         >
           <Loader className="w-16 h-16 text-sky-600 mx-auto mb-4 animate-spin" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-2">
             Verifying Link...
           </h2>
-          <p className="text-gray-600">
+          <p className="text-slate-600">
             Please wait while we verify your reset link.
           </p>
         </motion.div>
@@ -143,7 +159,7 @@ const ResetPassword = () => {
 
   if (!formState.tokenValid) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -151,10 +167,10 @@ const ResetPassword = () => {
           className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
         >
           <AlertCircle className="w-16 h-16 text-red-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-2">
             Invalid Link
           </h2>
-          <p className="text-gray-600 mb-4">
+          <p className="text-slate-600 mb-4">
             This password reset link is invalid or has expired.
           </p>
           <a
@@ -170,7 +186,7 @@ const ResetPassword = () => {
 
   if (formState.success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -178,11 +194,12 @@ const ResetPassword = () => {
           className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-semibold text-slate-900 mb-2">
             Password Reset!
           </h2>
-          <p className="text-gray-600 mb-4">
-            Your password has been successfully reset. You can now log in with your new password.
+          <p className="text-slate-600 mb-4">
+            Your password has been successfully reset. You can now log in with
+            your new password.
           </p>
           <a
             href="/login"
@@ -197,7 +214,7 @@ const ResetPassword = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-4 px-2">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-4 px-2">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -208,18 +225,16 @@ const ResetPassword = () => {
           <img src={logo} className="w-32 h-24" />
         </div>
         <div className="text-center mb-6">
-          <h2 className="text-2xl text-gray-900 mb-2">Reset Password</h2>
-          <p className="text-gray-600">
-            Enter your new password below.
-          </p>
+          <h2 className="text-2xl text-slate-900 mb-2">Reset Password</h2>
+          <p className="text-slate-600">Enter your new password below.</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               New Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5" />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -236,7 +251,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -254,11 +269,11 @@ const ResetPassword = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-slate-700 mb-2">
               Confirm New Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5" />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -275,7 +290,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -317,7 +332,7 @@ const ResetPassword = () => {
           </button>
 
           <div className="text-center">
-            <p className="text-gray-600">
+            <p className="text-slate-600">
               Remember your password?
               <br className="lg:hidden" />
               <a

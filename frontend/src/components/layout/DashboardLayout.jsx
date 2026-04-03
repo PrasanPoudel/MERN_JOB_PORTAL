@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Home, Menu, Search, MessageSquare, X } from "lucide-react";
+import {
+  Home,
+  Menu,
+  MessageSquare,
+  X,
+  Calendar,
+} from "lucide-react";
 import { Link, useNavigate, NavLink } from "react-router-dom";
 import {
   NAVIGATION_MENU_EMPLOYER,
@@ -33,7 +39,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
         const response = await axiosInstance.get(
           API_PATHS.MESSAGES.GET_UNREAD_COUNT,
         );
-        setUnreadCount(response.data.totalUnreadCount || 0);
+        setUnreadCount(response?.data?.totalUnreadCount || 0);
       } catch (err) {
         console.error("Failed to fetch unread count:", err);
       }
@@ -76,8 +82,11 @@ const DashboardLayout = ({ activeMenu, children }) => {
     user?.role === "admin" ? "/admin-chat-box" : "/EmployerChatBox";
 
   const headerNavLink = ({ isActive }) =>
-    `flex text-md gap-1 items-center p-1 font-medium  rounded-xl transition-colors duration-500 hover:text-gray-900
-     ${isActive ? "text-sky-600" : "text-gray-600"}`;
+    `flex items-center gap-1.5 px-2.5 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+      isActive
+        ? "text-sky-600 bg-sky-50"
+        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+    }`;
 
   const handleDashboardSignout = () => {
     setShowLogoutConfirm(true);
@@ -86,47 +95,23 @@ const DashboardLayout = ({ activeMenu, children }) => {
     setShowLogoutConfirm(false);
     logout();
   };
-  return (
-    <div className="flex h-screen w-full overflow-hidden bg-[#f9f9f8]">
-      {isMobile && sidebarOpen && (
-        <div
-          className="fixed inset-0 z-30 bg-black/25 backdrop-blur-[2px] transition-opacity"
-          onClick={() => setSidebarOpen(false)}
-        />
-      )}
-      <aside
-        className={[
-          "fixed inset-y-0 left-0 z-40 flex flex-col w-64 bg-white border-r border-gray-200",
-          "transition-transform duration-300 ease-in-out",
-          isMobile
-            ? sidebarOpen
-              ? "translate-x-0 shadow-2xl"
-              : "-translate-x-full"
-            : "translate-x-0",
-        ].join(" ")}
-      >
-        <div className="flex items-center justify-between p-4 border-b border-gray-200 shrink-0">
-          <Link to="/" className="flex items-center">
-            <img
-              src={logo}
-              alt="Logo"
-              className="h-16 w-24 mix-blend-multiply"
-            />
-          </Link>
-          {isMobile && (
-            <button
-              title="Close"
-              onClick={() => setSidebarOpen(false)}
-              className="p-2 rounded-md text-gray-700 hover:bg-gray-100 transition-colors"
-            >
-              <X className="w-8 h-8" />
-            </button>
-          )}
-        </div>
 
-        {/* Nav items */}
-        <nav className="space-y-1 p-2">
-          {navMenu.map((item) => (
+  const today = new Date();
+  const formattedDate = today.toLocaleDateString("en-US", {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
+  });
+
+  // Helper: render nav items with sections (both employer and admin use section-based structure)
+  const renderNavItems = () => {
+    return navMenu.map((section, idx) => (
+      <div key={section.section} className={idx > 0 ? "mt-4" : ""}>
+        <p className="px-3 mb-1.5 text-[11px] font-semibold uppercase tracking-wider text-slate-400">
+          {section.section}
+        </p>
+        <div className="space-y-0.5">
+          {section.items.map((item) => (
             <NavigationItem
               key={item.id}
               item={item}
@@ -134,59 +119,123 @@ const DashboardLayout = ({ activeMenu, children }) => {
               onClick={handleNavigation}
             />
           ))}
+        </div>
+      </div>
+    ));
+  };
+
+  return (
+    <div className="flex h-screen w-full overflow-hidden bg-slate-50">
+      {/* Mobile Overlay */}
+      {isMobile && sidebarOpen && (
+        <div
+          className="fixed inset-0 z-30 bg-black/40 backdrop-blur-sm"
+          onClick={() => setSidebarOpen(false)}
+        />
+      )}
+
+      {/* Sidebar */}
+      <aside
+        className={[
+          "fixed inset-y-0 left-0 z-40 flex flex-col bg-white border-r border-slate-200 w-64",
+          "transition-all duration-300 ease-in-out",
+          isMobile
+            ? sidebarOpen
+              ? "translate-x-0 shadow-xl"
+              : "-translate-x-full"
+            : "translate-x-0",
+        ].join(" ")}
+      >
+        {/* Sidebar Header */}
+        <div className="flex items-center justify-between p-4 border-b border-slate-200 shrink-0">
+          {!isMobile && (
+            <Link to="/" className="flex items-center overflow-hidden">
+              <img
+                src={logo}
+                alt="Logo"
+                className="h-16 w-24 object-contain shrink-0"
+              />
+            </Link>
+          )}
+          {isMobile && (
+            <div className="flex justify-between items-center w-full">
+              <Link to="/" className="flex items-center overflow-hidden">
+                <img
+                  src={logo}
+                  alt="Logo"
+                  className="h-10 w-12 object-contain shrink-0"
+                />
+              </Link>
+              <button
+                title="Close sidebar"
+                onClick={() => setSidebarOpen(false)}
+                className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors cursor-pointer"
+              >
+                <X className="w-5 h-5" />
+              </button>
+            </div>
+          )}
+        </div>
+
+        {/* Nav Items */}
+        <nav className="flex-1 overflow-y-auto p-3 space-y-0.5">
+          {renderNavItems()}
         </nav>
+
+        {/* Sidebar Footer */}
+        <div className="p-3 border-t border-slate-200 shrink-0">
+          <div className="flex items-center gap-2 px-3 py-2 rounded-lg bg-slate-50">
+            <div className="w-2 h-2 rounded-full bg-emerald-500 shrink-0" />
+            <span className="text-xs text-slate-500">Online</span>
+          </div>
+        </div>
       </aside>
+
+      {/* Main Content */}
       <div
         className={[
           "flex flex-col flex-1 min-w-0 transition-all duration-300",
           isMobile ? "ml-0" : "ml-64",
         ].join(" ")}
       >
-        <header className="sticky top-0 z-20 flex items-center justify-between px-1 sm:px-5 bg-white/80 backdrop-blur-md border-b border-gray-200 shrink-0">
+        {/* Header */}
+        <header className="sticky top-0 z-20 flex items-center justify-between px-3 sm:px-5 bg-white/90 backdrop-blur-md border-b border-slate-200 shrink-0 h-14">
           <div className="flex items-center gap-2 min-w-0">
             {isMobile && (
               <button
                 onClick={() => setSidebarOpen(true)}
-                className="p-2 -ml-1 rounded-lg text-gray-500 hover:text-gray-900 hover:bg-gray-100 transition-colors shrink-0"
+                className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors shrink-0 cursor-pointer"
               >
                 <Menu className="w-5 h-5" />
               </button>
             )}
-            {isMobile && (
-              <img
-                src={logo}
-                alt=""
-                className="h-12 w-16 mix-blend-multiply shrink-0"
-              />
-            )}
 
             {!isMobile && (
               <div className="min-w-0">
-                <p className="font-semibold text-gray-900 leading-snug">
+                <p className="font-semibold text-slate-900 leading-snug text-base truncate">
                   Welcome back
                   {user?.name ? `, ${user.name.split(" ")[0]}` : ""}
                 </p>
-                <p className="text-sm text-gray-600 leading-snug hidden sm:block">
-                  {user?.role === "admin"
-                    ? "Here's what's happening on your platform"
-                    : "Here's an overview of your active jobs"}
+                <p className="flex items-center gap-1 text-sm text-slate-600 leading-snug truncate">
+                  <Calendar className="w-4 h-4"/>
+                  {formattedDate}
                 </p>
               </div>
             )}
           </div>
-          <div className="flex items-center gap-2 shrink-0">
-            <NavLink to="/" className={headerNavLink}>
-              <Home className="w-4 h-4 shrink-0" />
-              <span className="hidden sm:inline">Home</span>
-            </NavLink>
 
-            <NavLink to="/find-jobs" className={headerNavLink}>
-              <Search className="w-4 h-4 shrink-0" />
-              <span className="hidden sm:inline">Search for Jobs</span>
+          <div className="flex items-center gap-1 shrink-0">
+            <NavLink to="/" className={headerNavLink} title="Home">
+              <Home className="w-4 h-4 shrink-0" />
+              <span className="hidden md:inline">Home</span>
             </NavLink>
 
             {user && (
-              <NavLink to={chatRoute} className={headerNavLink}>
+              <NavLink
+                to={chatRoute}
+                className={headerNavLink}
+                title="Messages"
+              >
                 <span className="relative flex items-center">
                   <MessageSquare className="w-4 h-4 shrink-0" />
                   {unreadCount > 0 && (
@@ -195,10 +244,11 @@ const DashboardLayout = ({ activeMenu, children }) => {
                     </span>
                   )}
                 </span>
-                <span className="hidden sm:inline">Messages</span>
+                <span className="hidden md:inline">Messages</span>
               </NavLink>
             )}
-            <div className="border h-5 border-gray-200 mx-1" />
+
+            <div className="hidden sm:block border-l border-slate-200 h-5 mx-0.5" />
 
             {user && isAuthenticated && (
               <div data-profile-dropdown>
@@ -222,34 +272,39 @@ const DashboardLayout = ({ activeMenu, children }) => {
             )}
           </div>
         </header>
-        <main className="flex-1 overflow-y-auto">{children}</main>
+
+        {/* Page Content */}
+        <main className="flex-1 overflow-y-auto">
+          <div className="p-2 sm:p-4">{children}</div>
+        </main>
       </div>
+
+      {/* Logout Confirmation */}
       {showLogoutConfirm && (
-        <div className="fixed inset-0 min-h-screen min-w-screen bg-black/60 flex items-center justify-center z-5000">
-          <div className="bg-white rounded-xl w-80 p-5 shadow-2xl">
+        <div className="fixed h-screen w-full inset-0 bg-black/60 flex items-center justify-center z-1000">
+          <div className="card-elevated w-80 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-semibold text-gray-900">
+              <h3 className="text-sm font-bold text-slate-900">
                 Confirm Sign Out
               </h3>
-              <X
+              <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="h-5 w-5 text-gray-500 cursor-pointer"
-              />
+                className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+              >
+                <X className="h-5 w-5" />
+              </button>
             </div>
-            <p className="text-sm text-gray-600 mb-5">
+            <p className="text-sm text-slate-500 mb-5">
               Are you sure you want to sign out of your account?
             </p>
             <div className="flex justify-end gap-3">
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="px-4 py-2 text-sm rounded-lg border border-gray-300 hover:bg-gray-100 transition-colors"
+                className="btn-secondary-sm"
               >
                 Cancel
               </button>
-              <button
-                onClick={handleConfirmLogout}
-                className="px-4 py-2 text-sm rounded-lg bg-red-600 text-white hover:bg-red-700 transition-colors"
-              >
+              <button onClick={handleConfirmLogout} className="btn-danger-sm">
                 Sign Out
               </button>
             </div>

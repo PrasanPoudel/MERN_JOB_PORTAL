@@ -9,21 +9,52 @@ import {
 
 // Navigation items configuration
 export const NAVIGATION_MENU_EMPLOYER = [
-  { id: "employer-dashboard", name: "Dashboard", icon: LayoutDashboard },
-  { id: "employer-profile", name: "Company Profile", icon: Building2 },
-  { id: "manage-jobs", name: "Manage Jobs", icon: BriefcaseBusiness },
-  { id: "post-job", name: "Post Job", icon: Plus },
-];
-export const NAVIGATION_MENU_ADMIN = [
-  { id: "admin-dashboard", name: "Dashboard", icon: LayoutDashboard },
-  { id: "edit-admin-profile", name: "Edit Profile", icon: Edit3 },
-  { id: "admin-users-management", name: "Manage Users", icon: Users },
   {
-    id: "admin-company-verification",
-    name: "Company Verification",
-    icon: Building2,
+    section: "Overview",
+    items: [
+      { id: "employer-dashboard", name: "Dashboard", icon: LayoutDashboard },
+    ],
   },
-  { id: "admin-jobs-management", name: "Manage Jobs", icon: BriefcaseBusiness },
+  {
+    section: "Account Setting",
+    items: [
+      { id: "employer-profile", name: "Company Profile", icon: Building2 },
+    ],
+  },
+  {
+    section: "Management",
+    items: [
+      { id: "manage-jobs", name: "Manage Jobs", icon: BriefcaseBusiness },
+      { id: "post-job", name: "Post Job", icon: Plus },
+    ],
+  },
+];
+
+export const NAVIGATION_MENU_ADMIN = [
+  {
+    section: "Overview",
+    items: [
+      { id: "admin-dashboard", name: "Dashboard", icon: LayoutDashboard },
+    ],
+  },
+  {
+    section: "Account Setting",
+    items: [
+      { id: "edit-admin-profile", name: "Edit Profile", icon: Edit3 },
+    ],
+  },
+  {
+    section: "Management",
+    items: [
+      { id: "admin-users-management", name: "Manage Users", icon: Users },
+      {
+        id: "admin-company-verification",
+        name: "Company Verification",
+        icon: Building2,
+      },
+      { id: "admin-jobs-management", name: "Manage Jobs", icon: BriefcaseBusiness },
+    ],
+  },
 ];
 // Categories and job types
 export const CATEGORIES = [

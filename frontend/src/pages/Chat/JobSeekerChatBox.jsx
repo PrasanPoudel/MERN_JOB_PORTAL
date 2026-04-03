@@ -5,7 +5,7 @@ const JobSeekerChatBox = () => {
   return (
     <>
       <Navbar />
-      <div className="mt-24">
+      <div className="mt-16 sm:px-4">
         <Chat />
       </div>
     </>

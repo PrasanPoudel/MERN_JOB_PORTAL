@@ -26,17 +26,19 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100">
+    <div className="min-h-screen bg-slate-100">
       <div className="mx-auto bg-white p-2">
         <div className="flex items-center justify-between p-2">
           <div className="flex items-center space-x-4">
-            <h2 className="text-xl font-semibold text-gray-900">Job Preview</h2>
+            <h2 className="text-xl font-semibold text-slate-900">
+              Job Preview
+            </h2>
           </div>
           <button
             onClick={() => {
               setIsPreview(false);
             }}
-            className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-sm hover:shadow-lg cursor-pointer"
+            className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-slate-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-sm hover:shadow-lg cursor-pointer"
           >
             <ArrowLeft className="w-5 h-5" />
             <span>Back to Edit</span>
@@ -55,10 +57,10 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 />
               )}
               <div className="">
-                <h1 className="font-semibold text-gray-900 text-base sm:text-xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
+                <h1 className="font-semibold text-slate-900 text-base sm:text-xl leading-snug line-clamp-2 group-hover:text-sky-600 transition-colors mb-2">
                   {formData?.jobTitle}
                 </h1>
-                <div className="flex gap-2 items-start text-sm text-gray-600">
+                <div className="flex gap-2 items-start text-sm text-slate-600">
                   <MapPin className="w-4 h-4 shrink-0" />
                   <span className="font-semibold">{formData?.location}</span>
                 </div>
@@ -67,7 +69,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
 
             {/* Tags */}
             <div className="flex flex-col sm:flex-row gap-3 mt-6 flex-wrap">
-              <span className="flex items-center gap-2 px-4 py-2 bg-gray-100 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+              <span className="flex items-center gap-2 px-4 py-2 bg-slate-100 text-sm text-slate-700 font-semibold rounded-full border border-gray-200">
                 <BriefcaseBusiness className="w-4 h-4" />
                 {formData?.experienceLevel}
               </span>
@@ -84,9 +86,9 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 {formData?.educationLevel}
               </span>
               {/* Posted Date */}
-              <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+              <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 text-sm text-slate-700 font-semibold rounded-full border border-gray-200">
                 <CalendarDays className="w-4 h-4 text-blue-600" />
-                <span className="font-medium text-gray-500">Posted Date:</span>
+                <span className="font-medium text-slate-500">Posted Date:</span>
                 <span>
                   {moment(formData.createdAt).format("MMMM Do, YYYY")}
                 </span>
@@ -107,7 +109,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                 </div>
               )}
               {formData?.noOfVacancy && (
-                <div className="flex items-center gap-2 px-4 py-2 bg-gray-50 text-sm text-gray-700 font-semibold rounded-full border border-gray-200">
+                <div className="flex items-center gap-2 px-4 py-2 bg-slate-50 text-sm text-slate-700 font-semibold rounded-full border border-gray-200">
                   <Users className="w-4 h-4" />
                   <span className="text-sm font-medium">
                     Available Vacancy:{" "}
@@ -118,7 +120,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
             </div>
           </div>
 
-          <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-gray-700 flex gap-4 items-center">
+          <div className="mt-10 mb-5 p-4 bg-green-100 rounded-xl text-slate-700 flex gap-4 items-center">
             <div className="">
               <p className="font-semibold">Compensation</p>
               <p className="font-bold text-xl mt-2">
@@ -137,7 +139,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
             >
               <div className="flex items-center gap-4">
                 <Info className="text-sky-600 w-4 h-4" />
-                <h2 className="sm:text-xl text-lg font-semibold text-gray-900">
+                <h2 className="sm:text-xl text-lg font-semibold text-slate-900">
                   Employer Information
                 </h2>
               </div>
@@ -154,7 +156,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
               <div className="p-4 md:p-8 space-y-10">
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
                   <div className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                    <h2 className="text-lg font-semibold text-slate-900 border-b border-gray-200 pb-2">
                       Personal Information
                     </h2>
 
@@ -165,10 +167,10 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                         className="w-20 h-20 rounded-full object-cover border border-gray-200"
                       />
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-lg font-semibold text-slate-900">
                           {user?.name}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1 flex-wrap">
+                        <div className="flex items-center gap-2 text-sm text-slate-600 mt-1 flex-wrap">
                           <Mail className="w-4 h-4" />
                           <span>{user?.email}</span>
                         </div>
@@ -176,7 +178,7 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                     </div>
                   </div>
                   <div className="space-y-6">
-                    <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2">
+                    <h2 className="text-lg font-semibold text-slate-900 border-b border-gray-200 pb-2">
                       Company Overview
                     </h2>
 
@@ -187,15 +189,15 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                         className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                       />
                       <div>
-                        <h3 className="text-lg font-semibold text-gray-900">
+                        <h3 className="text-lg font-semibold text-slate-900">
                           {user?.companyName}
                         </h3>
 
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-slate-600 mt-1">
                           Company Size: {user?.companySize || "N/A"}
                         </p>
 
-                        <p className="text-sm text-gray-600 mt-1">
+                        <p className="text-sm text-slate-600 mt-1">
                           Location: {user?.companyLocation || "N/A"}
                         </p>
 
@@ -214,13 +216,13 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
+                  <h2 className="text-lg font-semibold text-slate-900 border-b border-gray-200 pb-2 mb-6">
                     Legal & Verification
                   </h2>
 
                   <div className="grid grid-cols-1 md:grid-cols-3 gap-6 text-sm">
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-gray-500">
+                    <div className="bg-slate-50 p-4 rounded-lg">
+                      <p className="text-slate-500">
                         Company Registration Number
                       </p>
                       <p className="font-medium mt-1 break-all">
@@ -228,15 +230,15 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                       </p>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-gray-500">PAN Number</p>
+                    <div className="bg-slate-50 p-4 rounded-lg">
+                      <p className="text-slate-500">PAN Number</p>
                       <p className="font-medium mt-1 uppercase tracking-widest">
                         {user?.panNumber || "—"}
                       </p>
                     </div>
 
-                    <div className="bg-gray-50 p-4 rounded-lg">
-                      <p className="text-gray-500">Verification Status</p>
+                    <div className="bg-slate-50 p-4 rounded-lg">
+                      <p className="text-slate-500">Verification Status</p>
                       <span
                         className={`inline-flex items-center gap-1 mt-2 px-3 py-1 rounded-full text-xs font-medium ${
                           user?.isCompanyVerified
@@ -252,11 +254,11 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                   </div>
                 </div>
                 <div>
-                  <h2 className="text-lg font-semibold text-gray-900 border-b border-gray-200 pb-2 mb-6">
+                  <h2 className="text-lg font-semibold text-slate-900 border-b border-gray-200 pb-2 mb-6">
                     About Company
                   </h2>
 
-                  <p className="text-sm text-gray-700 text-justify leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
+                  <p className="text-sm text-slate-700 text-justify leading-relaxed bg-slate-50 p-4 md:p-6 rounded-lg">
                     {user?.companyDescription || "No description provided."}
                   </p>
                 </div>
@@ -267,11 +269,11 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
           <div className="mt-10 space-y-5">
             <div className="flex items-center gap-2 h-auto">
               <div className="w-1 h-10 bg-linear-to-b from-sky-600  to-sky-700 rounded-xl shadow-sm"></div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-slate-900">
                 About This Job
               </h2>
             </div>
-            <p className="sm:text-base text-sm text-justify p-4 bg-sky-50 rounded-xl text-gray-700">
+            <p className="sm:text-base text-sm text-justify p-4 bg-sky-50 rounded-xl text-slate-700">
               {formData.description}
             </p>
           </div>
@@ -279,11 +281,11 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
           <div className="mt-10 space-y-5">
             <div className="flex items-center gap-2 h-auto">
               <div className="w-1 h-10 bg-linear-to-b from-purple-600  to-purple-700 rounded-xl shadow-sm"></div>
-              <h2 className="text-xl font-semibold text-gray-900">
+              <h2 className="text-xl font-semibold text-slate-900">
                 What We're Looking For
               </h2>
             </div>
-            <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-gray-700">
+            <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-slate-700">
               <ul className="list-disc space-y-3 px-4">
                 {formData.requirements
                   .toString()
@@ -300,11 +302,11 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
             <div className="mt-10 space-y-5">
               <div className="flex items-center gap-4">
                 <BookOpenText className="w-4 h-4" />
-                <h2 className="text-xl font-semibold text-gray-900">
+                <h2 className="text-xl font-semibold text-slate-900">
                   What We're offering
                 </h2>
               </div>
-              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-gray-700">
+              <div className="p-4 bg-purple-50 rounded-xl sm:text-base text-sm text-slate-700">
                 <ul className="list-disc space-y-3 px-4">
                   {formData?.offer
                     .toString()

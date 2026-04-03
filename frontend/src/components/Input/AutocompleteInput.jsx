@@ -15,7 +15,7 @@ const AutocompleteInput = ({
   useEffect(() => {
     if (value && value.trim()) {
       const found = suggestions.find((item) =>
-        item.toLowerCase().startsWith(value.toLowerCase())
+        item.toLowerCase().startsWith(value.toLowerCase()),
       );
       if (found && found.toLowerCase() !== value.toLowerCase()) {
         setSuggestion(found);
@@ -55,7 +55,8 @@ const AutocompleteInput = ({
         </div>
       )}
       <input
-      id={placeholder}
+        onBlur={clearSuggestions}
+        id={placeholder}
         ref={inputRef}
         type="text"
         value={value}

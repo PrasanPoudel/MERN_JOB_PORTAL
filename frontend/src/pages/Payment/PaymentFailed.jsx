@@ -13,12 +13,12 @@ export default function PaymentFailed() {
         </div>
 
         {/* Title */}
-        <h1 className="text-2xl font-bold text-gray-900 mb-2">
+        <h1 className="text-2xl font-bold text-slate-900 mb-2">
           Payment Failed
         </h1>
 
         {/* Message */}
-        <p className="text-gray-600 mb-6">
+        <p className="text-slate-600 mb-6">
           Oops! Something went wrong while processing your payment. Please try
           again or contact support if the issue persists.
         </p>

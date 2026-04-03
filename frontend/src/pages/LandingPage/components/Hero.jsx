@@ -3,7 +3,6 @@ import {
   Zap,
   UserCheck,
   MessageCircle,
-  LayoutDashboard,
   Search,
   ArrowRight,
   Mail,
@@ -30,7 +29,7 @@ const features = [
   },
   {
     icon: <BriefcaseBusiness className="text-sky-600 w-5 h-5" />,
-    title: "Personalized Jobs Listing",
+    title: "Personalized Jobs",
   },
 ];
 
@@ -53,7 +52,6 @@ const Hero = () => {
       );
       if (response.status === 200) {
         setDashboardData(response.data);
-        // console.log(response.data);
       }
     } catch (err) {
       console.error(err);
@@ -65,25 +63,21 @@ const Hero = () => {
   }, []);
 
   return (
-    <section className="relative mt-16 py-20 overflow-hidden bg-linear-to-br from-sky-50 via-white to-blue-50">
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-20 right-0 w-96 h-96 bg-sky-200 rounded-full opacity-20 blur-3xl"></div>
-        <div className="absolute bottom-0 left-0 w-96 h-96 bg-blue-200 rounded-full opacity-20 blur-3xl"></div>
-      </div>
-
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+    <section className="relative mt-16 py-20 bg-sky-50">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid lg:grid-cols-2 gap-12 items-center">
+          {/* Left Content */}
           <div className="text-center lg:text-left">
-            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-100 text-sky-700 rounded-full text-sm font-semibold mb-6">
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-sky-100 text-sky-700 rounded-full text-sm font-bold mb-6">
               #KAAMSETU
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
               Where Careers Meet
               <span className="text-sky-600"> Opportunities</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0">
               Connecting people with opportunities through Nepal's own job
               portal
             </p>
@@ -92,19 +86,18 @@ const Hero = () => {
               <Link
                 to="/find-jobs"
                 title="Explore available jobs"
-                className="inline-flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-8 py-4 rounded-xl font-semibold text-lg shadow-lg hover:shadow-xl transition-all hover:-translate-y-0.5 cursor-pointer"
+                className="btn-primary text-lg px-8 py-4"
               >
                 <Search className="w-5 h-5" />
-                Explore Jobs
+                Find Jobs
                 <ArrowRight className="w-5 h-5" />
               </Link>
               {user && user?.role === "employer" && (
                 <Link
                   to="/employer-dashboard"
                   title="Go to employer dashboard"
-                  className="inline-flex items-center justify-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-xl font-semibold text-lg border-2 border-gray-200 hover:border-sky-300 transition-all shadow-lg cursor-pointer"
+                  className="btn-secondary text-lg px-8 py-4"
                 >
-                  <LayoutDashboard className="w-5 h-5" />
                   Go to Dashboard
                 </Link>
               )}
@@ -112,54 +105,53 @@ const Hero = () => {
 
             <div className="grid grid-cols-2 gap-4 max-w-md mx-auto lg:mx-0">
               {features.map((feature, index) => (
-                <div key={index} className="flex items-start gap-2">
-                  <div className="bg-sky-100 p-1.5 rounded-lg shrink-0">
+                <div key={index} className="flex items-start gap-2.5">
+                  <div className="bg-sky-100 p-2 rounded-lg shrink-0">
                     {feature.icon}
                   </div>
-                  <div>
-                    <h3 className="font-semibold text-sm text-gray-900">
-                      {feature.title}
-                    </h3>
-                  </div>
+                  <h3 className="font-semibold text-sm text-slate-900">
+                    {feature.title}
+                  </h3>
                 </div>
               ))}
             </div>
           </div>
 
+          {/* Right Content - Image with Stats */}
           <div className="relative">
-            <div className="relative">
-              <img
-                src={HeroBanner}
-                alt="Job search illustration"
-                className="w-full h-auto rounded-2xl shadow-2xl"
-              />
+            <img
+              src={HeroBanner}
+              alt="Job search illustration"
+              className="w-full h-auto rounded-2xl shadow-lg"
+            />
 
-              <div className="absolute -top-6 -right-6 bg-white p-4 rounded-xl shadow-xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-green-100 rounded-full flex items-center justify-center">
-                    <UserCheck className="w-6 h-6 text-green-600" />
+            {/* Stats Card - Top Right */}
+            <div className="absolute -top-4 -right-4 card-elevated p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 bg-green-100 rounded-xl flex items-center justify-center">
+                  <UserCheck className="w-6 h-6 text-green-600" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-500">
+                    Total Active Users
                   </div>
-                  <div>
-                    <div className="text-xs text-gray-500">
-                      Total Active Users
-                    </div>
-                    <div className="text-lg font-bold text-gray-900">
-                      {dashboardData?.counts?.totalUsers || "10+"}
-                    </div>
+                  <div className="text-lg font-bold text-slate-900">
+                    {dashboardData?.counts?.totalUsers || "10+"}
                   </div>
                 </div>
               </div>
+            </div>
 
-              <div className="absolute -bottom-6 -left-6 bg-white p-4 rounded-xl shadow-xl">
-                <div className="flex items-center gap-3">
-                  <div className="w-12 h-12 bg-sky-100 rounded-full flex items-center justify-center">
-                    <BriefcaseBusiness className="w-6 h-6 text-sky-600" />
-                  </div>
-                  <div>
-                    <div className="text-xs text-gray-500">Jobs Available</div>
-                    <div className="text-lg font-bold text-gray-900">
-                      {dashboardData?.counts?.totalActiveJobs || "100+"}
-                    </div>
+            {/* Stats Card - Bottom Left */}
+            <div className="absolute -bottom-4 -left-4 card-elevated p-4">
+              <div className="flex items-center gap-3">
+                <div className="w-11 h-11 bg-sky-100 rounded-xl flex items-center justify-center">
+                  <BriefcaseBusiness className="w-6 h-6 text-sky-600" />
+                </div>
+                <div>
+                  <div className="text-xs text-slate-500">Jobs Available</div>
+                  <div className="text-lg font-bold text-slate-900">
+                    {dashboardData?.counts?.totalActiveJobs || "100+"}
                   </div>
                 </div>
               </div>
@@ -167,13 +159,14 @@ const Hero = () => {
           </div>
         </div>
 
-        <div className="mt-20 text-center">
-          <p className="text-gray-500 text-sm mb-5">Popular searches:</p>
+        {/* Popular Searches */}
+        <div className="mt-16 text-center">
+          <p className="text-slate-500 text-sm mb-4">Popular searches:</p>
           <div className="flex flex-wrap justify-center gap-2">
             {jobCategories.map((category, index) => (
               <span
                 key={index}
-                className="inline-block bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium hover:bg-sky-50 hover:border-sky-200 transition-colors shadow-sm cursor-pointer"
+                className="inline-block bg-white border border-slate-200 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:border-sky-200 hover:text-sky-700 transition-colors cursor-pointer"
               >
                 {category}
               </span>

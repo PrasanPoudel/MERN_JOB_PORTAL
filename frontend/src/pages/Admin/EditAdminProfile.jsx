@@ -106,7 +106,7 @@ const EditAdminProfile = () => {
 
   return (
     <DashboardLayout activeMenu={"edit-admin-profile"}>
-      <div className="min-h-screen bg-gray-50 p-4">
+      <div className="min-h-screen bg-slate-50">
         <div className="max-w-5xl">
           <div className="bg-white pb-10 rounded-xl shadow-lg overflow-hidden">
             {/* Header */}
@@ -134,7 +134,7 @@ const EditAdminProfile = () => {
                   <div className="w-full md:w-auto">
                     <label
                       htmlFor="avatar"
-                      className="block text-sm font-medium text-gray-700 mb-2"
+                      className="block text-sm font-medium text-slate-700 mb-2"
                     >
                       Profile Picture
                     </label>
@@ -145,7 +145,7 @@ const EditAdminProfile = () => {
                       type="file"
                       accept="image/*"
                       onChange={(e) => handleFileChange(e, "avatar")}
-                      className="block w-full text-sm text-gray-600 
+                      className="block w-full text-sm text-slate-600 
                         file:mr-4 file:py-2 file:px-4 
                         file:rounded-full file:border-0 
                         file:text-sm file:font-semibold 
@@ -159,7 +159,7 @@ const EditAdminProfile = () => {
                 <div>
                   <label
                     htmlFor="name"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-slate-700 mb-2"
                   >
                     Full Name
                   </label>
@@ -181,7 +181,7 @@ const EditAdminProfile = () => {
                 <div>
                   <label
                     htmlFor="email"
-                    className="block text-sm font-medium text-gray-700 mb-2"
+                    className="block text-sm font-medium text-slate-700 mb-2"
                   >
                     Email Address
                   </label>
@@ -206,7 +206,7 @@ const EditAdminProfile = () => {
                   to={"/find-jobs"}
                   onClick={handleCancel}
                   className="p-3 flex items-center gap-2 border border-gray-300 
-                    text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
+                    text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
                 >
                   <X className="w-4 h-4" />
                   <span>Cancel</span>

@@ -21,7 +21,7 @@ const Navbar = () => {
         const response = await axiosInstance.get(
           API_PATHS.MESSAGES.GET_UNREAD_COUNT,
         );
-        setUnreadCount(response.data.totalUnreadCount || 0);
+        setUnreadCount(response?.data?.totalUnreadCount || 0);
       } catch (err) {
         console.error("Failed to fetch unread count:", err);
       }
@@ -29,8 +29,7 @@ const Navbar = () => {
 
     fetchUnreadCount();
 
-    // Start polling for unread count updates
-    const interval = setInterval(fetchUnreadCount, 10000); // Poll every 10 seconds
+    const interval = setInterval(fetchUnreadCount, 10000);
 
     return () => {
       if (interval) clearInterval(interval);
@@ -66,135 +65,140 @@ const Navbar = () => {
   }, [openMenu]);
 
   const navLinkClasses = ({ isActive }) =>
-    `flex text-md gap-1 items-center p-1 font-medium ${openMenu ? "w-full" : ""} rounded-xl transition-colors duration-500 hover:text-gray-900
-     ${isActive ? "text-sky-600" : "text-gray-600"}`;
+    `flex items-center gap-1.5 px-3 py-2 rounded-lg text-sm font-medium transition-colors duration-150 ${
+      openMenu ? "w-full" : ""
+    } ${isActive ? "text-sky-600 bg-sky-50" : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"}`;
+
+  const chatPath =
+    user?.role === "admin"
+      ? "/admin-chat-box"
+      : user?.role === "employer"
+        ? "/EmployerChatBox"
+        : "/JobSeekerChatBox";
 
   return (
-    <header className="fixed p-0 top-0 left-0 z-50 bg-white/95 w-full backdrop-blur-sm border-b border-gray-100 shadow-sm">
-      <div className="flex items-end p-2 gap-1 justify-between h-18">
-        <Link title="Go to Homepage" to="/">
+    <header className="fixed top-0 left-0 z-50 w-full bg-white/95 backdrop-blur-sm border-b border-slate-200">
+      <div className="flex items-center justify-between h-16 px-4 sm:px-6">
+        <Link title="Go to Homepage" to="/" className="shrink-0">
           <img
             src={logo}
-            className="h-14 w-16 object-contain mix-blend-multiply"
-            alt="logo"
+            className="h-12 w-14 object-contain"
+            alt="KAAMSETU logo"
           />
         </Link>
-        <div className="flex items-center gap-2">
-          <div
-            className={`${openMenu ? "z-1200 p-3 absolute top-20 left-0 min-w-full bg-white flex flex-col items-center gap-4 min-h-screen" : "hidden sm:flex gap-2"}`}
-          >
-            <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-              <Home className="h-4 w-4" />
-              <span>Home</span>
-            </NavLink>
-            <NavLink
-              title="Search for Jobs"
-              to="/find-jobs"
-              className={navLinkClasses}
-            >
-              <Search className="h-4 w-4" />
-              <span>Search for Jobs</span>
-            </NavLink>
-            {user && user?.role === "jobSeeker" && (
-              <NavLink
-                title="Messages"
-                to="/JobSeekerChatBox"
-                className={navLinkClasses}
-              >
-                <div className="relative">
-                  <MessageSquare className="h-4 w-4" />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  )}
-                </div>
-                <span>Messages</span>
-              </NavLink>
-            )}
 
-            {user && user?.role === "admin" && (
-              <NavLink
-                title="Messages"
-                to="/admin-chat-box"
-                className={navLinkClasses}
-              >
-                <div className="relative">
-                  <MessageSquare className="h-4 w-4" />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  )}
-                </div>
-                <span>Messages</span>
-              </NavLink>
-            )}
-
-            {user && user?.role === "employer" && (
-              <NavLink
-                title="Messages"
-                to="/EmployerChatBox"
-                className={navLinkClasses}
-              >
-                <div className="relative">
-                  <MessageSquare className="h-4 w-4" />
-                  {unreadCount > 0 && (
-                    <span className="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-semibold">
-                      {unreadCount > 99 ? "99+" : unreadCount}
-                    </span>
-                  )}
-                </div>
-                <span>Messages</span>
-              </NavLink>
-            )}
-          </div>
-
-          <div className="flex gap-4 items-center">
-            {isAuthenticated ? (
-              <div id="profileDropdown_id">
-                <ProfileDropdown
-                  isOpen={profileDropdownOpen}
-                  onToggle={(e) => {
-                    e.stopPropagation();
-                    setProfileDropdownOpen(!profileDropdownOpen);
-                  }}
-                  name={user?.name || ""}
-                  isPremium={user?.isPremium}
-                  avatar={user?.avatar || null}
-                  companyName={user?.companyName || ""}
-                  isCompanyVerified={user?.isCompanyVerified || false}
-                  email={user?.email || ""}
-                  role={user?.role || "jobSeeker"}
-                  companyLogo={user?.companyLogo || null}
-                  onLogout={logout}
-                />
+        {/* Desktop Navigation */}
+        <div className="hidden sm:flex items-center gap-1">
+          <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
+            <Home className="h-4 w-4" />
+            <span>Home</span>
+          </NavLink>
+          <NavLink title="Find Jobs" to="/find-jobs" className={navLinkClasses}>
+            <Search className="h-4 w-4" />
+            <span>Find Jobs</span>
+          </NavLink>
+          {user && (
+            <NavLink title="Messages" to={chatPath} className={navLinkClasses}>
+              <div className="relative">
+                <MessageSquare className="h-4 w-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full h-4 min-w-4 flex items-center justify-center font-bold px-1">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
               </div>
-            ) : (
-              <a
-                href="/login"
-                title="Login to your account"
-                className="bg-sky-600 text-white px-6 py-2 rounded-lg font-medium hover:bg-sky-700 transition-all duration-200 shadow-sm hover:shadow-md cursor-pointer"
-              >
-                Login
-              </a>
-            )}
-            {openMenu ? (
-              <X
-                className="w-6 h-6 block sm:hidden"
-                onClick={() => {
-                  setOpenMenu(false);
+              <span>Messages</span>
+            </NavLink>
+          )}
+        </div>
+
+        <div className="flex items-center gap-3">
+          {isAuthenticated ? (
+            <div id="profileDropdown_id">
+              <ProfileDropdown
+                isOpen={profileDropdownOpen}
+                onToggle={(e) => {
+                  e.stopPropagation();
+                  setProfileDropdownOpen(!profileDropdownOpen);
                 }}
+                name={user?.name || ""}
+                isPremium={user?.isPremium}
+                avatar={user?.avatar || null}
+                companyName={user?.companyName || ""}
+                isCompanyVerified={user?.isCompanyVerified || false}
+                email={user?.email || ""}
+                role={user?.role || "jobSeeker"}
+                companyLogo={user?.companyLogo || null}
+                onLogout={logout}
               />
+            </div>
+          ) : (
+            <Link
+              to="/login"
+              title="Login to your account"
+              className="btn-primary-sm"
+            >
+              Login
+            </Link>
+          )}
+
+          {/* Mobile Menu Toggle */}
+          <button
+            onClick={() => setOpenMenu(!openMenu)}
+            className="sm:hidden p-2 rounded-lg text-slate-600 hover:bg-slate-100 transition-colors cursor-pointer"
+            title="Toggle menu"
+          >
+            {openMenu ? (
+              <X className="w-5 h-5" />
             ) : (
-              <Menu
-                className="w-6 h-6 block sm:hidden"
-                onClick={() => setOpenMenu(!openMenu)}
-              />
+              <Menu className="w-5 h-5" />
             )}
-          </div>
+          </button>
         </div>
       </div>
+
+      {/* Mobile Menu */}
+      {openMenu && (
+        <div className="sm:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-200 shadow-lg pt-4 flex flex-col gap-2">
+          <hr className="text-slate-200" />
+          <NavLink
+            title="Go to Homepage"
+            to="/"
+            className={navLinkClasses}
+            onClick={() => setOpenMenu(false)}
+          >
+            <Home className="h-4 w-4" />
+            <span>Home</span>
+          </NavLink>
+          <NavLink
+            title="Find Jobs"
+            to="/find-jobs"
+            className={navLinkClasses}
+            onClick={() => setOpenMenu(false)}
+          >
+            <Search className="h-4 w-4" />
+            <span>Find Jobs</span>
+          </NavLink>
+          {user && (
+            <NavLink
+              title="Messages"
+              to={chatPath}
+              className={navLinkClasses}
+              onClick={() => setOpenMenu(false)}
+            >
+              <div className="relative">
+                <MessageSquare className="h-4 w-4" />
+                {unreadCount > 0 && (
+                  <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full h-4 min-w-4 flex items-center justify-center font-bold px-1">
+                    {unreadCount > 99 ? "99+" : unreadCount}
+                  </span>
+                )}
+              </div>
+              <span>Messages</span>
+            </NavLink>
+          )}
+        </div>
+      )}
     </header>
   );
 };

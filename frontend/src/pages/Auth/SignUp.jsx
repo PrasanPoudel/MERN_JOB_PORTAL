@@ -54,7 +54,6 @@ const SignUp = () => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
 
-    // Clear errors when user starts typing
     if (formState.errors[name]) {
       setFormState((prev) => ({
         ...prev,
@@ -117,12 +116,11 @@ const SignUp = () => {
       setOtpData({
         email: formData.email,
         otp: "",
-        countdown: 300, // 5 minutes in seconds
+        countdown: 300,
         isVerifying: false,
       });
-      setStep(3); // Go to OTP verification step
+      setStep(3);
 
-      // Start countdown
       const interval = setInterval(() => {
         setOtpData(prev => {
           if (prev.countdown <= 1) {
@@ -169,7 +167,7 @@ const SignUp = () => {
 
       setOtpData((prev) => ({ ...prev, isVerifying: false }));
 
-      const { token } = response.data;
+      const { token } = response?.data || {};
 
       if (token) {
         login(response.data, token);
@@ -208,7 +206,6 @@ const SignUp = () => {
       setFormState((prev) => ({ ...prev, loading: false, errors: {} }));
       setOtpData(prev => ({ ...prev, countdown: 300, otp: "" }));
 
-      // Restart countdown
       const interval = setInterval(() => {
         setOtpData(prev => {
           if (prev.countdown <= 1) {
@@ -242,22 +239,22 @@ const SignUp = () => {
 
   if (formState.success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ duration: 0.6 }}
-          className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
+          transition={{ duration: 0.4 }}
+          className="card-elevated p-8 max-w-md w-full text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-slate-900 mb-2">
             Account Created!
           </h2>
-          <p className="text-gray-600 mb-4">
+          <p className="text-slate-500 mb-4">
             Welcome to KAAMSETU! Your account has been successfully created and verified.
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
-          <p className="text-sm text-gray-500 mt-2">
+          <p className="text-sm text-slate-400 mt-2">
             Redirecting to your dashboard...
           </p>
         </motion.div>
@@ -266,90 +263,79 @@ const SignUp = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-4 px-2">
+    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-8 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.6 }}
-        className="bg-white p-4 lg:p-8 rounded-xl shadow-lg max-w-lg w-full"
+        transition={{ duration: 0.4 }}
+        className="card-elevated p-8 max-w-lg w-full"
       >
-        <div className="flex items-center justify-center mb-4">
-          <img src={logo} className="w-32 h-24" />
+        <div className="flex items-center justify-center mb-6">
+          <img src={logo} className="w-28 h-20 object-contain" alt="KAAMSETU" />
         </div>
-        
+
         {/* Step 1: Basic Information */}
         {step === 1 && (
           <>
-            <div className="text-center mb-4">
-              <h2 className="text-2xl text-gray-900 mb-2">Create Account</h2>
-              <p className="text-gray-600">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1">Create Account</h2>
+              <p className="text-slate-500 text-sm">
                 Join thousands of professionals finding their dream job!
               </p>
             </div>
-            <form onSubmit={handleSendVerification} className="space-y-4">
+            <form onSubmit={handleSendVerification} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Full Name *
-                </label>
+                <label className="label">Full Name</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
+                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                   <input
                     type="text"
                     name="fullName"
                     id="fullName"
                     onChange={handleInputChange}
                     value={formData.fullName}
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                      formState.errors.fullName
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors`}
+                    className={`input-base input-with-icon ${formState.errors.fullName ? "input-error" : ""}`}
                     placeholder="Enter your full name"
                   />
                 </div>
                 {formState.errors.fullName && (
-                  <p className="flex text-red-500 text-sm mt-1 items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                  <p className="flex items-center gap-1 text-red-500 text-sm mt-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
                     {formState.errors.fullName}
                   </p>
                 )}
               </div>
+
               <div>
-                <label htmlFor="role" className="flex mb-4">
-                  I am a *
-                </label>
+                <label className="label">I am a</label>
                 <div className="grid grid-cols-2 gap-4">
                   <button
                     type="button"
-                    onClick={() => {
-                      handleRoleChange("jobSeeker");
-                    }}
-                    className={`p-4 rounded-lg border-2 transition-all ${
+                    onClick={() => handleRoleChange("jobSeeker")}
+                    className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center ${
                       formData.role === "jobSeeker"
                         ? "border-sky-500 bg-sky-50 text-sky-700"
-                        : "border-gray-200 hover:border-gray-300"
+                        : "border-slate-200 hover:border-slate-300 text-slate-700"
                     }`}
                   >
                     <UserCheck className="w-8 h-8 mx-auto mb-2" />
-                    <div className="font-medium">Job Seeker</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="font-semibold">Job Seeker</div>
+                    <div className="text-xs text-slate-500 mt-0.5">
                       Looking for opportunities
                     </div>
                   </button>
                   <button
                     type="button"
-                    onClick={() => {
-                      handleRoleChange("employer");
-                    }}
-                    className={`p-4 rounded-lg border-2 transition-all ${
+                    onClick={() => handleRoleChange("employer")}
+                    className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center ${
                       formData.role === "employer"
                         ? "border-sky-500 bg-sky-50 text-sky-700"
-                        : "border-gray-200 hover:border-gray-300"
+                        : "border-slate-200 hover:border-slate-300 text-slate-700"
                     }`}
                   >
                     <Building2 className="w-8 h-8 mx-auto mb-2" />
-                    <div className="font-medium">Employer</div>
-                    <div className="text-xs text-gray-500">
+                    <div className="font-semibold">Employer</div>
+                    <div className="text-xs text-slate-500 mt-0.5">
                       Want to hire talents
                     </div>
                   </button>
@@ -359,54 +345,49 @@ const SignUp = () => {
               <div className="flex items-center justify-between">
                 <p
                   onClick={() => {
-                    if (step > 1) {
-                      setStep((prev) => prev - 1);
-                    }
+                    if (step > 1) setStep((prev) => prev - 1);
                   }}
-                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
+                  className={`flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg ${
                     step === 2
                       ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
-                  } ${step <= 1 && "opacity-0"} `}
+                      : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                  } ${step <= 1 && "opacity-0"}`}
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Prev
                 </p>
                 <p
                   onClick={() => {
-                    if (step < 2) {
-                      setStep((prev) => prev + 1);
-                    }
+                    if (step < 2) setStep((prev) => prev + 1);
                   }}
-                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
+                  className={`flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg ${
                     step === 1
                       ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
-                  } ${step == 2 && "opacity-0"}`}
+                      : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                  } ${step === 2 && "opacity-0"}`}
                 >
                   Next <ArrowRight className="w-4 h-4" />
                 </p>
               </div>
 
               <div className="text-center">
-                <p className="text-gray-600">
-                  Already have an account?
-                  <br className="lg:hidden" />
+                <p className="text-slate-500 text-sm">
+                  Already have an account?{" "}
                   <a
                     href="/login"
-                    className="text-sky-600 hover:text-sky-700 font-medium"
+                    className="text-sky-600 hover:text-sky-700 font-semibold"
                   >
-                    {" "}
                     Click here to login
                   </a>
                 </p>
               </div>
-              {step == 2 && (
+
+              {step === 2 && (
                 <>
                   {formState.errors.submit && (
                     <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                      <p className="flex text-red-500 text-xs mt-1 items-center justify-center">
-                        <AlertCircle className="w-4 h-4 mr-1" />
+                      <p className="flex items-center gap-1 text-red-600 text-sm justify-center">
+                        <AlertCircle className="w-4 h-4 shrink-0" />
                         {formState.errors.submit}
                       </p>
                     </div>
@@ -414,15 +395,15 @@ const SignUp = () => {
                   <button
                     type="submit"
                     disabled={formState.loading}
-                    className="cursor-pointer flex w-full bg-sky-600 hover:bg-sky-700  text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center space-x-2"
+                    className="btn-primary w-full"
                   >
                     {formState.loading ? (
                       <>
                         <Loader className="w-5 h-5 animate-spin" />
-                        <span>Sending Verification...</span>
+                        Sending Verification...
                       </>
                     ) : (
-                      <span className="">Send Verification Email</span>
+                      "Send Verification Email"
                     )}
                   </button>
                 </>
@@ -434,56 +415,44 @@ const SignUp = () => {
         {/* Step 2: Email & Password */}
         {step === 2 && (
           <>
-            <div className="text-center mb-4">
-              <h2 className="text-2xl text-gray-900 mb-2">Account Details</h2>
-              <p className="text-gray-600">Complete your registration</p>
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1">Account Details</h2>
+              <p className="text-slate-500 text-sm">Complete your registration</p>
             </div>
-            <form onSubmit={handleSendVerification} className="space-y-4">
+            <form onSubmit={handleSendVerification} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Email Address *
-                </label>
+                <label className="label">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
+                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                   <input
                     type="email"
                     name="email"
                     id="email"
                     onChange={handleInputChange}
                     value={formData.email}
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                      formState.errors.email
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors`}
+                    className={`input-base input-with-icon ${formState.errors.email ? "input-error" : ""}`}
                     placeholder="Enter your email"
                   />
                 </div>
                 {formState.errors.email && (
-                  <p className="flex text-red-500 text-sm mt-1 items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                  <p className="flex items-center gap-1 text-red-500 text-sm mt-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
                     {formState.errors.email}
                   </p>
                 )}
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Password *
-                </label>
+                <label className="label">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
+                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
                   <input
                     type={formState.showPassword ? "text" : "password"}
                     name="password"
                     id="password"
                     onChange={handleInputChange}
                     value={formData.password}
-                    className={`w-full pl-10 pr-4 py-3 rounded-lg border ${
-                      formState.errors.password
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors`}
+                    className={`input-base input-with-icon pr-10 ${formState.errors.password ? "input-error" : ""}`}
                     placeholder="Enter your password"
                   />
                   <button
@@ -494,7 +463,7 @@ const SignUp = () => {
                         showPassword: !prev.showPassword,
                       }));
                     }}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
                   >
                     {formState.showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -504,15 +473,16 @@ const SignUp = () => {
                   </button>
                 </div>
                 {formState.errors.password && (
-                  <p className="flex text-red-500 text-sm mt-1 items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                  <p className="flex items-center gap-1 text-red-500 text-sm mt-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
                     {formState.errors.password}
                   </p>
                 )}
               </div>
+
               {formState.errors.role && (
-                <p className="flex text-red-500 text-sm mt-1 items-center">
-                  <AlertCircle className="w-4 h-4 mr-1" />
+                <p className="flex items-center gap-1 text-red-500 text-sm">
+                  <AlertCircle className="w-4 h-4 shrink-0" />
                   {formState.errors.role}
                 </p>
               )}
@@ -520,52 +490,34 @@ const SignUp = () => {
               <div className="flex items-center justify-between">
                 <p
                   onClick={() => {
-                    if (step > 1) {
-                      setStep((prev) => prev - 1);
-                    }
+                    if (step > 1) setStep((prev) => prev - 1);
                   }}
-                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
-                    step === 2
-                      ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
-                  } ${step <= 1 && "opacity-0"} `}
+                  className="flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Prev
                 </p>
-                <p
-                  onClick={() => {
-                    if (step < 2) {
-                      setStep((prev) => prev + 1);
-                    }
-                  }}
-                  className={`flex items-center gap-1 text-base font-medium px-3 py-2 rounded-lg shadow-sm border border-white/20 ${
-                    step === 1
-                      ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                      : "bg-gray-300 text-gray-700 cursor-not-allowed"
-                  } ${step == 2 && "opacity-0"}`}
-                >
+                <p className="flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg bg-slate-200 text-slate-500 cursor-not-allowed">
                   Next <ArrowRight className="w-4 h-4" />
                 </p>
               </div>
 
               <div className="text-center">
-                <p className="text-gray-600">
-                  Already have an account?
-                  <br className="lg:hidden" />
+                <p className="text-slate-500 text-sm">
+                  Already have an account?{" "}
                   <a
                     href="/login"
-                    className="text-sky-600 hover:text-sky-700 font-medium"
+                    className="text-sky-600 hover:text-sky-700 font-semibold"
                   >
-                    {" "}
                     Click here to login
                   </a>
                 </p>
               </div>
+
               {formState.errors.submit && (
                 <div className="bg-red-50 border border-red-200 rounded-lg p-3">
-                  <p className="flex text-red-500 text-xs mt-1 items-center justify-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                  <p className="flex items-center gap-1 text-red-600 text-sm justify-center">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
                     {formState.errors.submit}
                   </p>
                 </div>
@@ -573,15 +525,15 @@ const SignUp = () => {
               <button
                 type="submit"
                 disabled={formState.loading}
-                className="cursor-pointer flex w-full bg-sky-600 hover:bg-sky-700  text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed items-center justify-center space-x-2"
+                className="btn-primary w-full"
               >
                 {formState.loading ? (
                   <>
                     <Loader className="w-5 h-5 animate-spin" />
-                    <span>Sending Verification...</span>
+                    Sending Verification...
                   </>
                 ) : (
-                  <span className="">Send Verification Email</span>
+                  "Send Verification Email"
                 )}
               </button>
             </form>
@@ -591,44 +543,38 @@ const SignUp = () => {
         {/* Step 3: OTP Verification */}
         {step === 3 && (
           <>
-            <div className="text-center mb-4">
+            <div className="text-center mb-6">
               <ShieldCheck className="w-16 h-16 text-sky-600 mx-auto mb-4" />
-              <h2 className="text-2xl text-gray-900 mb-2">Verify Your Email</h2>
-              <p className="text-gray-600">
+              <h2 className="text-2xl font-bold text-slate-900 mb-1">Verify Your Email</h2>
+              <p className="text-slate-500 text-sm">
                 We've sent a 6-digit verification code to {otpData.email}
               </p>
             </div>
             
-            <form onSubmit={handleVerifyEmail} className="space-y-4">
+            <form onSubmit={handleVerifyEmail} className="space-y-5">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Enter 6-digit OTP *
-                </label>
+                <label className="label">Enter 6-digit OTP</label>
                 <div className="relative">
                   <input
                     type="text"
                     maxLength="6"
                     value={otpData.otp}
                     onChange={(e) => setOtpData(prev => ({ ...prev, otp: e.target.value }))}
-                    className={`w-full px-4 py-3 rounded-lg border ${
-                      formState.errors.otp
-                        ? "border-red-500"
-                        : "border-gray-300"
-                    } focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-colors text-center text-2xl tracking-widest`}
+                    className={`input-base text-center text-2xl tracking-widest ${formState.errors.otp ? "input-error" : ""}`}
                     placeholder="000000"
                     inputMode="numeric"
                     pattern="[0-9]*"
                   />
                 </div>
                 {formState.errors.otp && (
-                  <p className="flex text-red-500 text-sm mt-1 items-center">
-                    <AlertCircle className="w-4 h-4 mr-1" />
+                  <p className="flex items-center gap-1 text-red-500 text-sm mt-1.5">
+                    <AlertCircle className="w-4 h-4 shrink-0" />
                     {formState.errors.otp}
                   </p>
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-sm text-gray-600">
+              <div className="flex items-center justify-between text-sm text-slate-500">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span>Expires in: {formatTime(otpData.countdown)}</span>
@@ -637,13 +583,13 @@ const SignUp = () => {
                   type="button"
                   onClick={handleResendOTP}
                   disabled={otpData.countdown > 0 || formState.loading}
-                  className={`flex items-center gap-2 ${
+                  className={`flex items-center gap-2 font-semibold ${
                     otpData.countdown > 0
-                      ? "text-gray-400 cursor-not-allowed"
-                      : "text-sky-600 hover:text-sky-700"
+                      ? "text-slate-400 cursor-not-allowed"
+                      : "text-sky-600 hover:text-sky-700 cursor-pointer"
                   }`}
                 >
-                  <RefreshCw className={`w-4 h-4 ${otpData.countdown > 0 ? "animate-spin" : ""}`} />
+                  <RefreshCw className={`w-4 h-4 ${otpData.countdown > 0 ? "" : ""}`} />
                   Resend OTP
                 </button>
               </div>
@@ -651,11 +597,11 @@ const SignUp = () => {
               <button
                 type="submit"
                 disabled={otpData.isVerifying || formState.loading}
-                className="w-full bg-sky-600 hover:bg-sky-700 text-white py-3 rounded-lg font-semibold transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed"
+                className="btn-primary w-full"
               >
                 {otpData.isVerifying ? (
                   <>
-                    <Loader className="w-5 h-5 animate-spin inline mr-2" />
+                    <Loader className="w-5 h-5 animate-spin" />
                     Verifying...
                   </>
                 ) : (
@@ -664,7 +610,7 @@ const SignUp = () => {
               </button>
 
               <div className="text-center">
-                <p className="text-gray-600 text-sm">
+                <p className="text-slate-400 text-xs">
                   Didn't receive the email? Check your spam folder or contact support.
                 </p>
               </div>

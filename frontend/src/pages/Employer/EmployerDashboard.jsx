@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { Plus, BriefcaseBusiness, Users, Building2, CheckCircle2 } from "lucide-react";
+import {
+  Plus,
+  BriefcaseBusiness,
+  Users,
+  Building2,
+  CheckCircle2,
+} from "lucide-react";
 import moment from "moment";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -61,7 +67,7 @@ const EmployerDashboard = () => {
       {isLoading ? (
         <LoadingSpinner />
       ) : (
-        <div className="max-w-7xl mx-auto space-y-8 p-4">
+        <div className="max-w-7xl mx-auto space-y-8">
           {/* Dashboard Stats */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 ">
             <StatCard
@@ -69,7 +75,6 @@ const EmployerDashboard = () => {
               value={dashboardData?.counts?.totalActiveJobs || 0}
               icon={BriefcaseBusiness}
               trend={true}
-              trendValue={`${dashboardData?.counts?.trends?.activeJobs || 0} %`}
               color="emerald"
             />
             <StatCard
@@ -77,9 +82,6 @@ const EmployerDashboard = () => {
               value={dashboardData?.counts?.totalApplications || 0}
               icon={Users}
               trend={true}
-              trendValue={`${
-                dashboardData?.counts?.trends?.totalApplicants || 0
-              } %`}
               color="sky"
             />
             <StatCard
@@ -87,7 +89,6 @@ const EmployerDashboard = () => {
               value={dashboardData?.counts?.totalHired || 0}
               icon={CheckCircle2}
               trend={true}
-              trendValue={`${dashboardData?.counts?.trends?.totalHired || 0} %`}
               color="violet"
             />
           </div>
@@ -114,7 +115,7 @@ const EmployerDashboard = () => {
                       <JobDashboardCard key={job._id || index} job={job} />
                     ))
                 ) : (
-                  <p className="text-gray-900 mt-10">
+                  <p className="text-slate-900 mt-10">
                     You haven't posted any job yet
                   </p>
                 )}
@@ -145,7 +146,7 @@ const EmployerDashboard = () => {
                       />
                     ))
                 ) : (
-                  <p className="text-gray-900 mt-10">No applicant</p>
+                  <p className="text-slate-900 mt-10">No applicant</p>
                 )}
               </div>
             </Card>
@@ -168,7 +169,7 @@ const EmployerDashboard = () => {
                   <div className={`p-2 rounded-lg ${action.color}`}>
                     <action.icon className="w-5 h-5" />
                   </div>
-                  <span className="text-gray-900 font-medium">
+                  <span className="text-slate-900 font-medium">
                     {action.title}
                   </span>
                 </button>

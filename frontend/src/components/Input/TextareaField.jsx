@@ -15,11 +15,13 @@ const TextareaField = ({
   ...props
 }) => {
   return (
-    <div className="space-y-2">
-      <label htmlFor={id} className="block text-sm font-medium text-gray-700">
-        {label}
-        {required && <span className="text-red-500 ml-1">*</span>}
-      </label>
+    <div className="space-y-1.5">
+      {label && (
+        <label htmlFor={id} className="label">
+          {label}
+          {required && <span className="text-red-500 ml-0.5">*</span>}
+        </label>
+      )}
       <textarea
         id={id}
         value={value}
@@ -27,20 +29,18 @@ const TextareaField = ({
         onChange={onChange}
         disabled={disabled}
         rows={rows}
-        className={`w-full px-3 py-2.5 border rounded-lg text-base transition-colors duration-200 resize-y disabled:bg-gray-50 disabled:text-gray-500 ${
-          error
-            ? "border-red-300 focus:border-red-500 focus:ring-red-500"
-            : "border-gray-300 focus:border-sky-500 focus:ring-sky-500"
-        } focus:outline-none focus:ring-2 min-h-35`}
+        className={`input-base resize-y min-h-32 ${error ? "input-error" : ""}`}
         {...props}
       />
       {error && (
-        <div className="flex items-center space-x-1 text-sm text-red-600">
-          <AlertCircle className="h-4 w-4" />
+        <div className="flex items-center gap-1 text-sm text-red-600">
+          <AlertCircle className="h-4 w-4 shrink-0" />
           <span>{error}</span>
         </div>
       )}
-      {helperText && <p className="text-sm text-gray-400"># {helperText}</p>}
+      {helperText && !error && (
+        <p className="text-sm text-slate-400">{helperText}</p>
+      )}
     </div>
   );
 };

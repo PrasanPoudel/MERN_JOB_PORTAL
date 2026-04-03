@@ -182,14 +182,14 @@ const AdminCompanyVerification = () => {
         />
       )}
 
-      <div className="max-w-7xl mx-auto p-4">
+      <div className="max-w-7xl mx-auto">
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-xl font-semibold text-gray-900">
+            <h1 className="text-xl font-semibold text-slate-900">
               Company Verification
             </h1>
-            <p className="text-gray-500 text-sm mt-1">
+            <p className="text-slate-500 text-sm mt-1">
               Review and verify company details
             </p>
           </div>
@@ -208,7 +208,7 @@ const AdminCompanyVerification = () => {
         {/* Filters */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+            <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
             <input
               autoComplete="off"
               id="search_companies"
@@ -239,8 +239,8 @@ const AdminCompanyVerification = () => {
           </div>
         ) : filteredCompanies.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
-            <p className="text-gray-600 font-medium">
+            <Users className="w-12 h-12 mx-auto text-slate-300 mb-4" />
+            <p className="text-slate-600 font-medium">
               {verificationFilter === "verified"
                 ? "No verified companies found"
                 : verificationFilter === "unverified"
@@ -253,7 +253,7 @@ const AdminCompanyVerification = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-sm text-gray-700 lg:text-base">
+                <p className="text-sm text-slate-700 lg:text-base">
                   Showing <span className="font-bold">{startIndex + 1}</span> to{" "}
                   <span className="font-bold">
                     {Math.min(
@@ -285,20 +285,20 @@ const AdminCompanyVerification = () => {
 
                     <div>
                       <div className="flex items-center gap-2 flex-wrap">
-                        <p className="font-semibold text-gray-900 text-md">
+                        <p className="font-semibold text-slate-900 text-md">
                           {company.name}
                         </p>
                         <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-medium">
                           Employer
                         </span>
                       </div>
-                      <p className="flex items-center text-sm text-gray-700 wrap-break-word">
+                      <p className="flex items-center text-sm text-slate-700 wrap-break-word">
                         {company.companyName}
                         {company.isCompanyVerified && (
                           <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
                         )}
                       </p>
-                      <p className="text-xs text-gray-500">{company.email}</p>
+                      <p className="text-xs text-slate-500">{company.email}</p>
                     </div>
                   </div>
 
@@ -314,7 +314,7 @@ const AdminCompanyVerification = () => {
                     <button
                       onClick={() => handleMessageCompany(company._id)}
                       title="Send message to company"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
                     >
                       Message
                     </button>
@@ -340,7 +340,7 @@ const AdminCompanyVerification = () => {
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
@@ -349,7 +349,7 @@ const AdminCompanyVerification = () => {
                       setCurrentPage(Math.min(totalPages, currentPage + 1))
                     }
                     disabled={currentPage === totalPages}
-                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
@@ -358,7 +358,7 @@ const AdminCompanyVerification = () => {
                 {/* Desktop pagination */}
                 <div className="hidden md:flex sm:flex-1 items-center justify-between">
                   <div>
-                    <p className="text-sm text-gray-700">
+                    <p className="text-sm text-slate-700">
                       Showing{" "}
                       <span className="font-bold">{startIndex + 1}</span> to{" "}
                       <span className="font-bold">
@@ -381,7 +381,7 @@ const AdminCompanyVerification = () => {
                           setCurrentPage(Math.max(1, currentPage - 1))
                         }
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -390,7 +390,7 @@ const AdminCompanyVerification = () => {
                           page === "..." ? (
                             <span
                               key={`dots-${index}`}
-                              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
+                              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-slate-500 bg-white"
                             >
                               ...
                             </span>
@@ -401,7 +401,7 @@ const AdminCompanyVerification = () => {
                               className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                                 currentPage === page
                                   ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                  : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
+                                  : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
                               }`}
                             >
                               {page}
@@ -413,7 +413,7 @@ const AdminCompanyVerification = () => {
                           setCurrentPage(Math.min(totalPages, currentPage + 1))
                         }
                         disabled={currentPage === totalPages}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
@@ -463,7 +463,7 @@ const CompanyModal = ({
       <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-4xl p-6 md:p-8 relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 z-10"
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 z-10"
         >
           <X />
         </button>
@@ -486,7 +486,7 @@ const CompanyModal = ({
 
               <div className="flex-1 min-w-0">
                 <div className="flex items-center gap-2 flex-wrap mb-2">
-                  <h2 className="text-xl md:text-2xl font-bold text-gray-900 truncate">
+                  <h2 className="text-xl md:text-2xl font-bold text-slate-900 truncate">
                     {company.name}
                   </h2>
                   <span className="bg-orange-100 text-orange-700 text-xs px-2 py-1 rounded-full font-medium">
@@ -499,10 +499,10 @@ const CompanyModal = ({
                     </span>
                   )}
                 </div>
-                <p className="text-gray-500 text-sm md:text-base truncate">
+                <p className="text-slate-500 text-sm md:text-base truncate">
                   {company.email}
                 </p>
-                <p className="flex items-center gap-1 text-sm text-gray-600 mt-1">
+                <p className="flex items-center gap-1 text-sm text-slate-600 mt-1">
                   <Building2 className="w-4 h-4" />
                   <span className="flex font-semibold wrap-break-word">
                     {company.companyName}
@@ -569,15 +569,15 @@ const CompanyModal = ({
 
             {/* Stats Grid */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6 mb-6">
-              <div className="bg-gray-50 p-4 rounded-xl">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <div className="bg-slate-50 p-4 rounded-xl">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
                   <FileTextIcon className="w-4 h-4" />
                   Company Documents
                 </h3>
                 <div className="space-y-2">
                   {company.companyRegistrationNumber && (
                     <div className="flex justify-between items-center py-1">
-                      <span className="text-xs text-gray-600">
+                      <span className="text-xs text-slate-600">
                         Registration No:
                       </span>
                       <span className="text-sm font-medium">
@@ -587,34 +587,36 @@ const CompanyModal = ({
                   )}
                   {company.panNumber && (
                     <div className="flex justify-between items-center py-1">
-                      <span className="text-xs text-gray-600">PAN Number:</span>
+                      <span className="text-xs text-slate-600">
+                        PAN Number:
+                      </span>
                       <span className="text-sm font-medium">
                         {company.panNumber}
                       </span>
                     </div>
                   )}
                   {!company.companyRegistrationNumber && !company.panNumber && (
-                    <div className="text-xs text-gray-500 italic">
+                    <div className="text-xs text-slate-500 italic">
                       No documents provided
                     </div>
                   )}
                 </div>
               </div>
 
-              <div className="bg-gray-50 p-4 rounded-xl">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3 flex items-center gap-2">
+              <div className="bg-slate-50 p-4 rounded-xl">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3 flex items-center gap-2">
                   <BriefcaseBusiness />
                   Company Stats
                 </h3>
                 <div className="space-y-2">
                   <div className="flex justify-between items-center py-1">
-                    <span className="text-xs text-gray-600">Posted Jobs:</span>
+                    <span className="text-xs text-slate-600">Posted Jobs:</span>
                     <span className="text-sm font-medium">
                       {company.stats?.postedJobs || 0}
                     </span>
                   </div>
                   <div className="flex justify-between items-center py-1">
-                    <span className="text-xs text-gray-600">
+                    <span className="text-xs text-slate-600">
                       Total Applications:
                     </span>
                     <span className="text-sm font-medium">
@@ -628,10 +630,10 @@ const CompanyModal = ({
             {/* Company Description */}
             {company.companyDescription && (
               <div className="mb-6">
-                <h3 className="text-sm font-semibold text-gray-700 mb-3">
+                <h3 className="text-sm font-semibold text-slate-700 mb-3">
                   About Company
                 </h3>
-                <p className="text-xs text-gray-600 bg-gray-50 p-4 rounded-xl leading-relaxed text-justify">
+                <p className="text-xs text-slate-600 bg-slate-50 p-4 rounded-xl leading-relaxed text-justify">
                   {company.companyDescription}
                 </p>
               </div>
@@ -641,7 +643,7 @@ const CompanyModal = ({
             <div className="flex flex-col sm:flex-row gap-3 pt-4 border-t border-gray-200">
               <button
                 onClick={onClose}
-                className="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition text-sm"
+                className="flex-1 py-2.5 px-4 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition text-sm"
               >
                 Close
               </button>
@@ -666,11 +668,11 @@ const VerifyConfirmationModal = ({
           <ShieldCheck className="text-green-600 w-6 h-6" />
         </div>
 
-        <h3 className="text-xl font-bold text-gray-900 mb-2">
+        <h3 className="text-xl font-bold text-slate-900 mb-2">
           Verify Company?
         </h3>
 
-        <p className="text-gray-500 text-sm mb-6">
+        <p className="text-slate-500 text-sm mb-6">
           Verify <strong>{company.companyName}</strong>? This will mark the
           company as verified and display a verification badge.
         </p>
@@ -679,7 +681,7 @@ const VerifyConfirmationModal = ({
           <button
             onClick={onCancel}
             disabled={verifying}
-            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
           >
             Cancel
           </button>
@@ -697,11 +699,11 @@ const VerifyConfirmationModal = ({
 );
 
 const InfoItem = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl">
+  <div className="flex items-start gap-3 bg-slate-50 p-4 rounded-xl">
     <div className="text-sky-600">{icon}</div>
     <div>
-      <p className="text-gray-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-gray-900">{value}</p>
+      <p className="text-slate-500 text-xs uppercase">{label}</p>
+      <p className="font-medium text-slate-900">{value}</p>
     </div>
   </div>
 );
