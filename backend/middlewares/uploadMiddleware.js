@@ -9,7 +9,7 @@ const storage = new CloudinaryStorage({
     if (file.mimetype.startsWith("image/")) {
       return {
         folder: "job-portal/avatars",
-        allowed_formats: ["jpeg", "jpg", "png"],
+        allowed_formats: ["jpeg", "jpg", "png", "webp"],
         transformation: [{ width: 500, height: 500, crop: "limit" }],
       };
     } else if (file.mimetype === "application/pdf") {
@@ -27,6 +27,7 @@ const fileFilter = (req, file, cb) => {
     "image/jpeg",
     "image/png",
     "image/jpg",
+    "image/webp",
     "application/pdf",
   ];
 
@@ -34,7 +35,7 @@ const fileFilter = (req, file, cb) => {
     cb(null, true);
   } else {
     cb(
-      new Error("Only .jpeg, .jpg, .png, and .pdf formats are allowed"),
+      new Error("Only .jpeg, .jpg, .png, .webp and .pdf formats are allowed"),
       false
     );
   }

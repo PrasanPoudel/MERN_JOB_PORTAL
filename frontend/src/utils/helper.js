@@ -27,7 +27,7 @@ export const validateAvatar = (file) => {
   if (!file) return "Avatar (Profile Picture) is required"; // Avatar is not optional
   const allowedTypes = ["image/jpeg", "image/jpg", "image/png", "image/webp"];
   if (!allowedTypes.includes(file.type)) {
-    return "Avatar must be a JPG, webp or PNG file";
+    return "Avatar must be a .jpeg, .jpg, .webp or .png file";
   }
   const maxSize = 5 * 1024 * 1024; // 5MB
   if (file.size > maxSize) {
