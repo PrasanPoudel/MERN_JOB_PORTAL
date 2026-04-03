@@ -5,8 +5,9 @@ import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import toast from "react-hot-toast";
 import { statusConfig, StatusBadge } from "../StatusBadge";
+import { useNavigate, Link } from "react-router-dom";
 
-const statusOptions = ["Applied", "In Review", "Rejected", "Hired"];
+const statusOptions = ["Applied", "In Interview", "Rejected", "Hired"];
 
 const ApplicantProfilePreview = ({
   selectedApplicant,
@@ -14,6 +15,7 @@ const ApplicantProfilePreview = ({
   handleDownloadResume,
   handleClose,
 }) => {
+  const navigate = useNavigate();
   const [currentStatus, setCurrentStatus] = useState(selectedApplicant.status);
   const [loading, setLoading] = useState(false);
 
@@ -62,12 +64,22 @@ const ApplicantProfilePreview = ({
         <div className="p-4">
           <div className="text-center mb-6">
             <img
+              title="View applicant profile"
+              onClick={() => {
+                navigate(`/profile/${selectedApplicant.applicant?._id}`);
+              }}
               src={selectedApplicant.applicant.avatar || "/default.png"}
               alt={selectedApplicant.applicant.name}
-              className="object-fill h-20 w-20 rounded-full mx-auto"
+              className="object-fill h-20 w-20 rounded-full mx-auto cursor-pointer hover:border-2 hover:border-slate-400 mb-2"
               style={{ imageRendering: "auto" }}
             />
-            <h4 className="mt-4 text-xl font-semibold text-slate-900">
+            <Link
+              to={`/profile/${selectedApplicant.applicant?._id}`}
+              className="text-sky-600 underline text-xs"
+            >
+              Click to visit profile
+            </Link>
+            <h4 className="text-xl font-semibold text-slate-900">
               {selectedApplicant.applicant.name}
             </h4>
             <p className="text-slate-600">
@@ -78,7 +90,7 @@ const ApplicantProfilePreview = ({
           <div className="space-y-4">
             {/* Change Status */}
             <div className="mt-4">
-              <label className="block mb-2 text-sm text-slate-700 font-medium ">
+              <label className="block font-semibold mb-2 text-slate-700">
                 Change Application Status
               </label>
               <select
@@ -102,7 +114,7 @@ const ApplicantProfilePreview = ({
               )}
             </div>
             <div className="bg-slate-50 rounded-lg p-4">
-              <h5 className="font-medium text-slate-900 mb-2">
+              <h5 className="font-semibold text-slate-900 mb-2">
                 Applied Position
               </h5>
               <p className="text-slate-700">{selectedApplicant.job.title}</p>
@@ -112,7 +124,7 @@ const ApplicantProfilePreview = ({
             </div>
 
             <div className="bg-slate-50 rounded-lg p-4">
-              <h5 className="font-medium text-slate-900 mb-2">
+              <h5 className="font-semibold text-slate-900 mb-2">
                 Application Details
               </h5>
               <div className="space-y-2">

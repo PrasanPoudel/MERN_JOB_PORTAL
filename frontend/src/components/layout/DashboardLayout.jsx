@@ -137,7 +137,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
       {/* Sidebar */}
       <aside
         className={[
-          "fixed inset-y-0 left-0 z-40 flex flex-col bg-white border-r border-slate-200 w-64",
+          "fixed inset-y-0 left-0 z-1000 flex flex-col bg-white border-r border-slate-200 w-64",
           "transition-all duration-300 ease-in-out",
           isMobile
             ? sidebarOpen
