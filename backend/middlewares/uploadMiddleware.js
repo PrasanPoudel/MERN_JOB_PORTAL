@@ -1,14 +1,23 @@
 const multer = require("multer");
-const { v4: uuidv4 } = require("uuid");
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("../config/cloudinary");
 
-// Configure storage
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    const id = uuidv4();
-    cb(null, `${id}-${file.originalname}`);
+// Generic Cloudinary storage that auto detects file type
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: async (req, file) => {
+    if (file.mimetype.startsWith("image/")) {
+      return {
+        folder: "job-portal/avatars",
+        allowed_formats: ["jpeg", "jpg", "png"],
+        transformation: [{ width: 500, height: 500, crop: "limit" }],
+      };
+    } else if (file.mimetype === "application/pdf") {
+      return {
+        folder: "job-portal/resumes",
+        allowed_formats: ["pdf"],
+      };
+    }
   },
 });
 
@@ -30,6 +39,13 @@ const fileFilter = (req, file, cb) => {
     );
   }
 };
-const upload = multer({ storage, fileFilter });
+
+const upload = multer({
+  storage,
+  fileFilter,
+  limits: {
+    fileSize: 10 * 1024 * 1024,
+  }
+});
 
 module.exports = upload;

@@ -6,6 +6,18 @@ const uploadFile = async (file) => {
     throw new Error("No file provided");
   }
 
+  // Frontend file size validation
+  const MAX_IMAGE_SIZE = 5 * 1024 * 1024; // 5MB
+  const MAX_PDF_SIZE = 10 * 1024 * 1024; // 10MB
+
+  if (file.type.startsWith("image/") && file.size > MAX_IMAGE_SIZE) {
+    throw new Error("Image file size exceeds 5MB limit. Please compress your image.");
+  }
+
+  if (file.type === "application/pdf" && file.size > MAX_PDF_SIZE) {
+    throw new Error("Resume file size exceeds 10MB limit. Please reduce file size.");
+  }
+
   const formData = new FormData();
   formData.append("file", file);
 

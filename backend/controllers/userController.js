@@ -1,5 +1,4 @@
-const fs = require("fs");
-const path = require("path");
+const cloudinary = require("../config/cloudinary");
 const User = require("../models/User");
 const Job = require("../models/Job");
 const Application = require("../models/Application");
@@ -35,7 +34,39 @@ exports.updateProfile = async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
     user.name = name ?? user.name;
+
+    // Handle avatar update - delete old file from Cloudinary if replaced
+    if (avatar && avatar !== user.avatar && user.avatarPublicId) {
+      try {
+        await cloudinary.uploader.destroy(user.avatarPublicId);
+      } catch (e) {
+        console.error("Failed to delete old avatar from Cloudinary:", e);
+      }
+    }
+    if (avatar && avatar !== user.avatar) {
+      // Extract new public ID from Cloudinary URL
+      const avatarPublicIdMatch = avatar.match(/\/v\d+\/(.+?)\./);
+      if (avatarPublicIdMatch) {
+        user.avatarPublicId = avatarPublicIdMatch[1];
+      }
+    }
     user.avatar = avatar ?? user.avatar;
+
+    // Handle resume update - delete old file from Cloudinary if replaced
+    if (resume && resume !== user.resume && user.resumePublicId) {
+      try {
+        await cloudinary.uploader.destroy(user.resumePublicId);
+      } catch (e) {
+        console.error("Failed to delete old resume from Cloudinary:", e);
+      }
+    }
+    if (resume && resume !== user.resume) {
+      // Extract new public ID from Cloudinary URL
+      const resumePublicIdMatch = resume.match(/\/v\d+\/(.+?)\./);
+      if (resumePublicIdMatch) {
+        user.resumePublicId = resumePublicIdMatch[1];
+      }
+    }
     user.resume = resume ?? user.resume;
     user.location = location ?? user.location;
     user.facebookLink = facebookLink ?? user.facebookLink;
@@ -51,7 +82,24 @@ exports.updateProfile = async (req, res) => {
     if (user.role === "employer") {
       user.companyName = companyName ?? user.companyName;
       user.companyDescription = companyDescription ?? user.companyDescription;
+      
+      // Handle company logo update - delete old file from Cloudinary if replaced
+      if (companyLogo && companyLogo !== user.companyLogo && user.companyLogoPublicId) {
+        try {
+          await cloudinary.uploader.destroy(user.companyLogoPublicId);
+        } catch (e) {
+          console.error("Failed to delete old company logo from Cloudinary:", e);
+        }
+      }
+      if (companyLogo && companyLogo !== user.companyLogo) {
+        // Extract new public ID from Cloudinary URL
+        const companyLogoPublicIdMatch = companyLogo.match(/\/v\d+\/(.+?)\./);
+        if (companyLogoPublicIdMatch) {
+          user.companyLogoPublicId = companyLogoPublicIdMatch[1];
+        }
+      }
       user.companyLogo = companyLogo ?? user.companyLogo;
+      
       user.companyLocation = companyLocation ?? user.companyLocation;
       user.companyWebsiteLink = companyWebsiteLink ?? user.companyWebsiteLink;
       user.companySize = companySize ?? user.companySize;
@@ -93,12 +141,9 @@ exports.updateProfile = async (req, res) => {
   }
 };
 
-//delete resume (jobSeeker only)
+// Delete resume (jobSeeker only)
 exports.deleteResume = async (req, res) => {
   try {
-    const { resumeUrl } = req.body; //expect resumeUrl to be the url of the resume
-    const fileName = resumeUrl?.split(" ")?.pop(); //extract file name from url
-
     const user = await User.findById(req.user._id);
     if (!user) return res.status(404).json({ message: "User not found" });
 
@@ -108,14 +153,14 @@ exports.deleteResume = async (req, res) => {
         .json({ message: "Only jobSeekers can delete resume" });
     }
 
-    const filePath = path.join(__dirname, "../uploads", fileName);
-
-    //check if the file exists then only delete the file if found
-    if (fs.existsSync(filePath)) {
-      fs.unlinkSync(filePath); //delete
+    if (user.resumePublicId) {
+      await cloudinary.uploader.destroy(user.resumePublicId);
     }
+
     user.resume = "";
+    user.resumePublicId = "";
     await user.save();
+
     res.json({ message: "Resume deleted successfully" });
   } catch (err) {
     res.status(400).json({ message: err.message });
@@ -148,28 +193,25 @@ exports.deleteUser = async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).json({ message: "User not found" });
 
-    // Delete user's files (avatar, resume, company logo)
+    // Delete user's files from Cloudinary
     try {
-      if (user.avatar && fs.existsSync(user.avatar)) {
-        fs.unlinkSync(user.avatar);
+      if (user.avatarPublicId) {
+        await cloudinary.uploader.destroy(user.avatarPublicId);
       }
-      if (user.companyLogo && fs.existsSync(user.companyLogo)) {
-        fs.unlinkSync(user.companyLogo);
+      if (user.resumePublicId) {
+        await cloudinary.uploader.destroy(user.resumePublicId);
       }
-      if (user.resume && fs.existsSync(user.resume)) {
-        fs.unlinkSync(user.resume);
+      if (user.companyLogoPublicId) {
+        await cloudinary.uploader.destroy(user.companyLogoPublicId);
       }
     } catch (fileError) {
-      console.error("Error deleting user files:", fileError);
+      console.error("Error deleting user files from Cloudinary:", fileError);
       // Continue with deletion even if file deletion fails
     }
 
     // Delete all messages sent or received by this user
-    await Message.deleteMany({ 
-      $or: [
-        { sender: user._id },
-        { receiver: user._id }
-      ]
+    await Message.deleteMany({
+      $or: [{ sender: user._id }, { receiver: user._id }],
     });
 
     // If user is an employer
@@ -202,8 +244,7 @@ exports.deleteUser = async (req, res) => {
     await User.findByIdAndDelete(user._id);
 
     res.json({
-      message:
-        "User account and all associated data deleted successfully",
+      message: "User account and all associated data deleted successfully",
     });
   } catch (err) {
     console.error("Error deleting user:", err);
