@@ -130,7 +130,7 @@ const getOTPEmailTemplate = (userName, otp) => {
         .container { max-width: 600px; margin: 0 auto; padding: 20px; }
         .header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
         .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-        .otp-box { background: white; padding: 30px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px dashed #0ea5e9; }
+        .otp-box { background: white; padding: 30px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px #0ea5e9; }
         .otp-code { font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #0284c7; margin: 20px 0; }
         .info-text { color: #6b7280; font-size: 14px; margin-top: 20px; }
         .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
