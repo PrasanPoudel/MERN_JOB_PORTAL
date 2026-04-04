@@ -642,11 +642,11 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               {formData.skills?.map((skill, i) => (
                 <span
                   key={i}
-                  className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 bg-sky-100 text-sky-700 rounded-full text-sm"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-slate-400 shadow-sm rounded-full text-sm"
                 >
                   {skill}
                   <button onClick={() => removeSkill(i)}>
-                    <Trash2 className="w-4 h-4 hover:text-red-600" />
+                    <Trash2 className="w-4 h-4 text-red-600 hover:text-red-700" />
                   </button>
                 </span>
               ))}
@@ -887,12 +887,9 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                     )}
 
                     <div className="sm:col-span-2">
-                      <div className="space-y-2 mb-3">
+                      <div className="space-y-2 mb-3 relative">
                         {exp.description?.map((desc, dIndex) => (
-                          <div
-                            key={dIndex}
-                            className="flex flex-col sm:flex-row gap-2"
-                          >
+                          <div key={dIndex} className="flex">
                             <input
                               value={desc ?? ""}
                               id={`experience-description-${expIndex}-${dIndex}`}
@@ -911,15 +908,15 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                               onClick={() =>
                                 removeExperienceDescription(expIndex, dIndex)
                               }
-                              className="text-red-600"
+                              className="text-red-600 absolute right-0 bg-white -mt-1 rounded-full overflow-hidden"
                             >
-                              <Trash2 className="w-5 h-5" />
+                              <X className="w-5 h-5 shadow-sm" />
                             </button>
                           </div>
                         ))}
                       </div>
 
-                      <div className="flex flex-col sm:flex-row gap-2">
+                      <div className="flex flex-col items-end sm:flex-row sm:items-center gap-2">
                         <input
                           value={newDesc[expIndex] ?? ""}
                           id={`experience-newDesc-${expIndex}`}
@@ -934,7 +931,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                         />
                         <button
                           onClick={() => addExperienceDescription(expIndex)}
-                          className="px-4 py-2 bg-sky-600 text-white rounded-lg"
+                          className="flex justify-end px-4 py-2 bg-sky-600 text-white rounded-lg"
                         >
                           <Plus className="w-5 h-5" />
                         </button>
