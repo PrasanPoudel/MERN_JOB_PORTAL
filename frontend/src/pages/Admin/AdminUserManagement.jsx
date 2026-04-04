@@ -295,7 +295,7 @@ const AdminUserManagement = () => {
                             <p className="font-semibold text-slate-900">
                               {user.name}
                             </p>
-                            {!user.isPremium && (
+                            {user.isPremium && (
                               <span
                                 title="Premium User"
                                 className="text-white p-1 rounded-lg bg-yellow-400"
@@ -332,7 +332,7 @@ const AdminUserManagement = () => {
                             <Building2 className="w-3.5 h-3.5 shrink-0" />
                             {user.companyName}
                             {user.role === "employer" &&
-                              !user.isCompanyVerified && (
+                              user.isCompanyVerified && (
                                 <BadgeCheck className="w-4 h-4 text-sky-600" />
                               )}
                           </span>

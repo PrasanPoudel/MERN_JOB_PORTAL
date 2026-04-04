@@ -596,7 +596,7 @@ const Chat = ({ isAdmin = false }) => {
 
         {/* Main Chat Area */}
         {selectedConversation ? (
-          <div className="flex-1 flex flex-col min-w-0">
+          <div className="flex-1 flex flex-col min-w-0 px-2">
             {/* Chat Header */}
             <div className="bg-white p-2 bg-linear-to-r shadow-sm z-10">
               <div className="flex items-center gap-2">
