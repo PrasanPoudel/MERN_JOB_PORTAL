@@ -358,7 +358,7 @@ const Chat = ({ isAdmin = false }) => {
         <div
           className={`${
             isMobile
-              ? `fixed inset-0 top-16 transition-transform duration-300 ease-in-out z-50 ${
+              ? `fixed inset-0 top-0 transition-transform duration-300 ease-in-out z-50 ${
                   sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
               : "w-full md:w-96 lg:w-104"
@@ -713,9 +713,9 @@ const Chat = ({ isAdmin = false }) => {
                   return (
                     <div key={message._id}>
                       {showDateDivider && (
-                        <div className="flex items-center justify-center my-8">
+                        <div className="flex items-center justify-center my-4">
                           <div className="flex-1 border-t border-gray-200/60"></div>
-                          <span className="px-4 py-2 text-xs text-gray-500 font-medium bg-white rounded-full shadow-sm border border-gray-200/60 mx-4">
+                          <span className="px-4 py-1 text-xs text-gray-500 font-medium bg-white rounded-full shadow-sm border border-gray-200/60 mx-4">
                             {moment(message.createdAt).calendar(null, {
                               sameDay: "[Today]",
                               lastDay: "[Yesterday]",
@@ -762,16 +762,16 @@ const Chat = ({ isAdmin = false }) => {
                                 }}
                               />
                             </div>
-                            <div className="flex items-center gap-2 mt-2 px-1">
+                            <div className="flex items-center gap-2 mt-1 px-1">
                               <span className="text-xs text-gray-500 font-medium">
                                 {moment(message.createdAt).format("HH:mm")}
                               </span>
                               {isOwnMessage && (
                                 <>
                                   {message.read ? (
-                                    <CheckCheck className="w-4 h-4 text-sky-600" />
+                                    <CheckCheck className="w-3 h-3 text-sky-600" />
                                   ) : (
-                                    <Check className="w-4 h-4 text-gray-600" />
+                                    <Check className="w-3 h-3 text-gray-600" />
                                   )}
                                 </>
                               )}
