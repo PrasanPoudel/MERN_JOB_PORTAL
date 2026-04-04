@@ -341,12 +341,6 @@ const UserProfilePage = () => {
                           label: "Account Type",
                           value: user?.isPremium ? "Premium User" : "Free User",
                         },
-                        user.role === "employer"
-                          ? { label: "Company Name", value: user?.companyName }
-                          : null,
-                        user.role === "employer"
-                          ? { label: "Company Size", value: user?.companySize }
-                          : null,
                       ]
                         .filter(Boolean)
                         .map(({ label, value }) => (

@@ -294,7 +294,7 @@ const EmployerProfilePage = () => {
                     </h3>
                     {!profileData?.isPremium && (
                       <div className="flex items-center gap-1">
-                        <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-slate-50 text-slate-700 text-sm font-semibold border border-gray-200">
+                        <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-slate-50 text-slate-700 text-sm font-medium border border-gray-200">
                           <User className="w-4 h-4" />
                           Free User
                         </span>
