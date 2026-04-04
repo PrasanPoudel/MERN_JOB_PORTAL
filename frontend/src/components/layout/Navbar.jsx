@@ -90,17 +90,17 @@ const Navbar = () => {
         {/* Desktop Navigation */}
         <div className="hidden sm:flex items-center gap-1">
           <NavLink title="Go to Homepage" to="/" className={navLinkClasses}>
-            <Home className="h-4 w-4" />
+            <Home className="w-6 h-6" />
             <span>Home</span>
           </NavLink>
           <NavLink title="Find Jobs" to="/find-jobs" className={navLinkClasses}>
-            <Search className="h-4 w-4" />
+            <Search className="w-6 h-6" />
             <span>Find Jobs</span>
           </NavLink>
           {user && (
             <NavLink title="Messages" to={chatPath} className={navLinkClasses}>
               <div className="relative">
-                <MessageSquare className="h-4 w-4" />
+                <MessageSquare className="w-6 h-6" />
                 {unreadCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full h-4 min-w-4 flex items-center justify-center font-bold px-1">
                     {unreadCount > 99 ? "99+" : unreadCount}
@@ -159,7 +159,7 @@ const Navbar = () => {
 
       {/* Mobile Menu */}
       {openMenu && (
-        <div className="sm:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-200 shadow-lg pt-4 flex flex-col gap-2">
+        <div className="sm:hidden absolute top-16 left-0 w-full bg-white border-b border-slate-200 shadow-lg py-10 px-2 flex flex-col gap-2">
           <hr className="text-slate-200" />
           <NavLink
             title="Go to Homepage"
@@ -167,7 +167,7 @@ const Navbar = () => {
             className={navLinkClasses}
             onClick={() => setOpenMenu(false)}
           >
-            <Home className="h-4 w-4" />
+            <Home className="w-6 h-6" />
             <span>Home</span>
           </NavLink>
           <NavLink
@@ -176,7 +176,7 @@ const Navbar = () => {
             className={navLinkClasses}
             onClick={() => setOpenMenu(false)}
           >
-            <Search className="h-4 w-4" />
+            <Search className="w-6 h-6" />
             <span>Find Jobs</span>
           </NavLink>
           {user && (
@@ -187,7 +187,7 @@ const Navbar = () => {
               onClick={() => setOpenMenu(false)}
             >
               <div className="relative">
-                <MessageSquare className="h-4 w-4" />
+                <MessageSquare className="w-6 h-6" />
                 {unreadCount > 0 && (
                   <span className="absolute -top-2 -right-2 bg-red-500 text-white text-[10px] rounded-full h-4 min-w-4 flex items-center justify-center font-bold px-1">
                     {unreadCount > 99 ? "99+" : unreadCount}

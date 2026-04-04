@@ -14,6 +14,7 @@ import {
   Crown,
   Edit3,
   Building2,
+  UserCog,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -107,7 +108,7 @@ const ProfileDropdown = ({
 
         {/* Dropdown Menu */}
         {isOpen && (
-          <div className="absolute right-0 mt-4 w-60 bg-white rounded-xl shadow-lg border border-slate-200 z-50 overflow-hidden">
+          <div className="absolute -right-12 sm:right-12 mt-4 w-72 bg-white rounded-xl shadow-lg border border-slate-200 z-50 overflow-hidden">
             {/* Header */}
             <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
               <p className="flex items-center gap-1 text-sm font-semibold text-slate-900 truncate">
@@ -119,14 +120,15 @@ const ProfileDropdown = ({
                 )}
               </p>
               {role === "employer" && companyName && (
-                <p className="flex items-center gap-1 text-xs text-slate-500 truncate">
+                <p className="flex items-center gap-1 text-sm text-slate-600 truncate">
+                  <Building2 className="w-4 h-4"/>
                   {companyName}
                   {isCompanyVerified && (
                     <BadgeCheck className="w-3.5 h-3.5 text-sky-600 shrink-0" />
                   )}
                 </p>
               )}
-              <p className="text-xs text-slate-400 truncate mt-0.5">{email}</p>
+              <p className="text-xs text-slate-600 truncate mt-0.5">{email}</p>
             </div>
 
             <div className="flex flex-col p-1.5">
@@ -157,7 +159,7 @@ const ProfileDropdown = ({
                   className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
                 >
                   <span className="flex items-center gap-3">
-                    <User className="w-4 h-4 text-slate-500" />
+                    <UserCog className="w-4 h-4 text-slate-500" />
                     Account & Settings
                   </span>
                   {accountSettingsOpen ? (
@@ -168,7 +170,7 @@ const ProfileDropdown = ({
                 </button>
 
                 {accountSettingsOpen && (
-                  <div className="flex flex-col pl-6 mt-0.5 space-y-0.5">
+                  <div className="flex bg-slate-50 border border-t-0 border-slate-100 rounded-b-2xl flex-col pl-6 space-y-0.5">
                     {role === "jobSeeker" && (
                       <div
                         onClick={() => navigate("/profile")}
@@ -212,7 +214,7 @@ const ProfileDropdown = ({
                           state: { userEmail: email, userRole: role },
                         })
                       }
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-red-600 hover:bg-red-50 cursor-pointer transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-red-50 cursor-pointer transition-colors hover:text-red-600"
                     >
                       <Trash2 className="w-4 h-4" />
                       Delete Account

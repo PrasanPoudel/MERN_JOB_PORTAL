@@ -171,7 +171,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 onClick={() => setSidebarOpen(false)}
                 className="p-2 rounded-lg text-slate-500 hover:bg-slate-100 transition-colors cursor-pointer"
               >
-                <X className="w-5 h-5" />
+                <X className="w-6 h-6" />
               </button>
             </div>
           )}
@@ -206,7 +206,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 onClick={() => setSidebarOpen(true)}
                 className="p-2 rounded-lg text-slate-500 hover:text-slate-900 hover:bg-slate-100 transition-colors shrink-0 cursor-pointer"
               >
-                <Menu className="w-5 h-5" />
+                <Menu className="w-6 h-6" />
               </button>
             )}
 
@@ -217,7 +217,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                   {user?.name ? `, ${user.name.split(" ")[0]}` : ""}
                 </p>
                 <p className="flex items-center gap-1 text-sm text-slate-600 leading-snug truncate">
-                  <Calendar className="w-4 h-4"/>
+                  <Calendar className="w-6 h-6"/>
                   {formattedDate}
                 </p>
               </div>
@@ -226,7 +226,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
 
           <div className="flex items-center gap-1 shrink-0">
             <NavLink to="/" className={headerNavLink} title="Home">
-              <Home className="w-4 h-4 shrink-0" />
+              <Home className="w-6 h-6 shrink-0" />
               <span className="hidden md:inline">Home</span>
             </NavLink>
 
@@ -237,7 +237,7 @@ const DashboardLayout = ({ activeMenu, children }) => {
                 title="Messages"
               >
                 <span className="relative flex items-center">
-                  <MessageSquare className="w-4 h-4 shrink-0" />
+                  <MessageSquare className="w-6 h-6 shrink-0" />
                   {unreadCount > 0 && (
                     <span className="absolute -top-2 -right-2 flex h-4 min-w-4 items-center justify-center rounded-full bg-red-500 text-[9px] font-bold text-white px-0.5 border-2 border-white">
                       {unreadCount > 99 ? "99+" : unreadCount}
