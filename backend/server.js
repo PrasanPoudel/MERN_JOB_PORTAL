@@ -72,7 +72,7 @@ app.use("/api/payment", paymentRoutes);
 //Serve uploads folder
 app.use("/uploads", express.static(path.join(__dirname, "uploads"), {}));
 //Start Server
-const PORT = process.env.PORT || 8000;
+const PORT = Number(process.env.PORT) || 8000;
 app.listen(PORT, () => {
   console.log(`Server running on PORT ${PORT}`);
 });
