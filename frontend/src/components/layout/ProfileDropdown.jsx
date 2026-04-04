@@ -82,7 +82,10 @@ const ProfileDropdown = ({
             <p className="flex items-center gap-1 text-sm font-semibold text-slate-900 leading-tight">
               {name || "User"}
               {isPremium && (
-                <span title="Premium User" className="text-amber-500">
+                <span
+                  title="Premium User"
+                  className="text-white p-1 rounded-lg bg-yellow-400"
+                >
                   <Crown className="w-3.5 h-3.5" />
                 </span>
               )}
@@ -114,14 +117,17 @@ const ProfileDropdown = ({
               <p className="flex items-center gap-1 text-sm font-semibold text-slate-900 truncate">
                 {name || "User"}
                 {isPremium && (
-                  <span title="Premium User" className="text-amber-500">
+                  <span
+                    title="Premium User"
+                    className="text-white p-1 rounded-lg bg-yellow-400"
+                  >
                     <Crown className="w-3.5 h-3.5" />
                   </span>
                 )}
               </p>
               {role === "employer" && companyName && (
                 <p className="flex items-center gap-1 text-sm text-slate-600 truncate">
-                  <Building2 className="w-4 h-4"/>
+                  <Building2 className="w-4 h-4" />
                   {companyName}
                   {isCompanyVerified && (
                     <BadgeCheck className="w-3.5 h-3.5 text-sky-600 shrink-0" />
