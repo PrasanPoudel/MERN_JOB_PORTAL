@@ -13,10 +13,10 @@ export const Card = ({
       className={`card ${className}`}
     >
       {(title || headerAction) && (
-        <div className="flex items-center justify-between p-5 border-b border-slate-100">
+        <div className="flex items-center justify-between p-4 border-b border-slate-100">
           <div>
             {title && (
-              <h3 className="text-base font-bold text-slate-900">{title}</h3>
+              <h3 className="text-base font-semibold text-slate-900">{title}</h3>
             )}
             {subtitle && (
               <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>
