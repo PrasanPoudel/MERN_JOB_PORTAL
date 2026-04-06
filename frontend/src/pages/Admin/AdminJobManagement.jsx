@@ -162,10 +162,10 @@ const AdminJobManagement = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">
+            <h1 className="text-xl font-semibold text-gray-900">
               Job Management
             </h1>
-            <p className="text-slate-500 text-sm mt-1">
+            <p className="text-gray-500 text-sm mt-1">
               Manage all job postings
             </p>
           </div>
@@ -177,7 +177,7 @@ const AdminJobManagement = () => {
         {/* Filters */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
               autoComplete="off"
               id="search_job"
@@ -228,15 +228,15 @@ const AdminJobManagement = () => {
           </div>
         ) : jobs.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <BriefcaseBusiness className="w-12 h-12 mx-auto text-slate-300 mb-4" />
-            <p className="text-slate-600 font-medium">No jobs found</p>
+            <BriefcaseBusiness className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+            <p className="text-gray-600 font-medium">No jobs found</p>
           </div>
         ) : (
           <>
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-sm text-slate-700 lg:text-base">
+                <p className="text-sm text-gray-700 lg:text-base">
                   Showing{" "}
                   <span className="font-semibold">
                     {(currentPage - 1) * itemsPerPage + 1}
@@ -279,16 +279,16 @@ const AdminJobManagement = () => {
                       }
 
                       return (
-                        <div className="px-4 py-3 rounded-lg border bg-slate-50 space-y-2">
+                        <div className="px-4 py-3 rounded-lg border bg-gray-50 space-y-2">
                           <div className="flex justify-between items-center">
-                            <span className="text-sm font-medium text-slate-600">
+                            <span className="text-sm font-medium text-gray-600">
                               Fraud Risk
                             </span>
                             <span className={`text-sm font-semibold ${color}`}>
                               {label}
                             </span>
                           </div>
-                          <div className="w-full h-2 bg-slate-200 rounded-full overflow-hidden">
+                          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
                             <div
                               className={`${bg} h-full transition-all duration-300`}
                               style={{ width: `${percentage}%` }}
@@ -312,7 +312,7 @@ const AdminJobManagement = () => {
                     <button
                       onClick={() => handleMessageEmployer(job?.company?._id)}
                       title="Send message to employer"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
                     >
                       Message
                     </button>
@@ -340,7 +340,7 @@ const AdminJobManagement = () => {
                       getAllJobs(Math.max(1, currentPage - 1));
                     }}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
@@ -354,7 +354,7 @@ const AdminJobManagement = () => {
                       );
                     }}
                     disabled={currentPage === pagination.totalPages}
-                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
@@ -363,7 +363,7 @@ const AdminJobManagement = () => {
                 {/* Desktop pagination */}
                 <div className="hidden md:flex sm:flex-1 items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-700">
+                    <p className="text-sm text-gray-700">
                       Showing{" "}
                       <span className="font-semibold">
                         {(currentPage - 1) * itemsPerPage + 1}
@@ -372,7 +372,8 @@ const AdminJobManagement = () => {
                       <span className="font-semibold">
                         {Math.min(currentPage * itemsPerPage, pagination.total)}
                       </span>{" "}
-                      of <span className="font-semibold">{pagination.total}</span>{" "}
+                      of{" "}
+                      <span className="font-semibold">{pagination.total}</span>{" "}
                       results
                     </p>
                   </div>
@@ -384,7 +385,7 @@ const AdminJobManagement = () => {
                           getAllJobs(Math.max(1, currentPage - 1));
                         }}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -395,7 +396,7 @@ const AdminJobManagement = () => {
                         page === "..." ? (
                           <span
                             key={`dots-${index}`}
-                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-slate-500 bg-white"
+                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
                           >
                             ...
                           </span>
@@ -409,7 +410,7 @@ const AdminJobManagement = () => {
                             className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                               currentPage === page
                                 ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
+                                : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
                             }`}
                           >
                             {page}
@@ -426,7 +427,7 @@ const AdminJobManagement = () => {
                           );
                         }}
                         disabled={currentPage === pagination.totalPages}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
@@ -451,7 +452,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
       <div className="bg-white m-auto rounded-3xl shadow-2xl w-full max-w-3xl max-h-[90vh] flex flex-col relative overflow-hidden">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 p-2 rounded-full hover:bg-slate-100 z-10"
+          className="absolute top-4 right-4 p-2 rounded-full hover:bg-gray-100 z-10"
           aria-label="Close modal"
         >
           <X className="w-6 h-6" />
@@ -470,46 +471,46 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                     className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                   />
                 ) : (
-                  <div className="w-20 h-20 flex items-center justify-center bg-slate-100 rounded-lg border border-gray-200 text-slate-400 text-xl font-semibold">
+                  <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200 text-gray-400 text-xl font-semibold">
                     {companyName.charAt(0)}
                   </div>
                 )}
 
                 <div className="flex flex-col text-center sm:text-left">
-                  <h3 className="flex items-center text-lg font-semibold text-slate-900">
+                  <h3 className="flex items-center text-lg font-semibold text-gray-900">
                     {companyName}
                     {job?.company?.isCompanyVerified && (
                       <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
                     )}
                   </h3>
-                  <p className="text-sm text-slate-600 mt-1">{employerName}</p>
-                  <p className="text-xs text-slate-600 mt-1">
+                  <p className="text-sm text-gray-600 mt-1">{employerName}</p>
+                  <p className="text-xs text-gray-600 mt-1">
                     {job.company.email}
                   </p>
                 </div>
               </div>
 
-              <h2 className="text-xl font-semibold text-slate-900 mb-4">
+              <h2 className="text-xl font-semibold text-gray-900 mb-4">
                 {job.title}
               </h2>
 
-              <p className="text-slate-600 text-xs text-justify mb-6 whitespace-normal wrap-break-word">
+              <p className="text-gray-600 text-xs text-justify mb-6 whitespace-normal wrap-break-word">
                 {job.description}
               </p>
 
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 mb-32">
                 <InfoItem
-                  icon={<Tag className="w-4 h-4 text-slate-400 shrink-0" />}
+                  icon={<Tag className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Category"
                   value={job.category || "N/A"}
                 />
                 <InfoItem
-                  icon={<Clock className="w-4 h-4 text-slate-400 shrink-0" />}
+                  icon={<Clock className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Type"
                   value={job.type}
                 />
                 <InfoItem
-                  icon={<MapPin className="w-4 h-4 text-slate-400 shrink-0" />}
+                  icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Location"
                   value={job.location || "N/A"}
                 />
@@ -518,29 +519,29 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   value={`NPR ${job.salaryMin || 0} - ${job.salaryMax || 0}`}
                 />
                 <InfoItem
-                  icon={<Info className="w-4 h-4 text-slate-400 shrink-0" />}
+                  icon={<Info className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Status"
                   value={job.isClosed ? "Closed" : "Active"}
                 />
                 <InfoItem
-                  icon={<MapPin className="w-4 h-4 text-slate-400 shrink-0" />}
+                  icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Required Education Level"
                   value={job.educationLevel || "N/A"}
                 />
                 <InfoItem
-                  icon={<MapPin className="w-4 h-4 text-slate-400 shrink-0" />}
+                  icon={<MapPin className="w-4 h-4 text-gray-400 shrink-0" />}
                   label="Required Experience Level"
                   value={job.experienceLevel || "N/A"}
                 />
                 <div className="sm:col-span-2">
                   <h3>Requirements</h3>
-                  <p className="text-slate-600 my-2 text-xs text-justify whitespace-normal wrap-break-word">
+                  <p className="text-gray-600 my-2 text-xs text-justify whitespace-normal wrap-break-word">
                     {job.requirements || "N/A"}
                   </p>
                 </div>
                 <div className="sm:col-span-2">
                   <h3>Company Offer</h3>
-                  <p className="text-slate-600 my-2 text-xs text-justify mb-6 whitespace-normal wrap-break-word">
+                  <p className="text-gray-600 my-2 text-xs text-justify mb-6 whitespace-normal wrap-break-word">
                     {job.offer || "N/A"}
                   </p>
                 </div>
@@ -572,11 +573,11 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
 };
 
 const InfoItem = ({ icon, label, value }) => (
-  <div className="bg-slate-50 p-4 rounded-xl flex items-start gap-3 min-h-18">
+  <div className="bg-gray-50 p-4 rounded-xl flex items-start gap-3 min-h-18">
     {icon}
     <div>
-      <p className="text-slate-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-slate-900 whitespace-normal wrap-break-word">
+      <p className="text-gray-500 text-xs uppercase">{label}</p>
+      <p className="font-medium text-gray-900 whitespace-normal wrap-break-word">
         {value}
       </p>
     </div>
@@ -587,9 +588,11 @@ const DeleteConfirmationModal = ({ job, onCancel, onConfirm, deleting }) => (
   <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">Delete Job?</h3>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          Delete Job?
+        </h3>
 
-        <p className="text-slate-500 text-sm mb-6">
+        <p className="text-gray-500 text-sm mb-6">
           Permanently delete <strong>{job.title}</strong>? This action cannot be
           undone.
         </p>
@@ -598,7 +601,7 @@ const DeleteConfirmationModal = ({ job, onCancel, onConfirm, deleting }) => (
           <button
             onClick={onCancel}
             disabled={deleting}
-            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
           >
             Cancel
           </button>

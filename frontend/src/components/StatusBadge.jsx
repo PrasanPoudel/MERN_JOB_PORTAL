@@ -1,4 +1,3 @@
-
 import React from "react";
 import { CheckCheck, Clock, XCircle, Award } from "lucide-react";
 
@@ -22,7 +21,10 @@ export const statusConfig = {
 };
 
 export const StatusBadge = ({ status }) => {
-  const config = statusConfig[status] || { className: "badge-gray", icon: null };
+  const config = statusConfig[status] || {
+    className: "badge-gray",
+    icon: null,
+  };
   const Icon = config.icon;
 
   return (

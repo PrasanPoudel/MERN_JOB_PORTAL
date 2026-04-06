@@ -205,7 +205,7 @@ const JobSeekerDashboard = () => {
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
                 {pagination && jobCount !== 0 && (
-                  <p className="text-xs text-slate-700 lg:text-base pl-2">
+                  <p className="text-xs text-gray-700 lg:text-base pl-2">
                     Showing{" "}
                     <span className="font-bold">
                       {(currentPage - 1) * itemsPerPage + 1}
@@ -227,8 +227,8 @@ const JobSeekerDashboard = () => {
                   }}
                   className={`p-2 rounded-lg transition-colors ${
                     viewMode === "grid"
-                      ? "md:bg-sky-600 bg-slate-100 text-slate-400 md:text-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      ? "md:bg-sky-600 bg-gray-100 text-gray-400 md:text-white shadow-sm"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <Grid className="w-4 h-4" />
@@ -240,7 +240,7 @@ const JobSeekerDashboard = () => {
                   className={`p-2 rounded-lg transition-colors ${
                     viewMode === "list"
                       ? "bg-sky-600 text-white shadow-sm"
-                      : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                      : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                   }`}
                 >
                   <List className="w-4 h-4" />
@@ -251,13 +251,13 @@ const JobSeekerDashboard = () => {
             {/* Job list*/}
             {jobs && jobs?.length === 0 ? (
               <div className="text-center py-16 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20">
-                <div className="text-slate-400 mb-6">
+                <div className="text-gray-400 mb-6">
                   <Search className="w-16 h-16 mx-auto" />
                 </div>
-                <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3">
+                <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
                   No job found
                 </h3>
-                <p className="text-slate-600 mb-6">
+                <p className="text-gray-600 mb-6">
                   Try adjusting your search criteria or filters.
                 </p>
                 <button
@@ -303,7 +303,7 @@ const JobSeekerDashboard = () => {
                           fetchJobs(Math.max(1, currentPage - 1), filters);
                         }}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -318,14 +318,14 @@ const JobSeekerDashboard = () => {
                           );
                         }}
                         disabled={currentPage === pagination?.totalPages}
-                        className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
                     </div>
                     <div className="hidden md:flex sm:flex-1 items-center justify-between">
                       <div>
-                        <p className="text-sm text-slate-700">
+                        <p className="text-sm text-gray-700">
                           Showing{" "}
                           <span className="font-bold">
                             {(currentPage - 1) * itemsPerPage + 1}
@@ -350,7 +350,7 @@ const JobSeekerDashboard = () => {
                               fetchJobs(Math.max(1, currentPage - 1), filters);
                             }}
                             disabled={currentPage === 1}
-                            className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Previous
                           </button>
@@ -361,7 +361,7 @@ const JobSeekerDashboard = () => {
                             page === "..." ? (
                               <span
                                 key={`dots-${index}`}
-                                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-slate-500 bg-white"
+                                className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
                               >
                                 ...
                               </span>
@@ -375,7 +375,7 @@ const JobSeekerDashboard = () => {
                                 className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                                   currentPage === page
                                     ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                    : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
+                                    : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
                                 }`}
                               >
                                 {page}
@@ -400,7 +400,7 @@ const JobSeekerDashboard = () => {
                               );
                             }}
                             disabled={currentPage === pagination?.totalPages}
-                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                           >
                             Next
                           </button>

@@ -107,10 +107,10 @@ const ApplicationViewer = () => {
   return (
     <DashboardLayout activeMenu="manage-jobs">
       {loading ? (
-        <div className="min-h-screen bg-slate-50 flex items-center justify-center">
+        <div className="min-h-screen bg-gray-50 flex items-center justify-center">
           <div className="text-center">
             <div className="animate-spin border-b-2 border-sky-600 rounded-full w-12 h-12 mx-auto"></div>
-            <p className="mt-4 text-slate-600">Loading applications...</p>
+            <p className="mt-4 text-gray-600">Loading applications...</p>
           </div>
         </div>
       ) : (
@@ -122,13 +122,13 @@ const ApplicationViewer = () => {
                   onClick={() => {
                     navigate("/manage-jobs");
                   }}
-                  className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+                  className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
                 >
                   <ArrowLeft className="w-4 h-4" />
                   <span>Back</span>
                 </button>
 
-                <h1 className="text-xl font-semibold text-slate-900">
+                <h1 className="text-xl font-semibold text-gray-900">
                   Applications Overview
                 </h1>
               </div>
@@ -139,11 +139,11 @@ const ApplicationViewer = () => {
           <div className="max-w-7xl mx-auto">
             {applications.length === 0 ? (
               <div className="text-center py-10">
-                <Users className="mx-auto h-24 w-24 text-slate-400" />
-                <h3 className="mt-4 text-2xl font-medium text-slate-900">
+                <Users className="mx-auto h-24 w-24 text-gray-400" />
+                <h3 className="mt-4 text-2xl font-medium text-gray-900">
                   No application available
                 </h3>
-                <p className="mt-2 text-sm text-slate-600">
+                <p className="mt-2 text-sm text-gray-600">
                   Nobody has applied for this job at the moment
                 </p>
               </div>
@@ -181,7 +181,7 @@ const ApplicationViewer = () => {
                     <select
                       value={sortType}
                       onChange={(e) => setSortType(e.target.value)}
-                      className="border outline-sky-200 rounded-lg transition-colors duration-200 disabled:bg-slate-50 p-2"
+                      className="border outline-sky-200 rounded-lg transition-colors duration-200 disabled:bg-gray-50 p-2"
                     >
                       <option value="Recent Application">
                         Recent Application
@@ -197,7 +197,7 @@ const ApplicationViewer = () => {
                     {sortedApplications.map((application, index) => (
                       <div
                         key={application._id}
-                        className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:items-center justify-between p-2 border border-gray-200 rounded-lg hover:bg-slate-50 transition-colors duration-200"
+                        className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:items-center justify-between p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                       >
                         <div className="flex items-center gap-4">
                           {/* Avatar */}
@@ -214,13 +214,13 @@ const ApplicationViewer = () => {
 
                           {/* Applicant Info */}
                           <div className="min-w-0 flex-1">
-                            <h3 className="font-semibold text-slate-900">
+                            <h3 className="font-semibold text-gray-900">
                               {application.applicant.name}
                             </h3>
-                            <p className="text-sm text-slate-600 truncate">
+                            <p className="text-sm text-gray-600 truncate">
                               {application.applicant.email}
                             </p>
-                            <div className="flex items-center gap-1 mt-1 text-slate-500 text-xs">
+                            <div className="flex items-center gap-1 mt-1 text-gray-500 text-xs">
                               <Calendar className="w-3 h-3" />
                               <span>
                                 Applied on{" "}
@@ -242,7 +242,7 @@ const ApplicationViewer = () => {
                             disabled={loading}
                             className={`${
                               statusConfig[application.status]
-                            } col-span-3 sm:col-span-1 border-2 border-gray-200 rounded-lg p-2 text-slate-900`}
+                            } col-span-3 sm:col-span-1 border-2 border-gray-200 rounded-lg p-2 text-gray-900`}
                           >
                             {statusOptions.map((status, index) => (
                               <option key={index} value={status}>
@@ -256,7 +256,7 @@ const ApplicationViewer = () => {
                                 `/profile/${application?.applicant._id}`,
                               );
                             }}
-                            className="inline-flex items-center gap-1 p-2 bg-slate-50 border-2 border-gray-200 text-slate-900 font-medium rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 p-2 bg-gray-50 border-2 border-gray-200 text-gray-900 font-medium rounded-lg hover:bg-gray-200 transition-colors cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
                             View Profile

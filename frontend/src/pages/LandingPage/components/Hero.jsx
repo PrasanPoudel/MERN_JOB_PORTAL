@@ -72,12 +72,12 @@ const Hero = () => {
               #KAAMSETU
             </div>
 
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-slate-900 mb-6 leading-tight">
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-gray-900 mb-6 leading-tight">
               Where Careers Meet
               <span className="text-sky-600"> Opportunities</span>
             </h1>
 
-            <p className="text-lg sm:text-xl text-slate-600 mb-8 max-w-2xl mx-auto lg:mx-0">
+            <p className="text-lg sm:text-xl text-gray-600 mb-8 max-w-2xl mx-auto lg:mx-0">
               Connecting people with opportunities through Nepal's own job
               portal
             </p>
@@ -109,7 +109,7 @@ const Hero = () => {
                   <div className="bg-sky-100 p-2 rounded-lg shrink-0">
                     {feature.icon}
                   </div>
-                  <h3 className="font-semibold text-sm text-slate-900">
+                  <h3 className="font-semibold text-sm text-gray-900">
                     {feature.title}
                   </h3>
                 </div>
@@ -132,10 +132,10 @@ const Hero = () => {
                   <UserCheck className="w-6 h-6 text-green-600" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-500">
+                  <div className="text-xs text-gray-500">
                     Total Active Users
                   </div>
-                  <div className="text-lg font-bold text-slate-900">
+                  <div className="text-lg font-bold text-gray-900">
                     {dashboardData?.counts?.totalUsers || "10+"}
                   </div>
                 </div>
@@ -149,8 +149,8 @@ const Hero = () => {
                   <BriefcaseBusiness className="w-6 h-6 text-sky-600" />
                 </div>
                 <div>
-                  <div className="text-xs text-slate-500">Jobs Available</div>
-                  <div className="text-lg font-bold text-slate-900">
+                  <div className="text-xs text-gray-500">Jobs Available</div>
+                  <div className="text-lg font-bold text-gray-900">
                     {dashboardData?.counts?.totalActiveJobs || "100+"}
                   </div>
                 </div>
@@ -161,12 +161,12 @@ const Hero = () => {
 
         {/* Popular Searches */}
         <div className="mt-16 text-center">
-          <p className="text-slate-500 text-sm mb-4">Popular searches:</p>
+          <p className="text-gray-500 text-sm mb-4">Popular searches:</p>
           <div className="flex flex-wrap justify-center gap-2">
             {jobCategories.map((category, index) => (
               <span
                 key={index}
-                className="inline-block bg-white border border-slate-200 rounded-full px-4 py-2 text-sm font-medium text-slate-700 hover:bg-sky-50 hover:border-sky-200 hover:text-sky-700 transition-colors cursor-pointer"
+                className="inline-block bg-white border border-gray-200 rounded-full px-4 py-2 text-sm font-medium text-gray-700 hover:bg-sky-50 hover:border-sky-200 hover:text-sky-700 transition-colors cursor-pointer"
               >
                 {category}
               </span>

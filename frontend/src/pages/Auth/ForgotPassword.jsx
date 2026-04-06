@@ -87,7 +87,7 @@ const ForgotPassword = () => {
 
   if (formState.success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -95,14 +95,14 @@ const ForgotPassword = () => {
           className="bg-white p-8 rounded-xl shadow-lg max-w-md w-full text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-semibold text-slate-900 mb-2">
+          <h2 className="text-2xl font-semibold text-gray-900 mb-2">
             Reset Email Sent!
           </h2>
-          <p className="text-slate-600 mb-4">
+          <p className="text-gray-600 mb-4">
             We've sent a password reset link to {formData.email}. Please check
             your inbox and follow the instructions.
           </p>
-          <p className="text-sm text-slate-500 mb-6">
+          <p className="text-sm text-gray-500 mb-6">
             The link will expire in 15 minutes.
           </p>
           <a
@@ -118,7 +118,7 @@ const ForgotPassword = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-4 px-2">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-4 px-2">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -129,19 +129,19 @@ const ForgotPassword = () => {
           <img src={logo} className="w-32 h-24" />
         </div>
         <div className="text-center mb-6">
-          <h2 className="text-2xl text-slate-900 mb-2">Forgot Password?</h2>
-          <p className="text-slate-600">
+          <h2 className="text-2xl text-gray-900 mb-2">Forgot Password?</h2>
+          <p className="text-gray-600">
             Enter your email address and we'll send you a link to reset your
             password.
           </p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <label className="block text-sm font-medium text-slate-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-2">
               Email Address
             </label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5" />
+              <Mail className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5" />
               <input
                 type="email"
                 name="email"
@@ -187,7 +187,7 @@ const ForgotPassword = () => {
           </button>
 
           <div className="text-center">
-            <p className="text-slate-600">
+            <p className="text-gray-600">
               Remember your password?
               <br className="lg:hidden" />
               <a

@@ -39,7 +39,7 @@ const TextareaField = ({
         </div>
       )}
       {helperText && !error && (
-        <p className="text-sm text-slate-400">{helperText}</p>
+        <p className="text-sm text-gray-400">{helperText}</p>
       )}
     </div>
   );

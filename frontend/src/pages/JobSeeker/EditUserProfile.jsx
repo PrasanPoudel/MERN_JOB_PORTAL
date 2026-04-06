@@ -411,7 +411,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen bg-slate-50 p-4 pt-24 pb-8">
+      <div className="min-h-screen bg-gray-50 p-4 pt-24 pb-8">
         <div className="max-w-6xl mx-auto">
           {/* Header */}
           <div className="bg-sky-600 flex text-white items-start justify-between sm:flex-row flex-col space-y-2 rounded-2xl shadow-sm p-4 sm:p-6 mb-2">
@@ -481,7 +481,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
           {/* Profile Image & Resume Section */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 mb-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
               <User className="w-6 h-6 text-sky-600" />
               Profile Image & Resume
             </h2>
@@ -512,7 +512,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       onChange={(e) => {
                         handleFileChange(e, "avatar");
                       }}
-                      className="block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
+                      className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
                     />
                   </label>
                 </div>
@@ -521,11 +521,11 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               {/* Resume Upload/Display */}
               {formData.resume ? (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Resume
                   </label>
                   <div className="flex items-center gap-2">
-                    <p className="md:text-base text-sm text-slate-600 flex-1">
+                    <p className="md:text-base text-sm text-gray-600 flex-1">
                       Link:{" "}
                       <a
                         href={formData.resume}
@@ -547,7 +547,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                 </div>
               ) : (
                 <div>
-                  <label className="block text-sm font-medium text-slate-700 mb-2">
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Resume
                     <span className="cursor-pointer sr-only">Choose File</span>
                     <input
@@ -557,11 +557,11 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                         handleFileChange(e, "resume");
                       }}
                       accept=".pdf,.doc,.docx"
-                      className="mt-2 block w-full text-sm text-slate-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
+                      className="mt-2 block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
                     />
                   </label>
                   {uploading.resume && (
-                    <div className="mt-2 flex items-center gap-2 text-sm text-slate-600">
+                    <div className="mt-2 flex items-center gap-2 text-sm text-gray-600">
                       <div className="animate-spin w-4 h-4 rounded-full border-2 border-sky-600 border-t-transparent"></div>
                       <span>Uploading resume...</span>
                     </div>
@@ -573,14 +573,14 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
           {/* Basic Info */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 mb-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-6 flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-6 flex items-center gap-2">
               <User className="w-6 h-6 text-sky-600" />
               Basic Information
             </h2>
 
             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6">
               <div>
-                <label className="block text-sm font-medium text-slate-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 mb-2">
                   Name
                 </label>
                 <input
@@ -595,7 +595,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               </div>
 
               <div>
-                <label className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1">
+                <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
                   <MapPin className="w-4 h-4" /> Location (Na_Pa/Ga_Pa)
                 </label>
                 <input
@@ -614,7 +614,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                 { label: "Instagram Link", name: "instagramLink" },
               ].map((field) => (
                 <div key={field.name}>
-                  <label className="text-sm font-medium text-slate-700 mb-2 flex items-center gap-1">
+                  <label className="text-sm font-medium text-gray-700 mb-2 flex items-center gap-1">
                     <Link className="w-4 h-4" /> {field.label}
                   </label>
                   <input
@@ -633,7 +633,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
 
           {/* Skills */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 mb-6">
-            <h2 className="text-lg sm:text-xl font-semibold text-slate-900 mb-4 flex items-center gap-2">
+            <h2 className="text-lg sm:text-xl font-semibold text-gray-900 mb-4 flex items-center gap-2">
               <Code className="w-6 h-6 text-sky-600" />
               Skills
             </h2>
@@ -642,7 +642,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               {formData.skills?.map((skill, i) => (
                 <span
                   key={i}
-                  className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-slate-400 shadow-sm rounded-full text-sm"
+                  className="flex items-center gap-2 px-3 sm:px-4 py-1.5 sm:py-2 border border-gray-400 shadow-sm rounded-full text-sm"
                 >
                   {skill}
                   <button onClick={() => removeSkill(i)}>
@@ -674,7 +674,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
           {/* Education */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 mb-6">
             <div className="flex items-center justify-between gap-3 mb-6">
-              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
                 <GraduationCap className="w-6 h-6 text-sky-600" />
                 Education
               </h2>
@@ -771,7 +771,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
           {/* Experience */}
           <div className="bg-white rounded-2xl shadow-sm p-4 sm:p-8 mb-6">
             <div className="flex items-center justify-between gap-3 mb-6">
-              <h2 className="text-lg sm:text-xl font-semibold text-slate-900 flex items-center gap-2">
+              <h2 className="text-lg sm:text-xl font-semibold text-gray-900 flex items-center gap-2">
                 <BriefcaseBusiness className="w-6 h-6 text-sky-600" />
                 Experience
               </h2>
@@ -1026,7 +1026,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
               onClick={() => {
                 setEditMode(false);
               }}
-              className="p-3 flex items-center justify-center gap-2 border border-gray-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
+              className="p-3 flex items-center justify-center gap-2 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
             >
               <X className="w-4 h-4" />
               <span>Cancel</span>

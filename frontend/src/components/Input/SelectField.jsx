@@ -26,7 +26,7 @@ const SelectField = ({
         <div className="flex items-center">
           {Icon && (
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-              <Icon className="w-5 h-5 text-slate-400" />
+              <Icon className="w-5 h-5 text-gray-400" />
             </div>
           )}
           <select
@@ -44,7 +44,7 @@ const SelectField = ({
               </option>
             ))}
           </select>
-          <ChevronDown className="absolute right-3 h-5 w-5 text-slate-400 pointer-events-none" />
+          <ChevronDown className="absolute right-3 h-5 w-5 text-gray-400 pointer-events-none" />
         </div>
       </div>
       {error && (

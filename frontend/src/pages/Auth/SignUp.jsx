@@ -96,16 +96,19 @@ const SignUp = () => {
     if (!validateForm()) {
       return;
     }
-    
+
     setFormState((prev) => ({ ...prev, loading: true }));
-    
+
     try {
-      const response = await axiosInstance.post(API_PATHS.AUTH.SEND_VERIFICATION, {
-        name: formData.fullName,
-        email: formData.email,
-        password: formData.password,
-        role: formData.role,
-      });
+      const response = await axiosInstance.post(
+        API_PATHS.AUTH.SEND_VERIFICATION,
+        {
+          name: formData.fullName,
+          email: formData.email,
+          password: formData.password,
+          role: formData.role,
+        },
+      );
 
       setFormState((prev) => ({
         ...prev,
@@ -122,7 +125,7 @@ const SignUp = () => {
       setStep(3);
 
       const interval = setInterval(() => {
-        setOtpData(prev => {
+        setOtpData((prev) => {
           if (prev.countdown <= 1) {
             clearInterval(interval);
             return { ...prev, countdown: 0 };
@@ -130,7 +133,6 @@ const SignUp = () => {
           return { ...prev, countdown: prev.countdown - 1 };
         });
       }, 1000);
-
     } catch (err) {
       console.error("[Send Verification Error]", {
         email: formData.email,
@@ -141,7 +143,9 @@ const SignUp = () => {
         ...prev,
         loading: false,
         errors: {
-          submit: err?.message || "Failed to send verification email. Please try again.",
+          submit:
+            err?.message ||
+            "Failed to send verification email. Please try again.",
         },
       }));
     }
@@ -172,7 +176,7 @@ const SignUp = () => {
       if (token) {
         login(response.data, token);
         setFormState((prev) => ({ ...prev, success: true }));
-        
+
         setTimeout(() => {
           window.location.href =
             formData.role === "employer" ? "/employer-dashboard" : "/find-jobs";
@@ -204,10 +208,10 @@ const SignUp = () => {
       });
 
       setFormState((prev) => ({ ...prev, loading: false, errors: {} }));
-      setOtpData(prev => ({ ...prev, countdown: 300, otp: "" }));
+      setOtpData((prev) => ({ ...prev, countdown: 300, otp: "" }));
 
       const interval = setInterval(() => {
-        setOtpData(prev => {
+        setOtpData((prev) => {
           if (prev.countdown <= 1) {
             clearInterval(interval);
             return { ...prev, countdown: 0 };
@@ -215,7 +219,6 @@ const SignUp = () => {
           return { ...prev, countdown: prev.countdown - 1 };
         });
       }, 1000);
-
     } catch (err) {
       console.error("[Resend OTP Error]", {
         email: otpData.email,
@@ -234,12 +237,12 @@ const SignUp = () => {
   const formatTime = (seconds) => {
     const mins = Math.floor(seconds / 60);
     const secs = seconds % 60;
-    return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+    return `${mins.toString().padStart(2, "0")}:${secs.toString().padStart(2, "0")}`;
   };
 
   if (formState.success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -247,14 +250,15 @@ const SignUp = () => {
           className="card-elevated p-8 max-w-md w-full text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Account Created!
           </h2>
-          <p className="text-slate-500 mb-4">
-            Welcome to KAAMSETU! Your account has been successfully created and verified.
+          <p className="text-gray-500 mb-4">
+            Welcome to KAAMSETU! Your account has been successfully created and
+            verified.
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
-          <p className="text-sm text-slate-400 mt-2">
+          <p className="text-sm text-gray-400 mt-2">
             Redirecting to your dashboard...
           </p>
         </motion.div>
@@ -263,7 +267,7 @@ const SignUp = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-8 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -278,8 +282,10 @@ const SignUp = () => {
         {step === 1 && (
           <>
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-slate-900 mb-1">Create Account</h2>
-              <p className="text-slate-500 text-sm">
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                Create Account
+              </h2>
+              <p className="text-gray-500 text-sm">
                 Join thousands of professionals finding their dream job!
               </p>
             </div>
@@ -287,7 +293,7 @@ const SignUp = () => {
               <div>
                 <label className="label">Full Name</label>
                 <div className="relative">
-                  <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                  <User className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="text"
                     name="fullName"
@@ -315,12 +321,12 @@ const SignUp = () => {
                     className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center ${
                       formData.role === "jobSeeker"
                         ? "border-sky-500 bg-sky-50 text-sky-700"
-                        : "border-slate-200 hover:border-slate-300 text-slate-700"
+                        : "border-gray-200 hover:border-gray-300 text-gray-700"
                     }`}
                   >
                     <UserCheck className="w-8 h-8 mx-auto mb-2" />
                     <div className="font-semibold">Job Seeker</div>
-                    <div className="text-xs text-slate-500 mt-0.5">
+                    <div className="text-xs text-gray-500 mt-0.5">
                       Looking for opportunities
                     </div>
                   </button>
@@ -330,12 +336,12 @@ const SignUp = () => {
                     className={`p-4 rounded-xl border-2 transition-all cursor-pointer text-center ${
                       formData.role === "employer"
                         ? "border-sky-500 bg-sky-50 text-sky-700"
-                        : "border-slate-200 hover:border-slate-300 text-slate-700"
+                        : "border-gray-200 hover:border-gray-300 text-gray-700"
                     }`}
                   >
                     <Building2 className="w-8 h-8 mx-auto mb-2" />
                     <div className="font-semibold">Employer</div>
-                    <div className="text-xs text-slate-500 mt-0.5">
+                    <div className="text-xs text-gray-500 mt-0.5">
                       Want to hire talents
                     </div>
                   </button>
@@ -350,7 +356,7 @@ const SignUp = () => {
                   className={`flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg ${
                     step === 2
                       ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                      : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                      : "bg-gray-200 text-gray-500 cursor-not-allowed"
                   } ${step <= 1 && "opacity-0"}`}
                 >
                   <ArrowLeft className="w-4 h-4" />
@@ -363,7 +369,7 @@ const SignUp = () => {
                   className={`flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg ${
                     step === 1
                       ? "text-white bg-sky-600 hover:bg-sky-700 cursor-pointer"
-                      : "bg-slate-200 text-slate-500 cursor-not-allowed"
+                      : "bg-gray-200 text-gray-500 cursor-not-allowed"
                   } ${step === 2 && "opacity-0"}`}
                 >
                   Next <ArrowRight className="w-4 h-4" />
@@ -371,7 +377,7 @@ const SignUp = () => {
               </div>
 
               <div className="text-center">
-                <p className="text-slate-500 text-sm">
+                <p className="text-gray-500 text-sm">
                   Already have an account?{" "}
                   <a
                     href="/login"
@@ -416,14 +422,18 @@ const SignUp = () => {
         {step === 2 && (
           <>
             <div className="text-center mb-6">
-              <h2 className="text-2xl font-bold text-slate-900 mb-1">Account Details</h2>
-              <p className="text-slate-500 text-sm">Complete your registration</p>
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                Account Details
+              </h2>
+              <p className="text-gray-500 text-sm">
+                Complete your registration
+              </p>
             </div>
             <form onSubmit={handleSendVerification} className="space-y-5">
               <div>
                 <label className="label">Email Address</label>
                 <div className="relative">
-                  <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                  <Mail className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type="email"
                     name="email"
@@ -445,7 +455,7 @@ const SignUp = () => {
               <div>
                 <label className="label">Password</label>
                 <div className="relative">
-                  <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+                  <Lock className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
                   <input
                     type={formState.showPassword ? "text" : "password"}
                     name="password"
@@ -463,7 +473,7 @@ const SignUp = () => {
                         showPassword: !prev.showPassword,
                       }));
                     }}
-                    className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                    className="absolute right-3 top-1/2 transform -trangray-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
                   >
                     {formState.showPassword ? (
                       <EyeOff className="w-5 h-5" />
@@ -497,13 +507,13 @@ const SignUp = () => {
                   <ArrowLeft className="w-4 h-4" />
                   Prev
                 </p>
-                <p className="flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg bg-slate-200 text-slate-500 cursor-not-allowed">
+                <p className="flex items-center gap-1 text-sm font-semibold px-3 py-2 rounded-lg bg-gray-200 text-gray-500 cursor-not-allowed">
                   Next <ArrowRight className="w-4 h-4" />
                 </p>
               </div>
 
               <div className="text-center">
-                <p className="text-slate-500 text-sm">
+                <p className="text-gray-500 text-sm">
                   Already have an account?{" "}
                   <a
                     href="/login"
@@ -545,12 +555,14 @@ const SignUp = () => {
           <>
             <div className="text-center mb-6">
               <ShieldCheck className="w-16 h-16 text-sky-600 mx-auto mb-4" />
-              <h2 className="text-2xl font-bold text-slate-900 mb-1">Verify Your Email</h2>
-              <p className="text-slate-500 text-sm">
+              <h2 className="text-2xl font-bold text-gray-900 mb-1">
+                Verify Your Email
+              </h2>
+              <p className="text-gray-500 text-sm">
                 We've sent a 6-digit verification code to {otpData.email}
               </p>
             </div>
-            
+
             <form onSubmit={handleVerifyEmail} className="space-y-5">
               <div>
                 <label className="label">Enter 6-digit OTP</label>
@@ -559,7 +571,9 @@ const SignUp = () => {
                     type="text"
                     maxLength="6"
                     value={otpData.otp}
-                    onChange={(e) => setOtpData(prev => ({ ...prev, otp: e.target.value }))}
+                    onChange={(e) =>
+                      setOtpData((prev) => ({ ...prev, otp: e.target.value }))
+                    }
                     className={`input-base text-center text-2xl tracking-widest ${formState.errors.otp ? "input-error" : ""}`}
                     placeholder="000000"
                     inputMode="numeric"
@@ -574,7 +588,7 @@ const SignUp = () => {
                 )}
               </div>
 
-              <div className="flex items-center justify-between text-sm text-slate-500">
+              <div className="flex items-center justify-between text-sm text-gray-500">
                 <div className="flex items-center gap-2">
                   <Clock className="w-4 h-4" />
                   <span>Expires in: {formatTime(otpData.countdown)}</span>
@@ -585,11 +599,13 @@ const SignUp = () => {
                   disabled={otpData.countdown > 0 || formState.loading}
                   className={`flex items-center gap-2 font-semibold ${
                     otpData.countdown > 0
-                      ? "text-slate-400 cursor-not-allowed"
+                      ? "text-gray-400 cursor-not-allowed"
                       : "text-sky-600 hover:text-sky-700 cursor-pointer"
                   }`}
                 >
-                  <RefreshCw className={`w-4 h-4 ${otpData.countdown > 0 ? "" : ""}`} />
+                  <RefreshCw
+                    className={`w-4 h-4 ${otpData.countdown > 0 ? "" : ""}`}
+                  />
                   Resend OTP
                 </button>
               </div>
@@ -610,8 +626,9 @@ const SignUp = () => {
               </button>
 
               <div className="text-center">
-                <p className="text-slate-400 text-xs">
-                  Didn't receive the email? Check your spam folder or contact support.
+                <p className="text-gray-400 text-xs">
+                  Didn't receive the email? Check your spam folder or contact
+                  support.
                 </p>
               </div>
             </form>

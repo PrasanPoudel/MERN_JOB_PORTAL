@@ -65,7 +65,7 @@ const Pricing = ({ notPricingPage }) => {
       {!notPricingPage && <Navbar />}
       <section
         id="pricing"
-        className="mt-16 mx-auto p-6 lg:p-12 bg-slate-50 border-y border-slate-200"
+        className="mt-16 mx-auto p-6 lg:p-12 bg-gray-50 border-y border-gray-200"
       >
         {!notPricingPage && (
           <button
@@ -73,7 +73,7 @@ const Pricing = ({ notPricingPage }) => {
               navigate(-1);
             }}
             title="Go back to previous page"
-            className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200"
+            className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -150,7 +150,7 @@ const Pricing = ({ notPricingPage }) => {
                   id="pay-button"
                   title="Pay with eSewa"
                   type="submit"
-                  className="block w-full text-center text-sm font-bold bg-white hover:bg-slate-50 text-sky-700 px-5 py-3 rounded-xl transition-colors disabled:bg-slate-200 disabled:cursor-not-allowed disabled:text-slate-400 cursor-pointer"
+                  className="block w-full text-center text-sm font-bold bg-white hover:bg-gray-50 text-sky-700 px-5 py-3 rounded-xl transition-colors disabled:bg-gray-200 disabled:cursor-not-allowed disabled:text-gray-400 cursor-pointer"
                 >
                   Upgrade to Premium
                 </button>
@@ -158,32 +158,32 @@ const Pricing = ({ notPricingPage }) => {
             </div>
 
             {/* Free Plan */}
-            <div className="rounded-2xl border border-slate-200 bg-white p-8 flex flex-col shadow-sm">
+            <div className="rounded-2xl border border-gray-200 bg-white p-8 flex flex-col shadow-sm">
               <div className="mb-7">
                 <div className="flex items-center justify-between mb-5">
                   <div className="flex items-center gap-2.5">
-                    <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center">
-                      <Gift className="w-4 h-4 text-slate-600" />
+                    <div className="w-9 h-9 rounded-xl bg-gray-100 border border-gray-200 flex items-center justify-center">
+                      <Gift className="w-4 h-4 text-gray-600" />
                     </div>
-                    <span className="font-bold text-base text-slate-900">
+                    <span className="font-bold text-base text-gray-900">
                       Free
                     </span>
                   </div>
 
                   {!user?.isPremium && (
-                    <span className="text-sm bg-slate-900 text-white font-bold px-2.5 py-1 rounded-full">
+                    <span className="text-sm bg-gray-900 text-white font-bold px-2.5 py-1 rounded-full">
                       Current
                     </span>
                   )}
                 </div>
 
                 <div className="flex items-baseline gap-1.5 mb-1.5">
-                  <span className="font-extrabold text-4xl text-slate-900">
+                  <span className="font-extrabold text-4xl text-gray-900">
                     रू 0
                   </span>
                 </div>
 
-                <p className="text-slate-400 text-xs">
+                <p className="text-gray-400 text-xs">
                   Forever free &middot; No credit card required
                 </p>
               </div>
@@ -196,7 +196,7 @@ const Pricing = ({ notPricingPage }) => {
                 ].map((feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-2.5 text-slate-600 text-sm"
+                    className="flex items-center gap-2.5 text-gray-600 text-sm"
                   >
                     <Check className="w-4 h-4 text-sky-600 shrink-0" />
                     {feature}
@@ -209,9 +209,9 @@ const Pricing = ({ notPricingPage }) => {
                 ].map((feature, i) => (
                   <li
                     key={i}
-                    className="flex items-center gap-2.5 text-slate-400 text-sm"
+                    className="flex items-center gap-2.5 text-gray-400 text-sm"
                   >
-                    <Minus className="w-4 h-4 text-slate-300 shrink-0" />
+                    <Minus className="w-4 h-4 text-gray-300 shrink-0" />
                     {feature}
                   </li>
                 ))}
@@ -220,7 +220,7 @@ const Pricing = ({ notPricingPage }) => {
               {!user?.isPremium && (
                 <a
                   href="/"
-                  className="block text-center text-sm font-semibold border border-slate-300 hover:border-sky-600 hover:text-sky-600 text-slate-700 px-5 py-3 rounded-xl transition-all cursor-pointer"
+                  className="block text-center text-sm font-semibold border border-gray-300 hover:border-sky-600 hover:text-sky-600 text-gray-700 px-5 py-3 rounded-xl transition-all cursor-pointer"
                 >
                   Get Started Free
                 </a>
@@ -229,7 +229,7 @@ const Pricing = ({ notPricingPage }) => {
           </div>
 
           {/* Footer Note */}
-          <p className="text-center text-slate-400 text-xs mt-6 flex items-center justify-center gap-1">
+          <p className="text-center text-gray-400 text-xs mt-6 flex items-center justify-center gap-1">
             Secure payments via eSewa &middot; Instant activation &middot; No
             hidden charges
           </p>

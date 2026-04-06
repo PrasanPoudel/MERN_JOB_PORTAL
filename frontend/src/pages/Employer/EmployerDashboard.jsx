@@ -115,7 +115,7 @@ const EmployerDashboard = () => {
                       <JobDashboardCard key={job._id || index} job={job} />
                     ))
                 ) : (
-                  <p className="text-slate-900 mt-10">
+                  <p className="text-gray-900 mt-10">
                     You haven't posted any job yet
                   </p>
                 )}
@@ -146,7 +146,7 @@ const EmployerDashboard = () => {
                       />
                     ))
                 ) : (
-                  <p className="text-slate-900 mt-10">No applicant</p>
+                  <p className="text-gray-900 mt-10">No applicant</p>
                 )}
               </div>
             </Card>
@@ -169,7 +169,7 @@ const EmployerDashboard = () => {
                   <div className={`p-2 rounded-lg ${action.color}`}>
                     <action.icon className="w-5 h-5" />
                   </div>
-                  <span className="text-slate-900 font-medium">
+                  <span className="text-gray-900 font-medium">
                     {action.title}
                   </span>
                 </button>

@@ -193,10 +193,10 @@ const AdminUserManagement = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">
+            <h1 className="text-xl font-semibold text-gray-900">
               User Management
             </h1>
-            <p className="text-slate-500 text-sm mt-1">
+            <p className="text-gray-500 text-sm mt-1">
               Manage platform users and activity
             </p>
           </div>
@@ -209,7 +209,7 @@ const AdminUserManagement = () => {
         {/* Filters */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
               autoComplete="off"
               id="search_users"
@@ -253,15 +253,15 @@ const AdminUserManagement = () => {
           </div>
         ) : users.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <Users className="w-12 h-12 mx-auto text-slate-300 mb-4 shrink-0" />
-            <p className="text-slate-600 font-medium">No users found</p>
+            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4 shrink-0" />
+            <p className="text-gray-600 font-medium">No users found</p>
           </div>
         ) : (
           <>
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-sm text-slate-700 lg:text-base">
+                <p className="text-sm text-gray-700 lg:text-base">
                   Showing{" "}
                   <span className="font-semibold">
                     {(currentPage - 1) * itemsPerPage + 1}
@@ -292,7 +292,7 @@ const AdminUserManagement = () => {
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <p className="font-semibold text-slate-900">
+                            <p className="font-semibold text-gray-900">
                               {user.name}
                             </p>
                             {user.isPremium && (
@@ -321,14 +321,14 @@ const AdminUserManagement = () => {
                                 : "Job Seeker"}
                             </span>
                           </div>
-                          <p className="text-sm text-slate-500 mt-1">
+                          <p className="text-sm text-gray-500 mt-1">
                             {user.email}
                           </p>
                         </div>
                       </div>
                       <div className="flex items-center gap-2 mt-1">
                         {user && user?.companyName && (
-                          <span className="flex items-center gap-1 text-sm text-slate-600">
+                          <span className="flex items-center gap-1 text-sm text-gray-600">
                             <Building2 className="w-3.5 h-3.5 shrink-0" />
                             {user.companyName}
                             {user.role === "employer" &&
@@ -353,7 +353,7 @@ const AdminUserManagement = () => {
                     <button
                       onClick={() => handleMessageUser(user._id)}
                       title="Send message to user"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
                     >
                       Message
                     </button>
@@ -404,7 +404,7 @@ const AdminUserManagement = () => {
                       getAllUsers(Math.max(1, currentPage - 1));
                     }}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
@@ -418,7 +418,7 @@ const AdminUserManagement = () => {
                       );
                     }}
                     disabled={currentPage === pagination.totalPages}
-                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
@@ -427,7 +427,7 @@ const AdminUserManagement = () => {
                 {/* Desktop pagination */}
                 <div className="hidden md:flex sm:flex-1 items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-700">
+                    <p className="text-sm text-gray-700">
                       Showing{" "}
                       <span className="font-semibold">
                         {(currentPage - 1) * itemsPerPage + 1}
@@ -449,7 +449,7 @@ const AdminUserManagement = () => {
                           getAllUsers(Math.max(1, currentPage - 1));
                         }}
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -460,7 +460,7 @@ const AdminUserManagement = () => {
                         page === "..." ? (
                           <span
                             key={`dots-${index}`}
-                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-slate-500 bg-white"
+                            className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
                           >
                             ...
                           </span>
@@ -474,7 +474,7 @@ const AdminUserManagement = () => {
                             className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                               currentPage === page
                                 ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
+                                : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
                             }`}
                           >
                             {page}
@@ -491,7 +491,7 @@ const AdminUserManagement = () => {
                           );
                         }}
                         disabled={currentPage === pagination.totalPages}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
@@ -508,10 +508,10 @@ const AdminUserManagement = () => {
         <div className="fixed inset-0 z-1300 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
           <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
             <div className="text-center">
-              <h3 className="text-xl font-semibold text-slate-900 mb-2">
+              <h3 className="text-xl font-semibold text-gray-900 mb-2">
                 Ban User
               </h3>
-              <p className="text-slate-500 text-sm mb-4">
+              <p className="text-gray-500 text-sm mb-4">
                 Provide a reason for banning this user
               </p>
 
@@ -531,7 +531,7 @@ const AdminUserManagement = () => {
                     setBanUserId(null);
                   }}
                   disabled={banning}
-                  className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
+                  className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
                 >
                   Cancel
                 </button>
@@ -556,11 +556,11 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
   <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
           Delete User?
         </h3>
 
-        <p className="text-slate-500 text-sm mb-6">
+        <p className="text-gray-500 text-sm mb-6">
           Permanently delete <strong>{user.name}</strong>? This action cannot be
           undone.
         </p>
@@ -569,7 +569,7 @@ const DeleteConfirmationModal = ({ user, onCancel, onConfirm, deleting }) => (
           <button
             onClick={onCancel}
             disabled={deleting}
-            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
           >
             Cancel
           </button>

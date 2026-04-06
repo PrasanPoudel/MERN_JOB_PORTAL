@@ -9,17 +9,15 @@ export const Card = ({
   headerAction,
 }) => {
   return (
-    <div
-      className={`card ${className}`}
-    >
+    <div className={`card ${className}`}>
       {(title || headerAction) && (
-        <div className="flex items-center justify-between p-4 border-b border-slate-100">
+        <div className="flex items-center justify-between p-4 border-b border-gray-100">
           <div>
             {title && (
-              <h3 className="text-base font-semibold text-slate-900">{title}</h3>
+              <h3 className="text-base font-semibold text-gray-900">{title}</h3>
             )}
             {subtitle && (
-              <p className="text-sm text-slate-500 mt-0.5">{subtitle}</p>
+              <p className="text-sm text-gray-500 mt-0.5">{subtitle}</p>
             )}
           </div>
           {headerAction}
@@ -64,12 +62,12 @@ export const StatCard = ({
 
   return (
     <div
-      className={`card border-l-4 ${colors.border} p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5`}
+      className={`card border-l-4 ${colors.border} p-5 transition-all duration-200 hover:shadow-md hover:-trangray-y-0.5`}
     >
       <div className="flex items-center justify-between">
         <div>
-          <p className="text-sm font-medium text-slate-500">{title}</p>
-          <p className="text-2xl font-bold text-slate-900 mt-1">{value}</p>
+          <p className="text-sm font-medium text-gray-500">{title}</p>
+          <p className="text-2xl font-bold text-gray-900 mt-1">{value}</p>
         </div>
         <div className={`${colors.iconBg} p-3 rounded-xl`}>
           <Icon className={`h-6 w-6 ${colors.iconText}`} />

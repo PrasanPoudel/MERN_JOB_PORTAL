@@ -241,10 +241,10 @@ const JobPostingForm = () => {
           <div className="pb-24">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h2 className="text-xl font-semibold text-slate-900">
+                <h2 className="text-xl font-semibold text-gray-900">
                   Post a New Job
                 </h2>
-                <p className="text-sm text-slate-600 mt-1">
+                <p className="text-sm text-gray-600 mt-1">
                   Fill out the form below to create your job posting
                 </p>
               </div>
@@ -259,7 +259,7 @@ const JobPostingForm = () => {
                       setIsPreview(true);
                     }
                   }}
-                  className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-slate-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
+                  className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
                 >
                   <Eye className="h-4 w-4" />
                   <span className="">Preview</span>
@@ -396,7 +396,7 @@ const JobPostingForm = () => {
               />
               {/* Number of Vacancies */}
               <div className="space-y-2">
-                <p className="block text-sm font-medium text-slate-700">
+                <p className="block text-sm font-medium text-gray-700">
                   Number of Vacancies
                   <span className="text-red-500 ml-1">*</span>
                 </p>
@@ -421,7 +421,7 @@ const JobPostingForm = () => {
               </div>
               {/* Application Deadline Date */}
               <div className="space-y-2">
-                <p className="block text-sm font-medium text-slate-700">
+                <p className="block text-sm font-medium text-gray-700">
                   Application Deadline Date
                   <span className="text-red-500 ml-1">*</span>
                 </p>
@@ -447,14 +447,14 @@ const JobPostingForm = () => {
               </div>
               {/* Salary Range */}
               <div className="space-y-2">
-                <p className="block text-sm font-medium text-slate-700">
+                <p className="block text-sm font-medium text-gray-700">
                   Salary Range (monthly)
                   <span className="text-red-500 ml-1">*</span>
                 </p>
                 <div className="grid grid-cols-2 gap-3">
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                      <p className="text-xl text-slate-400"> रु</p>
+                      <p className="text-xl text-gray-400"> रु</p>
                     </div>
                     <input
                       type="number"
@@ -470,7 +470,7 @@ const JobPostingForm = () => {
                   </div>
                   <div className="relative">
                     <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none z-10">
-                      <p className="text-xl text-slate-400"> रु</p>
+                      <p className="text-xl text-gray-400"> रु</p>
                     </div>
                     <input
                       type="number"
@@ -497,7 +497,7 @@ const JobPostingForm = () => {
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting || !isFormValid()}
-                  className="w-50 flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-offset-2 focus:ring-sky-500 disabled:bg-slate-400 disabled:cursor-not-allowed outline-none transition-colors duration-200 cursor-pointer"
+                  className="w-50 flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-offset-2 focus:ring-sky-500 disabled:bg-gray-400 disabled:cursor-not-allowed outline-none transition-colors duration-200 cursor-pointer"
                 >
                   {isSubmitting ? (
                     <>

@@ -15,7 +15,7 @@ const CTA = () => {
           <Link
             to="/find-jobs"
             title="Get started for free"
-            className="inline-flex items-center justify-center gap-2 bg-white text-sky-700 px-8 py-3 rounded-lg font-bold hover:bg-slate-50 transition-all shadow-sm cursor-pointer"
+            className="inline-flex items-center justify-center gap-2 bg-white text-sky-700 px-8 py-3 rounded-lg font-bold hover:bg-gray-50 transition-all shadow-sm cursor-pointer"
           >
             Get Started Free
             <ArrowRight className="w-5 h-5" />

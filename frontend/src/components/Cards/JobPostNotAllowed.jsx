@@ -11,6 +11,7 @@ import {
   FileTextIcon,
   Info,
   Crown,
+  Phone,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
@@ -28,30 +29,30 @@ const JobPostNotAllowed = ({ user }) => {
                 <span>Company Profile Required</span>
               </div>
 
-              <h1 className="text-2xl sm:text-3xl font-semibold text-slate-900 mb-4">
+              <h1 className="text-2xl sm:text-3xl font-semibold text-gray-900 mb-4">
                 Complete Your Company Profile First
               </h1>
 
-              <p className="text-lg text-slate-600 mb-6 leading-relaxed">
+              <p className="text-lg text-gray-600 mb-6 leading-relaxed">
                 Before you can post jobs on our platform, you need to complete
                 your company profile. This helps candidates learn more about
                 your organization and builds trust in your job postings.
               </p>
 
-              <div className="bg-white rounded-xl border border-slate-200 p-5 mb-6">
-                <h3 className="font-semibold text-slate-800 mb-4">
+              <div className="bg-white rounded-xl border border-gray-200 p-5 mb-6">
+                <h3 className="font-semibold text-gray-800 mb-4">
                   Required Information:
                 </h3>
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <Building2
-                      className={`w-5 h-5 ${user?.companyName?.trim() ? "text-green-500" : "text-slate-300"}`}
+                      className={`w-5 h-5 ${user?.companyName?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
                         user?.companyName?.trim()
                           ? "text-green-600"
-                          : "text-slate-500"
+                          : "text-gray-500"
                       }
                     >
                       Company Name
@@ -62,13 +63,13 @@ const JobPostNotAllowed = ({ user }) => {
                   </div>
                   <div className="flex items-center gap-3">
                     <MapPin
-                      className={`w-5 h-5 ${user?.companyLocation?.trim() ? "text-green-500" : "text-slate-300"}`}
+                      className={`w-5 h-5 ${user?.companyLocation?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
                         user?.companyLocation?.trim()
                           ? "text-green-600"
-                          : "text-slate-500"
+                          : "text-gray-500"
                       }
                     >
                       Company Location
@@ -78,14 +79,31 @@ const JobPostNotAllowed = ({ user }) => {
                     ) : null}
                   </div>
                   <div className="flex items-center gap-3">
+                    <Phone
+                      className={`w-5 h-5 ${user?.companyPhoneNumber?.trim() ? "text-green-500" : "text-gray-300"}`}
+                    />
+                    <span
+                      className={
+                        user?.companyPhoneNumber?.trim()
+                          ? "text-green-600"
+                          : "text-gray-500"
+                      }
+                    >
+                      Company Phone Number
+                    </span>
+                    {user?.companyPhoneNumber?.trim() ? (
+                      <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto" />
+                    ) : null}
+                  </div>
+                  <div className="flex items-center gap-3">
                     <Users
-                      className={`w-5 h-5 ${user?.companySize?.trim() ? "text-green-500" : "text-slate-300"}`}
+                      className={`w-5 h-5 ${user?.companySize?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
                         user?.companySize?.trim()
                           ? "text-green-600"
-                          : "text-slate-500"
+                          : "text-gray-500"
                       }
                     >
                       Company Size
@@ -96,13 +114,13 @@ const JobPostNotAllowed = ({ user }) => {
                   </div>
                   <div className="flex items-center gap-3">
                     <Info
-                      className={`w-5 h-5 ${user?.companyDescription?.trim() ? "text-green-500" : "text-slate-300"}`}
+                      className={`w-5 h-5 ${user?.companyDescription?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
                         user?.companyDescription?.trim()
                           ? "text-green-600"
-                          : "text-slate-500"
+                          : "text-gray-500"
                       }
                     >
                       Company Description
@@ -113,13 +131,13 @@ const JobPostNotAllowed = ({ user }) => {
                   </div>
                   <div className="flex items-center gap-3">
                     <FileTextIcon
-                      className={`w-5 h-5 ${user?.companyRegistrationNumber?.trim() ? "text-green-500" : "text-slate-300"}`}
+                      className={`w-5 h-5 ${user?.companyRegistrationNumber?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
                         user?.companyRegistrationNumber?.trim()
                           ? "text-green-600"
-                          : "text-slate-500"
+                          : "text-gray-500"
                       }
                     >
                       Company Registration Number
@@ -130,13 +148,13 @@ const JobPostNotAllowed = ({ user }) => {
                   </div>
                   <div className="flex items-center gap-3">
                     <CreditCard
-                      className={`w-5 h-5 ${user?.companyPanNumber?.trim() ? "text-green-500" : "text-slate-300"}`}
+                      className={`w-5 h-5 ${user?.companyPanNumber?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
                         user?.companyPanNumber?.trim()
                           ? "text-green-600"
-                          : "text-slate-500"
+                          : "text-gray-500"
                       }
                     >
                       PAN/Tax Number
@@ -159,12 +177,12 @@ const JobPostNotAllowed = ({ user }) => {
             </div>
 
             <div className="w-full md:w-100">
-              <div className="bg-white flex flex-col gap-2 items-center justify-center mb-8 rounded-2xl py-4 shadow-lg border border-slate-100">
+              <div className="bg-white flex flex-col gap-2 items-center justify-center mb-8 rounded-2xl py-4 shadow-lg border border-gray-100">
                 <div className="inline-flex items-center gap-2 bg-yellow-400 text-white p-2 rounded-full text-sm font-medium mb-3">
                   <Crown className="w-4 h-4" />
                   <span>Premium Employer User</span>
                 </div>
-                <p className="flex items-center gap-1 justify-center text-slate-600 max-w-2xl mx-auto">
+                <p className="flex items-center gap-1 justify-center text-gray-600 max-w-2xl mx-auto">
                   <CheckCircle2 className="w-5 h-5 text-green-500" />
                   Post Unlimited Jobs
                 </p>
@@ -180,7 +198,7 @@ const JobPostNotAllowed = ({ user }) => {
                   View Pricing
                   <ArrowRight className="w-5 h-5" />
                 </button>
-                <p className="text-slate-600">Starting at just रू 100/month</p>
+                <p className="text-gray-600">Starting at just रू 100/month</p>
               </div>
             </div>
           </div>

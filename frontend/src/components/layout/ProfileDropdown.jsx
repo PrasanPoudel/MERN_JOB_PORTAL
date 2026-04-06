@@ -71,15 +71,15 @@ const ProfileDropdown = ({
         <button
           onClick={onToggle}
           title="Open profile menu"
-          className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-slate-100 transition-colors cursor-pointer"
+          className="flex items-center gap-2 p-1.5 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
         >
           <img
             src={avatar || "/default.png"}
             alt="avatar"
-            className="h-9 w-9 rounded-full border border-slate-200 object-cover"
+            className="h-9 w-9 rounded-full border border-gray-200 object-cover"
           />
           <div className="hidden md:flex flex-col text-left">
-            <p className="flex items-center gap-1 text-sm font-semibold text-slate-900 leading-tight">
+            <p className="flex items-center gap-1 text-sm font-semibold text-gray-900 leading-tight">
               {name || "User"}
               {isPremium && (
                 <span
@@ -90,10 +90,10 @@ const ProfileDropdown = ({
                 </span>
               )}
             </p>
-            <p className="text-xs text-slate-500 leading-tight">{roleLabel}</p>
+            <p className="text-xs text-gray-500 leading-tight">{roleLabel}</p>
             {role === "employer" && companyName && (
               <div className="flex items-center gap-1">
-                <p className="text-xs text-slate-500 max-w-32 truncate leading-tight">
+                <p className="text-xs text-gray-500 max-w-32 truncate leading-tight">
                   {companyName}
                 </p>
                 {isCompanyVerified && (
@@ -103,18 +103,18 @@ const ProfileDropdown = ({
             )}
           </div>
           {isOpen ? (
-            <ChevronUp className="h-4 w-4 text-slate-500" />
+            <ChevronUp className="h-4 w-4 text-gray-500" />
           ) : (
-            <ChevronDown className="h-4 w-4 text-slate-500" />
+            <ChevronDown className="h-4 w-4 text-gray-500" />
           )}
         </button>
 
         {/* Dropdown Menu */}
         {isOpen && (
-          <div className="absolute -right-12 sm:right-12 mt-4 w-72 bg-white rounded-xl shadow-lg border border-slate-200 z-50 overflow-hidden">
+          <div className="absolute -right-12 sm:right-12 mt-4 w-72 bg-white rounded-xl shadow-lg border border-gray-200 z-50 overflow-hidden">
             {/* Header */}
-            <div className="px-4 py-3 border-b border-slate-100 bg-slate-50">
-              <p className="flex items-center gap-1 text-sm font-semibold text-slate-900 truncate">
+            <div className="px-4 py-3 border-b border-gray-100 bg-gray-50">
+              <p className="flex items-center gap-1 text-sm font-semibold text-gray-900 truncate">
                 {name || "User"}
                 {isPremium && (
                   <span
@@ -126,7 +126,7 @@ const ProfileDropdown = ({
                 )}
               </p>
               {role === "employer" && companyName && (
-                <p className="flex items-center gap-1 text-sm text-slate-600 truncate">
+                <p className="flex items-center gap-1 text-sm text-gray-600 truncate">
                   <Building2 className="w-4 h-4" />
                   {companyName}
                   {isCompanyVerified && (
@@ -134,7 +134,7 @@ const ProfileDropdown = ({
                   )}
                 </p>
               )}
-              <p className="text-xs text-slate-600 truncate mt-0.5">{email}</p>
+              <p className="text-xs text-gray-600 truncate mt-0.5">{email}</p>
             </div>
 
             <div className="flex flex-col p-1.5">
@@ -148,9 +148,9 @@ const ProfileDropdown = ({
                         : "/employer-dashboard",
                     )
                   }
-                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                  className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                 >
-                  <LayoutDashboard className="w-4 h-4 text-slate-500" />
+                  <LayoutDashboard className="w-4 h-4 text-gray-500" />
                   Dashboard
                 </div>
               )}
@@ -162,36 +162,36 @@ const ProfileDropdown = ({
                     e.stopPropagation();
                     setAccountSettingsOpen((prev) => !prev);
                   }}
-                  className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                  className="flex items-center justify-between gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                 >
                   <span className="flex items-center gap-3">
-                    <UserCog className="w-4 h-4 text-slate-500" />
+                    <UserCog className="w-4 h-4 text-gray-500" />
                     Account & Settings
                   </span>
                   {accountSettingsOpen ? (
-                    <ChevronUp className="w-3.5 h-3.5 text-slate-400" />
+                    <ChevronUp className="w-3.5 h-3.5 text-gray-400" />
                   ) : (
-                    <ChevronDown className="w-3.5 h-3.5 text-slate-400" />
+                    <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
                   )}
                 </button>
 
                 {accountSettingsOpen && (
-                  <div className="flex bg-slate-50 border border-t-0 border-slate-100 rounded-b-2xl flex-col pl-6 space-y-0.5">
+                  <div className="flex bg-gray-50 border border-t-0 border-gray-100 rounded-b-2xl flex-col pl-6 space-y-0.5">
                     {role === "jobSeeker" && (
                       <div
                         onClick={() => navigate("/profile")}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                       >
-                        <User className="w-4 h-4 text-slate-500" />
+                        <User className="w-4 h-4 text-gray-500" />
                         View Profile
                       </div>
                     )}
                     {role === "employer" && (
                       <div
                         onClick={() => navigate("/employer-profile")}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                       >
-                        <Building2 className="w-4 h-4 text-slate-500" />
+                        <Building2 className="w-4 h-4 text-gray-500" />
                         Company Profile
                       </div>
                     )}
@@ -199,18 +199,18 @@ const ProfileDropdown = ({
                     {role === "admin" && (
                       <div
                         onClick={() => navigate("/edit-admin-profile")}
-                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                        className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                       >
-                        <Edit3 className="w-4 h-4 text-slate-500" />
+                        <Edit3 className="w-4 h-4 text-gray-500" />
                         Edit Profile
                       </div>
                     )}
 
                     <div
                       onClick={() => navigate("/change-password")}
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                     >
-                      <UserLock className="w-4 h-4 text-slate-500" />
+                      <UserLock className="w-4 h-4 text-gray-500" />
                       Change Password
                     </div>
 
@@ -220,7 +220,7 @@ const ProfileDropdown = ({
                           state: { userEmail: email, userRole: role },
                         })
                       }
-                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-red-50 cursor-pointer transition-colors hover:text-red-600"
+                      className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-red-50 cursor-pointer transition-colors hover:text-red-600"
                     >
                       <Trash2 className="w-4 h-4" />
                       Delete Account
@@ -234,24 +234,24 @@ const ProfileDropdown = ({
                 <>
                   <div
                     onClick={() => navigate("/applied-applications")}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                   >
-                    <BriefcaseBusiness className="w-4 h-4 text-slate-500" />
+                    <BriefcaseBusiness className="w-4 h-4 text-gray-500" />
                     My Applications
                   </div>
 
                   <div
                     onClick={() => navigate("/saved-jobs")}
-                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-slate-700 hover:bg-slate-100 cursor-pointer transition-colors"
+                    className="flex items-center gap-3 px-3 py-2 rounded-lg text-sm text-gray-700 hover:bg-gray-100 cursor-pointer transition-colors"
                   >
-                    <BookmarkCheck className="w-4 h-4 text-slate-500" />
+                    <BookmarkCheck className="w-4 h-4 text-gray-500" />
                     Saved Jobs
                   </div>
                 </>
               )}
 
               {/* Divider */}
-              <div className="border-t border-slate-100 my-1.5" />
+              <div className="border-t border-gray-100 my-1.5" />
 
               {/* Sign Out */}
               {onLogout && (
@@ -282,17 +282,17 @@ const ProfileDropdown = ({
         <div className="fixed inset-0 h-screen w-full bg-black/60 flex items-center justify-center z-1000">
           <div className="card-elevated w-80 p-6">
             <div className="flex items-center justify-between mb-4">
-              <h3 className="text-sm font-bold text-slate-900">
+              <h3 className="text-sm font-bold text-gray-900">
                 Confirm Sign Out
               </h3>
               <button
                 onClick={() => setShowLogoutConfirm(false)}
-                className="text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                className="text-gray-400 hover:text-gray-600 transition-colors cursor-pointer"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
-            <p className="text-sm text-slate-500 mb-5">
+            <p className="text-sm text-gray-500 mb-5">
               Are you sure you want to sign out of your account?
             </p>
             <div className="flex justify-end gap-3">

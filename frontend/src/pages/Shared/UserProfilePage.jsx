@@ -85,22 +85,22 @@ const UserProfilePage = () => {
       <DashboardLayout>
         <div className="min-h-[80vh] flex items-center justify-center p-6">
           <div className="text-center max-w-sm flex flex-col items-center">
-            <div className="w-24 h-24 bg-linear-to-br from-slate-50 to-slate-100 rounded-full flex items-center justify-center mb-6 border border-slate-200/50 shadow-xs">
-              <User className="w-12 h-12 text-slate-400" />
+            <div className="w-24 h-24 bg-linear-to-br from-gray-50 to-gray-100 rounded-full flex items-center justify-center mb-6 border border-gray-200/50 shadow-xs">
+              <User className="w-12 h-12 text-gray-400" />
             </div>
 
-            <h2 className="text-2xl font-semibold text-slate-800 mb-2">
+            <h2 className="text-2xl font-semibold text-gray-800 mb-2">
               User not found
             </h2>
-            <p className="text-slate-500 mb-8 leading-relaxed">
+            <p className="text-gray-500 mb-8 leading-relaxed">
               We couldn't find the profile you're looking for. It may have been
               deleted or the URL might be incorrect.
             </p>
             <button
               onClick={() => navigate(-1)}
-              className="group flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-2xl transition-all duration-200 active:scale-95 shadow-md shadow-slate-200"
+              className="group flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-2xl transition-all duration-200 active:scale-95 shadow-md shadow-gray-200"
             >
-              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+              <ArrowLeft className="w-4 h-4 group-hover:-trangray-x-1 transition-transform" />
               <span className="font-medium">Go back </span>
             </button>
           </div>
@@ -124,36 +124,36 @@ const UserProfilePage = () => {
   if (user.role === "admin") {
     return (
       <DashboardLayout>
-        <div className="min-h-[90vh] flex items-center justify-center bg-slate-50/50 p-6">
+        <div className="min-h-[90vh] flex items-center justify-center bg-gray-50/50 p-6">
           <div className="max-w-md w-full">
             {/* Profile Card */}
-            <div className="bg-white rounded-3xl shadow-xl shadow-slate-200/60 overflow-hidden border border-slate-100">
+            <div className="bg-white rounded-3xl shadow-xl shadow-gray-200/60 overflow-hidden border border-gray-100">
               <div className="px-8 pb-10 text-center">
                 <div className="relative py-10 flex justify-center">
                   <div className="p-2 bg-white rounded-full shadow-sm">
                     <img
                       src={user.avatar || "/default.png"}
                       alt={user.name}
-                      className="w-28 h-28 rounded-full object-cover ring-4 ring-slate-50"
+                      className="w-28 h-28 rounded-full object-cover ring-4 ring-gray-50"
                     />
                   </div>
                 </div>
                 <div className="space-y-1 mb-6">
-                  <h2 className="text-2xl font-bold text-slate-900 tracking-tight flex items-center justify-center gap-2">
+                  <h2 className="text-2xl font-bold text-gray-900 tracking-tight flex items-center justify-center gap-2">
                     {user.name}
                   </h2>
-                  <p className="text-slate-500 font-medium">{user.email}</p>
+                  <p className="text-gray-500 font-medium">{user.email}</p>
                 </div>
                 <span className="inline-flex items-center p-2 rounded-full text-xs font-medium bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border border-sky-300 shadow-sm">
                   <ShieldCheck className="w-4 h-4 mr-1 text-sky-600" />
                   Admin Support
                 </span>
-                <div className="mt-10 pt-8 border-t border-slate-100">
+                <div className="mt-10 pt-8 border-t border-gray-100">
                   <button
                     onClick={() => navigate(-1)}
-                    className="group w-full flex items-center justify-center gap-2 bg-sky-600 text-white px-6 py-4 rounded-2xl hover:bg-sky-700 transition-all duration-300 shadow-lg shadow-slate-200 active:scale-[0.98]"
+                    className="group w-full flex items-center justify-center gap-2 bg-sky-600 text-white px-6 py-4 rounded-2xl hover:bg-sky-700 transition-all duration-300 shadow-lg shadow-gray-200 active:scale-[0.98]"
                   >
-                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
+                    <ArrowLeft className="w-4 h-4 group-hover:-trangray-x-1 transition-transform" />
                     <span className="font-semibold">Go Back</span>
                   </button>
                 </div>
@@ -167,7 +167,7 @@ const UserProfilePage = () => {
 
   return (
     <DashboardLayout>
-      <div className="min-h-screen bg-slate-50 pb-12">
+      <div className="min-h-screen bg-gray-50 pb-12">
         <div className="max-w-6xl">
           <div className="bg-white rounded-2xl shadow-sm overflow-hidden mb-6">
             <div className="h-24 flex justify-end items-center px-4 bg-sky-600 relative">
@@ -192,7 +192,7 @@ const UserProfilePage = () => {
                     className="w-24 h-24 rounded-full object-cover bg-white shadow-sm"
                   />
                   <div className="pb-1">
-                    <h2 className="flex gap-1 items-center sm:text-2xl font-semibold text-slate-900 leading-tight">
+                    <h2 className="flex gap-1 items-center sm:text-2xl font-semibold text-gray-900 leading-tight">
                       {user.name || ""}
                       {user.isPremium && (
                         <span
@@ -203,7 +203,7 @@ const UserProfilePage = () => {
                         </span>
                       )}
                     </h2>
-                    <p className="text-xs text-slate-500">{user.email}</p>
+                    <p className="text-xs text-gray-500">{user.email}</p>
                     <p
                       className={`text-xs mt-1 px-2 py-0.5 inline-block rounded-full ${getRoleBadgeClass()}`}
                     >
@@ -213,7 +213,7 @@ const UserProfilePage = () => {
                 </div>
                 <div className="pb-1">
                   {!user.isPremium && (
-                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-slate-50 text-slate-600 border border-gray-200 text-sm font-medium">
+                    <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-gray-50 text-gray-600 border border-gray-200 text-sm font-medium">
                       <User className="w-3.5 h-3.5" />
                       Free User
                     </span>
@@ -223,7 +223,7 @@ const UserProfilePage = () => {
 
               <div className="flex flex-wrap items-center gap-4 mt-2 border-t border-gray-100 pt-4">
                 {user.location && (
-                  <span className="flex items-center gap-1.5 text-sm text-slate-600">
+                  <span className="flex items-center gap-1.5 text-sm text-gray-600">
                     <MapPin className="w-4 h-4 text-sky-500" />
                     {user.location}
                   </span>
@@ -257,7 +257,7 @@ const UserProfilePage = () => {
                       alt={user.companyName}
                       className="w-24 h-24 rounded-2xl object-contain bg-white shadow-sm"
                     />
-                    <p className="flex items-center gap-1 sm:text-2xl font-semibold text-slate-900 leading-tight">
+                    <p className="flex items-center gap-1 sm:text-2xl font-semibold text-gray-900 leading-tight">
                       {user?.companyName || "N/A"}
                       {user.role === "employer" && user.isCompanyVerified && (
                         <span
@@ -284,7 +284,7 @@ const UserProfilePage = () => {
               </div>
               {user.role === "employer" && user.companyDescription && (
                 <div className="mt-4 pt-4 border-t border-gray-100">
-                  <p className="text-sm text-justify text-slate-700">
+                  <p className="text-sm text-justify text-gray-700">
                     {user.companyDescription}
                   </p>
                 </div>
@@ -313,7 +313,7 @@ const UserProfilePage = () => {
                           className={`flex items-center gap-2 px-5 py-3.5 text-sm font-semibold border-b-2 transition-colors whitespace-nowrap ${
                             isActive
                               ? "border-sky-500 text-sky-600 bg-sky-50/50"
-                              : "border-transparent text-slate-500 hover:text-slate-800 hover:bg-slate-50"
+                              : "border-transparent text-gray-500 hover:text-gray-800 hover:bg-gray-50"
                           }`}
                         >
                           <Icon className="w-4 h-4" />
@@ -329,7 +329,7 @@ const UserProfilePage = () => {
                 {/* ABOUT */}
                 {activeTab === "about" && (
                   <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
                       <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                       About
                     </h3>
@@ -346,12 +346,12 @@ const UserProfilePage = () => {
                         .map(({ label, value }) => (
                           <div
                             key={label}
-                            className="bg-slate-50 rounded-xl p-4 border border-gray-100"
+                            className="bg-gray-50 rounded-xl p-4 border border-gray-100"
                           >
-                            <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+                            <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
                               {label}
                             </p>
-                            <p className="text-sm text-slate-800 font-medium">
+                            <p className="text-sm text-gray-800 font-medium">
                               {value || "Not provided"}
                             </p>
                           </div>
@@ -365,7 +365,7 @@ const UserProfilePage = () => {
                   <div className="space-y-8">
                     {/* Skills */}
                     <section>
-                      <h3 className="text-base font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
                         <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                         Skills
                       </h3>
@@ -387,7 +387,7 @@ const UserProfilePage = () => {
 
                     {/* Education */}
                     <section>
-                      <h3 className="text-base font-semibold text-slate-900 mb-3 flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-gray-900 mb-3 flex items-center gap-2">
                         <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                         Education
                       </h3>
@@ -400,13 +400,13 @@ const UserProfilePage = () => {
                                   <GraduationCap className="w-4 h-4 text-sky-600" />
                                 </div>
                                 <div className="min-w-0">
-                                  <p className="font-semibold text-slate-900 text-sm">
+                                  <p className="font-semibold text-gray-900 text-sm">
                                     {edu.study}
                                   </p>
                                   <p className="text-sky-600 text-sm mt-0.5">
                                     {edu.institution}
                                   </p>
-                                  <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-500">
+                                  <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
                                     {edu.location && (
                                       <span className="flex items-center gap-1">
                                         <MapPin className="w-3 h-3" />
@@ -434,7 +434,7 @@ const UserProfilePage = () => {
                 {/* EXPERIENCE */}
                 {activeTab === "experience" && (
                   <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
                       <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                       Work Experience
                     </h3>
@@ -449,7 +449,7 @@ const UserProfilePage = () => {
                               <div className="flex-1 min-w-0">
                                 <div className="flex items-start justify-between gap-2">
                                   <div>
-                                    <p className="font-semibold text-slate-900 text-sm">
+                                    <p className="font-semibold text-gray-900 text-sm">
                                       {exp.jobTitle}
                                     </p>
                                     <p className="text-sky-600 text-sm mt-0.5">
@@ -462,7 +462,7 @@ const UserProfilePage = () => {
                                     </span>
                                   )}
                                 </div>
-                                <div className="flex flex-wrap gap-3 mt-2 text-xs text-slate-500">
+                                <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
                                   {exp.location && (
                                     <span className="flex items-center gap-1">
                                       <MapPin className="w-3 h-3" />
@@ -482,7 +482,7 @@ const UserProfilePage = () => {
                                     {exp.description.map((desc, j) => (
                                       <li
                                         key={j}
-                                        className="flex gap-2 text-sm text-slate-700"
+                                        className="flex gap-2 text-sm text-gray-700"
                                       >
                                         <ChevronRight className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
                                         <span>{desc}</span>
@@ -504,7 +504,7 @@ const UserProfilePage = () => {
                 {/* CERTIFICATIONS */}
                 {activeTab === "certifications" && (
                   <div className="space-y-4">
-                    <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                    <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
                       <span className="w-1 h-5 bg-sky-500 rounded-full inline-block" />
                       Certifications
                     </h3>
@@ -520,13 +520,13 @@ const UserProfilePage = () => {
                                 <Award className="w-4 h-4 text-sky-600" />
                               </div>
                               <div className="min-w-0">
-                                <p className="font-semibold text-slate-900 text-sm leading-snug">
+                                <p className="font-semibold text-gray-900 text-sm leading-snug">
                                   {cert.name}
                                 </p>
                                 <p className="text-sky-600 text-xs mt-1">
                                   {cert.issuer}
                                 </p>
-                                <p className="flex items-center gap-1 text-xs text-slate-500 mt-1.5">
+                                <p className="flex items-center gap-1 text-xs text-gray-500 mt-1.5">
                                   <Calendar className="w-3 h-3" />
                                   {formatDate(cert.date)}
                                 </p>
@@ -558,7 +558,7 @@ const UserProfilePage = () => {
                 {user.role === "jobSeeker" && (
                   <>
                     <div className="flex items-center justify-between mb-4">
-                      <h3 className="text-base font-semibold text-slate-900 flex items-center gap-2">
+                      <h3 className="text-base font-semibold text-gray-900 flex items-center gap-2">
                         <FileText className="w-4 h-4 text-sky-600" />
                         Resume
                       </h3>
@@ -585,11 +585,11 @@ const UserProfilePage = () => {
                         />
                       </div>
                     ) : (
-                      <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-slate-50">
+                      <div className="border-2 border-dashed border-gray-200 rounded-xl p-8 text-center bg-gray-50">
                         <div className="w-12 h-12 bg-white rounded-xl shadow-sm flex items-center justify-center mx-auto mb-3">
-                          <FileText className="w-6 h-6 text-slate-400" />
+                          <FileText className="w-6 h-6 text-gray-400" />
                         </div>
-                        <p className="text-sm text-slate-400 font-medium">
+                        <p className="text-sm text-gray-400 font-medium">
                           No resume uploaded
                         </p>
                       </div>
@@ -600,31 +600,31 @@ const UserProfilePage = () => {
                 {user.role === "employer" && (
                   <div className="space-y-4">
                     {user.companyName && (
-                      <div className="bg-slate-50 rounded-xl p-4 border border-gray-100">
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
                           Company
                         </p>
-                        <p className="text-sm text-slate-800 font-medium">
+                        <p className="text-sm text-gray-800 font-medium">
                           {user.companyName}
                         </p>
                       </div>
                     )}
                     {user.companySize && (
-                      <div className="bg-slate-50 rounded-xl p-4 border border-gray-100">
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
                           Company Size
                         </p>
-                        <p className="text-sm text-slate-800 font-medium">
+                        <p className="text-sm text-gray-800 font-medium">
                           {user.companySize}
                         </p>
                       </div>
                     )}
                     {user.stats && user.stats.postedJobs != null && (
-                      <div className="bg-slate-50 rounded-xl p-4 border border-gray-100">
-                        <p className="text-xs font-semibold text-slate-400 uppercase tracking-wide mb-1">
+                      <div className="bg-gray-50 rounded-xl p-4 border border-gray-100">
+                        <p className="text-xs font-semibold text-gray-400 uppercase tracking-wide mb-1">
                           Jobs Posted
                         </p>
-                        <p className="text-sm text-slate-800 font-medium">
+                        <p className="text-sm text-gray-800 font-medium">
                           {user.stats.postedJobs} jobs
                         </p>
                       </div>
@@ -647,7 +647,7 @@ const TimelineCard = ({ children }) => (
 );
 
 const EmptyState = ({ label }) => (
-  <p className="text-sm text-slate-400 py-4 text-center border border-dashed border-gray-200 rounded-xl bg-slate-50">
+  <p className="text-sm text-gray-400 py-4 text-center border border-dashed border-gray-200 rounded-xl bg-gray-50">
     {label}
   </p>
 );

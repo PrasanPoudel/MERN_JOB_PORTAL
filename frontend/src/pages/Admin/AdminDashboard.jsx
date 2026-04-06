@@ -27,7 +27,13 @@ import DashboardLayout from "../../components/layout/DashboardLayout";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import { StatCard } from "../../components/Cards/StatCard";
 
-const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) => {
+const BarGraph = ({
+  data,
+  days,
+  onDaysChange,
+  riskData,
+  userDistributionData,
+}) => {
   const navigate = useNavigate();
   if (!data || data.length === 0) return null;
 
@@ -95,7 +101,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
       </div>
 
       <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
-        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
           Daily User Registrations
         </h3>
         <ResponsiveContainer width="100%" height={250}>
@@ -122,7 +128,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
       </div>
 
       <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
-        <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
+        <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
           Daily Job Postings
         </h3>
         <ResponsiveContainer width="100%" height={250}>
@@ -146,7 +152,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-4">
         <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
-          <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
             Job Risk Distribution
           </h3>
 
@@ -175,7 +181,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
               return (
                 <div
                   key={index}
-                  className="flex justify-between text-sm text-slate-700"
+                  className="flex justify-between text-sm text-gray-700"
                 >
                   <span className="flex items-center gap-2">
                     <span
@@ -192,7 +198,7 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
         </div>
 
         <div className="bg-white rounded-xl border-2 border-gray-100 shadow-sm p-4 sm:p-6">
-          <h3 className="text-base sm:text-lg font-semibold text-slate-900 mb-4 sm:mb-6">
+          <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-4 sm:mb-6">
             User Distribution
           </h3>
 
@@ -215,13 +221,17 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
 
           <div className="mt-4 sm:mt-6 space-y-2">
             {userDistributionData.map((item, index) => {
-              const total = userDistributionData.reduce((sum, d) => sum + d.value, 0);
-              const percentage = total > 0 ? ((item.value / total) * 100).toFixed(2) : 0;
+              const total = userDistributionData.reduce(
+                (sum, d) => sum + d.value,
+                0,
+              );
+              const percentage =
+                total > 0 ? ((item.value / total) * 100).toFixed(2) : 0;
 
               return (
                 <div
                   key={index}
-                  className="flex justify-between text-sm text-slate-700"
+                  className="flex justify-between text-sm text-gray-700"
                 >
                   <span className="flex items-center gap-2">
                     <span
@@ -255,10 +265,10 @@ const BarGraph = ({ data, days, onDaysChange, riskData, userDistributionData }) 
                 <Icon className="w-5 h-5 sm:w-6 sm:h-6" />
               </div>
               <div className="min-w-0">
-                <h3 className="font-semibold text-slate-900 text-sm sm:text-base">
+                <h3 className="font-semibold text-gray-900 text-sm sm:text-base">
                   {action.title}
                 </h3>
-                <p className="text-xs sm:text-sm text-slate-600 mt-0.5">
+                <p className="text-xs sm:text-sm text-gray-600 mt-0.5">
                   Manage platform data
                 </p>
               </div>
@@ -389,8 +399,14 @@ const AdminDashboard = () => {
             onDaysChange={setDays}
             riskData={riskData}
             userDistributionData={[
-              { name: "Job Seekers", value: dashboardData?.counts?.totalJobSeekers || 0 },
-              { name: "Employers", value: dashboardData?.counts?.totalEmployers || 0 },
+              {
+                name: "Job Seekers",
+                value: dashboardData?.counts?.totalJobSeekers || 0,
+              },
+              {
+                name: "Employers",
+                value: dashboardData?.counts?.totalEmployers || 0,
+              },
             ]}
           />
         </div>

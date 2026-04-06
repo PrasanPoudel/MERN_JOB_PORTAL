@@ -107,7 +107,7 @@ const Login = () => {
 
   if (formState.success) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-slate-50 px-4">
+      <div className="min-h-screen flex items-center justify-center bg-gray-50 px-4">
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
@@ -115,14 +115,14 @@ const Login = () => {
           className="card-elevated p-8 max-w-md w-full text-center"
         >
           <CheckCircle className="w-16 h-16 text-green-500 mx-auto mb-4" />
-          <h2 className="text-2xl font-bold text-slate-900 mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
             Welcome Back!
           </h2>
-          <p className="text-slate-500 mb-4">
+          <p className="text-gray-500 mb-4">
             You have been successfully logged in.
           </p>
           <div className="animate-spin w-6 h-6 border-2 border-sky-600 border-t-transparent rounded-full mx-auto"></div>
-          <p className="text-sm text-slate-400 mt-2">
+          <p className="text-sm text-gray-400 mt-2">
             Redirecting to your dashboard...
           </p>
         </motion.div>
@@ -131,7 +131,7 @@ const Login = () => {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-slate-50 py-8 px-4">
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 py-8 px-4">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -142,14 +142,16 @@ const Login = () => {
           <img src={logo} className="w-28 h-20 object-contain" alt="KAAMSETU" />
         </div>
         <div className="text-center mb-6">
-          <h2 className="text-2xl font-bold text-slate-900 mb-1">Welcome Back!</h2>
-          <p className="text-slate-500 text-sm">Sign in to your account</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">
+            Welcome Back!
+          </h2>
+          <p className="text-gray-500 text-sm">Sign in to your account</p>
         </div>
         <form onSubmit={handleSubmit} className="space-y-5">
           <div>
             <label className="label">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <Mail className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 autoComplete="off"
                 type="email"
@@ -180,7 +182,7 @@ const Login = () => {
               </a>
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-5 h-5" />
+              <Lock className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type={formState.showPassword ? "text" : "password"}
                 name="password"
@@ -198,7 +200,7 @@ const Login = () => {
                     showPassword: !prev.showPassword,
                   }));
                 }}
-                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-slate-400 hover:text-slate-600 cursor-pointer"
+                className="absolute right-3 top-1/2 transform -trangray-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
               >
                 {formState.showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -240,7 +242,7 @@ const Login = () => {
           </button>
 
           <div className="text-center">
-            <p className="text-slate-500 text-sm">
+            <p className="text-gray-500 text-sm">
               Don't have an account?{" "}
               <a
                 href="/signup"

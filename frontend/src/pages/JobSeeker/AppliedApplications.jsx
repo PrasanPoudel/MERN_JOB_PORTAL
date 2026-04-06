@@ -71,12 +71,12 @@ const AppliedApplications = () => {
                     navigate(-1);
                   }}
                   title="Go back to previous page"
-                  className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+                  className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
                 >
                   <ArrowLeft className="w-4 h-4" />
                   Back
                 </button>
-                <h1 className="text-xl font-semibold text-slate-900">
+                <h1 className="text-xl font-semibold text-gray-900">
                   My Applications
                 </h1>
               </div>
@@ -90,8 +90,8 @@ const AppliedApplications = () => {
                     title="Grid view"
                     className={`p-2 rounded-lg transition-colors cursor-pointer ${
                       viewMode === "grid"
-                        ? "md:bg-sky-600 bg-slate-100 text-slate-400 md:text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        ? "md:bg-sky-600 bg-gray-100 text-gray-400 md:text-white shadow-sm"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                     }`}
                   >
                     <Grid className="w-4 h-4" />
@@ -104,7 +104,7 @@ const AppliedApplications = () => {
                     className={`p-2 rounded-lg transition-colors cursor-pointer ${
                       viewMode === "list"
                         ? "bg-sky-600 text-white shadow-sm"
-                        : "text-slate-600 hover:text-slate-900 hover:bg-slate-100"
+                        : "text-gray-600 hover:text-gray-900 hover:bg-gray-100"
                     }`}
                   >
                     <List className="w-4 h-4" />
@@ -115,13 +115,13 @@ const AppliedApplications = () => {
               <div className="space-y-6">
                 {applications.length === 0 ? (
                   <div className="text-center py-16 bg-white/60 backdrop-blur-xl rounded-2xl border border-white/20">
-                    <div className="text-slate-400 mb-6">
+                    <div className="text-gray-400 mb-6">
                       <BriefcaseBusiness className="w-16 h-16 mx-auto" />
                     </div>
-                    <h3 className="text-xl lg:text-2xl font-bold text-slate-900 mb-3">
+                    <h3 className="text-xl lg:text-2xl font-bold text-gray-900 mb-3">
                       You haven't applied to any job yet
                     </h3>
-                    <p className="text-slate-600 mb-6">
+                    <p className="text-gray-600 mb-6">
                       Start applying to jobs that match your skills and
                       interests
                     </p>

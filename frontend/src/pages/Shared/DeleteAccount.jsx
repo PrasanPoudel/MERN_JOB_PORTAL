@@ -101,21 +101,21 @@ const DeleteAccount = () => {
   const renderStep1 = () => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
       <div className="text-center">
-        <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-2">
+        <h1 className="text-xl sm:text-2xl font-semibold text-gray-900 mb-2">
           Delete Your Account
         </h1>
-        <p className="text-slate-600 mb-6 max-w-md mx-auto">
+        <p className="text-gray-600 mb-6 max-w-md mx-auto">
           This action is{" "}
           <strong className="text-red-600">permanent and irreversible</strong>.
           All your data will be permanently deleted.
         </p>
       </div>
 
-      <div className="bg-slate-50 rounded-lg p-4 mb-6">
-        <h3 className="font-semibold text-slate-900 mb-3">
+      <div className="bg-gray-50 rounded-lg p-4 mb-6">
+        <h3 className="font-semibold text-gray-900 mb-3">
           What will be deleted:
         </h3>
-        <ul className="space-y-2 text-sm text-slate-600">
+        <ul className="space-y-2 text-sm text-gray-600">
           <li className="flex items-center gap-2">
             <CheckCircle className="w-4 h-4 text-green-600" />
             Profile information and personal data
@@ -148,9 +148,9 @@ const DeleteAccount = () => {
       <div className="flex">
         <button
           onClick={handleFirstStep}
-          className="flex items-center justify-center gap-2 px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex-1"
+          className="px-4 py-3 bg-red-600 text-white rounded-lg hover:bg-red-700 transition-colors flex-1"
         >
-          <Trash2 className="w-4 h-4" />I Understand, Continue
+          I Understand, Continue
         </button>
       </div>
     </div>
@@ -159,17 +159,17 @@ const DeleteAccount = () => {
   const renderStep2 = () => (
     <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-4">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
           Confirm Your Password
         </h1>
-        <p className="text-slate-600">
+        <p className="text-gray-600">
           Enter your current password to verify this action
         </p>
       </div>
 
       <form onSubmit={handleDeleteAccount} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium text-slate-700 mb-2">
+          <label className="block text-sm font-medium text-gray-700 mb-2">
             Password *
           </label>
           <div className="relative">
@@ -196,9 +196,9 @@ const DeleteAccount = () => {
               title={formState.showPassword ? "Hide password" : "Show password"}
             >
               {formState.showPassword ? (
-                <EyeOff className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                <EyeOff className="h-5 w-5 text-gray-400 hover:text-gray-600" />
               ) : (
-                <Eye className="h-5 w-5 text-slate-400 hover:text-slate-600" />
+                <Eye className="h-5 w-5 text-gray-400 hover:text-gray-600" />
               )}
             </button>
           </div>
@@ -211,7 +211,7 @@ const DeleteAccount = () => {
           <button
             type="button"
             onClick={handleGoBack}
-            className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors"
+            className="flex items-center justify-center gap-2 px-4 py-3 border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -221,7 +221,7 @@ const DeleteAccount = () => {
             disabled={formState.isLoading}
             className={`flex items-center justify-center gap-2 px-4 py-3 rounded-lg transition-colors ${
               formState.isLoading
-                ? "bg-slate-300 cursor-not-allowed text-slate-500"
+                ? "bg-gray-300 cursor-not-allowed text-gray-500"
                 : "bg-red-600 hover:bg-red-700 text-white"
             } flex-1`}
           >
@@ -248,10 +248,10 @@ const DeleteAccount = () => {
         <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
           <CheckCircle className="w-8 h-8 text-green-600" />
         </div>
-        <h1 className="text-2xl font-bold text-slate-900 mb-2">
+        <h1 className="text-2xl font-bold text-gray-900 mb-2">
           Account Deleted Successfully
         </h1>
-        <p className="text-slate-600 mb-6">
+        <p className="text-gray-600 mb-6">
           Your account has been permanently deleted. You will be logged out and
           redirected to the home page shortly.
         </p>
@@ -272,13 +272,13 @@ const DeleteAccount = () => {
   );
 
   return (
-    <div className="min-h-screen bg-slate-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8">
       <div className="max-w-2xl mx-auto px-4">
         <div className="mb-6">
           <button
             onClick={() => navigate(-1)}
             title="Go back to previous page"
-            className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+            className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-gray-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -293,41 +293,41 @@ const DeleteAccount = () => {
 
         {/* Progress Indicator */}
         <div className="flex justify-center mt-8">
-          <div className="flex items-center gap-1 text-sm text-slate-500">
+          <div className="flex items-center gap-1 text-sm text-gray-500">
             <div
               className={`flex items-center gap-2 ${
-                step >= 1 ? "text-slate-900 font-medium" : ""
+                step >= 1 ? "text-gray-900 font-medium" : ""
               }`}
             >
               <div
                 className={`w-3 h-3 rounded-full ${
-                  step >= 1 ? "bg-slate-900" : "bg-slate-300"
+                  step >= 1 ? "bg-gray-900" : "bg-gray-300"
                 }`}
               ></div>
               Confirm
             </div>
-            <div className="w-6 h-0.5 bg-slate-300"></div>
+            <div className="w-6 h-0.5 bg-gray-300"></div>
             <div
               className={`flex items-center gap-2 ${
-                step >= 2 ? "text-slate-900 font-medium" : ""
+                step >= 2 ? "text-gray-900 font-medium" : ""
               }`}
             >
               <div
                 className={`w-3 h-3 rounded-full ${
-                  step >= 2 ? "bg-slate-900" : "bg-slate-300"
+                  step >= 2 ? "bg-gray-900" : "bg-gray-300"
                 }`}
               ></div>
               Verify
             </div>
-            <div className="w-6 h-0.5 bg-slate-300"></div>
+            <div className="w-6 h-0.5 bg-gray-300"></div>
             <div
               className={`flex items-center gap-2 ${
-                step >= 3 ? "text-slate-900 font-medium" : ""
+                step >= 3 ? "text-gray-900 font-medium" : ""
               }`}
             >
               <div
                 className={`w-3 h-3 rounded-full ${
-                  step >= 3 ? "bg-slate-900" : "bg-slate-300"
+                  step >= 3 ? "bg-gray-900" : "bg-gray-300"
                 }`}
               ></div>
               Complete
