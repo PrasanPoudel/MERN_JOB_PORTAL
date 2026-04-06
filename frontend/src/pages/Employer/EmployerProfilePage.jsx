@@ -14,6 +14,7 @@ import {
   Plus,
   BadgeCheck,
   Crown,
+  Phone,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";

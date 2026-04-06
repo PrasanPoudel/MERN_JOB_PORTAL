@@ -287,53 +287,48 @@ const UserProfile = () => {
                       <div className="space-y-3">
                         {user.experience.map((exp, i) => (
                           <TimelineCard key={i}>
-                            <div className="flex items-start gap-3">
-                              <div className="p-2 bg-sky-50 rounded-lg shrink-0">
-                                <Briefcase className="w-4 h-4 text-sky-600" />
-                              </div>
-                              <div className="flex-1 min-w-0">
-                                <div className="flex items-start justify-between gap-2">
-                                  <div>
-                                    <p className="font-semibold text-gray-900 text-sm">
-                                      {exp.jobTitle}
-                                    </p>
-                                    <p className="text-sky-600 text-sm mt-0.5">
-                                      {exp.company}
-                                    </p>
-                                  </div>
-                                  {exp.isCurrent && (
-                                    <span className="shrink-0 px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full border border-green-200 font-medium">
-                                      Current
-                                    </span>
-                                  )}
+                            <div className="flex-1 min-w-0">
+                              <div className="flex items-start justify-between gap-2">
+                                <div>
+                                  <p className="font-semibold text-gray-900 text-sm">
+                                    {exp.jobTitle}
+                                  </p>
+                                  <p className="text-sky-600 text-sm mt-0.5">
+                                    {exp.company}
+                                  </p>
                                 </div>
-                                <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
-                                  <span className="flex items-center gap-1">
-                                    <MapPin className="w-3 h-3" />
-                                    {exp.location}
+                                {exp.isCurrent && (
+                                  <span className="shrink-0 px-2 py-0.5 bg-green-50 text-green-700 text-xs rounded-full border border-green-200 font-medium">
+                                    Current
                                   </span>
-                                  <span className="flex items-center gap-1">
-                                    <Calendar className="w-3 h-3" />
-                                    {formatDate(exp.startDate)} –{" "}
-                                    {exp.isCurrent
-                                      ? "Present"
-                                      : formatDate(exp.endDate)}
-                                  </span>
-                                </div>
-                                {exp.description?.length > 0 && (
-                                  <ul className="mt-3 space-y-1">
-                                    {exp.description.map((desc, j) => (
-                                      <li
-                                        key={j}
-                                        className="flex gap-2 text-sm text-gray-700"
-                                      >
-                                        <ChevronRight className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
-                                        <span>{desc}</span>
-                                      </li>
-                                    ))}
-                                  </ul>
                                 )}
                               </div>
+                              <div className="flex flex-wrap gap-3 mt-2 text-xs text-gray-500">
+                                <span className="flex items-center gap-1">
+                                  <MapPin className="w-3 h-3" />
+                                  {exp.location}
+                                </span>
+                                <span className="flex items-center gap-1">
+                                  <Calendar className="w-3 h-3" />
+                                  {formatDate(exp.startDate)} –{" "}
+                                  {exp.isCurrent
+                                    ? "Present"
+                                    : formatDate(exp.endDate)}
+                                </span>
+                              </div>
+                              {exp.description?.length > 0 && (
+                                <ul className="mt-3 space-y-1">
+                                  {exp.description.map((desc, j) => (
+                                    <li
+                                      key={j}
+                                      className="flex gap-2 text-sm text-gray-700"
+                                    >
+                                      <ChevronRight className="w-4 h-4 text-sky-400 shrink-0 mt-0.5" />
+                                      <span>{desc}</span>
+                                    </li>
+                                  ))}
+                                </ul>
+                              )}
                             </div>
                           </TimelineCard>
                         ))}
