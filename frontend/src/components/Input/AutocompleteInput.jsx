@@ -47,9 +47,9 @@ const AutocompleteInput = ({
   };
   return (
     <div className={`relative group ${className}`}>
-      <Icon className="absolute left-4 top-1/2 transform -trangray-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+      <Icon className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
       {suggestion && (
-        <div className="absolute left-12 top-1/2 transform -trangray-y-1/2 pointer-events-none text-base text-gray-400">
+        <div className="absolute left-12 top-1/2 transform -translate-y-1/2 pointer-events-none text-base text-gray-400">
           <span className="invisible">{value}</span>
           <span>{suggestion.slice(value.length)}</span>
         </div>

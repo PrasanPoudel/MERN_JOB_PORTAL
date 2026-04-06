@@ -62,7 +62,7 @@ export const StatCard = ({
 
   return (
     <div
-      className={`card border-l-4 ${colors.border} p-5 transition-all duration-200 hover:shadow-md hover:-trangray-y-0.5`}
+      className={`card border-l-4 ${colors.border} p-5 transition-all duration-200 hover:shadow-md hover:-translate-y-0.5`}
     >
       <div className="flex items-center justify-between">
         <div>

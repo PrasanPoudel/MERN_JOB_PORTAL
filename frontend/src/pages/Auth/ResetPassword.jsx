@@ -234,7 +234,7 @@ const ResetPassword = () => {
               New Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
               <input
                 type={showPassword ? "text" : "password"}
                 name="password"
@@ -251,7 +251,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => setShowPassword(!showPassword)}
-                className="absolute right-3 top-1/2 transform -trangray-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {showPassword ? (
                   <EyeOff className="w-5 h-5" />
@@ -273,7 +273,7 @@ const ResetPassword = () => {
               Confirm New Password
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5" />
               <input
                 type={showConfirmPassword ? "text" : "password"}
                 name="confirmPassword"
@@ -290,7 +290,7 @@ const ResetPassword = () => {
               <button
                 type="button"
                 onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-                className="absolute right-3 top-1/2 transform -trangray-y-1/2 text-gray-400 hover:text-gray-600"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600"
               >
                 {showConfirmPassword ? (
                   <EyeOff className="w-5 h-5" />

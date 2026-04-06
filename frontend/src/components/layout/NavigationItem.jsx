@@ -16,7 +16,7 @@ const NavigationItem = ({ item, isActive, onClick, badge }) => {
       {/* Active indicator bar */}
       <span
         className={[
-          "absolute left-0 top-1/2 -trangray-y-1/2 w-0.75 rounded-full transition-all duration-200",
+          "absolute left-0 top-1/2 -translate-y-1/2 w-0.75 rounded-full transition-all duration-200",
           isActive
             ? "h-5 bg-sky-600"
             : "h-0 bg-transparent group-hover:h-3 group-hover:bg-gray-300",

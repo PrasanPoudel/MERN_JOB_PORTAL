@@ -151,7 +151,7 @@ const Login = () => {
           <div>
             <label className="label">Email Address</label>
             <div className="relative">
-              <Mail className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
+              <Mail className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 autoComplete="off"
                 type="email"
@@ -182,7 +182,7 @@ const Login = () => {
               </a>
             </label>
             <div className="relative">
-              <Lock className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-5 h-5" />
+              <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
               <input
                 type={formState.showPassword ? "text" : "password"}
                 name="password"
@@ -200,7 +200,7 @@ const Login = () => {
                     showPassword: !prev.showPassword,
                   }));
                 }}
-                className="absolute right-3 top-1/2 transform -trangray-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
+                className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 cursor-pointer"
               >
                 {formState.showPassword ? (
                   <EyeOff className="w-5 h-5" />

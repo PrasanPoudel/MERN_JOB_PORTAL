@@ -288,7 +288,7 @@ const Chat = ({ isAdmin = false }) => {
               </p>
               <button
                 onClick={() => navigate("/admin-users-management")}
-                className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-trangray-y-0.5"
+                className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5"
               >
                 Manage Users
               </button>
@@ -303,7 +303,7 @@ const Chat = ({ isAdmin = false }) => {
                   </p>
                   <button
                     onClick={() => navigate("/applied-applications")}
-                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-trangray-y-0.5"
+                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5"
                   >
                     View Applications
                   </button>
@@ -316,7 +316,7 @@ const Chat = ({ isAdmin = false }) => {
                   </p>
                   <button
                     onClick={() => navigate("/manage-jobs")}
-                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-trangray-y-0.5"
+                    className="bg-sky-600 text-white px-8 py-3.5 rounded-xl  hover:bg-sky-700 transition-all duration-200 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5"
                   >
                     Manage Jobs
                   </button>
@@ -359,7 +359,7 @@ const Chat = ({ isAdmin = false }) => {
           className={`${
             isMobile
               ? `fixed inset-0 top-0 transition-transform duration-300 ease-in-out z-50 ${
-                  sidebarOpen ? "trangray-x-0" : "-trangray-x-full"
+                  sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
               : "w-full md:w-96 lg:w-104"
           } bg-white border-r border-gray-200/60 flex flex-col shadow-lg md:shadow-none`}
@@ -391,7 +391,7 @@ const Chat = ({ isAdmin = false }) => {
           <div className="p-2 border-b border-gray-200/60 bg-gray-50/60">
             <div className="space-y-3">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -trangray-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
                 <input
                   autoComplete="off"
                   id="search_conversations"
@@ -815,7 +815,7 @@ const Chat = ({ isAdmin = false }) => {
                 <button
                   onClick={handleSendMessage}
                   disabled={sending || !newMessage.trim()}
-                  className="text-white p-2 rounded-2xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-trangray-y-0.5 disabled:transform-none disabled:shadow-sm"
+                  className="text-white p-2 rounded-2xl bg-sky-600 hover:bg-sky-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 shrink-0 shadow-sm shadow-sky-600/30 hover:shadow-sm hover:shadow-sky-600/40 hover:-translate-y-0.5 disabled:transform-none disabled:shadow-sm"
                 >
                   {sending ? (
                     <div className="flex items-center gap-2">

@@ -135,9 +135,9 @@ const DashboardLayout = ({ activeMenu, children }) => {
           "transition-all duration-300 ease-in-out",
           isMobile
             ? sidebarOpen
-              ? "trangray-x-0 shadow-xl"
-              : "-trangray-x-full"
-            : "trangray-x-0",
+              ? "translate-x-0 shadow-xl"
+              : "-translate-x-full"
+            : "translate-x-0",
         ].join(" ")}
       >
         {/* Sidebar Header */}

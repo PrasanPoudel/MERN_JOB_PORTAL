@@ -185,7 +185,7 @@ const EditProfileDetails = ({
                             Company Size
                           </label>
                           <div className="relative">
-                            <Users className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                            <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <select
                               id="companySize"
                               value={formData.companySize}
@@ -223,7 +223,7 @@ const EditProfileDetails = ({
                             Location
                           </label>
                           <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <input
                               type="text"
                               id="companyLocation"
@@ -278,7 +278,7 @@ const EditProfileDetails = ({
                           <span className="text-gray-500">(Optional)</span>
                         </label>
                         <div className="relative">
-                          <Globe className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                          <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                           <input
                             type="url"
                             id="companyWebsiteLink"
@@ -318,7 +318,7 @@ const EditProfileDetails = ({
                         Company Registration Number
                       </p>
                       <div className="relative">
-                        <FileText className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                           type="text"
                           id="companyRegistrationNumber"
@@ -347,7 +347,7 @@ const EditProfileDetails = ({
                     <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
                       <p className="text-gray-500 mb-2">PAN Number</p>
                       <div className="relative">
-                        <CreditCard className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                           type="text"
                           id="panNumber"

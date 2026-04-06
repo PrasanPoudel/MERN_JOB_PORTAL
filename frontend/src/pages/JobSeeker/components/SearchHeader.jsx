@@ -48,7 +48,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
             <div className="flex border-2 border-gray-200 rounded-2xl overflow-hidden bg-white hover:border-gray-300 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-100 transition-all">
               {/* Keyword Search */}
               <div className="relative group flex-1">
-                <Search className="absolute left-4 top-1/2 transform -trangray-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
                   autoComplete="off"
                   id="searchbar_Mobile"
@@ -121,7 +121,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
             <div className="flex border-2 border-gray-200 rounded-2xl overflow-hidden bg-white hover:border-gray-300 focus-within:border-sky-500 focus-within:ring-4 focus-within:ring-sky-100 transition-all">
               {/* Keyword Search */}
               <div className="relative group flex-1">
-                <Search className="absolute left-4 top-1/2 transform -trangray-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                <Search className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <input
                   autoComplete="off"
                   type="search"
@@ -159,7 +159,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
 
               {/* Job Type */}
               <div className="relative group flex-1 border-l-2 border-gray-200">
-                <Clock className="absolute left-4 top-1/2 transform -trangray-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                 <select
                   id="jobType"
                   value={filters.type}
@@ -173,7 +173,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
                     </option>
                   ))}
                 </select>
-                <div className="absolute right-4 top-1/2 transform -trangray-y-1/2 pointer-events-none">
+                <div className="absolute right-4 top-1/2 transform -translate-y-1/2 pointer-events-none">
                   <ChevronDown className="h-4 w-4" />
                 </div>
               </div>
@@ -281,7 +281,7 @@ const SearchHeader = ({ handleFilterChange, filters, clearAllFilters }) => {
                   Job Type
                 </label>
                 <div className="relative group">
-                  <Clock className="absolute left-4 top-1/2 transform -trangray-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
+                  <Clock className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400 group-focus-within:text-sky-600 transition-colors z-10" />
                   <select
                     value={filters.type}
                     onChange={(e) => handleFilterChange("type", e.target.value)}

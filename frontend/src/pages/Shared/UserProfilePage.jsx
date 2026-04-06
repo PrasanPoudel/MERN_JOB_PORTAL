@@ -100,7 +100,7 @@ const UserProfilePage = () => {
               onClick={() => navigate(-1)}
               className="group flex items-center gap-2 bg-sky-600 hover:bg-sky-700 text-white px-6 py-3 rounded-2xl transition-all duration-200 active:scale-95 shadow-md shadow-gray-200"
             >
-              <ArrowLeft className="w-4 h-4 group-hover:-trangray-x-1 transition-transform" />
+              <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
               <span className="font-medium">Go back </span>
             </button>
           </div>
@@ -153,7 +153,7 @@ const UserProfilePage = () => {
                     onClick={() => navigate(-1)}
                     className="group w-full flex items-center justify-center gap-2 bg-sky-600 text-white px-6 py-4 rounded-2xl hover:bg-sky-700 transition-all duration-300 shadow-lg shadow-gray-200 active:scale-[0.98]"
                   >
-                    <ArrowLeft className="w-4 h-4 group-hover:-trangray-x-1 transition-transform" />
+                    <ArrowLeft className="w-4 h-4 group-hover:-translate-x-1 transition-transform" />
                     <span className="font-semibold">Go Back</span>
                   </button>
                 </div>
