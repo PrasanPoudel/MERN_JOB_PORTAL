@@ -109,6 +109,7 @@ exports.login = async (req, res, next) => {
       companyDescription: user.companyDescription || "",
       companyLogo: user.companyLogo || "",
       companyLocation: user.companyLocation || "",
+      companyPhoneNumber: user.companyPhoneNumber || "",
       companyWebsiteLink: user.companyWebsiteLink || "",
       companySize: user.companySize || "",
       isCompanyVerified: user.isCompanyVerified || false,

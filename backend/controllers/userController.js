@@ -26,6 +26,7 @@ exports.updateProfile = async (req, res) => {
       companySize,
       companyRegistrationNumber,
       panNumber,
+      companyPhoneNumber,
     } = req.body;
 
     const user = await User.findById(req.user._id);
@@ -82,13 +83,20 @@ exports.updateProfile = async (req, res) => {
     if (user.role === "employer") {
       user.companyName = companyName ?? user.companyName;
       user.companyDescription = companyDescription ?? user.companyDescription;
-      
+
       // Handle company logo update - delete old file from Cloudinary if replaced
-      if (companyLogo && companyLogo !== user.companyLogo && user.companyLogoPublicId) {
+      if (
+        companyLogo &&
+        companyLogo !== user.companyLogo &&
+        user.companyLogoPublicId
+      ) {
         try {
           await cloudinary.uploader.destroy(user.companyLogoPublicId);
         } catch (e) {
-          console.error("Failed to delete old company logo from Cloudinary:", e);
+          console.error(
+            "Failed to delete old company logo from Cloudinary:",
+            e,
+          );
         }
       }
       if (companyLogo && companyLogo !== user.companyLogo) {
@@ -99,8 +107,8 @@ exports.updateProfile = async (req, res) => {
         }
       }
       user.companyLogo = companyLogo ?? user.companyLogo;
-      
       user.companyLocation = companyLocation ?? user.companyLocation;
+      user.companyPhoneNumber = companyPhoneNumber ?? user.companyPhoneNumber;
       user.companyWebsiteLink = companyWebsiteLink ?? user.companyWebsiteLink;
       user.companySize = companySize ?? user.companySize;
       user.companyRegistrationNumber =
@@ -117,6 +125,7 @@ exports.updateProfile = async (req, res) => {
       role: user.role,
       avatar: user.avatar || "",
       location: user.location || "",
+      companyPhoneNumber: user.companyPhoneNumber || "",
       facebookLink: user.facebookLink || "",
       instagramLink: user.instagramLink || "",
       resume: user.resume || "",

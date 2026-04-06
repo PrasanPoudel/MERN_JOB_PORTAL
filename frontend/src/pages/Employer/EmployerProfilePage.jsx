@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { isValidPhoneNumber } from "react-phone-number-input";
+
 import { useAuth } from "../../context/AuthContext";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -31,6 +33,7 @@ const EmployerProfilePage = () => {
     companyLogo: null,
     companyDescription: "",
     companyLocation: "",
+    companyPhoneNumber: "",
     companyWebsiteLink: "",
     companySize: "",
     companyRegistrationNumber: "",
@@ -73,6 +76,13 @@ const EmployerProfilePage = () => {
     // Company Location validation
     if (!data.companyLocation || data.companyLocation.trim() === "") {
       newErrors.companyLocation = "Company location is required";
+    }
+
+    // Company Phone Number validation
+    if (!data.companyPhoneNumber || data.companyPhoneNumber.trim() === "") {
+      newErrors.companyPhoneNumber = "Company phone number is required";
+    } else if (!isValidPhoneNumber(data.companyPhoneNumber)) {
+      newErrors.companyPhoneNumber = "Invalid phone number";
     }
 
     // Company Registration Number validation
@@ -120,6 +130,7 @@ const EmployerProfilePage = () => {
         companyLogo: user.companyLogo || null,
         companyDescription: user.companyDescription || "",
         companyLocation: user.companyLocation || "",
+        companyPhoneNumber: user.companyPhoneNumber || "",
         companyWebsiteLink: user.companyWebsiteLink || "",
         companySize: user.companySize || "",
         companyRegistrationNumber: user.companyRegistrationNumber || "",
@@ -134,7 +145,6 @@ const EmployerProfilePage = () => {
   const handleInputChange = (field, value) => {
     setFormData((prev) => {
       const updatedData = { ...prev, [field]: value };
-      validateForm(updatedData);
       return updatedData;
     });
   };
@@ -297,7 +307,7 @@ const EmployerProfilePage = () => {
                     </h3>
                     {!profileData?.isPremium && (
                       <div className="flex items-center gap-2">
-                        <span className="flex justify-center items-center gap-1 px-3 py-1 rounded-md bg-slate-50 text-slate-700 text-sm font-medium border border-gray-200">
+                        <span className="flex justify-center items-center gap-1 px-3 py-1 rounded-md bg-gray-50 text-gray-700 text-sm font-medium border border-gray-200">
                           <User className="w-4 h-4" />
                           Free User
                         </span>
@@ -310,7 +320,7 @@ const EmployerProfilePage = () => {
                         </Link>
                       </div>
                     )}
-                    <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
+                    <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                       <Mail className="w-4 h-4 shrink-0" />
                       <span className="truncate">{profileData.email}</span>
                     </div>
@@ -339,10 +349,16 @@ const EmployerProfilePage = () => {
                             <BadgeCheck className="w-4 h-4 text-sky-600 ml-1 shrink-0" />
                           )}
                         </h3>
-                        <div className="flex items-center gap-2 text-sm text-slate-600 mt-1">
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <MapPin className="w-4 h-4 shrink-0" />
                           <span className="truncate">
                             {profileData.companyLocation || "N/A"}
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2 text-sm text-gray-600 mt-1">
+                          <Phone className="w-4 h-4 shrink-0" />
+                          <span className="truncate">
+                            {profileData.companyPhoneNumber || "N/A"}
                           </span>
                         </div>
                         <a
@@ -355,7 +371,7 @@ const EmployerProfilePage = () => {
                             {profileData.companyWebsiteLink || "N/A"}
                           </span>
                         </a>
-                        <p className="flex items-center gap-2 text-sm text-slate-600 mt-1">
+                        <p className="flex items-center gap-2 text-sm text-gray-600 mt-1">
                           <User className="w-4 h-4 shrink-0" />
                           Company Size: {profileData.companySize || "N/A"}
                         </p>
@@ -370,8 +386,8 @@ const EmployerProfilePage = () => {
                     </h2>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-sm">
-                      <div className="bg-slate-50 p-3 sm:p-4 rounded-lg">
-                        <p className="text-slate-500">
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                        <p className="text-gray-500">
                           Company Registration Number
                         </p>
                         <p className="font-medium mt-0.5 break-all">
@@ -379,15 +395,15 @@ const EmployerProfilePage = () => {
                         </p>
                       </div>
 
-                      <div className="bg-slate-50 p-3 sm:p-4 rounded-lg">
-                        <p className="text-slate-500">PAN Number</p>
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                        <p className="text-gray-500">PAN Number</p>
                         <p className="font-medium mt-0.5 uppercase tracking-widest">
                           {profileData.panNumber || "—"}
                         </p>
                       </div>
 
-                      <div className="bg-slate-50 p-3 sm:p-4 rounded-lg">
-                        <p className="text-slate-500">Verification Status</p>
+                      <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                        <p className="text-gray-500">Verification Status</p>
                         <span
                           className={`inline-flex items-center gap-1 mt-1 px-3 py-1 rounded-full text-xs font-medium ${
                             profileData.isCompanyVerified
@@ -409,7 +425,7 @@ const EmployerProfilePage = () => {
                     <h2 className="text-base sm:text-lg font-semibold border-b border-gray-200 pb-2 mb-4 sm:mb-6">
                       About Company
                     </h2>
-                    <p className="text-sm text-justify text-slate-700 leading-relaxed bg-slate-50 p-4 sm:p-6 rounded-lg">
+                    <p className="text-sm text-justify text-gray-700 leading-relaxed bg-gray-50 p-4 sm:p-6 rounded-lg">
                       {profileData.companyDescription ||
                         "No description provided."}
                     </p>

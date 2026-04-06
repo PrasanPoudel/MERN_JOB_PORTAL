@@ -608,8 +608,13 @@ exports.getAllCompanies = async (req, res) => {
 
     let query = {
       role: "employer",
+      companyName: { $exists: true, $ne: "" },
+      companyLocation: { $exists: true, $ne: "" },
+      companySize: { $exists: true, $ne: "" },
+      companyDescription: { $exists: true, $ne: "" },
+      panNumber: { $exists: true, $ne: "" },
+      companyRegistrationNumber: { $exists: true, $ne: "" },
     };
-
     if (search) {
       query.$or = [
         { name: { $regex: search, $options: "i" } },
@@ -840,7 +845,15 @@ exports.getRevenueStats = async (req, res) => {
     // Get revenue for current month
     const now = new Date();
     const firstDayOfMonth = new Date(now.getFullYear(), now.getMonth(), 1);
-    const lastDayOfMonth = new Date(now.getFullYear(), now.getMonth() + 1, 0, 23, 59, 59, 999);
+    const lastDayOfMonth = new Date(
+      now.getFullYear(),
+      now.getMonth() + 1,
+      0,
+      23,
+      59,
+      59,
+      999,
+    );
 
     const monthlyRevenueResult = await PremiumSubscription.aggregate([
       {

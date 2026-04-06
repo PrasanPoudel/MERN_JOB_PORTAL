@@ -12,6 +12,7 @@ import {
   FileText as FileTextIcon,
   Link as LinkIcon,
   User,
+  Phone,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -197,10 +198,10 @@ const AdminCompanyVerification = () => {
         {/* Header */}
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-8">
           <div>
-            <h1 className="text-xl font-semibold text-slate-900">
+            <h1 className="text-xl font-semibold text-gray-900">
               Company Verification
             </h1>
-            <p className="text-slate-500 text-sm mt-1">
+            <p className="text-gray-500 text-sm mt-1">
               Review and verify company details
             </p>
           </div>
@@ -219,7 +220,7 @@ const AdminCompanyVerification = () => {
         {/* Filters */}
         <div className="bg-white p-4 rounded-2xl shadow-sm border border-gray-100 mb-8 flex flex-col md:flex-row gap-4">
           <div className="relative flex-1">
-            <Search className="absolute left-3 top-3 w-4 h-4 text-slate-400" />
+            <Search className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
             <input
               autoComplete="off"
               id="search_companies"
@@ -250,8 +251,8 @@ const AdminCompanyVerification = () => {
           </div>
         ) : filteredCompanies.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-            <Users className="w-12 h-12 mx-auto text-slate-300 mb-4" />
-            <p className="text-slate-600 font-medium">
+            <Users className="w-12 h-12 mx-auto text-gray-300 mb-4" />
+            <p className="text-gray-600 font-medium">
               {verificationFilter === "verified"
                 ? "No verified companies found"
                 : verificationFilter === "unverified"
@@ -264,7 +265,7 @@ const AdminCompanyVerification = () => {
             {/* Result Summary */}
             <div className="flex justify-between mb-3">
               <div className="flex items-center">
-                <p className="text-sm text-slate-700 lg:text-base">
+                <p className="text-sm text-gray-700 lg:text-base">
                   Showing{" "}
                   <span className="font-semibold">{startIndex + 1}</span> to{" "}
                   <span className="font-semibold">
@@ -298,7 +299,7 @@ const AdminCompanyVerification = () => {
 
                         <div className="flex-1 min-w-0">
                           <div className="flex items-center gap-2 flex-wrap">
-                            <p className="font-semibold text-xs sm:text-lg text-slate-900 truncate max-w-36 sm:max-w-64">
+                            <p className="font-semibold text-xs sm:text-lg text-gray-900 truncate max-w-36 sm:max-w-64">
                               {company.companyName}
                             </p>
                             {company.isCompanyVerified ? (
@@ -314,7 +315,7 @@ const AdminCompanyVerification = () => {
                               </span>
                             )}
                           </div>
-                          <p className="flex items-center gap-1 text-[10px] sm:text-sm truncate text-slate-500 mt-1">
+                          <p className="flex items-center gap-1 text-[10px] sm:text-sm truncate text-gray-500 mt-1">
                             <MapPin className="w-4 h-4" />
                             {company.companyLocation}
                           </p>
@@ -335,7 +336,7 @@ const AdminCompanyVerification = () => {
                     <button
                       onClick={() => handleMessageCompany(company._id)}
                       title="Send message to company"
-                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-[10px] sm:text-sm font-semibold border border-gray-300 hover:bg-slate-100 transition"
+                      className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-[10px] sm:text-sm font-semibold border border-gray-300 hover:bg-gray-100 transition"
                     >
                       Message
                     </button>
@@ -370,7 +371,7 @@ const AdminCompanyVerification = () => {
                   <button
                     onClick={() => setCurrentPage(Math.max(1, currentPage - 1))}
                     disabled={currentPage === 1}
-                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Previous
                   </button>
@@ -379,7 +380,7 @@ const AdminCompanyVerification = () => {
                       setCurrentPage(Math.min(totalPages, currentPage + 1))
                     }
                     disabled={currentPage === totalPages}
-                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                    className="ml-3 relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                   >
                     Next
                   </button>
@@ -388,7 +389,7 @@ const AdminCompanyVerification = () => {
                 {/* Desktop pagination */}
                 <div className="hidden md:flex sm:flex-1 items-center justify-between">
                   <div>
-                    <p className="text-sm text-slate-700">
+                    <p className="text-sm text-gray-700">
                       Showing{" "}
                       <span className="font-semibold">{startIndex + 1}</span> to{" "}
                       <span className="font-semibold">
@@ -411,7 +412,7 @@ const AdminCompanyVerification = () => {
                           setCurrentPage(Math.max(1, currentPage - 1))
                         }
                         disabled={currentPage === 1}
-                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-2 py-2 border border-gray-300 text-sm font-medium rounded-l-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Previous
                       </button>
@@ -420,7 +421,7 @@ const AdminCompanyVerification = () => {
                           page === "..." ? (
                             <span
                               key={`dots-${index}`}
-                              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-slate-500 bg-white"
+                              className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium text-gray-500 bg-white"
                             >
                               ...
                             </span>
@@ -431,7 +432,7 @@ const AdminCompanyVerification = () => {
                               className={`relative inline-flex items-center px-4 py-2 border text-sm font-medium ${
                                 currentPage === page
                                   ? "z-10 bg-sky-50 border-sky-500 text-sky-600"
-                                  : "text-slate-700 border-gray-300 bg-white hover:bg-slate-50"
+                                  : "text-gray-700 border-gray-300 bg-white hover:bg-gray-50"
                               }`}
                             >
                               {page}
@@ -443,7 +444,7 @@ const AdminCompanyVerification = () => {
                           setCurrentPage(Math.min(totalPages, currentPage + 1))
                         }
                         disabled={currentPage === totalPages}
-                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-slate-700 bg-white hover:bg-slate-50 disabled:opacity-50 disabled:cursor-not-allowed"
+                        className="relative inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-r-md text-gray-700 bg-white hover:bg-gray-50 disabled:opacity-50 disabled:cursor-not-allowed"
                       >
                         Next
                       </button>
@@ -484,10 +485,10 @@ const CompanyModal = ({ companyId, onClose }) => {
 
   return (
     <div className="fixed inset-0 z-1000 bg-black/60 backdrop-blur-sm flex items-start justify-center p-2 overflow-y-auto">
-      <div className="bg-slate-50 m-auto rounded-4xl shadow-2xl w-full max-w-5xl relative max-h-[95vh] overflow-hidden flex flex-col">
-        <div className="bg-white p-4 border-b border-slate-100 flex items-center justify-between shrink-0">
+      <div className="bg-gray-50 m-auto rounded-4xl shadow-2xl w-full max-w-5xl relative max-h-[95vh] overflow-hidden flex flex-col">
+        <div className="bg-white p-4 border-b border-gray-100 flex items-center justify-between shrink-0">
           <div className="flex items-center gap-1">
-            <h2 className="sm:text-xl font-semibold text-slate-900">
+            <h2 className="sm:text-xl font-semibold text-gray-900">
               {company.companyName || "N/A"}
             </h2>
             {company.isCompanyVerified && (
@@ -498,7 +499,7 @@ const CompanyModal = ({ companyId, onClose }) => {
           </div>
           <button
             onClick={onClose}
-            className="p-2 rounded-full hover:bg-slate-100 text-slate-500 transition-colors"
+            className="p-2 rounded-full hover:bg-gray-100 text-gray-500 transition-colors"
           >
             <X className="w-6 h-6" />
           </button>
@@ -508,7 +509,7 @@ const CompanyModal = ({ companyId, onClose }) => {
           {loading ? (
             <div className="flex flex-col items-center justify-center py-20">
               <Loader className="animate-spin text-sky-600 w-10 h-10 mb-4" />
-              <p className="text-slate-500 font-medium">Loading details...</p>
+              <p className="text-gray-500 font-medium">Loading details...</p>
             </div>
           ) : (
             <div className="space-y-4">
@@ -517,16 +518,16 @@ const CompanyModal = ({ companyId, onClose }) => {
                 {/* Left: Employer Profile Card */}
                 <section className="flex flex-col">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
+                    <div className="p-2 rounded-xl bg-gray-100 text-gray-600">
                       <User className="w-5 h-5" />
                     </div>
-                    <h3 className="font-semibold text-slate-900">
+                    <h3 className="font-semibold text-gray-900">
                       Employer Profile
                     </h3>
                   </div>
 
-                  <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-1">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2 pb-6 border-b border-slate-50">
+                  <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex-1">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2 pb-6 border-b border-gray-50">
                       <div className="w-16 h-16 rounded-full border-2 border-sky-100 p-0.5 shrink-0">
                         <img
                           src={company.avatar || "/default.png"}
@@ -535,10 +536,10 @@ const CompanyModal = ({ companyId, onClose }) => {
                         />
                       </div>
                       <div>
-                        <p className="font-semibold text-slate-900">
+                        <p className="font-semibold text-gray-900">
                           {company.name || "N/A"}
                         </p>
-                        <p className="text-sm text-slate-500">
+                        <p className="text-sm text-gray-500">
                           {company.email || "N/A"}
                         </p>
                       </div>
@@ -562,23 +563,23 @@ const CompanyModal = ({ companyId, onClose }) => {
 
                 <section className="flex flex-col">
                   <div className="flex items-center gap-3 mb-4">
-                    <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
+                    <div className="p-2 rounded-xl bg-gray-100 text-gray-600">
                       <Building2 className="w-5 h-5" />
                     </div>
-                    <h3 className="font-semibold text-slate-900">
+                    <h3 className="font-semibold text-gray-900">
                       Company Profile
                     </h3>
                   </div>
 
-                  <div className="bg-white p-4 rounded-2xl border border-slate-200 shadow-sm flex-1">
-                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2 pb-6 border-b border-slate-50">
+                  <div className="bg-white p-4 rounded-2xl border border-gray-200 shadow-sm flex-1">
+                    <div className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-2 pb-6 border-b border-gray-50">
                       <img
                         src={company.companyLogo || "/default.png"}
                         alt="Logo"
-                        className="w-16 h-16 rounded-xl object-contain border border-slate-100"
+                        className="w-16 h-16 rounded-xl object-contain border border-gray-100"
                       />
                       <div className="flex-1">
-                        <p className="font-semibold text-slate-900 leading-tight">
+                        <p className="font-semibold text-gray-900 leading-tight">
                           {company.companyName || "N/A"}
                         </p>
                         {company.companyWebsiteLink && (
@@ -590,6 +591,11 @@ const CompanyModal = ({ companyId, onClose }) => {
                     </div>
 
                     <div className="grid grid-cols-1 gap-4">
+                      <InfoItem
+                        icon={<Phone className="w-4 h-4" />}
+                        label="Company Location"
+                        value={company.companyPhoneNumber || "N/A"}
+                      />
                       <InfoItem
                         icon={<MapPin className="w-4 h-4" />}
                         label="Company Location"
@@ -610,90 +616,79 @@ const CompanyModal = ({ companyId, onClose }) => {
                 </section>
               </div>
 
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+              <div className="grid grid-cols-1 gap-4">
                 {/* Documents */}
-                <div className="lg:col-span-1">
-                  <div className="bg-white/80 backdrop-blur-md border border-slate-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200">
-                    {/* Header */}
-                    <div className="flex items-center gap-3 mb-5">
-                      <div className="p-2 rounded-xl bg-slate-100 text-slate-600">
-                        <FileTextIcon className="w-4 h-4" />
-                      </div>
-                      <h4 className="text-sm font-semibold text-slate-700 tracking-wide">
-                        Legal Verification
-                      </h4>
+                <div className="bg-white/80 backdrop-blur-md border border-gray-200 rounded-2xl p-5 shadow-sm hover:shadow-md transition-all duration-200">
+                  {/* Header */}
+                  <div className="flex items-center gap-3 mb-5">
+                    <div className="p-2 rounded-xl bg-gray-100 text-gray-600">
+                      <FileTextIcon className="w-4 h-4" />
+                    </div>
+                    <h4 className="text-sm font-semibold text-gray-700 tracking-wide">
+                      Legal Verification
+                    </h4>
+                  </div>
+
+                  {/* Content */}
+                  <div className="space-y-4 flex flex-col md:flex-row md:items-center justify-between">
+                    {/* Registration Number */}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Registration No.
+                      </span>
+                      <span className="text-sm font-mono text-gray-800 bg-gray-100 px-3 py-2 rounded-lg">
+                        {company.companyRegistrationNumber || "Not provided"}
+                      </span>
                     </div>
 
-                    {/* Content */}
-                    <div className="space-y-4">
-                      {/* Registration Number */}
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                          Registration No.
-                        </span>
-                        <span className="text-sm font-mono text-slate-800 bg-slate-100 px-3 py-2 rounded-lg">
-                          {company.companyRegistrationNumber || "Not provided"}
-                        </span>
-                      </div>
+                    {/* PAN */}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        PAN / Tax ID
+                      </span>
+                      <span className="text-sm font-mono text-gray-800 bg-gray-100 px-3 py-2 rounded-lg">
+                        {company.panNumber || "Not provided"}
+                      </span>
+                    </div>
 
-                      {/* Divider */}
-                      <div className="h-px bg-slate-200" />
+                    {/* Warnings */}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Admin Warnings
+                      </span>
+                      <span
+                        className={`text-sm font-medium px-3 py-2 rounded-lg ${company.noOfWarnings > 0 ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}`}
+                      >
+                        {company.noOfWarnings || 0} warning
+                        {company.noOfWarnings !== 1 ? "s" : ""}
+                      </span>
+                    </div>
 
-                      {/* PAN */}
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                          PAN / Tax ID
+                    {/* Ban Status */}
+                    <div className="flex flex-col gap-1">
+                      <span className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                        Account Status
+                      </span>
+                      {company.isBanned ? (
+                        <span className="text-sm font-medium bg-red-100 text-red-800 px-3 py-2 rounded-lg">
+                          Banned: {company.banReason || "No reason provided"}
                         </span>
-                        <span className="text-sm font-mono text-slate-800 bg-slate-100 px-3 py-2 rounded-lg">
-                          {company.panNumber || "Not provided"}
+                      ) : (
+                        <span className="text-sm font-medium bg-green-100 text-green-800 px-3 py-2 rounded-lg">
+                          Active
                         </span>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="h-px bg-slate-200" />
-
-                      {/* Warnings */}
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                          Admin Warnings
-                        </span>
-                        <span
-                          className={`text-sm font-medium px-3 py-2 rounded-lg ${company.noOfWarnings > 0 ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}`}
-                        >
-                          {company.noOfWarnings || 0} warning
-                          {company.noOfWarnings !== 1 ? "s" : ""}
-                        </span>
-                      </div>
-
-                      {/* Divider */}
-                      <div className="h-px bg-slate-200" />
-
-                      {/* Ban Status */}
-                      <div className="flex flex-col gap-1">
-                        <span className="text-xs font-medium text-slate-500 uppercase tracking-wide">
-                          Account Status
-                        </span>
-                        {company.isBanned ? (
-                          <span className="text-sm font-medium bg-red-100 text-red-800 px-3 py-2 rounded-lg">
-                            Banned: {company.banReason || "No reason provided"}
-                          </span>
-                        ) : (
-                          <span className="text-sm font-medium bg-green-100 text-green-800 px-3 py-2 rounded-lg">
-                            Active
-                          </span>
-                        )}
-                      </div>
+                      )}
                     </div>
                   </div>
                 </div>
 
                 {/* Description */}
-                <div className="lg:col-span-2">
-                  <h4 className="text-xs font-semibold text-slate-400 uppercase tracking-widest mb-4">
+                <div>
+                  <h4 className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-4">
                     About the Organization
                   </h4>
-                  <div className="bg-white p-6 rounded-2xl border border-slate-200">
-                    <p className="text-slate-600 text-xs sm:text-sm text-justify">
+                  <div className="bg-white p-6 rounded-2xl border border-gray-200">
+                    <p className="text-gray-600 text-xs sm:text-sm text-justify">
                       {company.companyDescription ||
                         "No company description provided."}
                     </p>
@@ -717,11 +712,11 @@ const VerifyConfirmationModal = ({
   <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
     <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
       <div className="text-center">
-        <h3 className="text-xl font-semibold text-slate-900 mb-2">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
           Verify Company?
         </h3>
 
-        <p className="text-slate-500 text-sm mb-6">
+        <p className="text-gray-500 text-sm mb-6">
           Verify <strong>{company.companyName}</strong>? This will mark the
           company as verified and display a verification badge.
         </p>
@@ -730,7 +725,7 @@ const VerifyConfirmationModal = ({
           <button
             onClick={onCancel}
             disabled={verifying}
-            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-slate-100 transition"
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
           >
             Cancel
           </button>
@@ -748,11 +743,11 @@ const VerifyConfirmationModal = ({
 );
 
 const InfoItem = ({ icon, label, value }) => (
-  <div className="flex items-start gap-3 bg-slate-50 p-4 rounded-xl">
+  <div className="flex items-start gap-3 bg-gray-50 p-4 rounded-xl">
     <div className="text-sky-600">{icon}</div>
     <div>
-      <p className="text-slate-500 text-xs uppercase">{label}</p>
-      <p className="font-medium text-slate-900 text-md">{value}</p>
+      <p className="text-gray-500 text-xs uppercase">{label}</p>
+      <p className="font-medium text-gray-900 text-md">{value}</p>
     </div>
   </div>
 );

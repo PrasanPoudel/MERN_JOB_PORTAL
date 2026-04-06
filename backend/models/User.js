@@ -11,6 +11,7 @@ const userSchema = new mongoose.Schema(
       enum: ["jobSeeker", "employer", "admin"],
       required: true,
     },
+    companyPhoneNumber: String,
     isEmailVerified: {
       type: Boolean,
       default: false,

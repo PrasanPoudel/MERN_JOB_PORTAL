@@ -1,5 +1,36 @@
-@import url('https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Urbanist:ital,wght@0,100..900;1,100..900&display=swap");
 @import "tailwindcss";
+
+@import "react-phone-number-input/style.css";
+
+.PhoneInputCountry,
+.PhoneInputCountrySelect,
+.PhoneInputCountryIcon,
+.PhoneInputArrow {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+  margin: 0 !important;
+  border-radius: 0 !important;
+}
+
+.PhoneInputCountrySelect:focus,
+.PhoneInputCountrySelect:hover,
+.PhoneInputInput,
+.PhoneInputCountrySelect:active {
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+  background: transparent !important;
+}
+
+.PhoneInputInput {
+  padding: 0.5rem;
+}
+.PhoneInput {
+  padding-left: 0.5rem;
+}
 
 @theme {
   --font-display: "Urbanist", sans-serif;
@@ -47,10 +78,10 @@
     @apply bg-sky-600 hover:bg-sky-700 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm inline-flex items-center justify-center gap-1.5;
   }
   .btn-secondary {
-    @apply bg-white hover:bg-slate-50 text-slate-900 font-semibold px-6 py-2.5 rounded-lg border border-slate-200 hover:border-sky-300 transition-all duration-200 cursor-pointer shadow-sm inline-flex items-center justify-center gap-2;
+    @apply bg-white hover:bg-gray-50 text-gray-900 font-semibold px-6 py-2.5 rounded-lg border border-gray-200 hover:border-sky-300 transition-all duration-200 cursor-pointer shadow-sm inline-flex items-center justify-center gap-2;
   }
   .btn-secondary-sm {
-    @apply bg-white hover:bg-slate-50 text-slate-900 font-semibold px-4 py-2 rounded-lg border border-slate-200 hover:border-sky-300 transition-all duration-200 cursor-pointer text-sm inline-flex items-center justify-center gap-1.5;
+    @apply bg-white hover:bg-gray-50 text-gray-900 font-semibold px-4 py-2 rounded-lg border border-gray-200 hover:border-sky-300 transition-all duration-200 cursor-pointer text-sm inline-flex items-center justify-center gap-1.5;
   }
   .btn-danger {
     @apply bg-red-600 hover:bg-red-700 text-white font-semibold px-6 py-2.5 rounded-lg transition-all duration-200 cursor-pointer shadow-sm inline-flex items-center justify-center gap-2;
@@ -59,24 +90,24 @@
     @apply bg-red-600 hover:bg-red-700 text-white font-semibold px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer text-sm inline-flex items-center justify-center gap-1.5;
   }
   .btn-ghost {
-    @apply text-slate-600 hover:text-slate-900 hover:bg-slate-100 font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-2;
+    @apply text-gray-600 hover:text-gray-900 hover:bg-gray-100 font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-2;
   }
   .btn-ghost-danger {
     @apply text-red-600 hover:text-red-700 hover:bg-red-50 font-medium px-4 py-2 rounded-lg transition-all duration-200 cursor-pointer inline-flex items-center justify-center gap-2;
   }
 
   .card {
-    @apply bg-white rounded-xl border border-slate-200 shadow-sm;
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm;
   }
   .card-hover {
-    @apply bg-white rounded-xl border border-slate-200 shadow-sm hover:shadow-md hover:border-slate-300 transition-all duration-200;
+    @apply bg-white rounded-xl border border-gray-200 shadow-sm hover:shadow-md hover:border-gray-300 transition-all duration-200;
   }
   .card-elevated {
-    @apply bg-white rounded-xl border border-slate-200 shadow-md;
+    @apply bg-white rounded-xl border border-gray-200 shadow-md;
   }
 
   .input-base {
-    @apply w-full px-3 py-2.5 border border-slate-200 rounded-lg text-base transition-colors duration-200 bg-white placeholder:text-slate-400 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 disabled:bg-slate-50 disabled:text-slate-500;
+    @apply w-full px-3 py-2.5 border border-gray-200 rounded-lg text-base transition-colors duration-200 bg-white placeholder:text-gray-400 focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 disabled:bg-gray-50 disabled:text-gray-500;
   }
   .input-error {
     @apply border-red-300 focus:border-red-500 focus:ring-red-500/20;
@@ -86,7 +117,7 @@
   }
 
   .label {
-    @apply block text-sm font-semibold text-slate-700 mb-1.5;
+    @apply block text-sm font-semibold text-gray-700 mb-1.5;
   }
   .label-required::after {
     content: " *";
@@ -112,17 +143,17 @@
     @apply bg-violet-100 text-violet-700;
   }
   .badge-gray {
-    @apply bg-slate-100 text-slate-600;
+    @apply bg-gray-100 text-gray-600;
   }
 
   .section-label {
     @apply text-sky-600 text-xs font-bold tracking-widest uppercase mb-3;
   }
   .section-title {
-    @apply font-bold text-3xl sm:text-4xl text-slate-900 mb-4;
+    @apply font-bold text-3xl sm:text-4xl text-gray-900 mb-4;
   }
   .section-subtitle {
-    @apply text-slate-500 text-sm max-w-2xl;
+    @apply text-gray-500 text-sm max-w-2xl;
   }
 
   .page-container {

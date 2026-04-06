@@ -10,6 +10,7 @@ import {
   FileText,
   CreditCard,
 } from "lucide-react";
+import PhoneInput from "react-phone-number-input";
 
 const EditProfileDetails = ({
   formData,
@@ -63,7 +64,7 @@ const EditProfileDetails = ({
                     <div className="flex-1 space-y-4 min-w-0">
                       {/* Avatar file input */}
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
                           Profile Picture
                         </label>
                         <input
@@ -71,14 +72,14 @@ const EditProfileDetails = ({
                           accept="image/*"
                           id="avatar-upload"
                           onChange={(e) => handleFileChange(e, "avatar")}
-                          className="block w-full text-sm text-slate-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors"
+                          className="block w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors"
                         />
                       </div>
 
                       {/* Name + Email grid */}
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
                             Full Name
                           </label>
                           <input
@@ -103,7 +104,7 @@ const EditProfileDetails = ({
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
                             Email Address
                           </label>
                           <input
@@ -111,7 +112,7 @@ const EditProfileDetails = ({
                             id="email"
                             value={formData.email}
                             disabled
-                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border border-gray-200 rounded-lg bg-slate-100 text-slate-400 cursor-not-allowed outline-none"
+                            className="w-full px-3 sm:px-4 py-2 sm:py-2.5 text-sm border border-gray-200 rounded-lg bg-gray-100 text-gray-400 cursor-not-allowed outline-none"
                           />
                         </div>
                       </div>
@@ -141,7 +142,7 @@ const EditProfileDetails = ({
                     <div className="flex-1 space-y-4 min-w-0">
                       {/* Logo file input */}
                       <div>
-                        <label className="block text-sm font-medium text-slate-700 mb-1">
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
                           Company Logo
                         </label>
                         <input
@@ -149,13 +150,13 @@ const EditProfileDetails = ({
                           accept="image/*"
                           id="company-logo-upload"
                           onChange={(e) => handleFileChange(e, "companyLogo")}
-                          className="block w-full text-sm text-slate-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-green-50 file:text-green-600 hover:file:bg-green-100 transition-colors"
+                          className="block w-full text-sm text-gray-600 file:mr-3 file:py-1.5 file:px-3 sm:file:px-4 file:rounded-full file:border-0 file:text-xs sm:file:text-sm file:font-semibold file:bg-green-50 file:text-green-600 hover:file:bg-green-100 transition-colors"
                         />
                       </div>
 
                       <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
                             Company Name
                           </label>
                           <input
@@ -180,11 +181,11 @@ const EditProfileDetails = ({
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
                             Company Size
                           </label>
                           <div className="relative">
-                            <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            <Users className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <select
                               id="companySize"
                               value={formData.companySize}
@@ -218,11 +219,11 @@ const EditProfileDetails = ({
                         </div>
 
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
+                          <label className="block text-sm font-medium text-gray-700 mb-1">
                             Location
                           </label>
                           <div className="relative">
-                            <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                            <MapPin className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                             <input
                               type="text"
                               id="companyLocation"
@@ -247,38 +248,60 @@ const EditProfileDetails = ({
                             </p>
                           )}
                         </div>
-
                         <div>
-                          <label className="block text-sm font-medium text-slate-700 mb-1">
-                            Website{" "}
-                            <span className="text-slate-500">(Optional)</span>
-                          </label>
-                          <div className="relative">
-                            <Globe className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
-                            <input
-                              type="url"
-                              id="companyWebsiteLink"
-                              value={formData.companyWebsiteLink}
-                              onChange={(e) =>
-                                handleInputChange(
-                                  "companyWebsiteLink",
-                                  e.target.value,
-                                )
-                              }
-                              placeholder="https://www.example.com"
-                              className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none ${
-                                errors.companyWebsiteLink
-                                  ? "border-red-500 bg-red-50"
-                                  : "border-gray-300"
-                              }`}
+                          <div>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">
+                              Phone Number
+                            </label>
+                            <PhoneInput
+                              defaultCountry="NP"
+                              value={formData.companyPhoneNumber || undefined}
+                              onChange={(phone) => {
+                                handleInputChange("companyPhoneNumber", phone);
+                                console.log(phone);
+                              }}
+                              placeholder="9876543210"
+                              className="border border-gray-300 rounded-xl"
                             />
                           </div>
-                          {errors.companyWebsiteLink && (
+                          {errors.companyPhoneNumber && (
                             <p className="text-red-500 text-xs mt-1">
-                              {errors.companyWebsiteLink}
+                              {errors.companyPhoneNumber}
                             </p>
                           )}
                         </div>
+                      </div>
+
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                          Website{" "}
+                          <span className="text-gray-500">(Optional)</span>
+                        </label>
+                        <div className="relative">
+                          <Globe className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
+                          <input
+                            type="url"
+                            id="companyWebsiteLink"
+                            value={formData.companyWebsiteLink}
+                            onChange={(e) =>
+                              handleInputChange(
+                                "companyWebsiteLink",
+                                e.target.value,
+                              )
+                            }
+                            placeholder="https://www.example.com"
+                            className={`w-full pl-9 sm:pl-10 pr-4 py-2 sm:py-2.5 text-sm border rounded-lg focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none ${
+                              errors.companyWebsiteLink
+                                ? "border-red-500 bg-red-50"
+                                : "border-gray-300"
+                            }`}
+                          />
+                        </div>
+                        {errors.companyWebsiteLink && (
+                          <p className="text-red-500 text-xs mt-1">
+                            {errors.companyWebsiteLink}
+                          </p>
+                        )}
                       </div>
                     </div>
                   </div>
@@ -290,12 +313,12 @@ const EditProfileDetails = ({
                   </h2>
 
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 text-sm">
-                    <div className="bg-slate-50 p-3 sm:p-4 rounded-lg">
-                      <p className="text-slate-500 mb-2">
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-gray-500 mb-2">
                         Company Registration Number
                       </p>
                       <div className="relative">
-                        <FileText className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <FileText className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                           type="text"
                           id="companyRegistrationNumber"
@@ -321,10 +344,10 @@ const EditProfileDetails = ({
                       )}
                     </div>
 
-                    <div className="bg-slate-50 p-3 sm:p-4 rounded-lg">
-                      <p className="text-slate-500 mb-2">PAN Number</p>
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-gray-500 mb-2">PAN Number</p>
                       <div className="relative">
-                        <CreditCard className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-slate-400 pointer-events-none" />
+                        <CreditCard className="absolute left-3 top-1/2 -trangray-y-1/2 w-4 h-4 text-gray-400 pointer-events-none" />
                         <input
                           type="text"
                           id="panNumber"
@@ -348,8 +371,8 @@ const EditProfileDetails = ({
                       )}
                     </div>
 
-                    <div className="bg-slate-50 p-3 sm:p-4 rounded-lg">
-                      <p className="text-slate-500 mb-2">Verification Status</p>
+                    <div className="bg-gray-50 p-3 sm:p-4 rounded-lg">
+                      <p className="text-gray-500 mb-2">Verification Status</p>
                       <div className="flex flex-wrap items-center gap-2">
                         <span
                           className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-xs font-medium ${
@@ -363,7 +386,7 @@ const EditProfileDetails = ({
                             ? "Verified Company"
                             : "Pending Verification"}
                         </span>
-                        <p className="text-xs text-slate-400">
+                        <p className="text-xs text-gray-400">
                           * Managed by platform admin
                         </p>
                       </div>
@@ -384,7 +407,7 @@ const EditProfileDetails = ({
                       }
                       rows={6}
                       placeholder="Describe your company, its culture, mission, and what makes it a great place to work..."
-                      className={`w-full px-4 py-3 sm:px-6 sm:py-4 text-sm text-slate-700 leading-relaxed bg-slate-50 p-6 rounded-lg border focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none resize-none ${
+                      className={`w-full px-4 py-3 sm:px-6 sm:py-4 text-sm text-gray-700 leading-relaxed bg-gray-50 p-6 rounded-lg border focus:ring-2 focus:ring-sky-500 focus:border-transparent transition-all outline-none resize-none ${
                         errors.companyDescription
                           ? "border-red-500 bg-red-50"
                           : "border-gray-200"
@@ -402,7 +425,7 @@ const EditProfileDetails = ({
                   <button
                     type="button"
                     onClick={handleCancel}
-                    className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium border border-gray-300 text-slate-700 rounded-lg hover:bg-slate-50 transition-colors cursor-pointer"
+                    className="flex items-center justify-center gap-2 px-5 py-2.5 text-sm font-medium border border-gray-300 text-gray-700 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer"
                   >
                     <X className="w-4 h-4" />
                     Cancel
