@@ -73,7 +73,7 @@ const Pricing = ({ notPricingPage }) => {
               navigate(-1);
             }}
             title="Go back to previous page"
-            className="btn-secondary-sm mb-6"
+            className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200"
           >
             <ArrowLeft className="w-4 h-4" />
             Back
@@ -165,7 +165,9 @@ const Pricing = ({ notPricingPage }) => {
                     <div className="w-9 h-9 rounded-xl bg-slate-100 border border-slate-200 flex items-center justify-center">
                       <Gift className="w-4 h-4 text-slate-600" />
                     </div>
-                    <span className="font-bold text-base text-slate-900">Free</span>
+                    <span className="font-bold text-base text-slate-900">
+                      Free
+                    </span>
                   </div>
 
                   {!user?.isPremium && (
@@ -228,7 +230,8 @@ const Pricing = ({ notPricingPage }) => {
 
           {/* Footer Note */}
           <p className="text-center text-slate-400 text-xs mt-6 flex items-center justify-center gap-1">
-            Secure payments via eSewa &middot; Instant activation &middot; No hidden charges
+            Secure payments via eSewa &middot; Instant activation &middot; No
+            hidden charges
           </p>
         </div>
       </section>

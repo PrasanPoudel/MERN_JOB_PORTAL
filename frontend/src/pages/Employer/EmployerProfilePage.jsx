@@ -17,10 +17,11 @@ import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";
 import DashboardLayout from "../../components/layout/DashboardLayout";
 import EditProfileDetails from "./EditProfileDetails";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 
 const EmployerProfilePage = () => {
   const { user, updateUser } = useAuth();
+  const location = useLocation();
   const [profileData, setProfileData] = useState({
     name: "",
     email: "",
@@ -45,10 +46,6 @@ const EmployerProfilePage = () => {
     companyLogo: false,
   });
   const [tempFiles, setTempFiles] = useState({
-    avatar: null,
-    companyLogo: null,
-  });
-  const [tempPreviews, setTempPreviews] = useState({
     avatar: null,
     companyLogo: null,
   });
@@ -148,7 +145,6 @@ const EmployerProfilePage = () => {
       const previewUrl = URL.createObjectURL(file);
       const field = type === "avatar" ? "avatar" : "companyLogo";
       setTempFiles((prev) => ({ ...prev, [field]: file }));
-      setTempPreviews((prev) => ({ ...prev, [field]: previewUrl }));
       handleInputChange(field, previewUrl);
     }
   };
@@ -213,7 +209,6 @@ const EmployerProfilePage = () => {
         setProfileData(updatedFormData);
         updateUser(updatedFormData);
         setTempFiles({ avatar: null, companyLogo: null });
-        setTempPreviews({ avatar: null, companyLogo: null });
         setEditMode(false);
       }
     } catch (err) {
@@ -230,6 +225,14 @@ const EmployerProfilePage = () => {
     setFormData(profileData);
     setEditMode(false);
   };
+
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const enable = params.get("editProfileDetails");
+    if (enable) {
+      setEditMode(true);
+    }
+  }, [location.search]);
 
   if (editMode) {
     return (
@@ -293,8 +296,8 @@ const EmployerProfilePage = () => {
                       )}
                     </h3>
                     {!profileData?.isPremium && (
-                      <div className="flex items-center gap-1">
-                        <span className="flex justify-center items-center gap-1.5 px-3 py-1 rounded-md bg-slate-50 text-slate-700 text-sm font-medium border border-gray-200">
+                      <div className="flex items-center gap-2">
+                        <span className="flex justify-center items-center gap-1 px-3 py-1 rounded-md bg-slate-50 text-slate-700 text-sm font-medium border border-gray-200">
                           <User className="w-4 h-4" />
                           Free User
                         </span>
@@ -413,16 +416,17 @@ const EmployerProfilePage = () => {
                   </section>
                 </>
               ) : (
-                <section className="flex flex-col sm:flex-row sm:items-center justify-between w-full gap-2">
-                  <p className="text-xl">Create a company profile quickly</p>
+                <section className="flex justify-end w-full gap-2">
                   <button
                     onClick={() => {
                       setEditMode(true);
                     }}
-                    className="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 px-4 py-2 text-white rounded-2xl"
+                    className="flex items-center justify-center gap-2 bg-sky-600 hover:bg-sky-700 px-4 py-3 text-white rounded-2xl"
                   >
                     <Plus className="w-4 h-4" />
-                    <p>Create a New Company</p>
+                    <p className="text-sm sm:text-base">
+                      Create a company profile
+                    </p>
                   </button>
                 </section>
               )}

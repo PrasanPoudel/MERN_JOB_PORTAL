@@ -8,6 +8,12 @@ import {
   Eye,
   Send,
   GraduationCap,
+  Building2,
+  ShieldCheck,
+  Award,
+  CheckCircle2,
+  ArrowRight,
+  CreditCard,
 } from "lucide-react";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -24,12 +30,27 @@ import SelectField from "../../components/Input/SelectField";
 import TextareaField from "../../components/Input/TextareaField";
 import JobPostingPreview from "../../components/Cards/JobPostingPreview";
 import { useAuth } from "../../context/AuthContext";
+import JobPostNotAllowed from "../../components/Cards/JobPostNotAllowed";
 
 const JobPostingForm = () => {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const jobId = location.state?.jobId || null;
+
+  // Check if employer has complete company profile
+  const hasCompleteCompanyProfile =
+    user?.companyName?.trim() &&
+    user?.companyRegistrationNumber?.trim() &&
+    user?.companyPanNumber?.trim() &&
+    user?.companySize?.trim() &&
+    user?.companyLocation?.trim() &&
+    user?.companyDescription?.trim();
+
+  // If company profile is not complete, show this page
+  if (!hasCompleteCompanyProfile) {
+    return <JobPostNotAllowed user={user} />;
+  }
 
   const [formData, setFormData] = useState({
     jobTitle: "",
@@ -82,18 +103,6 @@ const JobPostingForm = () => {
 
     if (!user || user?.role !== "employer") {
       toast.error("Only employers can post jobs");
-      return;
-    }
-
-    if (
-      !user.companyName?.trim() ||
-      !user.companyDescription?.trim() ||
-      !user.companyLocation?.trim() ||
-      !user.companySize ||
-      !user.companyRegistrationNumber ||
-      !user.panNumber
-    ) {
-      toast.error("Please complete your company profile before posting a job");
       return;
     }
     if (user.isBanned) {

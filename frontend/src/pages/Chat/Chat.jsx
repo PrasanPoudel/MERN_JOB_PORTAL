@@ -259,10 +259,10 @@ const Chat = ({ isAdmin = false }) => {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center h-screen bg-linear-to-br from-gray-50 to-gray-100">
+      <div className="flex items-center justify-center h-screen bg-linear-to-br from-slate-50 to-slate-100">
         <div className="text-center">
           <Loader className="w-10 h-10 animate-spin text-sky-600 mx-auto mb-4" />
-          <p className="text-sm text-gray-500 font-medium">
+          <p className="text-sm text-slate-500 font-medium">
             Loading conversations...
           </p>
         </div>
@@ -272,17 +272,17 @@ const Chat = ({ isAdmin = false }) => {
 
   if (conversations.length === 0 && !selectedConversation) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-gray-50 via-white to-gray-50 p-4">
+      <div className="min-h-screen flex items-center justify-center bg-linear-to-br from-slate-50 via-white to-slate-50 p-4">
         <div className="text-center max-w-md">
           <div className="w-20 h-20 bg-linear-to-br from-sky-100 to-sky-200 rounded-3xl flex items-center justify-center mx-auto mb-6 shadow-sm shadow-sky-100">
             <MessageCircle className="w-10 h-10 text-sky-600" />
           </div>
-          <h3 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3">
+          <h3 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-3">
             No active conversations
           </h3>
           {isAdmin ? (
             <>
-              <p className="text-gray-600 mb-8 leading-relaxed">
+              <p className="text-slate-600 mb-8 leading-relaxed">
                 Start a conversation by selecting a user from the user
                 management panel
               </p>
@@ -297,7 +297,7 @@ const Chat = ({ isAdmin = false }) => {
             <>
               {user.role === "jobSeeker" && (
                 <>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
+                  <p className="text-slate-600 mb-8 leading-relaxed">
                     You can start chatting once your application reaches the
                     interview stage
                   </p>
@@ -311,7 +311,7 @@ const Chat = ({ isAdmin = false }) => {
               )}
               {user.role === "employer" && (
                 <>
-                  <p className="text-gray-600 mb-8 leading-relaxed">
+                  <p className="text-slate-600 mb-8 leading-relaxed">
                     No job has "In Interview" stage candidate right now.
                   </p>
                   <button
@@ -353,7 +353,7 @@ const Chat = ({ isAdmin = false }) => {
 
   return (
     <>
-      <div className="h-[calc(100vh-5rem)] flex bg-linear-to-br from-slate-50 via-gray-50 to-slate-100">
+      <div className="h-[calc(100vh-5rem)] flex bg-linear-to-br from-slate-50 via-slate-50 to-slate-100">
         {/* Sidebar - Conversations List */}
         <div
           className={`${
@@ -362,16 +362,16 @@ const Chat = ({ isAdmin = false }) => {
                   sidebarOpen ? "translate-x-0" : "-translate-x-full"
                 }`
               : "w-full md:w-96 lg:w-104"
-          } bg-white border-r border-gray-200/60 flex flex-col shadow-lg md:shadow-none`}
+          } bg-white border-r border-slate-200/60 flex flex-col shadow-lg md:shadow-none`}
         >
           {/* Header */}
           <div className="p-2">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="text-xl pt-2 font-semibold text-gray-900 tracking-tight">
+                <h2 className="text-xl pt-2 font-semibold text-slate-900 tracking-tight">
                   Messages
                 </h2>
-                <p className="text-sm text-gray-600 mt-1 font-medium">
+                <p className="text-sm text-slate-600 mt-1 font-medium">
                   {conversations.length} conversation
                   {conversations.length !== 1 ? "s" : ""}
                 </p>
@@ -379,19 +379,19 @@ const Chat = ({ isAdmin = false }) => {
               {isMobile && (
                 <button
                   onClick={() => setSidebarOpen(false)}
-                  className="p-2 hover:bg-gray-100 rounded-xl transition-all duration-200"
+                  className="p-2 hover:bg-slate-100 rounded-xl transition-all duration-200"
                 >
-                  <X className="w-5 h-5 text-gray-600" />
+                  <X className="w-5 h-5 text-slate-600" />
                 </button>
               )}
             </div>
           </div>
 
           {/* Search & Filter Section */}
-          <div className="p-2 border-b border-gray-200/60 bg-gray-50/60">
+          <div className="p-2 border-b border-slate-200/60 bg-slate-50/60">
             <div className="space-y-3">
               <div className="relative">
-                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4" />
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 text-slate-400 w-4 h-4" />
                 <input
                   autoComplete="off"
                   id="search_conversations"
@@ -399,7 +399,7 @@ const Chat = ({ isAdmin = false }) => {
                   placeholder="Search conversations..."
                   value={searchQuery}
                   onChange={(e) => setSearchQuery(e.target.value)}
-                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-gray-300 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 text-sm transition-all duration-200 placeholder:text-gray-400"
+                  className="w-full pl-10 pr-4 py-2.5 bg-white border border-slate-300 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-2 focus:ring-sky-500/20 text-sm transition-all duration-200 placeholder:text-slate-400"
                 />
               </div>
               <div className="flex gap-2">
@@ -408,7 +408,7 @@ const Chat = ({ isAdmin = false }) => {
                   className={`flex-1 p-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                     filterType === "all"
                       ? "bg-sky-100 text-sky-600 border border-sky-200"
-                      : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                   }`}
                 >
                   All
@@ -418,7 +418,7 @@ const Chat = ({ isAdmin = false }) => {
                   className={`flex-1 p-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                     filterType === "unread"
                       ? "bg-orange-100 text-orange-700 border border-orange-200"
-                      : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                   }`}
                 >
                   Unread
@@ -428,7 +428,7 @@ const Chat = ({ isAdmin = false }) => {
                   className={`flex-1 p-2 rounded-lg text-xs font-medium transition-all duration-200 ${
                     filterType === "recent"
                       ? "bg-green-100 text-green-700 border border-green-200"
-                      : "bg-white text-gray-600 border border-gray-200 hover:bg-gray-50"
+                      : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50"
                   }`}
                 >
                   Recent
@@ -477,7 +477,7 @@ const Chat = ({ isAdmin = false }) => {
                       fetchMessages(getConvId(conv));
                       if (isMobile) setSidebarOpen(false);
                     }}
-                    className={`w-full p-2 border-b border-gray-100/70 hover:bg-gray-50/70 transition-all duration-200 flex gap-2 items-start group ${
+                    className={`w-full p-2 border-b border-slate-100/70 hover:bg-slate-50/70 transition-all duration-200 flex gap-2 items-start group ${
                       isSelected
                         ? "bg-sky-50 hover:bg-sky-100 border-x-4 border-x-sky-600"
                         : "border-l-4 border-l-transparent"
@@ -526,7 +526,7 @@ const Chat = ({ isAdmin = false }) => {
                       {/* Name & Time Row */}
                       <div className="flex gap-1 items-center flex-wrap">
                         <div className="flex items-center gap-2">
-                          <p className="text-gray-900 font-medium text-base truncate leading-tight">
+                          <p className="text-slate-900 font-medium text-base truncate leading-tight">
                             {getOtherPartyName(conv)}
                           </p>
                           {conv.unreadCount > 0 && (
@@ -556,8 +556,8 @@ const Chat = ({ isAdmin = false }) => {
                             <span
                               className={`inline-flex items-center p-2 rounded-full text-xs font-medium border ${
                                 conv.user.role === "employer"
-                                  ? "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
-                                  : "bg-linear-to-r from-sky-100 to-sky-200 text-sky-600 border-sky-400 shadow-sm"
+                                  ? "bg-orange-100 text-orange-600 border-orange-400 shadow-sm"
+                                  : "bg-sky-100 text-sky-600 border-sky-400 shadow-sm"
                               }`}
                             >
                               {conv.user.role === "employer" ? (
@@ -575,14 +575,14 @@ const Chat = ({ isAdmin = false }) => {
 
                       {/* Message Preview Row */}
                       {conv.lastMessage && (
-                        <div className="flex items-center justify-between text-gray-600">
+                        <div className="flex items-center justify-between text-slate-600">
                           <span className="truncate font-medium text-sm">
                             {conv.lastMessage.content.length > 25
                               ? conv.lastMessage.content.substring(0, 25) +
                                 "..."
                               : conv.lastMessage.content}
                           </span>
-                          <span className="text-sm font-medium text-gray-900 ml-2">
+                          <span className="text-sm font-medium text-slate-900 ml-2">
                             {moment(conv.lastMessage.createdAt).format("HH:mm")}
                           </span>
                         </div>
@@ -596,16 +596,16 @@ const Chat = ({ isAdmin = false }) => {
 
         {/* Main Chat Area */}
         {selectedConversation ? (
-          <div className="flex-1 flex flex-col min-w-0 px-2">
+          <div className="flex-1 flex flex-col min-w-0 px-1">
             {/* Chat Header */}
-            <div className="bg-white p-2 bg-linear-to-r shadow-sm z-10">
+            <div className="bg-white p-1 bg-linear-to-r shadow-sm z-10">
               <div className="flex items-center gap-2">
                 {isMobile && (
                   <button
                     onClick={() => setSidebarOpen(true)}
-                    className="p-2 hover:bg-gray-100 rounded-xl transition-all duration-200"
+                    className="p-2 hover:bg-slate-100 rounded-xl transition-all duration-200"
                   >
-                    <ArrowLeft className="w-5 h-5 text-gray-600" />
+                    <ArrowLeft className="w-5 h-5 text-slate-600 shadow-sm rounded-xl" />
                   </button>
                 )}
                 <div
@@ -638,15 +638,15 @@ const Chat = ({ isAdmin = false }) => {
                   </div>
                 </div>
                 <div className="text-left min-w-0 flex-1">
-                  <p className="font-semibold text-gray-900 text-md tracking-tight truncate">
+                  <p className="font-semibold text-slate-900 text-md tracking-tight truncate">
                     {getOtherPartyName(selectedConversation)}
                   </p>
-                  <div className="flex items-center gap-1 text-xs text-gray-600 font-medium mt-1">
+                  <div className="flex items-center gap-1 text-xs text-slate-600 font-medium mt-1">
                     {isAdmin ? (
                       selectedConversation.user.role === "employer" ? (
-                        <Mail className="w-4 h-4" />
+                        ""
                       ) : (
-                        <Mail className="w-4 h-4" />
+                        ""
                       )
                     ) : selectedConversation.isAdminConversation ? (
                       <ShieldCheck className="w-4 h-4 text-sky-600" />
@@ -659,7 +659,7 @@ const Chat = ({ isAdmin = false }) => {
                         <BriefcaseBusiness className="w-4 h-4" />
                       </div>
                     )}
-                    <span className="truncate font-medium text-xs max-w-32 sm:max-w-48 text-gray-700">
+                    <span className="truncate font-medium text-xs max-w-42 sm:max-w-48 text-slate-700">
                       {getJobTitle(selectedConversation)}
                     </span>
                   </div>
@@ -668,18 +668,18 @@ const Chat = ({ isAdmin = false }) => {
             </div>
 
             {/* Messages Area */}
-            <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6 space-y-4 bg-linear-to-br from-gray-50 via-white to-gray-50">
+            <div className="flex-1 overflow-y-auto px-4 md:px-6 py-6 space-y-4 bg-linear-to-br from-slate-50 via-white to-slate-50">
               {messages.length === 0 ? (
                 <div className="h-full flex items-center justify-center">
                   <div className="text-center space-y-4">
-                    <div className="w-20 h-20 bg-linear-to-br from-gray-100 to-gray-200 rounded-3xl flex items-center justify-center mx-auto shadow-sm">
-                      <MessageCircle className="w-10 h-10 text-gray-500" />
+                    <div className="w-20 h-20 bg-linear-to-br from-slate-100 to-slate-200 rounded-3xl flex items-center justify-center mx-auto shadow-sm">
+                      <MessageCircle className="w-10 h-10 text-slate-500" />
                     </div>
                     <div>
-                      <p className="text-gray-600 font-semibold text-lg">
+                      <p className="text-slate-600 font-semibold text-lg">
                         No messages yet.
                       </p>
-                      <p className="text-gray-500 text-sm">
+                      <p className="text-slate-500 text-sm">
                         Start the conversation!
                       </p>
                     </div>
@@ -714,8 +714,8 @@ const Chat = ({ isAdmin = false }) => {
                     <div key={message._id}>
                       {showDateDivider && (
                         <div className="flex items-center justify-center my-4">
-                          <div className="flex-1 border-t border-gray-200/60"></div>
-                          <span className="px-4 py-1 text-xs text-gray-500 font-medium bg-white rounded-full shadow-sm border border-gray-200/60 mx-4">
+                          <div className="flex-1 border-t border-slate-200/60"></div>
+                          <span className="px-4 py-1 text-xs text-slate-500 font-medium bg-white rounded-full shadow-sm border border-slate-200/60 mx-4">
                             {moment(message.createdAt).calendar(null, {
                               sameDay: "[Today]",
                               lastDay: "[Yesterday]",
@@ -723,7 +723,7 @@ const Chat = ({ isAdmin = false }) => {
                               sameElse: "MMM DD, YYYY",
                             })}
                           </span>
-                          <div className="flex-1 border-t border-gray-200/60"></div>
+                          <div className="flex-1 border-t border-slate-200/60"></div>
                         </div>
                       )}
                       <div
@@ -734,7 +734,7 @@ const Chat = ({ isAdmin = false }) => {
                         >
                           {!isOwnMessage && (
                             <div
-                              className="w-10 h-10 rounded-xl bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center shrink-0 overflow-hidden shadow-sm mt-auto cursor-pointer hover:ring-2 hover:ring-slate-400 transition-all"
+                              className="w-8 h-8 overflow-hidden rounded-full bg-linear-to-br from-sky-100 to-sky-200 flex items-center justify-center shrink-0 shadow-sm mt-auto cursor-pointer hover:ring-2 hover:ring-slate-400 transition-all"
                               onClick={() =>
                                 navigate(`/profile/${message.sender._id}`)
                               }
@@ -750,20 +750,25 @@ const Chat = ({ isAdmin = false }) => {
                             className={`flex flex-col ${isOwnMessage ? "items-end" : "items-start"}`}
                           >
                             <div
-                              className={`text-sm p-2 rounded-2xl wrap-break-word shadow-sm ${
+                              className={`max-w-40 text-xs sm:max-w-52  sm:text-sm md:max-w-64 p-2 rounded-2xl wrap-break-word shadow-sm ${
                                 isOwnMessage
                                   ? "border-2 bg-sky-600 text-white rounded-br-sm"
-                                  : "bg-white border-2 border-gray-200/60 rounded-bl-sm text-gray-900"
+                                  : "bg-white border border-slate-200 rounded-bl-sm text-slate-900"
                               }`}
                             >
-                              <div
-                                dangerouslySetInnerHTML={{
-                                  __html: message.content,
-                                }}
-                              />
+                              {message?.content?.toString().includes("http") ? (
+                                <div
+                                  className="text-sky-600 underline"
+                                  dangerouslySetInnerHTML={{
+                                    __html: message.content,
+                                  }}
+                                />
+                              ) : (
+                                <div>{message?.content}</div>
+                              )}
                             </div>
                             <div className="flex items-center gap-2 mt-1 px-1">
-                              <span className="text-xs text-gray-500 font-medium">
+                              <span className="text-xs text-slate-500 font-medium">
                                 {moment(message.createdAt).format("HH:mm")}
                               </span>
                               {isOwnMessage && (
@@ -771,7 +776,7 @@ const Chat = ({ isAdmin = false }) => {
                                   {message.read ? (
                                     <CheckCheck className="w-3 h-3 text-sky-600" />
                                   ) : (
-                                    <Check className="w-3 h-3 text-gray-600" />
+                                    <Check className="w-3 h-3 text-slate-600" />
                                   )}
                                 </>
                               )}
@@ -787,7 +792,7 @@ const Chat = ({ isAdmin = false }) => {
             </div>
 
             {/* Input Area */}
-            <div className="border-t border-gray-200/60 p-2 pb-6 bg-white shadow-sm">
+            <div className="border-t border-slate-200/60 p-2 pb-6 bg-white shadow-sm">
               <div className="flex gap-4 max-w-5xl mx-auto">
                 <div className="relative flex-1">
                   <input
@@ -803,7 +808,7 @@ const Chat = ({ isAdmin = false }) => {
                       }
                     }}
                     placeholder="Message..."
-                    className="w-full sm:p-4 p-3 pr-12 bg-white border border-gray-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-gray-400 shadow-sm outline-0"
+                    className="w-full sm:p-4 p-3 pr-12 bg-white border border-slate-300 rounded-2xl focus:outline-none text-sm transition-all duration-200 placeholder:text-slate-400 shadow-sm outline-0"
                     disabled={sending}
                   />
                 </div>
@@ -828,16 +833,16 @@ const Chat = ({ isAdmin = false }) => {
             </div>
           </div>
         ) : (
-          <div className="flex-1 flex items-center justify-center bg-linear-to-br from-gray-50 via-white to-gray-50">
+          <div className="flex-1 flex items-center justify-center bg-linear-to-br from-slate-50 via-white to-slate-50">
             <div className="text-center space-y-6 max-w-md">
               <div className="w-24 h-24 bg-linear-to-br from-slate-100 to-slate-200 rounded-3xl flex items-center justify-center mx-auto shadow-lg">
                 <MessageCircle className="w-12 h-12 text-slate-500" />
               </div>
               <div>
-                <h3 className="text-2xl lg:text-3xl font-semibold text-gray-900 mb-3 tracking-tight">
+                <h3 className="text-2xl lg:text-3xl font-semibold text-slate-900 mb-3 tracking-tight">
                   Select a conversation
                 </h3>
-                <p className="text-gray-600 text-sm leading-relaxed">
+                <p className="text-slate-600 text-sm leading-relaxed">
                   Choose a conversation from the list to start chatting. Your
                   messages will appear here.
                 </p>

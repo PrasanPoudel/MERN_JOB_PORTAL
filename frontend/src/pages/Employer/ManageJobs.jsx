@@ -581,23 +581,14 @@ const ManageJobs = () => {
                 </button>
               </div>
               <div className="hidden sm:flex sm:flex-1 items-center justify-between">
-                <div>
-                  <p className="text-sm text-slate-700">
-                    Showing <span className="font-bold">{startIndex + 1}</span>{" "}
-                    to{" "}
-                    <span className="font-bold">
-                      {Math.min(
-                        startIndex + itemsPerPage,
-                        filteredAndSortedJobs.length,
-                      )}
-                    </span>{" "}
-                    of{" "}
-                    <span className="font-bold">
-                      {filteredAndSortedJobs.length}
-                    </span>{" "}
-                    results
-                  </p>
-                </div>
+                <p className="text-sm text-slate-600">
+                  Showing{" "}
+                  <span className="font-bold">{paginatedJobs.length}</span> of{" "}
+                  <span className="font-bold">
+                    {filteredAndSortedJobs.length}{" "}
+                  </span>
+                  jobs
+                </p>
                 <div>
                   <nav className="relative z-0 inline-flex shadow-sm -space-x-px rounded-md">
                     <button

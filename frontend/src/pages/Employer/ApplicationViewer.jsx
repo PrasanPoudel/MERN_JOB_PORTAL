@@ -13,7 +13,6 @@ import { useLocation, useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
 import moment from "moment";
-import ApplicantProfilePreview from "../../components/Cards/ApplicantProfilePreview";
 const statusOptions = ["Applied", "In Interview", "Rejected", "Hired"];
 import toast from "react-hot-toast";
 import { statusConfig } from "../../components/StatusBadge";
@@ -25,7 +24,6 @@ const ApplicationViewer = () => {
 
   const [applications, setApplications] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [sortType, setSortType] = useState("Most Relevent");
 
   const fetchApplications = async () => {
@@ -153,7 +151,7 @@ const ApplicationViewer = () => {
               <div className="flex flex-col p-1 gap-4 sm:p-4 pb-24 overflow-hidden rounded-2xl shadow-md">
                 {/* Job details */}
                 <div className="bg-sky-500 px-2 sm:px-4 py-4 rounded-2xl text-white">
-                  <div className="flex items-center justify-between">
+                  <div className="flex gap-1 flex-col items-start sm:flex-row sm:items-center justify-between">
                     <h2 className="text-lg sm:text-2xl font-medium">
                       {applications[0].job.title}
                     </h2>
@@ -185,7 +183,9 @@ const ApplicationViewer = () => {
                       onChange={(e) => setSortType(e.target.value)}
                       className="border outline-sky-200 rounded-lg transition-colors duration-200 disabled:bg-slate-50 p-2"
                     >
-                      <option value="Recent Application">Recent Application</option>
+                      <option value="Recent Application">
+                        Recent Application
+                      </option>
                       <option value="Oldest Application">
                         Oldest Application
                       </option>
@@ -201,21 +201,13 @@ const ApplicationViewer = () => {
                       >
                         <div className="flex items-center gap-4">
                           {/* Avatar */}
-                          <div
-                            title="View applicant profile"
-                            onClick={() => {
-                              navigate(
-                                `/profile/${application.applicant?._id}`,
-                              );
-                            }}
-                            className="flex shrink-0"
-                          >
+                          <div className="flex shrink-0">
                             <img
                               src={
                                 application.applicant.avatar || "/default.png"
                               }
                               alt={application.applicant.name}
-                              className="object-fill h-12 w-12 rounded-full cursor-pointer hover:border-2 hover:border-slate-400"
+                              className="object-fill h-12 w-12 rounded-full"
                               style={{ imageRendering: "auto" }}
                             />
                           </div>
@@ -241,18 +233,7 @@ const ApplicationViewer = () => {
                         </div>
 
                         {/* Actions */}
-                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-3 mt-4 md:m-0">
-                          <button
-                            onClick={() => {
-                              handleDownloadResume(
-                                application.applicant.resume,
-                              );
-                            }}
-                            className="col-span-2 sm:col-span-1 inline-flex items-center gap-2 px-3 py-2 bg-sky-600 text-white text-sm font-medium rounded-lg hover:bg-sky-700 transition-colors cursor-pointer"
-                          >
-                            <Download className="w-4 h-4" />
-                            Resume
-                          </button>
+                        <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
                           <select
                             value={application.status}
                             onChange={(e) => {
@@ -261,7 +242,7 @@ const ApplicationViewer = () => {
                             disabled={loading}
                             className={`${
                               statusConfig[application.status]
-                            } border-2 border-gray-200 rounded-lg px-3 py-2 text-slate-900`}
+                            } col-span-3 sm:col-span-1 border-2 border-gray-200 rounded-lg p-2 text-slate-900`}
                           >
                             {statusOptions.map((status, index) => (
                               <option key={index} value={status}>
@@ -271,12 +252,25 @@ const ApplicationViewer = () => {
                           </select>
                           <button
                             onClick={() => {
-                              setSelectedApplicant(application);
+                              navigate(
+                                `/profile/${application?.applicant._id}`,
+                              );
                             }}
-                            className="inline-flex items-center gap-2 px-3 py-2 bg-slate-50 border-2 border-gray-200 text-slate-900 text-sm font-medium rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
+                            className="inline-flex items-center gap-1 p-2 bg-slate-50 border-2 border-gray-200 text-slate-900 font-medium rounded-lg hover:bg-slate-200 transition-colors cursor-pointer"
                           >
                             <Eye className="w-4 h-4" />
-                            View Details
+                            View Profile
+                          </button>
+                          <button
+                            onClick={() => {
+                              handleDownloadResume(
+                                application.applicant.resume,
+                              );
+                            }}
+                            className="inline-flex items-center justify-center gap-1 p-2 bg-sky-600 text-white font-medium rounded-lg hover:bg-sky-700 transition-colors cursor-pointer"
+                          >
+                            <Download className="w-4 h-4" />
+                            Resume
                           </button>
                         </div>
                       </div>
@@ -286,18 +280,6 @@ const ApplicationViewer = () => {
               </div>
             )}
           </div>
-
-          {selectedApplicant && (
-            <ApplicantProfilePreview
-              selectedApplicant={selectedApplicant}
-              setSelectedApplicant={setSelectedApplicant}
-              handleDownloadResume={handleDownloadResume}
-              handleClose={() => {
-                setSelectedApplicant(null);
-                fetchApplications();
-              }}
-            />
-          )}
         </div>
       )}
     </DashboardLayout>
