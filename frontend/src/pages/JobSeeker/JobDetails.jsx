@@ -21,6 +21,7 @@ import {
   BadgeCheck,
   CalendarDays,
   Clock,
+  ArrowRight,
 } from "lucide-react";
 import { StatusBadge } from "../../components/StatusBadge";
 
@@ -196,7 +197,7 @@ const JobDetails = () => {
               onClick={() => setExpanded(!expanded)}
             >
               <div className="flex items-center gap-4">
-                <Info className="text-sky-600 w-4 h-4" />
+                <Info className="text-sky-600 w-5 h-5 shrink-0" />
                 <h2 className="sm:text-xl text-lg font-semibold text-gray-900">
                   Employer Information
                 </h2>
@@ -323,6 +324,17 @@ const JobDetails = () => {
                     {job?.company?.companyDescription ||
                       "No description provided."}
                   </p>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => {
+                      navigate(`/profile/${job?.company?._id}`);
+                    }}
+                    className="flex gap-1 items-center text-sky-600 underline cursor-pointer text-xl"
+                  >
+                    See more details
+                    <ArrowRight className="w-6 h-6" />
+                  </button>
                 </div>
               </div>
             )}

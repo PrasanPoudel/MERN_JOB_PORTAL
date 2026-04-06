@@ -12,12 +12,15 @@ import {
   GraduationCap,
   Clock,
   CalendarDays,
+  ArrowRight,
 } from "lucide-react";
 import { useAuth } from "../../context/AuthContext";
+import { useNavigate } from "react-router-dom";
 import moment from "moment";
 
 const JobPostingPreview = ({ formData, setIsPreview }) => {
   const { user } = useAuth();
+  const navigate = useNavigate();
   const [expanded, setExpanded] = useState(false);
   const formatSalary = (num) => {
     if (num > 1000) {
@@ -259,6 +262,17 @@ const JobPostingPreview = ({ formData, setIsPreview }) => {
                   <p className="text-sm text-gray-700 text-justify leading-relaxed bg-gray-50 p-4 md:p-6 rounded-lg">
                     {user?.companyDescription || "No description provided."}
                   </p>
+                </div>
+                <div className="flex justify-end">
+                  <button
+                    onClick={() => {
+                      navigate(`/profile/${user._id}`);
+                    }}
+                    className="flex gap-1 items-center text-sky-600 underline cursor-pointer text-xl"
+                  >
+                    See more details
+                    <ArrowRight className="w-6 h-6" />
+                  </button>
                 </div>
               </div>
             )}
