@@ -117,34 +117,27 @@ const ChangePassword = () => {
     <div className="min-h-screen bg-slate-50 py-8">
       <div className="max-w-3xl mx-auto px-4">
         {/* Header */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 mb-2">
-          <div className="flex flex-col items-center gap-4">
-            <div className="w-full items-start">
-              <button
-                onClick={() => {
-                  navigate(-1);
-                }}
-                title="Go back to previous page"
-                className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
-              >
-                <ArrowLeft className="w-4 h-4" />
-                Back
-              </button>
-            </div>
-            <div className="text-center">
-              <h1 className="text-xl sm:text-2xl font-semibold text-slate-900">
-                Change Password
-              </h1>
-              <p className="text-xs sm:text-sm text-slate-600">
-                Keep your account secure
-              </p>
-            </div>
-          </div>
-        </div>
-
+        <button
+          onClick={() => {
+            navigate(-1);
+          }}
+          title="Go back to previous page"
+          className="group flex items-center border border-gray-200 space-x-2 rounded-xl px-3 py-2 text-sm font-medium text-slate-600 hover:text-white bg-white/50 hover:bg-sky-600 cursor-pointer shadow-sm hover:shadow-md hover:border-transparent transition-all duration-200 "
+        >
+          <ArrowLeft className="w-4 h-4" />
+          Back
+        </button>
         {/* Form */}
-        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2">
+        <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-2 mt-6">
           <form onSubmit={handleSubmit} className="space-y-4 py-4">
+          <div className="text-center">
+            <h1 className="text-xl sm:text-2xl font-semibold text-slate-900 mb-2">
+              Change Password
+            </h1>
+            <p className="text-slate-600 mb-6">
+              Keep your account secure
+            </p>
+          </div>
             {/* Old Password */}
             <div>
               <p className="block text-sm font-medium text-slate-700 mb-2">

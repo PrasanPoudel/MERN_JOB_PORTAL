@@ -35,7 +35,7 @@ const Features = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {features.map((feature, idx) => (
             <div key={idx} className="card-hover p-6 text-center">
               <div className="w-12 h-12 bg-sky-100 rounded-xl flex items-center justify-center text-sky-600 mx-auto mb-4">
