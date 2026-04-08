@@ -288,10 +288,10 @@ exports.getAllJobs = async (req, res) => {
     if (sort) {
       switch (sort) {
         case "Posted_Date_(Ascending_Order)":
-          sortOptions = { createdAt: -1 };
+          sortOptions = { createdAt: 1 };
           break;
         case "Posted_Date_(Descending_Order)":
-          sortOptions = { createdAt: 1 };
+          sortOptions = { createdAt: -1 };
           break;
         case "Risk_Score_(Ascending_Order)":
           sortOptions = { fraudScore: 1 };
