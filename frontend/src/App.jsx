@@ -1,3 +1,4 @@
+import React from "react";
 import {
   BrowserRouter as Router,
   Route,
@@ -47,9 +48,86 @@ import UserProfilePage from "./pages/Shared/UserProfilePage";
 
 const App = () => {
   const { loading } = useAuth();
+  const [isOffline, setIsOffline] = React.useState(!navigator.onLine);
+
+  React.useEffect(() => {
+    const handleOffline = () => setIsOffline(true);
+    const handleOnline = () => {
+      setIsOffline(false);
+      window.location.reload();
+    };
+
+    window.addEventListener("offline", handleOffline);
+    window.addEventListener("online", handleOnline);
+
+    return () => {
+      window.removeEventListener("offline", handleOffline);
+      window.removeEventListener("online", handleOnline);
+    };
+  }, []);
 
   if (loading) {
     return <LoadingSpinner />;
+  }
+
+  if (isOffline) {
+    return (
+      <div
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "#fff",
+          zIndex: 999999,
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          fontFamily:
+            'system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
+          color: "#333",
+        }}
+      >
+        <div style={{ maxWidth: 600, padding: "0 20px", textAlign: "left" }}>
+          <h1
+            style={{
+              fontSize: "24px",
+              fontWeight: "normal",
+              marginBottom: "12px",
+            }}
+          >
+            No Internet
+          </h1>
+          <p
+            style={{
+              fontSize: "16px",
+              color: "#5f6368",
+              lineHeight: "20px",
+              margin: 0,
+            }}
+          >
+            Try:
+          </p>
+          <ul
+            style={{
+              fontSize: "16px",
+              color: "#5f6368",
+              lineHeight: "20px",
+              paddingLeft: "20px",
+              marginTop: "4px",
+            }}
+          >
+            <li>Checking the network cables, modem, and router</li>
+            <li>Reconnecting to Wi-Fi</li>
+          </ul>
+          <p style={{ fontSize: "14px", color: "#80868b", marginTop: "24px" }}>
+            ERR_INTERNET_DISCONNECTED
+          </p>
+        </div>
+      </div>
+    );
   }
 
   return (
