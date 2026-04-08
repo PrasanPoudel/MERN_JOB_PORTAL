@@ -39,7 +39,6 @@ axiosInstance.interceptors.response.use(
 
     // Handle network errors
     if (!error.response) {
-      // Just reject error, offline page is already handled in App component
       return Promise.reject({
         message: "Network error. Please check your internet connection.",
       });

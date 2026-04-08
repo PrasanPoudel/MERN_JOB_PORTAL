@@ -10,6 +10,8 @@ import {
   Tag,
   BadgeCheck,
   ArrowUpDown,
+  User,
+  Building2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -183,7 +185,7 @@ const AdminJobManagement = () => {
               autoComplete="off"
               id="search_job"
               type="text"
-            placeholder="Search jobs, companies, employers..."
+              placeholder="Search jobs, companies, employers..."
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -210,12 +212,8 @@ const AdminJobManagement = () => {
               value={sortType}
               onChange={(e) => setSortType(e.target.value)}
             >
-              <option value="Posted_Date_(Descending_Order)">
-               Newest Job
-              </option>
-              <option value="Posted_Date_(Ascending_Order)">
-                Oldest Job
-              </option>
+              <option value="Posted_Date_(Descending_Order)">Newest Job</option>
+              <option value="Posted_Date_(Ascending_Order)">Oldest Job</option>
               <option value="Risk_Score_(Descending_Order)">
                 High Fraud Chance
               </option>
@@ -468,7 +466,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
             <Loader className="animate-spin mx-auto text-sky-600" />
           ) : (
             <>
-              <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4 mb-6">
+              <div className="flex flex-col sm:flex-row items-start gap-4 mb-6">
                 {job?.company?.companyLogo ? (
                   <img
                     src={job.company.companyLogo}
@@ -476,19 +474,25 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                     className="w-20 h-20 rounded-lg object-contain border border-gray-200"
                   />
                 ) : (
-                  <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-200 text-gray-400 text-xl font-semibold">
-                    {companyName.charAt(0)}
+                  <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-600 text-gray-900 text-xl font-semibold">
+                    <Building2 className="w-10 h-10"/>
                   </div>
                 )}
 
-                <div className="flex flex-col text-center sm:text-left">
+                <div className="flex flex-col text-left">
                   <h3 className="flex items-center text-lg font-semibold text-gray-900">
                     {companyName}
                     {job?.company?.isCompanyVerified && (
                       <BadgeCheck className="w-4 h-4 text-sky-600 ml-1" />
                     )}
                   </h3>
-                  <p className="text-sm text-gray-600 mt-1">{employerName}</p>
+                  <p className="text-sm text-gray-600 mt-1 flex gap-2">
+                    <span className="flex items-center gap-1 text-gray-900 font-semibold">
+                    <User className="w-4 h-4" />
+                      Employer:
+                    </span>
+                    {employerName}
+                  </p>
                   <p className="text-xs text-gray-600 mt-1">
                     {job.company.email}
                   </p>

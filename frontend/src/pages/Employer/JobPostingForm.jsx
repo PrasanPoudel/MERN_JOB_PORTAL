@@ -247,9 +247,12 @@ const JobPostingForm = () => {
                 <button
                   onClick={() => {
                     if (!isFormValid()) {
-                      toast.error(
-                        "Please complete all required fields before previewing.",
-                      );
+                      const validationErrors = validateForm(formData);
+                      if (Object.keys(validationErrors).length > 0) {
+                        setErrors(validationErrors);
+                        setIsPreview(false);
+                        return;
+                      }
                     } else {
                       setIsPreview(true);
                     }
@@ -267,12 +270,12 @@ const JobPostingForm = () => {
                 id="jobTitle"
                 placeholder="e.g., Software Developer"
                 value={formData.jobTitle}
-                required
                 onChange={(e) => {
                   handleInputChange("jobTitle", e.target.value);
                 }}
                 icon={BriefcaseBusiness}
-                errors={errors.jobTitle}
+                error={errors.jobTitle}
+                required
               />
               {/* Location */}
               <div className="space-y-4">
@@ -491,7 +494,7 @@ const JobPostingForm = () => {
               <div className="pt-2 w-full justify-end flex">
                 <button
                   onClick={handleSubmit}
-                  disabled={isSubmitting || !isFormValid()}
+                  disabled={isSubmitting}
                   className="w-50 flex items-center justify-center px-4 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-sky-600 hover:bg-sky-700 focus:outline-none focus:ring-offset-2 focus:ring-sky-500 disabled:bg-gray-400 disabled:cursor-not-allowed outline-none transition-colors duration-200 cursor-pointer"
                 >
                   {isSubmitting ? (
