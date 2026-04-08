@@ -9,6 +9,7 @@ import {
   Info,
   Tag,
   BadgeCheck,
+  ArrowUpDown,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -182,7 +183,7 @@ const AdminJobManagement = () => {
               autoComplete="off"
               id="search_job"
               type="text"
-              placeholder="Find Jobs..."
+            placeholder="Search jobs, companies, employers..."
               className="w-full pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl focus:ring-2 focus:ring-sky-500 focus:border-transparent text-sm"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
@@ -200,25 +201,29 @@ const AdminJobManagement = () => {
             <option value="closed">Closed</option>
           </select>
 
-          <select
-            id="select_sortType"
-            className="px-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500"
-            value={sortType}
-            onChange={(e) => setSortType(e.target.value)}
-          >
-            <option value="Posted_Date_(Ascending_Order)">
-              Posted Date (Ascending Order)
-            </option>
-            <option value="Posted_Date_(Descending_Order)">
-              Posted Date (Descending Order)
-            </option>
-            <option value="Risk_Score_(Ascending_Order)">
-              Risk Score (Ascending Order)
-            </option>
-            <option value="Risk_Score_(Descending_Order)">
-              Risk Score (Descending Order)
-            </option>
-          </select>
+          <div className="relative">
+            <ArrowUpDown className="absolute left-3 top-3 w-4 h-4 text-gray-400" />
+            <select
+              id="select_sortType"
+              aria-label="Sort jobs"
+              className="pl-10 pr-4 py-2.5 border border-gray-200 rounded-xl text-sm focus:ring-2 focus:ring-sky-500 min-w-45 bg-white cursor-pointer"
+              value={sortType}
+              onChange={(e) => setSortType(e.target.value)}
+            >
+              <option value="Posted_Date_(Descending_Order)">
+               Newest Job
+              </option>
+              <option value="Posted_Date_(Ascending_Order)">
+                Oldest Job
+              </option>
+              <option value="Risk_Score_(Descending_Order)">
+                High Fraud Chance
+              </option>
+              <option value="Risk_Score_(Ascending_Order)">
+                Low Fraud Chance
+              </option>
+            </select>
+          </div>
         </div>
 
         {/* Job Cards */}

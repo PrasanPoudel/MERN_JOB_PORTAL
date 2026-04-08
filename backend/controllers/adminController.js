@@ -283,14 +283,6 @@ exports.getAllJobs = async (req, res) => {
       query.isClosed = true;
     }
 
-    if (search && search.trim()) {
-      query.$or = [
-        { title: { $regex: search.trim(), $options: "i" } },
-        { description: { $regex: search.trim(), $options: "i" } },
-      ];
-    }
-
-    // Determine sort options
     let sortOptions = { createdAt: -1 }; // Default sort by creation date descending
 
     if (sort) {
@@ -308,11 +300,92 @@ exports.getAllJobs = async (req, res) => {
           sortOptions = { fraudScore: -1 };
           break;
         default:
-          sortOptions = { createdAt: -1 }; // Default fallback
+          sortOptions = { createdAt: -1 };
       }
     }
 
-    // Use pagination utility
+    if (search && search.trim()) {
+      const searchRegex = { $regex: search.trim(), $options: "i" };
+
+      const pipeline = [
+        {
+          $lookup: {
+            from: "users",
+            localField: "company",
+            foreignField: "_id",
+            as: "company",
+          },
+        },
+        { $unwind: "$company" },
+        {
+          $match: {
+            $and: [
+              query,
+              {
+                $or: [
+                  { title: searchRegex },
+                  { description: searchRegex },
+                  { "company.name": searchRegex },
+                  { "company.companyName": searchRegex },
+                ],
+              },
+            ],
+          },
+        },
+        {
+          $project: {
+            title: 1,
+            description: 1,
+            requirements: 1,
+            location: 1,
+            educationLevel: 1,
+            experienceLevel: 1,
+            offer: 1,
+            type: 1,
+            category: 1,
+            salaryMin: 1,
+            salaryMax: 1,
+            isClosed: 1,
+            fraudScore: 1,
+            createdAt: 1,
+            no_of_vacancy: 1,
+            application_deadline_date: 1,
+            company: {
+              _id: 1,
+              name: 1,
+              companyName: 1,
+              email: 1,
+              companyLogo: 1,
+              isCompanyVerified: 1,
+            },
+          },
+        },
+        { $sort: sortOptions },
+      ];
+
+      // Get total count for pagination
+      const totalJobs = await Job.aggregate([...pipeline, { $count: "total" }]);
+      const total = totalJobs[0]?.total || 0;
+      const totalPages = Math.ceil(total / limit);
+
+      // Apply pagination
+      pipeline.push({ $skip: (page - 1) * limit });
+      pipeline.push({ $limit: parseInt(limit) });
+
+      const jobs = await Job.aggregate(pipeline);
+
+      return res.json({
+        jobs,
+        pagination: {
+          page: parseInt(page),
+          limit: parseInt(limit),
+          total,
+          totalPages,
+        },
+      });
+    }
+
+    // No search, use normal pagination
     const result = await paginateQuery(Job, query, {
       page,
       limit,
