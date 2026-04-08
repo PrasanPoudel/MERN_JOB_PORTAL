@@ -270,9 +270,7 @@ const UserProfilePage = () => {
                     },
                     {
                       label: "Account Type",
-                      value: thisUser?.isPremium
-                        ? "Premium User"
-                        : "Free User",
+                      value: thisUser?.isPremium ? "Premium User" : "Free User",
                     },
                   ]
                     .filter(Boolean)
@@ -710,4 +708,15 @@ const UserProfilePage = () => {
   );
 };
 
+const TimelineCard = ({ children }) => (
+  <div className="border border-gray-100 rounded-xl p-4 hover:border-sky-200 hover:bg-sky-50/30 transition-colors">
+    {children}
+  </div>
+);
+
+const EmptyState = ({ label }) => (
+  <p className="text-sm text-gray-400 py-4 text-center border border-dashed border-gray-200 rounded-xl bg-gray-50">
+    {label}
+  </p>
+);
 export default UserProfilePage;

@@ -15,6 +15,8 @@ import {
   BadgeCheck,
   Crown,
   Phone,
+  CheckCircle,
+  Star,
 } from "lucide-react";
 import toast from "react-hot-toast";
 import uploadFile from "../../utils/uploadFile";
@@ -295,7 +297,7 @@ const EmployerProfilePage = () => {
                     className="w-16 h-16 sm:w-20 sm:h-20 rounded-full object-cover shrink-0"
                   />
                   <div className="min-w-0">
-                    <h3 className="flex items-center gap-1 text-base sm:text-lg font-semibold truncate">
+                    <h3 className="flex items-center gap-1 text-base sm:text-xl font-semibold truncate text-gray-900">
                       {profileData.name}
                       {profileData?.isPremium && (
                         <span
@@ -329,6 +331,71 @@ const EmployerProfilePage = () => {
                 </div>
               </section>
 
+              {/* Premium Section */}
+              <div className="mb-6">
+                {profileData?.isPremium ? (
+                  /* For Premium Employers */
+                  <div className="bg-linear-to-br from-yellow-50 to-amber-100 border border-yellow-300 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shadow-md animate-pulse">
+                        <Crown className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                          Premium Employer{" "}
+                          <Star className="w-4 h-4 text-yellow-500" />
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          Thank you for being a Premium member!
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-700 mb-4">
+                      You are enjoying premium user benifit:
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                        <span>Unlimited active job postings</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  /* For Free Employers */
+                  <div className="bg-linear-to-br from-sky-50 to-blue-100 border border-sky-200 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shadow-md">
+                        <Crown className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900">
+                          Go Premium
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          Unlock unlimited job postings
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                        <span>Unlimited active job postings</span>
+                      </div>
+                    </div>
+
+                    <Link
+                      to="/pricing"
+                      className="block w-full text-center bg-linear-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-lg"
+                    >
+                      Upgrade Now - रू 100/month
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               {profileData?.companyName ? (
                 <>
                   {/* Company Overview */}
@@ -344,7 +411,7 @@ const EmployerProfilePage = () => {
                         className="w-16 h-16 sm:w-20 sm:h-20 rounded-lg object-contain shrink-0"
                       />
                       <div className="min-w-0">
-                        <h3 className="flex gap-1 items-center text-base sm:text-lg font-semibold truncate">
+                        <h3 className="flex items-center gap-1 text-base sm:text-xl font-semibold truncate text-gray-900">
                           {profileData.companyName || "N/A"}
                           {profileData.isCompanyVerified && (
                             <BadgeCheck className="w-4 h-4 text-sky-600 ml-1 shrink-0" />

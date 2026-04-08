@@ -13,7 +13,8 @@ import {
   User,
   FileText,
   ChevronRight,
-  Briefcase,
+  CheckCircle,
+  Star,
 } from "lucide-react";
 import Navbar from "../../components/layout/Navbar";
 import { useAuth } from "../../context/AuthContext";
@@ -79,7 +80,7 @@ const UserProfile = () => {
                     className="w-24 h-24 rounded-full object-cover bg-white shadow-sm"
                   />
                   <div className="pb-1">
-                    <h2 className="flex gap-1 items-center text-2xl font-semibold text-gray-900 leading-tight">
+                    <h2 className="flex gap-1 items-center text-base sm:text-xl font-semibold text-gray-900 leading-tight">
                       {user?.name || ""}
                       {user?.isPremium && (
                         <span
@@ -110,6 +111,93 @@ const UserProfile = () => {
                   )}
                 </div>
               </div>
+
+              {/* Premium Section */}
+              <div className="mx-2 mb-4">
+                {user?.isPremium ? (
+                  <div className="bg-linear-to-br from-yellow-50 to-amber-100 border border-yellow-300 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shadow-md animate-pulse">
+                        <Crown className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                          Premium Member{" "}
+                          <Star className="w-4 h-4 text-yellow-500" />
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          Thank you for being a Premium member!
+                        </p>
+                      </div>
+                    </div>
+
+                    <p className="text-sm text-gray-700 mb-4">
+                      You are enjoying all premium benefits:
+                    </p>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                        <span>Unlimited job applications</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                        <span>
+                          Instant application status update notifications
+                        </span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-600 shrink-0" />
+                        <span>Job recommendation emails</span>
+                      </div>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="bg-linear-to-br from-sky-50 to-blue-100 border border-sky-200 rounded-2xl p-5 shadow-sm">
+                    <div className="flex items-center gap-3 mb-4">
+                      <div className="w-12 h-12 bg-yellow-400 rounded-xl flex items-center justify-center shadow-md">
+                        <Crown className="w-6 h-6 text-white" />
+                      </div>
+                      <div>
+                        <h3 className="font-semibold text-gray-900 flex items-center gap-2">
+                          Go Premium{" "}
+                          <Star className="w-4 h-4 text-yellow-500" />
+                        </h3>
+                        <p className="text-sm text-gray-600">
+                          Maximize your job search potential
+                        </p>
+                      </div>
+                    </div>
+
+                    <div className="space-y-2 mb-4">
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                        <span>Unlimited job applications</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                        <span>Instant email notifications</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                        <span>Personalized job recommendation emails</span>
+                      </div>
+                      <div className="flex items-center gap-2 text-sm">
+                        <CheckCircle className="w-4 h-4 text-green-500 shrink-0" />
+                        <span>All premium features</span>
+                      </div>
+                    </div>
+
+                    <Link
+                      to="/pricing"
+                      className="block w-full text-center bg-linear-to-r from-yellow-400 to-amber-500 hover:from-yellow-500 hover:to-amber-600 text-white font-semibold py-3 px-4 rounded-xl transition-all shadow-md hover:shadow-lg"
+                    >
+                      Upgrade Now - रू 100/month
+                    </Link>
+                  </div>
+                )}
+              </div>
+
               {(user?.location ||
                 user?.facebookLink ||
                 user?.instagramLink) && (

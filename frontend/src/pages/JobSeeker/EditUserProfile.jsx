@@ -11,6 +11,11 @@ import {
   GraduationCap,
   Code,
   X,
+  Crown,
+  CheckCircle,
+  ArrowRight,
+  Info,
+  Star,
 } from "lucide-react";
 import axiosInstance from "../../utils/axiosInstance";
 import { API_PATHS } from "../../utils/apiPaths";
@@ -45,6 +50,22 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
     avatar: null,
     resume: null,
   });
+  const [showProfileImportancePopup, setShowProfileImportancePopup] =
+    useState(false);
+
+  // Show popup every time component mounts
+  useEffect(() => {
+    if (user) {
+      const timer = setTimeout(() => {
+        setShowProfileImportancePopup(true);
+      }, 500);
+      return () => clearTimeout(timer);
+    }
+  }, [user]);
+
+  const closePopup = () => {
+    setShowProfileImportancePopup(false);
+  };
 
   // Initialize form data when user data is available
   useEffect(() => {
@@ -455,7 +476,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       });
                 }}
                 id="profile-select"
-                className="w-full p-2 border border-gray-300 rounded-md shadow-sm focus:ring-blue-500 focus:border-blue-500 bg-white text-black"
+                className="w-full px-4 py-2.5 border-0 rounded-xl shadow-sm focus:ring-2 focus:ring-sky-400 bg-white/90 text-gray-900 font-medium cursor-pointer transition-all hover:bg-white"
               >
                 <option value="" disabled>
                   Sample Template
@@ -502,7 +523,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                   )}
                 </div>
 
-                <div className="flex-1">
+                <div className="">
                   <label className="block cursor-pointer">
                     <span className="sr-only">Choose avatar</span>
                     <input
@@ -512,7 +533,7 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
                       onChange={(e) => {
                         handleFileChange(e, "avatar");
                       }}
-                      className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors cursor-pointer"
+                      className="block w-full text-sm text-gray-600 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-sky-50 file:text-sky-600 hover:file:bg-sky-100 transition-colors file:cursor-pointer"
                     />
                   </label>
                 </div>
@@ -1046,6 +1067,138 @@ const EditUserProfile = ({ user, updateUser, setEditMode }) => {
           </div>
         </div>
       </div>
+
+      {/* Profile Importance Popup Modal */}
+      {showProfileImportancePopup && (
+        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 animate-in fade-in duration-300">
+          <div className="bg-white rounded-3xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl animate-in zoom-in-95 slide-in-from-bottom-4 duration-300">
+            {/* Modal Header */}
+            <div className="bg-sky-600 p-6 text-white relative">
+              <button
+                onClick={closePopup}
+                className="absolute top-4 right-4 p-2 hover:bg-white/20 rounded-full transition-colors"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <div className="flex items-center gap-3 mb-2">
+                <div className="w-12 h-12 bg-white/20 rounded-xl flex items-center justify-center">
+                  <Info className="w-6 h-6" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold">
+                    Why Your Profile Matters
+                  </h2>
+                  <p className="text-sky-100 text-sm">
+                    Get noticed by employers
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 space-y-6">
+              {/* How it works section */}
+              <div>
+                <h3 className="font-semibold text-gray-900 mb-3">
+                  How Your Profile Affects Your Job Search
+                </h3>
+
+                <div className="space-y-3">
+                  <div className="flex gap-3 p-3 bg-sky-50 rounded-xl">
+                    <CheckCircle className="w-5 h-5 text-sky-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Smart Job Matching
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        Our system uses TF-IDF algorithm to calculate similarity
+                        score between your profile and job postings. Complete
+                        profiles get more relevant job recommendations.
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3 p-3 bg-green-50 rounded-xl">
+                    <CheckCircle className="w-5 h-5 text-green-600 shrink-0 mt-0.5" />
+                    <div>
+                      <p className="font-medium text-gray-900">
+                        Employer Ranking
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        When employers view applications, they are sorted by
+                        "Most Relevant" by default. Better profile means you
+                        appear at the TOP of their candidate list.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Premium Benefits Section */}
+              {!user?.isPremium && (
+                <div className="border-2 border-sky-200 bg-linear-to-br from-sky-50 to-blue-50 rounded-2xl p-5">
+                  <div className="flex items-center gap-3 mb-4">
+                    <div className="w-10 h-10 bg-yellow-400 rounded-xl flex items-center justify-center">
+                      <Crown className="w-5 h-5 text-white" />
+                    </div>
+                    <div>
+                      <h3 className="font-bold text-gray-900">Go Premium</h3>
+                      <p className="text-sm text-gray-600">
+                        Maximize your job search potential
+                      </p>
+                    </div>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm">
+                      <CheckCircle className="w-4 h-4 text-sky-600" />
+                      <span>Unlimited job applications</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <CheckCircle className="w-4 h-4 text-sky-600" />
+                      <span>Personalized job recommendation emails</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm">
+                      <CheckCircle className="w-4 h-4 text-sky-600" />
+                      <span>
+                        Instant application status tracking notifications
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="flex gap-3">
+                    <button
+                      onClick={() => {
+                        closePopup();
+                        window.location.href = "/pricing";
+                      }}
+                      className="flex-1 cursor-pointer bg-yellow-400 hover:bg-yellow-500 p-2 rounded-xl text-white hover:shadow-lg"
+                    >
+                      Upgrade Now - रू 100/month
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* Action Buttons */}
+              <div className="flex gap-3 pt-2">
+                <button
+                  onClick={closePopup}
+                  className="flex-1 bg-gray-100 hover:bg-gray-200 text-gray-700 font-medium py-3 px-4 rounded-xl transition-colors"
+                >
+                  I understand
+                </button>
+                <button
+                  onClick={closePopup}
+                  className="flex-1 bg-sky-600 hover:bg-sky-700 text-white font-medium py-3 px-4 rounded-xl transition-colors flex items-center justify-center gap-2"
+                >
+                  Let's complete my profile
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </>
   );
 };
