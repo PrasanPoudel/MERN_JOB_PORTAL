@@ -148,18 +148,18 @@ const JobPostNotAllowed = ({ user }) => {
                   </div>
                   <div className="flex items-center gap-3">
                     <CreditCard
-                      className={`w-5 h-5 ${user?.companyPanNumber?.trim() ? "text-green-500" : "text-gray-300"}`}
+                      className={`w-5 h-5 ${user?.panNumber?.trim() ? "text-green-500" : "text-gray-300"}`}
                     />
                     <span
                       className={
-                        user?.companyPanNumber?.trim()
+                        user?.panNumber?.trim()
                           ? "text-green-600"
                           : "text-gray-500"
                       }
                     >
                       PAN/Tax Number
                     </span>
-                    {user?.companyPanNumber?.trim() ? (
+                    {user?.panNumber?.trim() ? (
                       <CheckCircle2 className="w-4 h-4 text-green-500 ml-auto" />
                     ) : null}
                   </div>

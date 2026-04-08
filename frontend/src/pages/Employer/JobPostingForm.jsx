@@ -8,12 +8,6 @@ import {
   Eye,
   Send,
   GraduationCap,
-  Building2,
-  ShieldCheck,
-  Award,
-  CheckCircle2,
-  ArrowRight,
-  CreditCard,
 } from "lucide-react";
 import { API_PATHS } from "../../utils/apiPaths";
 import { useLocation, useNavigate } from "react-router-dom";
@@ -42,9 +36,10 @@ const JobPostingForm = () => {
   const hasCompleteCompanyProfile =
     user?.companyName?.trim() &&
     user?.companyRegistrationNumber?.trim() &&
-    user?.companyPanNumber?.trim() &&
+    user?.panNumber?.trim() &&
     user?.companySize?.trim() &&
     user?.companyLocation?.trim() &&
+    user?.companyPhoneNumber?.trim() &&
     user?.companyDescription?.trim();
 
   // If company profile is not complete, show this page
