@@ -70,9 +70,9 @@ const sendJobClosureNotification = async (job, closureTime) => {
 // Function to close high fraud score jobs
 const closeHighFraudJobs = async () => {
   try {
-    // Find jobs where fraudScore > 0.6 and isClosed is still false
+    // Find jobs where fraudScore > 0.99 and isClosed is still false
     const highFraudJobs = await Job.find({
-      fraudScore: { $gt: 0.6 },
+      fraudScore: { $gt: 0.99 },
       isClosed: false,
     }).populate("company", "noOfWarnings isBanned");
 
@@ -133,7 +133,7 @@ const closeHighFraudJobs = async () => {
         ).length;
 
         console.log(
-          `Closed ${highFraudJobs.length} high fraud jobs (fraudScore > 0.6)`,
+          `Closed ${highFraudJobs.length} high fraud jobs (fraudScore > 0.99)`,
         );
         console.log(
           `Updated ${companyIds.length} companies: ${bannedUsersCount} users banned due to excessive warnings`,
@@ -152,7 +152,7 @@ const checkPremiumExpiration = async () => {
   try {
     const now = new Date();
 
-    // Find users with premium subscriptions that expired 30+ days ago
+    // Find users with premium subscriptions that subscribed 30+ days ago
     const expiredPremiumUsers = await User.find({
       isPremium: true,
       premiumIssueDate: { $exists: true, $ne: null },
