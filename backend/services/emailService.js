@@ -53,11 +53,11 @@ const getStatusEmailTemplate = (
     <head>
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
+        .container { max-width: 600px; margin: 0 auto; padding: 10px; }
+        .header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9fafb; padding: 10px; border-radius: 0 0 10px 10px; }
         .status-badge { display: inline-block; padding: 8px 16px; border-radius: 20px; font-weight: bold; color: white; background: ${statusColors[newStatus] || "#6b7280"}; }
-        .info-box { background: white; padding: 20px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0ea5e9; }
+        .info-box { background: white; padding: 10px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #0ea5e9; }
         .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
       </style>
     </head>
@@ -127,10 +127,10 @@ const getOTPEmailTemplate = (userName, otp) => {
     <head>
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-        .otp-box { background: white; padding: 30px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px #0ea5e9; }
+        .container { max-width: 600px; margin: 0 auto; padding: 10px; }
+        .header { background: linear-gradient(135deg, #0ea5e9 0%, #0284c7 100%); color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9fafb; padding: 10px; border-radius: 0 0 10px 10px; }
+        .otp-box { background: white; padding: 10px; border-radius: 8px; text-align: center; margin: 20px 0; border: 2px #0ea5e9; }
         .otp-code { font-size: 32px; font-weight: bold; letter-spacing: 5px; color: #0284c7; margin: 20px 0; }
         .info-text { color: #6b7280; font-size: 14px; margin-top: 20px; }
         .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
@@ -172,11 +172,11 @@ const getPasswordResetEmailTemplate = (userName, resetUrl) => {
     <head>
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-        .reset-box { background: white; padding: 30px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b; }
-        .reset-button { display: inline-block; background: #f59e0b; color: white; padding: 15px 30px; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 20px 0; }
+        .container { max-width: 600px; margin: 0 auto; padding: 10px; }
+        .header { background: linear-gradient(135deg, #f59e0b 0%, #f97316 100%); color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9fafb; padding: 10px; border-radius: 0 0 10px 10px; }
+        .reset-box { background: white; padding: 10px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #f59e0b; }
+        .reset-button { display: inline-block; background: #f59e0b; color: white; padding: 10px 25px; text-decoration: none; border-radius: 6px; font-weight: bold; margin: 20px 0; }
         .info-text { color: #6b7280; font-size: 14px; margin-top: 20px; }
         .footer { text-align: center; margin-top: 30px; color: #6b7280; font-size: 14px; }
       </style>
@@ -254,10 +254,10 @@ const getJobRecommendationEmailTemplate = (userName, job, similarityScore) => {
     <head>
       <style>
         body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; }
-        .container { max-width: 600px; margin: 0 auto; padding: 20px; }
-        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 30px; text-align: center; border-radius: 10px 10px 0 0; }
-        .content { background: #f9fafb; padding: 30px; border-radius: 0 0 10px 10px; }
-        .job-card { background: white; padding: 25px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981; }
+        .container { max-width: 600px; margin: 0 auto; padding: 10px; }
+        .header { background: linear-gradient(135deg, #10b981 0%, #059669 100%); color: white; padding: 10px; text-align: center; border-radius: 10px 10px 0 0; }
+        .content { background: #f9fafb; padding: 10px; border-radius: 0 0 10px 10px; }
+        .job-card { background: white; padding: 10px; border-radius: 8px; margin: 20px 0; border-left: 4px solid #10b981; }
         .similarity-badge { display: inline-block; padding: 6px 12px; border-radius: 20px; font-weight: bold; color: white; background: #3b82f6; margin-bottom: 15px; }
         .job-title { font-size: 24px; font-weight: bold; color: #1f2937; margin-bottom: 10px; }
         .company-name { font-size: 18px; color: #6b7280; margin-bottom: 20px; }
