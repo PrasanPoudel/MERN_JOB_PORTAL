@@ -18,7 +18,8 @@ const premiumSubscriptionSchema = new mongoose.Schema(
     },
     transactionId: {
       type: String,
-      default: null,
+      required: true,
+      unique: true,
     },
     status: {
       type: String,
@@ -39,7 +40,10 @@ const premiumSubscriptionSchema = new mongoose.Schema(
       },
     },
   },
-  { timestamps: true }
+  { timestamps: true },
 );
 
-module.exports = mongoose.model("PremiumSubscription", premiumSubscriptionSchema);
+module.exports = mongoose.model(
+  "PremiumSubscription",
+  premiumSubscriptionSchema,
+);

@@ -911,9 +911,16 @@ exports.getRevenueStats = async (req, res) => {
     // Get total revenue from all completed subscriptions
     const totalRevenueResult = await PremiumSubscription.aggregate([
       { $match: { status: "completed" } },
-      { $group: { _id: null, total: { $sum: "$amount" } } },
+      { $group: { _id: null, total: { $sum: "$amount" }, count: { $sum: 1 } } },
     ]);
     const totalRevenue = totalRevenueResult[0]?.total || 0;
+    const totalSubscriptionCount = totalRevenueResult[0]?.count || 0;
+
+    // Get unique premium users for total
+    const totalUniqueUsers = await PremiumSubscription.distinct("userId", {
+      status: "completed",
+    });
+    const totalUniqueUserCount = totalUniqueUsers.length;
 
     // Get revenue for current month
     const now = new Date();
@@ -935,26 +942,25 @@ exports.getRevenueStats = async (req, res) => {
           issuedAt: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
         },
       },
-      { $group: { _id: null, total: { $sum: "$amount" } } },
+      { $group: { _id: null, total: { $sum: "$amount" }, count: { $sum: 1 } } },
     ]);
     const monthlyRevenue = monthlyRevenueResult[0]?.total || 0;
+    const monthlySubscriptionCount = monthlyRevenueResult[0]?.count || 0;
 
-    // Get subscription count for current month
-    const monthlySubscriptions = await PremiumSubscription.countDocuments({
+    // Get unique premium users for current month
+    const monthlyUniqueUsers = await PremiumSubscription.distinct("userId", {
       status: "completed",
       issuedAt: { $gte: firstDayOfMonth, $lte: lastDayOfMonth },
     });
-
-    // Get total subscription count
-    const totalSubscriptions = await PremiumSubscription.countDocuments({
-      status: "completed",
-    });
+    const monthlyUniqueUserCount = monthlyUniqueUsers.length;
 
     res.status(200).json({
       totalRevenue,
       monthlyRevenue,
-      totalSubscriptions,
-      monthlySubscriptions,
+      totalSubscriptions: totalSubscriptionCount,
+      monthlySubscriptions: monthlySubscriptionCount,
+      totalUniqueUsers: totalUniqueUserCount,
+      monthlyUniqueUsers: monthlyUniqueUserCount,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
