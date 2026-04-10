@@ -58,6 +58,7 @@ export const API_PATHS = {
     UNBAN_USER: (id) => `/api/admin/users/${id}/unban`,
     GET_ALL_JOBS: "/api/admin/jobs",
     DELETE_JOB: (id) => `/api/admin/jobs/${id}`,
+    MARK_JOB_SAFE: (id) => `/api/admin/jobs/${id}/mark-safe`,
     SEND_ADMIN_MESSAGE: "/api/admin/messages/send",
     GET_ADMIN_CONVERSATIONS: "/api/admin/messages/conversations",
     GET_ADMIN_CONVERSATION: (userId) =>

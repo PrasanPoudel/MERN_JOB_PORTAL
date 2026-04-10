@@ -12,6 +12,7 @@ import {
   ArrowUpDown,
   User,
   Building2,
+  CheckCircle2,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import axiosInstance from "../../utils/axiosInstance";
@@ -29,10 +30,12 @@ const AdminJobManagement = () => {
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [confirmDeleteJob, setConfirmDeleteJob] = useState(null);
+  const [confirmMarkSafeJob, setConfirmMarkSafeJob] = useState(null);
   const [selectedJob, setSelectedJob] = useState(null);
   const [sortType, setSortType] = useState("Risk_Score_(Descending_Order)");
 
   const [deleting, setDeleting] = useState(false);
+  const [marking, setMarking] = useState(false);
 
   // Pagination
   const itemsPerPage = 9;
@@ -110,6 +113,24 @@ const AdminJobManagement = () => {
     navigate(`/admin-chat-box?userId=${employerId}`);
   };
 
+  const handleMarkJobSafe = async (jobId) => {
+    try {
+      setMarking(true);
+      await axiosInstance.put(API_PATHS.ADMIN.MARK_JOB_SAFE(jobId));
+      toast.success("Job marked as safe successfully!");
+      // Refresh jobs list
+      getAllJobs(currentPage);
+      setSelectedJob(null);
+      setConfirmMarkSafeJob(null);
+    } catch (error) {
+      toast.error(
+        error.response?.data?.message || "Failed to mark job as safe",
+      );
+    } finally {
+      setMarking(false);
+    }
+  };
+
   const getPaginationPages = (currentPage, totalPages) => {
     const pages = [];
     const delta = 2;
@@ -158,6 +179,16 @@ const AdminJobManagement = () => {
           deleting={deleting}
           onCancel={() => setConfirmDeleteJob(null)}
           onConfirm={handleDeleteJob}
+        />
+      )}
+
+      {/* Mark as Safe Confirmation */}
+      {confirmMarkSafeJob && (
+        <MarkSafeConfirmationModal
+          job={confirmMarkSafeJob}
+          marking={marking}
+          onCancel={() => setConfirmMarkSafeJob(null)}
+          onConfirm={handleMarkJobSafe}
         />
       )}
 
@@ -285,25 +316,29 @@ const AdminJobManagement = () => {
                         <div className="px-4 py-3 rounded-lg border bg-gray-50 space-y-2">
                           <div className="flex justify-between items-center">
                             <span className="text-sm font-medium text-gray-600">
-                              Fraud Risk
+                              {score > 0 ? "Fraud Risk Score" : "No Fraud Detected"}
                             </span>
                             <span className={`text-sm font-semibold ${color}`}>
-                              {label}
+                              {score > 0 ? label : <p className="flex items-center gap-1"><CheckCircle2 className="w-4 h-4"/>Marked As Safe</p>}
                             </span>
                           </div>
-                          <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
-                            <div
-                              className={`${bg} h-full transition-all duration-300`}
-                              style={{ width: `${percentage}%` }}
-                            />
-                          </div>
-                          <p className={`text-sm ${color}`}>
-                            {percentage}% probability
-                          </p>
+                          {score > 0 && (
+                            <>
+                              <div className="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+                                <div
+                                  className={`${bg} h-full transition-all duration-300`}
+                                  style={{ width: `${percentage}%` }}
+                                />
+                              </div>
+                              <p className={`text-sm ${color}`}>
+                                {percentage}% probability
+                              </p>
+                            </>
+                          )}
                         </div>
                       );
                     })()}
-                  <div className="w-full flex flex-wrap gap-2 py-2 justify-end">
+                  <div className="w-full flex flex-wrap gap-0.5 sm:gap-1 py-2 justify-end">
                     <button
                       onClick={() => setSelectedJob(job)}
                       title="View job details"
@@ -319,6 +354,16 @@ const AdminJobManagement = () => {
                     >
                       Message
                     </button>
+
+                    {job.fraudScore !== 0 && (
+                      <button
+                        onClick={() => setConfirmMarkSafeJob(job)}
+                        title="Mark this job as safe"
+                        className="px-2 sm:px-4 py-2 cursor-pointer rounded-xl text-xs sm:text-sm font-semibold bg-green-600 text-white hover:bg-green-700 transition"
+                      >
+                        Mark As Safe
+                      </button>
+                    )}
 
                     <button
                       onClick={() => setConfirmDeleteJob(job)}
@@ -475,7 +520,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   />
                 ) : (
                   <div className="w-20 h-20 flex items-center justify-center bg-gray-100 rounded-lg border border-gray-600 text-gray-900 text-xl font-semibold">
-                    <Building2 className="w-10 h-10"/>
+                    <Building2 className="w-10 h-10" />
                   </div>
                 )}
 
@@ -488,7 +533,7 @@ const JobModal = ({ job, loading, onClose, onDelete, onMessage }) => {
                   </h3>
                   <p className="text-sm text-gray-600 mt-1 flex gap-2">
                     <span className="flex items-center gap-1 text-gray-900 font-semibold">
-                    <User className="w-4 h-4" />
+                      <User className="w-4 h-4" />
                       Employer:
                     </span>
                     {employerName}
@@ -620,7 +665,42 @@ const DeleteConfirmationModal = ({ job, onCancel, onConfirm, deleting }) => (
             disabled={deleting}
             className="flex-1 py-3 rounded-xl bg-red-600 text-white font-semibold hover:bg-red-700 transition disabled:opacity-50"
           >
-            {deleting ? "Deleting..." : "Yes, Delete"}
+            {deleting ? "Deleting..." : "Yes"}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+);
+
+const MarkSafeConfirmationModal = ({ job, onCancel, onConfirm, marking }) => (
+  <div className="fixed inset-0 z-1200 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+    <div className="bg-white w-full max-w-md rounded-3xl shadow-2xl p-8">
+      <div className="text-center">
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">
+          Mark Job as Safe?
+        </h3>
+
+        <p className="text-gray-500 text-sm mb-6">
+          Mark <strong>{job.title}</strong> as safe? This will reset the fraud
+          score to 0.
+        </p>
+
+        <div className="flex gap-3">
+          <button
+            onClick={onCancel}
+            disabled={marking}
+            className="flex-1 py-3 rounded-xl border border-gray-300 font-semibold hover:bg-gray-100 transition"
+          >
+            Cancel
+          </button>
+
+          <button
+            onClick={() => onConfirm(job._id)}
+            disabled={marking}
+            className="flex-1 py-3 rounded-xl bg-green-600 text-white font-semibold hover:bg-green-700 transition disabled:opacity-50"
+          >
+            {marking ? "Marking..." : "Yes"}
           </button>
         </div>
       </div>

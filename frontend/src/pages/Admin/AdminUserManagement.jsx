@@ -341,7 +341,7 @@ const AdminUserManagement = () => {
                     </div>
                   </div>
 
-                  <div className="w-full flex flex-wrap gap-2 py-1 justify-end">
+                  <div className="w-full flex flex-wrap gap-1 py-1 justify-end">
                     <button
                       onClick={() => navigate(`/profile/${user?._id}`)}
                       title="View user details"

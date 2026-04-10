@@ -430,6 +430,32 @@ exports.deleteJobByAdmin = async (req, res) => {
   }
 };
 
+// Mark job as safe (reset fraudScore to 0)
+exports.markJobAsSafe = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(403).json({ message: "Access denied" });
+    }
+
+    const job = await Job.findById(req.params.id);
+
+    if (!job) {
+      return res.status(404).json({ message: "Job not found" });
+    }
+
+    // Reset fraudScore to 0
+    job.fraudScore = 0;
+    await job.save();
+
+    res.json({
+      message: "Job marked as safe successfully",
+      job,
+    });
+  } catch (err) {
+    res.status(500).json({ message: err.message });
+  }
+};
+
 // Send admin message to user
 exports.sendAdminMessage = async (req, res) => {
   try {
