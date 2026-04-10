@@ -126,19 +126,20 @@ const EmployerProfilePage = () => {
   useEffect(() => {
     if (user) {
       const updatedData = {
-        name: user.name || "",
-        email: user.email || "",
-        avatar: user.avatar || null,
-        companyName: user.companyName || "",
-        companyLogo: user.companyLogo || null,
-        companyDescription: user.companyDescription || "",
-        companyLocation: user.companyLocation || "",
-        companyPhoneNumber: user.companyPhoneNumber || "",
-        companyWebsiteLink: user.companyWebsiteLink || "",
-        companySize: user.companySize || "",
-        companyRegistrationNumber: user.companyRegistrationNumber || "",
-        panNumber: user.panNumber || "",
-        isCompanyVerified: user.isCompanyVerified || false,
+        name: user?.name || "",
+        email: user?.email || "",
+        avatar: user?.avatar || null,
+        companyName: user?.companyName || "",
+        companyLogo: user?.companyLogo || null,
+        companyDescription: user?.companyDescription || "",
+        companyLocation: user?.companyLocation || "",
+        companyPhoneNumber: user?.companyPhoneNumber || "",
+        companyWebsiteLink: user?.companyWebsiteLink || "",
+        companySize: user?.companySize || "",
+        companyRegistrationNumber: user?.companyRegistrationNumber || "",
+        panNumber: user?.panNumber || "",
+        isCompanyVerified: user.isCompanyVerified,
+        isPremium: user?.isPremium,
       };
       setProfileData(updatedData);
       setFormData(updatedData);
