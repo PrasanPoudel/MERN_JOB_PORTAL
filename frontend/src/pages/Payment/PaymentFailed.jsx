@@ -1,8 +1,43 @@
 import { XCircle } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import { useEffect } from "react";
+import axiosInstance from "../../utils/axiosInstance";
+import { API_PATHS } from "../../utils/apiPaths";
 
 export default function PaymentFailed() {
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const notifyPaymentFailure = async () => {
+      try {
+        const params = new URLSearchParams(window.location.search);
+        const encodedData = params.get("data");
+
+        let failureReason = "Payment failed";
+        if (encodedData) {
+          try {
+            const decodedData = atob(encodedData);
+            const paymentData = JSON.parse(decodedData);
+            if (paymentData.status === "FAILED") {
+              failureReason = paymentData.failure_code || failureReason;
+            }
+          } catch (e) {
+            console.log("Error decoding payment data:", e);
+          }
+        }
+
+        // Call backend to log payment failure
+        await axiosInstance.post(
+          API_PATHS.ESEWA_PAYMENT.PAYMENT_FAILED_NOTIFY,
+          { failureReason },
+        );
+      } catch (err) {
+        console.log("Error notifying payment failure:", err);
+      }
+    };
+
+    notifyPaymentFailure();
+  }, []);
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4">

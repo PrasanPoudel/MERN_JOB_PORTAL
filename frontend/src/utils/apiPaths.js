@@ -82,5 +82,6 @@ export const API_PATHS = {
     PAYMENT_SUCCESS: `${FRONTEND_URL}/payment-success`,
     PAYMENT_FAILED: `${FRONTEND_URL}/payment-failed`,
     UPGRADE_USER_TO_PREMIUM: "/api/payment/upgradeToPremiumUser",
+    PAYMENT_FAILED_NOTIFY: "/api/payment/payment-failed",
   },
 };

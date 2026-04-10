@@ -14,28 +14,44 @@ export default function PaymentSuccess() {
   useEffect(() => {
     const processPayment = async () => {
       try {
+        // Check if payment has already been processed in this session
+        const paymentProcessed = sessionStorage.getItem("paymentProcessed");
+        if (paymentProcessed) {
+          setLoading(false);
+          return;
+        }
+
         const params = new URLSearchParams(window.location.search);
         const encodedData = params.get("data");
         // console.log(encodedData);
         if (!encodedData) {
           navigate("/");
+          return;
         }
         const decodedData = atob(encodedData);
         // console.log(typeof(decodedData));
         const paymentStatus = JSON.parse(decodedData).status;
         if (paymentStatus === "COMPLETE") {
-          setLoading(false);
           try {
-            await axiosInstance.post(
+            const response = await axiosInstance.post(
               API_PATHS.ESEWA_PAYMENT.UPGRADE_USER_TO_PREMIUM,
             );
+
+            // Mark payment as processed in session
+            sessionStorage.setItem("paymentProcessed", "true");
+
             updateUser({ isPremium: true });
+            setLoading(false);
           } catch (err) {
-            console.log("Error:", err);
+            console.log("Error upgrading to premium:", err);
+            setLoading(false);
           }
+        } else {
+          setLoading(false);
         }
       } catch (err) {
-        console.log("error");
+        console.log("Error processing payment:", err);
+        setLoading(false);
       }
     };
     processPayment();
