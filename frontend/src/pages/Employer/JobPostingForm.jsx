@@ -234,35 +234,13 @@ const JobPostingForm = () => {
       <div className="min-h-screen">
         <div className="mx-auto">
           <div className="pb-24">
-            <div className="flex items-center justify-between mb-8">
-              <div>
-                <h2 className="text-xl font-semibold text-gray-900">
-                  Post a New Job
-                </h2>
-                <p className="text-sm text-gray-600 mt-1">
-                  Fill out the form below to create your job posting
-                </p>
-              </div>
-              <div className="flex items-center">
-                <button
-                  onClick={() => {
-                    if (!isFormValid()) {
-                      const validationErrors = validateForm(formData);
-                      if (Object.keys(validationErrors).length > 0) {
-                        setErrors(validationErrors);
-                        setIsPreview(false);
-                        return;
-                      }
-                    } else {
-                      setIsPreview(true);
-                    }
-                  }}
-                  className="group flex items-center space-x-2 px-6 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-sky-600 border border-gray-100 hover:border-transparent rounded-xl transition-all duration-200 shadow-lg hover:shadow-xl cursor-pointer"
-                >
-                  <Eye className="h-4 w-4" />
-                  <span className="">Preview</span>
-                </button>
-              </div>
+            <div className="flex items-center justify-start mb-8">
+              <h2 className="text-xl font-semibold text-gray-900">
+                Post a New Job
+              </h2>
+              <p className="text-sm text-gray-600 mt-1">
+                Fill out the form below to create your job posting
+              </p>
             </div>
             <div className="space-y-6 max-w-5xl">
               <InputField
@@ -491,7 +469,27 @@ const JobPostingForm = () => {
                 )}
               </div>
               {/* Submit Button */}
-              <div className="pt-2 w-full justify-end flex">
+              <div className="pt-2 w-full justify-end flex gap-2">
+                <div className="flex items-center">
+                  <button
+                    onClick={() => {
+                      if (!isFormValid()) {
+                        const validationErrors = validateForm(formData);
+                        if (Object.keys(validationErrors).length > 0) {
+                          setErrors(validationErrors);
+                          setIsPreview(false);
+                          return;
+                        }
+                      } else {
+                        setIsPreview(true);
+                      }
+                    }}
+                    className="group flex items-center space-x-2 px-4 py-3 text-sm font-medium text-gray-600 hover:text-white hover:bg-gray-600 border border-gray-200 hover:border-transparent rounded-xl transition-all duration-200 cursor-pointer shadow-sm"
+                  >
+                    <Eye className="h-4 w-4" />
+                    <span className="">Preview</span>
+                  </button>
+                </div>
                 <button
                   onClick={handleSubmit}
                   disabled={isSubmitting}
