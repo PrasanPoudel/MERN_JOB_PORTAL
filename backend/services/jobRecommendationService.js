@@ -16,12 +16,14 @@ class JobRecommendationService {
         return { success: true, message: "Notifications already processed" };
       }
 
-      console.log(`Processing recommendations for job: ${job.title} (${jobId})`);
+      console.log(
+        `Processing recommendations for job: ${job.title} (${jobId})`,
+      );
 
       // Fetch all premium job seekers
       const premiumJobSeekers = await User.find({
         isPremium: true,
-        role: "jobSeeker"
+        role: "jobSeeker",
       });
 
       if (premiumJobSeekers.length === 0) {
@@ -43,38 +45,52 @@ class JobRecommendationService {
 
         // Check monthly notification limit (skip if already sent 24 notifications)
         if (user.notificationCount >= 24) {
-          console.log(`Skipping user ${user._id} - monthly limit reached (${user.notificationCount}/24)`);
+          console.log(
+            `Skipping user ${user._id} - monthly limit reached (${user.notificationCount}/24)`,
+          );
           skippedCount++;
           continue;
         }
 
         try {
           // Calculate similarity between job and user profile
-          const similarityScore = TFIDFSimilarity.calculateSimilarity(user, job);
-          
-          console.log(`Similarity score for user ${user._id}: ${similarityScore}`);
+          const similarityScore = TFIDFSimilarity.calculateSimilarity(
+            user,
+            job,
+          );
 
-          // Skip if similarity score is below threshold (0.5)
-          if (similarityScore < 0.5) {
-            console.log(`Skipping user ${user._id} - similarity score too low (${similarityScore})`);
+          console.log(
+            `Similarity score for user ${user._id}: ${similarityScore}`,
+          );
+
+          // Skip if similarity score is below threshold (0.25)
+          if (similarityScore < 0.25) {
+            console.log(
+              `Skipping user ${user._id} - similarity score too low (${similarityScore})`,
+            );
             skippedCount++;
             continue;
           }
 
           // Send email notification
-          const emailResult = await sendJobRecommendationEmail(user, job, similarityScore);
+          const emailResult = await sendJobRecommendationEmail(
+            user,
+            job,
+            similarityScore,
+          );
 
           if (emailResult.success) {
             // Increment notification count only for successful emails
             user.notificationCount += 1;
             await user.save();
             notifiedCount++;
-            console.log(`Successfully notified user ${user._id} - count: ${user.notificationCount}`);
+            console.log(
+              `Successfully notified user ${user._id} - count: ${user.notificationCount}`,
+            );
           } else {
             console.log(`Failed to send email to user ${user._id}`);
             // Do not increment counter for failed emails
           }
-
         } catch (error) {
           console.error(`Error processing user ${user._id}:`, error.message);
           // Continue with next user even if one fails
@@ -92,12 +108,11 @@ class JobRecommendationService {
         processedUsers: processedCount,
         notifiedUsers: notifiedCount,
         skippedUsers: skippedCount,
-        message: `Processed ${processedCount} users, notified ${notifiedUsers}, skipped ${skippedCount}`
+        message: `Processed ${processedCount} users, notified ${notifiedCount}, skipped ${skippedCount}`,
       };
 
       console.log("Job recommendation processing completed:", result);
       return result;
-
     } catch (error) {
       console.error("Error in job recommendation processing:", error);
       throw error;
