@@ -645,7 +645,6 @@ class TFIDFSimilarity {
       "contract specialist",
     ],
   };
-
   static SEMANTIC_MAP = Object.entries(this.SYNONYMS).reduce(
     (acc, [primary, synonyms]) => {
       synonyms.forEach((term) => (acc[term] = primary));
@@ -673,6 +672,17 @@ class TFIDFSimilarity {
     const tokens = [];
     const weights = {};
 
+    const USER_WEIGHTS = {
+      SKILL: 5.0,
+      CURRENT_TITLE: 4.0,
+      PAST_TITLE: 3.0,
+      DESCRIPTION: 2.0,
+      EDUCATION: 2.0,
+      CERTIFICATION: 2.0,
+      COMPANY: 1.0,
+      LOCATION: 1.0,
+    };
+
     const addTokens = (text, weightValue) => {
       this.tokenize(text).forEach((token) => {
         const semantic = this.getSemanticGroup(token);
@@ -681,29 +691,49 @@ class TFIDFSimilarity {
       });
     };
 
-    user.skills?.forEach((skill) => addTokens(skill, 3.0));
+    user.skills?.forEach((skill) => addTokens(skill, USER_WEIGHTS.SKILL));
 
     const currentExp = user.experience?.find((exp) => exp?.isCurrent);
-    if (currentExp?.jobTitle) addTokens(currentExp.jobTitle, 2.5);
+
+    if (currentExp?.jobTitle) {
+      addTokens(currentExp.jobTitle, USER_WEIGHTS.CURRENT_TITLE);
+    }
 
     user.experience?.forEach((exp) => {
       if (!exp?.jobTitle || exp === currentExp) return;
-      addTokens(exp.jobTitle, 1.8);
-      if (exp.company) addTokens(exp.company, 1.2);
-      exp.description?.forEach((desc) => addTokens(desc, 1.5));
+
+      addTokens(exp.jobTitle, USER_WEIGHTS.PAST_TITLE);
+
+      if (exp.company) {
+        addTokens(exp.company, USER_WEIGHTS.COMPANY);
+      }
+
+      exp.description?.forEach((desc) =>
+        addTokens(desc, USER_WEIGHTS.DESCRIPTION),
+      );
     });
 
     user.education?.forEach((edu) => {
-      if (edu?.study) addTokens(edu.study, 2.0);
-      if (edu?.institution) addTokens(edu.institution, 1.3);
+      if (edu?.study) {
+        addTokens(edu.study, USER_WEIGHTS.EDUCATION);
+      }
+      if (edu?.institution) {
+        addTokens(edu.institution, USER_WEIGHTS.COMPANY);
+      }
     });
 
     user.certifications?.forEach((cert) => {
-      if (cert?.name) addTokens(cert.name, 2.2);
-      if (cert?.issuer) addTokens(cert.issuer, 1.1);
+      if (cert?.name) {
+        addTokens(cert.name, USER_WEIGHTS.CERTIFICATION);
+      }
+      if (cert?.issuer) {
+        addTokens(cert.issuer, USER_WEIGHTS.COMPANY);
+      }
     });
 
-    if (user.location) addTokens(user.location, 1.4);
+    if (user.location) {
+      addTokens(user.location, USER_WEIGHTS.LOCATION);
+    }
 
     return { tokens, weights };
   }
@@ -714,28 +744,52 @@ class TFIDFSimilarity {
     const tokens = [];
     const weights = {};
 
-    const addTokens = (text, weightValue, boost = false) => {
+    const JOB_WEIGHTS = {
+      TITLE: 4.0,
+      REQUIREMENT: 3.0,
+      DESCRIPTION: 1.5,
+      CATEGORY: 2.0,
+      TYPE: 1.0,
+      LOCATION: 1.0,
+    };
+
+    const addTokens = (text, weightValue) => {
       this.tokenize(text).forEach((token) => {
         const semantic = this.getSemanticGroup(token);
         tokens.push(semantic);
-        weights[tokens.length - 1] = boost ? weightValue * 1.3 : weightValue;
+        weights[tokens.length - 1] = weightValue;
       });
     };
 
-    if (job.title) addTokens(job.title, 3.0);
+    if (job.title) {
+      addTokens(job.title, JOB_WEIGHTS.TITLE);
+    }
 
     if (job.requirements) {
       if (typeof job.requirements === "string") {
-        addTokens(job.requirements, 2.8, true);
+        addTokens(job.requirements, JOB_WEIGHTS.REQUIREMENT);
       } else {
-        job.requirements.forEach((req) => addTokens(req, 2.8, true));
+        job.requirements.forEach((req) =>
+          addTokens(req, JOB_WEIGHTS.REQUIREMENT),
+        );
       }
     }
 
-    if (job.description) addTokens(job.description, 1.8);
-    if (job.category) addTokens(job.category, 2.0);
-    if (job.type) addTokens(job.type, 1.5);
-    if (job.location) addTokens(job.location, 1.4);
+    if (job.description) {
+      addTokens(job.description, JOB_WEIGHTS.DESCRIPTION);
+    }
+
+    if (job.category) {
+      addTokens(job.category, JOB_WEIGHTS.CATEGORY);
+    }
+
+    if (job.type) {
+      addTokens(job.type, JOB_WEIGHTS.TYPE);
+    }
+
+    if (job.location) {
+      addTokens(job.location, JOB_WEIGHTS.LOCATION);
+    }
 
     return { tokens, weights };
   }
@@ -778,14 +832,17 @@ class TFIDFSimilarity {
   static calculateTFIDF(tokens, idf, weights) {
     const tf = this.calculateWeightedTF(tokens, weights);
     const tfidf = {};
+
     Object.keys(tf).forEach((term) => {
       tfidf[term] = tf[term] * (idf[term] || 1);
     });
+
     return tfidf;
   }
 
   static cosineSimilarity(v1, v2) {
     const terms = new Set([...Object.keys(v1), ...Object.keys(v2)]);
+
     let dot = 0,
       mag1 = 0,
       mag2 = 0;
@@ -793,53 +850,15 @@ class TFIDFSimilarity {
     terms.forEach((term) => {
       const a = v1[term] || 0;
       const b = v2[term] || 0;
+
       dot += a * b;
       mag1 += a * a;
       mag2 += b * b;
     });
 
     if (!mag1 || !mag2) return 0;
+
     return Math.max(0, Math.min(1, dot / (Math.sqrt(mag1) * Math.sqrt(mag2))));
-  }
-
-  static calculateSkillsMatch(userSkills, jobRequirements) {
-    if (!userSkills?.length || !jobRequirements) return 0;
-
-    const normalizedJobReqs = (
-      typeof jobRequirements === "string"
-        ? this.tokenize(jobRequirements)
-        : jobRequirements.flatMap((req) => this.tokenize(req || ""))
-    ).map((t) => this.getSemanticGroup(t));
-
-    const userSkillsNormalized = userSkills
-      .flatMap((skill) => this.tokenize(skill))
-      .map((t) => this.getSemanticGroup(t));
-
-    const matched = new Set(
-      userSkillsNormalized.filter((skill) => normalizedJobReqs.includes(skill)),
-    );
-
-    return normalizedJobReqs.length
-      ? Math.min(1, matched.size / normalizedJobReqs.length)
-      : 0;
-  }
-
-  static calculateSalaryMatch(user, job) {
-    if (job.salaryMin == null || job.salaryMax == null) return 0.5;
-
-    const range = job.salaryMax - job.salaryMin;
-    if (range <= 0) return 0.5;
-
-    const expected = user.salaryExpectation ?? job.salaryMax;
-
-    if (expected < job.salaryMin) return 0.4;
-
-    if (expected > job.salaryMax) {
-      const overPercent = (expected - job.salaryMax) / range;
-      return Math.max(0.3, 1 - overPercent * 0.15);
-    }
-
-    return 0.95;
   }
 
   static calculateSimilarity(user, job, idfCache = null) {
@@ -847,6 +866,7 @@ class TFIDFSimilarity {
 
     const { tokens: userTokens, weights: userWeights } =
       this.extractUserTextWithWeights(user);
+
     const { tokens: jobTokens, weights: jobWeights } =
       this.extractJobTextWithWeights(job);
 
@@ -855,41 +875,12 @@ class TFIDFSimilarity {
     const idf = idfCache ?? this.calculateIDF([userTokens, jobTokens]);
 
     const userVector = this.calculateTFIDF(userTokens, idf, userWeights);
+
     const jobVector = this.calculateTFIDF(jobTokens, idf, jobWeights);
 
-    const cosineSim = this.cosineSimilarity(userVector, jobVector);
-    const skillsMatch = this.calculateSkillsMatch(
-      user.skills,
-      job.requirements,
+    return (
+      Math.round(this.cosineSimilarity(userVector, jobVector) * 10000) / 10000
     );
-    const salaryMatch = this.calculateSalaryMatch(user, job);
-
-    const finalScore =
-      cosineSim * 0.35 + skillsMatch * 0.35 + salaryMatch * 0.1;
-
-    return Math.round(Math.max(0, Math.min(1, finalScore)) * 10000) / 10000;
-  }
-
-  static calculateBatchSimilarity(user, jobs) {
-    if (!jobs?.length) return [];
-
-    const { tokens: userTokens } = this.extractUserTextWithWeights(user);
-
-    const allDocuments = [
-      userTokens,
-      ...jobs.map((job) => this.extractJobTextWithWeights(job).tokens),
-    ];
-
-    const idfCache = this.calculateIDF(allDocuments);
-
-    return jobs
-      .map((job) => ({
-        jobId: job._id || job.id,
-        similarity: this.calculateSimilarity(user, job, idfCache),
-        job,
-      }))
-      .filter((r) => r.similarity > 0)
-      .sort((a, b) => b.similarity - a.similarity);
   }
 }
 
