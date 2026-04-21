@@ -197,7 +197,7 @@ const ApplicationViewer = () => {
                     {sortedApplications.map((application, index) => (
                       <div
                         key={application._id}
-                        className="flex flex-col lg:flex-row gap-5 lg:gap-0 lg:items-center justify-between p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
+                        className="flex flex-col xl:flex-row gap-5 xl:gap-0 xl:items-center justify-between p-2 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors duration-200"
                       >
                         <div className="flex items-center gap-4">
                           {/* Avatar */}
@@ -231,7 +231,18 @@ const ApplicationViewer = () => {
                             </div>
                           </div>
                         </div>
-
+                        <div
+                          title="Job and User Profile Matching"
+                          className="flex items-center"
+                        >
+                          <span className="text-sm font-medium px-3 py-1 rounded-full bg-green-50 text-green-600">
+                            ~{" "}
+                            {(application.cosineSimilarityScore * 100).toFixed(
+                              1,
+                            )}
+                            % Matching found
+                          </span>
+                        </div>
                         {/* Actions */}
                         <div className="grid grid-cols-2 sm:grid-cols-3 gap-1">
                           <select
