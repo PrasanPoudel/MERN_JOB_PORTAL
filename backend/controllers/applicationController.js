@@ -16,18 +16,22 @@ exports.applyToJob = async (req, res) => {
       // Check if monthly reset is needed
       const now = new Date();
       const resetDate = new Date(req.user.applicationCountResetDate);
-      
+
       // Reset counter if we're in a new month
-      if (now.getMonth() !== resetDate.getMonth() || now.getFullYear() !== resetDate.getFullYear()) {
+      if (
+        now.getMonth() !== resetDate.getMonth() ||
+        now.getFullYear() !== resetDate.getFullYear()
+      ) {
         req.user.monthlyApplicationCount = 0;
         req.user.applicationCountResetDate = now;
         await req.user.save();
       }
-      
+
       // Check application limit
       if (req.user.monthlyApplicationCount >= 3) {
-        return res.status(403).json({ 
-          message: "Application limit reached. Non-premium users can apply to only 3 jobs per month." 
+        return res.status(403).json({
+          message:
+            "Application limit reached. Non-premium users can apply to only 3 jobs per month.",
         });
       }
     }
@@ -83,14 +87,15 @@ exports.applyToJob = async (req, res) => {
 exports.getMyApplications = async (req, res) => {
   try {
     const apps = await Application.find({ applicant: req.user._id })
-     .populate(
-      {
+      .populate({
         path: "job",
         populate: {
           path: "company",
-          select: "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
+          select:
+            "name companyName companyLogo avatar email companyDescription panNumber companyRegistrationNumber companySize companyLocation employerProfile companyWebsiteLink isCompanyVerified",
         },
-      }).sort({ createdAt: -1 });
+      })
+      .sort({ createdAt: -1 });
 
     res.json(apps);
   } catch (err) {
@@ -151,44 +156,47 @@ exports.getApplicationById = async (req, res) => {
 exports.updateStatus = async (req, res) => {
   try {
     const { status } = req.body;
-    
+
     if (!status) {
       return res.status(400).json({ message: "Status is required" });
     }
 
     const app = await Application.findById(req.params.id)
       .populate("job", "title company")
-      .populate("applicant", "name email");
+      .populate("applicant", "name email isPremium");
 
     if (!app) {
       return res.status(404).json({ message: "Application not found" });
     }
 
     if (app.job.company.toString() !== req.user._id.toString()) {
-      return res.status(403).json({ message: "Not authorized to update this application" });
+      return res
+        .status(403)
+        .json({ message: "Not authorized to update this application" });
     }
 
     app.status = status;
     await app.save();
 
     // Send email notification
-    try {
-      await sendStatusChangeEmail(
-        app.applicant.email,
-        app.applicant.name,
-        app._id,
-        status,
-        app.job.title
-      );
-    } catch (emailError) {
-      console.error("Failed to send email:", emailError);
-      // Continue even if email fails
+    if (app.applicant.isPremium) {
+      try {
+        await sendStatusChangeEmail(
+          app.applicant.email,
+          app.applicant.name,
+          app._id,
+          status,
+          app.job.title,
+        );
+      } catch (emailError) {
+        console.error("Failed to send email:", emailError);
+        // Continue even if email fails
+      }
     }
-
-    res.status(200).json({ 
-      message: "Application status updated successfully", 
+    res.status(200).json({
+      message: "Application status updated successfully",
       status,
-      application: app 
+      application: app,
     });
   } catch (err) {
     res.status(500).json({ message: err.message });
