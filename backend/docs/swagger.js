@@ -35,11 +35,11 @@
  *         avatar:
  *           type: string
  *           description: URL to user's profile picture
- *           example: "http://localhost:8000/uploads/avatar.jpg"
+ *           example: "http://res.cloudinary.avatar.png"
  *         resume:
  *           type: string
  *           description: URL to user's resume file
- *           example: "http://localhost:8000/uploads/resume.pdf"
+ *           example: "http://res.cloudinary.resume.pdf"
  *         skills:
  *           type: array
  *           items:
@@ -366,7 +366,7 @@
  *               avatar:
  *                 type: string
  *                 description: Optional avatar URL
- *                 example: "http://localhost:8000/uploads/avatar.jpg"
+ *                 example: "http://res.cloudinary.avatar.png"
  *     responses:
  *       201:
  *         description: User registered successfully
@@ -488,7 +488,7 @@
  *                 fileUrl:
  *                   type: string
  *                   description: URL of the uploaded file
- *                   example: "http://localhost:8000/uploads/filename.jpg"
+ *                   example: "http://res.cloudinary.filename.png"
  *       400:
  *         description: No file uploaded or invalid file type
  *         content:
@@ -1211,11 +1211,11 @@
  *               avatar:
  *                 type: string
  *                 description: Avatar URL
- *                 example: "http://localhost:8000/uploads/avatar.jpg"
+ *                 example: "http://res.cloudinary.avatar.png"
  *               resume:
  *                 type: string
  *                 description: Resume URL
- *                 example: "http://localhost:8000/uploads/resume.pdf"
+ *                 example: "http://res.cloudinary.resume.pdf"
  *               skills:
  *                 type: array
  *                 items:
@@ -1328,7 +1328,7 @@
  *               resumeUrl:
  *                 type: string
  *                 description: URL of the resume to delete
- *                 example: "http://localhost:8000/uploads/resume.pdf"
+ *                 example: "http://res.cloudinary.resume.pdf"
  *     responses:
  *       200:
  *         description: Resume deleted successfully
