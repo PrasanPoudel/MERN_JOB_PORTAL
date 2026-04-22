@@ -94,7 +94,7 @@ exports.createJob = async (req, res) => {
           timeout: 8000,
         },
       );
-      fraudScore = Number(response?.data?.fraudScore.toFixed(4)) || 0;
+      fraudScore = Number(response?.data?.fraudScore?.toFixed(4)) || 0;
     } catch (error) {
       console.error("Fraud predictor API error:", error.message);
       if (error.response) {
