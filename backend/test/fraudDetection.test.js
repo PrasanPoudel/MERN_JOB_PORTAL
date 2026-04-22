@@ -34,7 +34,7 @@ describe("Fraud Detection API", () => {
       };
 
       const mockResponse = {
-        data: { fraudScore: 0.1231 },
+        data: { fraudScore: 0.1198 },
       };
       mockedAxios.post.mockResolvedValue(mockResponse);
 
