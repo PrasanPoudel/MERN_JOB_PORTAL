@@ -11,6 +11,12 @@ class JobRecommendationService {
       if (!job) {
         throw new Error("Job not found");
       }
+      if (job?.fraudScore === 1) {
+        console.log(
+          `Job ${jobId} flagged as fraudulent. Skipping recommendations.`,
+        );
+        return { success: false, message: "Job flagged as fraudulent" };
+      }
       if (job.emailNotificationSent) {
         console.log(`Notifications already sent for job ${jobId}`);
         return { success: true, message: "Notifications already processed" };
