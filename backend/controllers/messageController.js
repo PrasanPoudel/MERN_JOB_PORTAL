@@ -7,6 +7,9 @@ const Job = require("../models/Job");
 exports.sendMessage = async (req, res) => {
   try {
     const { applicationId, recipientId, content } = req.body;
+    if (!content || !content.trim()) {
+      return res.status(400).json({ message: "Message cannot be empty" });
+    }
 
     // Verify application exists and user is involved
     const application = await Application.findById(applicationId)
@@ -47,8 +50,10 @@ exports.sendMessage = async (req, res) => {
     });
 
     // Populate message before sending
-    await message.populate("sender", "name avatar");
-    await message.populate("recipient", "name avatar");
+    await message.populate([
+      { path: "sender", select: "name avatar" },
+      { path: "recipient", select: "name avatar" },
+    ]);
 
     res.status(201).json(message);
   } catch (err) {
@@ -74,7 +79,7 @@ exports.getConversation = async (req, res) => {
     const isApplicant =
       application.applicant._id.toString() === req.user._id.toString();
     const isEmployer =
-      application.job.company.toString() === req.user._id.toString();
+      application.job.company._id.toString() === req.user._id.toString();
 
     if (!isApplicant && !isEmployer) {
       return res.status(403).json({ message: "Not authorized" });
@@ -289,8 +294,10 @@ exports.sendMessageToAdmin = async (req, res) => {
     });
 
     // Populate message before sending
-    await message.populate("sender", "name avatar");
-    await message.populate("recipient", "name avatar");
+    await message.populate([
+      { path: "sender", select: "name avatar" },
+      { path: "recipient", select: "name avatar" },
+    ]);
 
     res.status(201).json(message);
   } catch (err) {
