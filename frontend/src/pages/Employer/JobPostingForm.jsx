@@ -234,7 +234,7 @@ const JobPostingForm = () => {
       <div className="min-h-screen">
         <div className="mx-auto">
           <div className="pb-24">
-            <div className="flex items-center justify-start mb-8">
+            <div className="mb-8">
               <h2 className="text-xl font-semibold text-gray-900">
                 Post a New Job
               </h2>
