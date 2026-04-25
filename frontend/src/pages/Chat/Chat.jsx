@@ -351,6 +351,29 @@ const Chat = ({ isAdmin = false }) => {
     return conv.jobTitle || "Job Application";
   };
 
+  const renderMessageWithLinks = (text) => {
+    const urlRegex = /(https?:\/\/[^\s]+)/g;
+
+    const parts = text.split(urlRegex);
+
+    return parts.map((part, index) => {
+      if (part.match(urlRegex)) {
+        return (
+          <a
+            key={index}
+            href={part}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ textDecoration: "underline" }}
+          >
+            {part}
+          </a>
+        );
+      }
+      return <span key={index}>{part}</span>;
+    });
+  };
+
   return (
     <>
       <div className="h-[calc(100vh-5rem)] flex bg-linear-to-br from-gray-50 via-gray-50 to-gray-100">
@@ -756,13 +779,13 @@ const Chat = ({ isAdmin = false }) => {
                                   : "bg-white border border-gray-200 rounded-bl-sm text-gray-900"
                               }`}
                             >
-                              {message?.content?.toString().includes("http") ? (
-                                <div
-                                  className="text-sky-600 underline"
-                                  dangerouslySetInnerHTML={{
-                                    __html: message.content,
-                                  }}
-                                />
+                              {isOwnMessage &&
+                              message?.content?.toString().includes("http") ? (
+                                <>
+                                  {renderMessageWithLinks(
+                                    message?.content?.toString(),
+                                  )}
+                                </>
                               ) : (
                                 <div>{message?.content}</div>
                               )}
